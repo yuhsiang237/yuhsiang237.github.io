@@ -106,5 +106,5 @@ Memory Usage: 28.2 MB, less than 82.24% of C# online submissions for Add Two Num
 &nbsp;&nbsp;這也讓我認清，中階工程師跟語法工程師是天壤之別。
 
 **參考**
-LeetCode 2. Add Two Numbers
+LeetCode 2. Add Two Numbers 
 https://skyyen999.gitbooks.io/-leetcode-with-javascript/content/questions/2md.html
