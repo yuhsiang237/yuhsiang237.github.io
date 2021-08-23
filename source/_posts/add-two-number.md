@@ -74,8 +74,6 @@ public class Solution {
               currentL2 = currentL2.next;
             }
             
-            int result = sum;
-
             if(isAddOne){
                 sum+=1;
             }
