@@ -32,6 +32,7 @@ search	搜尋	O(N)
 **C#程式碼**
 
 ```
+
 using System;
 
 //節點
@@ -79,6 +80,22 @@ public class Program
 			currentNode = currentNode.next;
 		}
 		
+		Console.WriteLine("在節點1末端添加一個數值38的節點:");
+		
+		LinkNode cursor = node1; 
+		LinkNode newNode = new LinkNode(38);
+		
+		// 添加節點在最後面
+		while(true){
+			if(cursor.next == null){ 
+				cursor.next = newNode; // 找到最尾端把null指派成新節點38
+				break;
+			}else{
+				cursor = cursor.next; //不斷往下找節點
+			}
+		}
+		
+		Console.WriteLine(node1.next.next.next.val); //Q1:可取得38，這邊其實我有些不懂，是new參考的關係嗎，為什麼能夠改到node1?
 	}
 }
 ```
@@ -95,9 +112,13 @@ null
 12
 99
 37
+在節點1末端添加一個數值38的節點:
+38
 ```
 
+目前有標記的Q1是現在不懂的地方，是new參考的關係嗎，為什麼能夠改到node1的值?
+
 **參考資料**
-https://kopu.chat/2017/05/30/c-%e8%aa%9e%e8%a8%80%ef%bc%9a%e7%b5%90%e6%a7%8b%e8%ae%8a%e6%95%b8%e8%88%87%e6%8c%87%e6%a8%99/
+https://kopu.chat/2017/06/02/c-%e8%aa%9e%e8%a8%80%ef%bc%9a%e9%8f%88%e7%b5%90%e4%b8%b2%e5%88%97linked-list%e7%9a%84%e5%bb%ba%e7%ab%8b%e8%88%87%e5%88%aa%e9%99%a4/
 https://en.wikipedia.org/wiki/Linked_list
 https://zh.wikipedia.org/wiki/%E9%93%BE%E8%A1%A8
