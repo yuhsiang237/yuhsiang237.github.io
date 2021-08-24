@@ -117,8 +117,22 @@ null
 ```
 
 目前有標記的Q1是現在不懂的地方，是new參考的關係嗎，為什麼能夠改到node1的值?
+按照這篇來說，他指出C#只有call by value、call by address。
+https://dotblogs.com.tw/daniel/2018/02/26/150443
+
+```
+在C#廣義來說
+基本型別 Struct (int,double,float,byte ...)  可看作 傳值
+一般型別 Class (自訂Class ,SqlConnectio....)  可看作 傳址  更精確來說是傳Stack的值(指向Heap的記憶體位置)
+```
+
+沒傳參考，只有傳值和傳址，所以Q1可能是因為把node1當時的記憶體位置指派給cursor，所以就代表著node1的位置。
+而直到最後終端null時，在把new出來的節點38的位址接上去。
+把記憶體位置傳到另一個記憶體位置的值上
 
 **參考資料**
 https://kopu.chat/2017/06/02/c-%e8%aa%9e%e8%a8%80%ef%bc%9a%e9%8f%88%e7%b5%90%e4%b8%b2%e5%88%97linked-list%e7%9a%84%e5%bb%ba%e7%ab%8b%e8%88%87%e5%88%aa%e9%99%a4/
 https://en.wikipedia.org/wiki/Linked_list
 https://zh.wikipedia.org/wiki/%E9%93%BE%E8%A1%A8
+
+
