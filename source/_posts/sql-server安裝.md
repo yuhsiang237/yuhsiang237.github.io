@@ -22,7 +22,10 @@ https://docs.microsoft.com/en-us/sql/ssms/download-sql-server-management-studio-
 {% asset_img "sql server預覽圖.PNG" SQL Server Management Studio%}
 
 ### 結語
-而這系列預計會從**「資料表建立>SQL語法>進階語法」**這樣前進。
+
+這系列預計會從**「資料表建立>SQL語法>進階語法」**這樣前進。
+
+目標:是練過一輪基礎SQL語法、SQL進階用法、釐清資料表設計的方式。
 
 基本上會跟這篇鐵人賽參考資料雷同，但是會加一些自己不同的見解XD。
 https://ithelp.ithome.com.tw/articles/10219497
