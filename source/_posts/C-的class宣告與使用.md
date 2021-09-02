@@ -1,7 +1,8 @@
 ---
 title: C# class宣告及使用
 date: 2021-09-02 23:30:39
-tags:
+categories:
+  - [程式語言,C#]
 ---
 
 在C++後有很多物件導向(Object-oriented programming，OOP)的語言竄起，如JAVA、VB、C#等等。
