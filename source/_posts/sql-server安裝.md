@@ -8,7 +8,7 @@ categories:
 
 因為工作與後端有關連，不免需要操作資料，而這些資料的儲存體就是資料庫。
 網路上有不同種的SQL，如MySQL、MongoDB、SQL Server、Oracle、PostgreSQL...等等。
-在未來工作上可能以關聯式資料庫居多，因此以SQL Server當作練習的修練場。
+在未來工作上可能以關聯式資料庫(RDBMS)居多，因此以SQL Server當作練習的修練場。
 
 **在此之前需要下載:**
 1. SQL Server Express:微軟的資料庫，沒有介面。
