@@ -117,6 +117,10 @@ categories:
 
 Q1:我有一點疑問在＂單價＂比如往後需要調用歷史資料，而商品的單價改動，會接連造成訂單對不上，所以是否該把明細流水號增加單價?
 ANS:20210905補上，針對這種日後可能會調度欄位、有糾紛問題的數值，存當時寫入的值比較穩定。因為是"歷史資料"，通常會限制成不可改，只能把整筆訂單刪除。
+後來看了:https://ithelp.ithome.com.tw/m/questions/10197039?fbclid=IwAR1sdXPCl2JtFvhauc76aUcEuNIEtfcvH2TzodALPmC08HL8R-7mp74eLZc
+這個問題是「需求」問題，看PM或SA想怎麼呈現
+簡單的答案:沒必要
+複雜的答案:要看資料欄位的「變化性」
 
 **參考資料**
 http://140.118.9.79/UML-SASD/%E6%AD%A3%E8%A6%8F%E5%8C%96.pdf
@@ -125,3 +129,4 @@ https://ithelp.ithome.com.tw/articles/10229472
 https://www.youtube.com/watch?v=FgQ4QrwVNk0
 http://spaces.isu.edu.tw/upload/19225/0/news/postfile_349.pdf
 https://www.ptt.cc/bbs/Soft_Job/M.1623612131.A.33C.html
+https://ithelp.ithome.com.tw/m/questions/10197039?fbclid=IwAR1sdXPCl2JtFvhauc76aUcEuNIEtfcvH2TzodALPmC08HL8R-7mp74eLZc
