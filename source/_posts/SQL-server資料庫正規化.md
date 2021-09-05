@@ -116,7 +116,7 @@ categories:
 此外補充一下，我覺得這種抽象的理論比實作重要，因為他沒辦法直接複製貼上，要透過動腦去分析，是累積功力的一個好方法。
 
 Q1:我有一點疑問在＂單價＂比如往後需要調用歷史資料，而商品的單價改動，會接連造成訂單對不上，所以是否該把明細流水號增加單價?
-ANS:20210905補上，針對這種日後可能會調度欄位、有糾紛問題的數值，存當時寫入的值比較穩定。
+ANS:20210905補上，針對這種日後可能會調度欄位、有糾紛問題的數值，存當時寫入的值比較穩定。因為是"歷史資料"，通常會限制成不可改，只能把整筆訂單刪除。
 
 **參考資料**
 http://140.118.9.79/UML-SASD/%E6%AD%A3%E8%A6%8F%E5%8C%96.pdf
@@ -124,3 +124,4 @@ http://9715109.blogspot.com/2010/10/12.html
 https://ithelp.ithome.com.tw/articles/10229472
 https://www.youtube.com/watch?v=FgQ4QrwVNk0
 http://spaces.isu.edu.tw/upload/19225/0/news/postfile_349.pdf
+https://www.ptt.cc/bbs/Soft_Job/M.1623612131.A.33C.html
