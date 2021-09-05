@@ -233,7 +233,7 @@ All other precision require 8 bytes.2<br></span></td>
 ### 結語
 
 這回以SQL Server的資料型別列舉出資料範圍，對於日後再選擇時就能稍微留意空間大小、資料的範圍等規劃問題。
-自己在使用上則是字串nvarchar，整數int、浮點數float、日期datetime2，就能解決大多問題。
+自己在使用上則是字串nvarchar，整數int、科學數字用浮點數float、有小數的金額用decimal避免誤差、日期datetime2，就能解決大多問題。
 而SQL Server沒有MySQL的boolean型態，要改用0、1去存，可以考慮tinyint。
 而在不同時區的資料則是統一都用一個標準去儲存日期UTC時間，如果有機會未來會在寫一篇跨國時間可能會遇到的問題。
 
