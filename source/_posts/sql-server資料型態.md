@@ -55,27 +55,38 @@ categories:
 <th><span style="font-size: 12pt;">資料型別</span></th>
 <th><span style="font-size: 12pt;">位元數</span></th>
 <th><span style="font-size: 12pt;">資料範圍</span></th>
+<th><span style="font-size: 12pt;">備註</span></th>
 </tr>
 <tr>
 <td><span style="font-size: 12pt;">numeric</span></td>
 <td><span style="font-size: 12pt;">視精確度而定</span></td>
 <td><span style="font-size: 12pt;">-10^38 +1 ~ 10^38 -1<br></span></td>
+<td></td>
 </tr>
 <tr>
 <td><span style="font-size: 12pt;">decimal</span></td>
 <td><span style="font-size: 12pt;">視精確度而定</span></td>
 <td><span style="font-size: 12pt;">-10^38 +1 ~ 10^38 -1</span></td>
+<td>如果要存有小數點的錢、金額請使用decimal，不要使用float，避免造成誤差<br/>
+decimal(p,s) 需要分別指定小數的最大位數（p）和小數位的數量（s）。
+p (precision) ：指定小數的最大位數，小數點的左側和右側的數字的總數量不能超過p，p的取值範圍是從1到38，默認值爲18。
+s (scale)：指定在小數點右側的小數位數，p-s是小數點左邊的最大位數。s必須是從0到p的值，只有在指定了精度的情況下才能指定s，s的默認值是0，因此，0 <= s <= p。 
+{% asset_img "decimal.png" decimal%}
+
+</td>
 </tr>
 <tr>
 <td><span style="font-size: 12pt;">float</span></td>
 <td><span style="font-size: 12pt;">&nbsp;8 Bytes</span></td>
 <td><span style="font-size: 12pt;">&nbsp;-1.79E+308 ~ 1.79E+308<br>15 位數<br></span></td>
+<td>不要使用float存小數點的錢，避免造成誤差。他適合儲存科學用的數字。</td>
 </tr>
 <tr>
 <td><span style="font-size: 12pt;">real</span></td>
 <td><span style="font-size: 12pt;">&nbsp;4 Bytes<br></span></td>
 <td><span style="font-size: 12pt;">-3.40E+38 ~ 3.40E+38<br>&nbsp;
 7 位數</span></td>
+<td></td>
 </tr>
 </tbody>
 </table>
