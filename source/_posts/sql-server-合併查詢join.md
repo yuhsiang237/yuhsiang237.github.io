@@ -146,19 +146,25 @@ customers目前兩筆資料、orders目前兩筆資料 2x2 = 4 所有可能排�
 因為沒辦法用ON去指定，所以會發現顧客U002明明沒訂單卻關聯上了A002、A003訂單。
 {% asset_img "範例5.PNG" %}
 
+### 多組JOIN寫法
+實作:我想得到訂單詳細資料打平的樣子
+ps.這種多組JOIN可以用as簡短，以下是全部簡寫。如果為了求好讀可以多打寫字，可以不要用as。
+```
+Select * from order_details as a
+inner join orders  as b on a.order_number = b.number
+inner join customers as c on c.number = b.customer_number
+inner join products as d on a.product_number = d.number
+```
+結果:
+其實就是把所有的主鍵、外來鍵拉起來而已R。就完全成為正規化前的模樣XDD
+{% asset_img "N JOIN.PNG" %}
+
 ### 總結
 
 在這回中學習了合併查詢的用法JOIN，一般來說都是搭配主鍵、外來鍵去做這些事。
 而平常自己實際習慣用INNER JOIN、LEFT JOIN，而FULL JOIN、CROSS JOIN則超少用到。
-也許是不太直覺的關係吧!且因為需求都是人想出來的，如果不是計算機專業，一般很少人會想出FULL JOIN、CROSS JOIN。
-
-此外，JOIN是可以合併多張以上的表，像是這樣:
-```
-Select customers.number,customers.name,a.number as orders_number 
-from customers 
-right join orders as a on customers.number = a.customer_number
-inner join orders as b on customers.number = b.customer_number
-```
+也許是不太直覺的關係吧XD?
+且因為需求都是人想出來的，如果不是計算機專業，一般很少人會想出FULL JOIN、CROSS JOIN。
 
 然後預告一下，下回是子查詢。@@
 
