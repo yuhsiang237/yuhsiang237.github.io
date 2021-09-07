@@ -20,6 +20,9 @@ categories:
 ### 目前表中資料
 在此，提供一下目前資料表中的測試資料，作為核對。
 
+**關聯圖**
+{% asset_img "拉關聯完成.png" %}
+
 **customers 顧客**
 {% asset_img "顧客.png" %}
 **products 產品**
