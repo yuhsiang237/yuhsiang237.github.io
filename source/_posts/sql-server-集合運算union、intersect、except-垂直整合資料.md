@@ -30,9 +30,9 @@ categories:
 
 語法:
 ```
-select price from products
-union 
-select price from order_details
+SELECT column_name(s) FROM table1
+UNION 
+SELECT column_name(s) FROM table2; 
 ```
 
 實作:想要把products的price與order_details的price結合，且剔除重複。
@@ -68,9 +68,9 @@ select price from order_details
 附註:沒有INTERSECT ALL這種用法
 語法:
 ```
-select price from products
+SELECT column_name(s) FROM table1
 INTERSECT 
-select price from order_details
+SELECT column_name(s) FROM table2; 
 ```
 
 實作:取出有訂過訂單的客戶編號，把customers的number與orders的customer_number做交集。
@@ -88,9 +88,9 @@ select customer_number from orders
 **[補充]** EXCEPT及只適用於 SQL Server，Oracle的交集則是使用 MINUS，使用方法與EXCEPT一樣; 而MySQL不支援EXCEPT及MINUS，則要使用left join。可參考:http://www.geeksengine.com/database/multiple-table-select/minus-except.php
 語法:
 ```
-select price from products
-except 
-select price from order_details
+SELECT column_name(s) FROM table1
+EXCEPT 
+SELECT column_name(s) FROM table2; 
 ```
 
 實作:取出"沒有"訂過訂單的客戶編號，把customers的number與orders的customer_number做差集。
