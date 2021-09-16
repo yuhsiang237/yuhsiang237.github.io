@@ -7,7 +7,6 @@ categories:
 在這回中將探討SQL server的in與not in 用法。
 
 
-
 ### IN 與 NOT IN
 
 1.可以使用在where中揀選多個值
