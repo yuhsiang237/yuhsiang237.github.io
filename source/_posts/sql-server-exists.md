@@ -17,6 +17,7 @@ FROM table_name
 WHERE EXISTS
 (SELECT column_name FROM table_name WHERE condition); 
 ```
+且exists跟in語法都可以達到相同效果。
 如:
 ```
 SELECT * FROM table_a
