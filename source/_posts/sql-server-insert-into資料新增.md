@@ -8,6 +8,7 @@ categories:
 接下來就是比較簡單的語法了，這回講的是insert into用來在表中插入資料。
 
 ### INSERT INTO
+語法:
 ```
 INSERT INTO table_name (column1, column2, column3, ...)
 VALUES (value1, value2, value3, ...); 
