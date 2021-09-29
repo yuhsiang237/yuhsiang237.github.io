@@ -4,6 +4,10 @@ date: 2021-09-21 03:57:08
 categories:
   - [程式語言,C#]
 ---
+
+在上回 {% post_link 'C-MVC入門' '[Day1] 學習C#的計畫與期望 - C#&MVC入門'%} 中介紹了自己的目的。
+在這回中主要介紹MVC的核心概念。
+
 ### MVC是什麼?
 MVC模式（Model–view–controller）是軟體工程中的一種軟體架構模式(software design pattern)，把軟體系統分為三個基本部分：模型（Model）、視圖（View）和控制器（Controller）。 
 

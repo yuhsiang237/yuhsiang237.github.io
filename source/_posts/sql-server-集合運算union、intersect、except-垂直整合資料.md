@@ -5,7 +5,7 @@ categories:
   - [SQL]
 ---
 在先前我們有使用過的多表查詢都是水平整合的概念，如JOIN {% post_link 'sql-server-合併查詢join' '[Day10] SQL server Select合併查詢JOIN用法 - SQL Server資料庫入門'%} 。
-以及上篇的子查詢 {% post_link 'sql-server-子查詢' '[Day11] SQL server 子查詢 - SQL Server資料庫入門 '%} 
+以及上篇的子查詢 {% post_link '建立C-MVC專案' '[Day11] SQL server 子查詢 - SQL Server資料庫入門 '%} 
 而這回，將要探討垂直整合這塊，資料庫提供聯集(union)、交集(intersect)、差集(except)語法可以實作這概念。
 
 ### 測試資料
