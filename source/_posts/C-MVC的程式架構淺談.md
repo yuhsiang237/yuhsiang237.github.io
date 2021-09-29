@@ -48,8 +48,7 @@ namespace WebApplication1
     }
 }
 ```
-+ Main:程式碼進入點，並在裡面呼叫<code>CreateHostBuilder</code>，建立初始化的<code>IHostBuilder</code>。
-。之後，Build建立實體，再透過Run運行。
++ Main:程式碼進入點，並在裡面呼叫<code>CreateHostBuilder</code>，建立初始化的<code>IHostBuilder</code>。之後，Build建立實體，再透過Run運行。
 + CreateDefaultBuilder:預設為空參數，也可以自行添加。
 + ConfigureWebHostDefaults:其中包含用來裝載 web 應用程式的預設值
 + UseStartup:指定要供 web 主機使用的啟動類型，這裡套用Startup.cs的程式碼，也可以自訂Class然後套用至此。
@@ -250,7 +249,7 @@ namespace WebApplication1.Models
 
 <p>Use this page to detail your site's privacy policy.</p>
 ```
-+@ViewData:可用Razor語法叫出值顯示。
++ @ViewData:可用Razor語法叫出值顯示。
 
 小結:同 Index.cshtml
 
