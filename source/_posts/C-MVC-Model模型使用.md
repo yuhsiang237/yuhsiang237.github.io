@@ -1,7 +1,8 @@
 ---
 title: '[Day5] C# MVC Model模型使用 - C#&MVC入門'
 date: 2021-09-30 12:00:51
-tags:
+categories:
+  - [程式語言,C#]
 ---
 在上回 {% post_link 'C-MVC的程式架構淺談' '[Day4] C# MVC的程式架構淺談 - C#&MVC入門'%}  ，我們談了整體的架構與檔案。
 在這篇主要談如何在 ASP.NET Core MVC 中建立Model模型，並且使用。
