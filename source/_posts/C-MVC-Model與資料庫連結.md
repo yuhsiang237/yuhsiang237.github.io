@@ -52,27 +52,136 @@ Entity Framework Core 有提供兩種開發方式
 {% asset_img "8.png" %}
 4.使用<code>Scaffold-DbContext</code>指令，來還原Orders資料庫的Models
 ```
-Scaffold-DbContext 'Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=Orders' Microsoft.EntityFrameworkCore.SqlServer -OutputDir Models
-
-Scaffold-DbContext "Server=(localdb)\mssqllocaldb;Database=Orders;Trusted_Connection=True;MultipleActiveResultSets=true;user id=sa;password=sa" Microsoft.EntityFrameworkCore.SqlServer -OutputDir Models 
-
-Scaffold-DbContext "Server=(localdb)\mssqllocaldb;Database=Orders;Trusted_Connection=True;" Microsoft.EntityFrameworkCore.SqlServer  -OutputDir Models 
-
+Scaffold-DbContext "Server=.\SQLExpress;Database=Orders;Trusted_Connection=True;" Microsoft.EntityFrameworkCore.SqlServer -OutputDir Models
 ```
-請自行替換這些字串的內容:
-+ Catalog:資料庫名稱
-+ user id:資料庫管理員帳號
-+ password:資料庫管理員密碼
+請自行替換字串的內容:
++ Database:資料庫名稱
 
-如果出現以下狀況代表連線異常
+{% asset_img "9.png" %}
+之後Models資料夾就會自動產生Model了
+{% asset_img "10.png" %}
+
+再來至Startup.cs添加資料庫連線服務
+##### Startup.cs
 ```
+      public void ConfigureServices(IServiceCollection services)
+        {
+            
+            services.AddControllersWithViews();
+            // 資料庫配置
+            var connection = @"Server=.\SQLExpress;Database=Orders;Trusted_Connection=True;ConnectRetryCount=0";
+            services.AddDbContext<OrdersContext>(options => options.UseSqlServer(connection));
+        }
+```
+再來至控制器HomeController.cs增加方法
+##### HomeController.cs
+```
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
+using System.Threading.Tasks;
+using WebApplication1.Models;
 
-未完，目前卡在連線無法連線，Scaffold-DbContext這段連不到資料庫。
+namespace WebApplication1.Controllers
+{
+    public class HomeController : Controller
+    {
+        private readonly ILogger<HomeController> _logger;
 
+        // 添加Context
+        private readonly OrdersContext _context;
+
+
+        public HomeController(ILogger<HomeController> logger, OrdersContext context)
+        {
+            _logger = logger;
+            // 初始化Context
+            _context = context;
+        }
+
+        [HttpGet]
+        public IActionResult Create()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult Create(UsersModel usersmodel)
+        {
+            if (ModelState.IsValid)
+            {
+                //如果連結資料庫在這進行儲存
+
+                //導回首頁
+                return RedirectToAction(nameof(Index));
+            }
+            return View(usersmodel);
+        }
+
+
+        public IActionResult Index()
+        {
+            // 透過Context取得資料
+            var model = _context.Customers.Select(b => new Customer
+            {
+                Name = b.Name,
+                Number = b.Number,
+                Tel = b.Tel
+            }).ToList();
+
+            // 取第一列資料出來
+            Customer m = model[0];
+
+            return View(m);
+        }
+
+        public IActionResult Privacy()
+        {
+            return View();
+        }
+
+        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+        public IActionResult Error()
+        {
+            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+    }
+}
+```
+再來在View上修改
+```
+@model WebApplication1.Models.Customer;
+@{
+    ViewData["Title"] = "Home Page";
+}
+<ul>
+    <li>@Model.Number</li>
+    <li>@Model.Name</li>
+    <li>@Model.Tel</li>
+</ul>
+<div class="text-center">
+    <h1 class="display-4">Welcome</h1>
+    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+</div>
+```
+接下來運行即可印出第一筆資料
+{% asset_img "11.png" %}
+{% asset_img "12.png" %}
+
+### 總結
+而現在已經能成功連結資料庫了!
+微軟MVC資料庫連結方式比較麻煩，因為要自行找套件，不像Laravel已經配好，直接打帳號密碼就能用。
+而現在迫切問題在Controller只能傳送一個Model，要如何讓多個Model能夠透過Controller傳送到View上。
+所以，下個篇主要介紹的就是Controller。
 
 **參考資料**
 https://docs.microsoft.com/zh-tw/aspnet/core/data/ef-mvc/intro?view=aspnetcore-5.0
 https://docs.microsoft.com/zh-tw/aspnet/core/tutorials/first-mvc-app/working-with-sql?view=aspnetcore-3.1&tabs=visual-studio
 https://docs.microsoft.com/zh-tw/ef/core/cli/dotnet#dotnet-ef-dbcontext-scaffold
 https://www.youtube.com/watch?v=2m_3SHGy-Rs
-http://go.microsoft.com/fwlink/?LinkId=723263.
+http://go.microsoft.com/fwlink/?LinkId=723263
+https://www.uuu.com.tw/Public/content/article/20/20200413.htm
+http://ikevin.tw/2019/08/04/asp-net-core-3-0-%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8-database-first/
