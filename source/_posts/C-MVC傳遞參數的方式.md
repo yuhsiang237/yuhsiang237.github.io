@@ -87,5 +87,7 @@ Header、Request、Query、Form、Route、FormBody
 但缺點是他是前台Javascript，要在前台追參數。
 最後，當專案大起來時勢必要注意參數的管理，不然A到B頁可能會有各種傳法，在追參數、修改上就會花比較多時間。
 
+預計下回會稍微探討權限部分。
+
 **參考資料**
 https://ithelp.ithome.com.tw/articles/10240381
