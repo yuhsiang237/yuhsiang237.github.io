@@ -142,8 +142,7 @@ public void linqLeftJoinExample2()
 說明:可以得到XBOX Series X了。
 這種多個DefaultIfEmpty組法感覺蠻難讀的。
 要獨立出一個值，導致得用a、b、c來組不然難知道誰是誰，就很難閱讀
-且要小心有些值讀出來是空的要使用「?.」的做法，把empty的值設定為null才有辦法
-繼續下去，否則會執行到中間就報錯了。
+且要小心有些值讀出來是空的要使用「?.」的做法，把empty的值設定為null才有辦法繼續下去，否則會執行到中間就報錯了。
 
 以此，就是ab?.ProductTypeID，因為ab做完DefaultIfEmpty時可能ProductTypeID是為empty的，要用這ProductTypeID再去做下個join可能會出錯。
 
