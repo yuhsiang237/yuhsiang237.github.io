@@ -7,10 +7,10 @@ categories:
 
 在上回 {% post_link 'C-MVC-LINQ基礎用法' '[Day14] C# MVC LINQ基礎用法 - C#&MVC入門'%}  ，我們介紹了LINQ基本用法。
 
-而這回就要介紹LINQ常用的幾個作法。
+而這回就要介紹LINQ常用的幾個JOIN、LEFT JOIN作法。
 
 
-### JOIN
+### 實作
 先附上測試資料:
 ```
 //　產品
@@ -74,13 +74,93 @@ public void linqInnerJoinExample()
 說明:因為是InnerJoin，都要有重疊才會關聯出，而XBOX Series X的Id沒有在product_ProductTypeRelationships裡面，所以最後沒有被顯示出來。
 基本上跟原生SQL的寫法挺像的。
 
-2.LINQ實作LEFT JOIN
+2.LINQ實作LEFT JOIN 
 
+寫法1:拆兩個Query
+```
+public void linqLeftJoinExample()
+{
+    // product 跟 product_ProductTypeRelationship 先left join 
+    var query1 =
+        from product in products
+        join product_ProductTypeRelationship in product_ProductTypeRelationships on product.Id equals product_ProductTypeRelationship.ProductID
+        into tmp
+        from product_ProductTypeRelationship in tmp.DefaultIfEmpty()
+        select new
+        {
+            product.Id,
+            product.Name,
+            product.Price,
+            ProductTypeID = product_ProductTypeRelationship?.ProductTypeID
+        };
 
-(未完。
+    // query1結果再跟 productTypes left join 
+    var query2 =
+        from q in query1
+        join productType in productTypes on q.ProductTypeID equals productType.Id
+        into tmp
+        from product_ProductTypeRelationship in tmp.DefaultIfEmpty()
+        select new
+        {
+            q.Id,
+            q.Name,
+            q.Price,
+            ProductName = product_ProductTypeRelationship?.Name
+        };
+    var result = query2.ToList();
+}
+```
+結果:
+{% asset_img "2.png" %}
+說明:可以得到XBOX Series X了。
+因為LINQ沒有LEFT JOIN這種簡單作法，只能靠DefaultIfEmpty來操作，作法比較複雜、難直覺判斷。
+((ps.不是要用來讓大家好用的查詢嗎?搞複雜了
+
+作法2:組多個DefaultIfEmpty
+```
+public void linqLeftJoinExample2()
+{
+    var query =
+        from a in products
+        join b in product_ProductTypeRelationships on a.Id equals b.ProductID
+        into result1
+        from ab in result1.DefaultIfEmpty()
+        join c in productTypes on ab?.ProductTypeID equals c.Id
+        into result2
+        from abc in result2.DefaultIfEmpty()
+        select new{
+            a.Id,
+            a.Name,
+            a.Price,
+            ProductName = abc?.Name
+        } ;
+    var result = query.ToList();
+}
+```
+結果:
+{% asset_img "3.png" %}
+說明:可以得到XBOX Series X了。
+這種多個DefaultIfEmpty組法感覺蠻難讀的。
+要獨立出一個值，導致得用a、b、c來組不然難知道誰是誰，就很難閱讀
+且要小心有些值讀出來是空的要使用「?.」的做法，把empty的值設定為null才有辦法
+繼續下去，否則會執行到中間就報錯了。
+
+以此，就是ab?.ProductTypeID，因為ab做完DefaultIfEmpty時可能ProductTypeID是為empty的，要用這ProductTypeID再去做下個join可能會出錯。
+
+### 總結
+介紹了資料常見的處理JOIN、LEFT JOIN。
+覺得要處理複雜查詢用LINQ真的不太適合...，因為太難閱讀XD?。
+LINQ有他強型別、Intellisense的好處，但想到有些情況要LEFT JOIN 5張時應該會蠻崩潰的。
+可能就得組簡單的LINQ再搭配迴圈分步驟做，效能會差一點。
+
+總之在複雜的查詢我會用原生作法搭配Dapper。
+
+更多LINQ用法可以查看:
+https://docs.microsoft.com/zh-tw/dotnet/csharp/linq/
 
 **參考資料**
 https://dotblogs.com.tw/yc421206/2014/07/11/145907
 https://ad57475747.medium.com/linq%E5%AD%B8%E7%BF%92%E7%AD%86%E8%A8%98-6-join-%E5%A4%9A%E8%A1%A8%E5%96%AE%E5%A4%9A%E6%A2%9D%E4%BB%B6%E5%BC%8F-4076c487264f
 http://vito-note.blogspot.com/2013/04/linq-3-join.html
-https://docs.microsoft.com/zh-tw/dotnet/api/system.linq.queryable.selectmany?redirectedfrom=MSDN&view=net-5.0#System_Linq_Queryable_SelectMany__2_System_Linq_IQueryable___0__System_Linq_Expressions_Expression_System_Func___0_System_Collections_Generic_IEnumerable___1____
+https://docs.microsoft.com/zh-tw/dotnet/csharp/linq/perform-left-outer-joins
+https://blog.csdn.net/yuanxiang01/article/details/111176654

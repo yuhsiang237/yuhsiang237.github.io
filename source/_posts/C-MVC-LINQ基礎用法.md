@@ -49,7 +49,7 @@ public IActionResult Index()
 以上就是過濾>80的分數。
 
 + IEnumerable:第7行，公開能逐一查看非泛型集合內容一次的列舉程式。而其實可以用var當作宣告替代。
-+ scoreQuery:而程式碼在scoreQuery第7行就被執行了，可以看到Result View已有過濾的結果。
++ scoreQuery:過濾的結果。
 {% asset_img "1.png" %}
 下圖顯示完整的查詢作業。
 {% asset_img "2.png" %}
