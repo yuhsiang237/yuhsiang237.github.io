@@ -12,7 +12,7 @@ categories:
 如下圖，students_public裡的sid 107000001 在students_private只會出現1筆；students_private裡的sid 107000001在students_public也只會出現1筆。
 {% asset_img "一對一範例.png" 一對一範例%}
 
-### 一對多（One to One）:
+### 一對多（One to Many）:
 
 如depdepartments的一筆id可以對應到students多筆的dept_id。
 所以depdepartments對students是一對多。

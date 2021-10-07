@@ -74,7 +74,7 @@ public void linqInnerJoinExample()
 說明:因為是InnerJoin，都要有重疊才會關聯出，而XBOX Series X的Id沒有在product_ProductTypeRelationships裡面，所以最後沒有被顯示出來。
 基本上跟原生SQL的寫法挺像的。
 
-2.LINQ實作LEFT JOIN 
+#### 2.LINQ實作LEFT JOIN 
 
 寫法1:拆兩個Query
 ```
@@ -146,13 +146,113 @@ public void linqLeftJoinExample2()
 
 以此，就是ab?.ProductTypeID，因為ab做完DefaultIfEmpty時可能ProductTypeID是為empty的，要用這ProductTypeID再去做下個join可能會出錯。
 
+#### 3.組成階層方式
+```
+public void linqLeftJoinExample3()
+{
+
+    var p = (from a in products
+                select new ProductViewModel
+                {
+                    Id = a.Id,
+                    Name = a.Name,
+                    Price = a.Price,
+                }).ToList();
+
+    foreach (var item in p)
+    {
+        var productTypeIDs = from a in product_ProductTypeRelationships
+                                where a.ProductID == item.Id
+                                select a.ProductTypeID;
+
+        var productTypeData = from a in productTypeIDs
+                                join b in productTypes on a equals b.Id
+                                select new ProductType
+                                {
+                                    Id = b.Id,
+                                    Name = b.Name
+                                };
+        item.ProductTypes = new List<ProductType>();
+        foreach (var x in productTypeData)
+        {
+            item.ProductTypes.Add(x);
+        }
+    }
+    var result = p;
+    string jsonData = JsonConvert.SerializeObject(result);
+    System.Diagnostics.Debug.WriteLine(jsonData);
+}
+```
+
+結果:
+```
+[
+  {
+    "Id": 1,
+    "Name": "PS4",
+    "Price": 11000,
+    "ProductTypes": [
+      {
+        "Id": 1,
+        "Name": "Game"
+      },
+      {
+        "Id": 3,
+        "Name": "Sony"
+      }
+    ]
+  },
+  {
+    "Id": 2,
+    "Name": "PS5",
+    "Price": 15000,
+    "ProductTypes": [
+      {
+        "Id": 1,
+        "Name": "Game"
+      },
+      {
+        "Id": 3,
+        "Name": "Sony"
+      }
+    ]
+  },
+  {
+    "Id": 3,
+    "Name": "Switch",
+    "Price": 9900,
+    "ProductTypes": [
+      {
+        "Id": 1,
+        "Name": "Game"
+      },
+      {
+        "Id": 2,
+        "Name": "nintendo"
+      }
+    ]
+  },
+  {
+    "Id": 4,
+    "Name": "XBOX Series X",
+    "Price": 15000,
+    "ProductTypes": []
+  }
+]
+```
+說明:用foreach搭配LINQ用組的方式去做出階層資料，並且新增ProductViewModel做最後的資料規格呈現。
+這種複雜度O(n^2)不是很好，未來想到好的方式再更改。
+且要注意第10行要先ToList()，執行LINQ，否則下面的foreach會造成每次初始化。
+如果以前端要資料來講，這樣是最好格式，可以不用手動組。
+此外，這是多對多的資料關聯，是最複雜的情況。
+
 ### 總結
 介紹了資料常見的處理JOIN、LEFT JOIN。
 覺得要處理複雜查詢用LINQ真的不太適合...，因為太難閱讀XD?。
 LINQ有他強型別、Intellisense的好處，但想到有些情況要LEFT JOIN 5張時應該會蠻崩潰的。
 可能就得組簡單的LINQ再搭配迴圈分步驟做，效能會差一點。
 
-總之在複雜的查詢我會用原生作法搭配Dapper。
+總之，在複雜的查詢我會用「原生作法搭配Dapper」或是「簡單的LINQ搭程式用迴圈做」。
 
 更多LINQ用法可以查看:
 https://docs.microsoft.com/zh-tw/dotnet/csharp/linq/
