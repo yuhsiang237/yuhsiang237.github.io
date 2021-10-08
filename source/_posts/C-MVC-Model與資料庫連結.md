@@ -1,5 +1,5 @@
 ---
-title: '[Day7] C# MVC Model模型連結資料庫 - C#&MVC入門'
+title: '[Day7] C# MVC Model模型連結資料庫，使用Entity Framework - C#&MVC入門'
 date: 2021-10-2 12:00:51
 categories:
   - [程式語言,C#]
