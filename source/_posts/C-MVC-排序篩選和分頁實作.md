@@ -21,8 +21,18 @@ categories:
 而剛好官方就有提供這方面的實作教學，因此就參考官方作法:
 https://docs.microsoft.com/zh-tw/aspnet/core/data/ef-mvc/sort-filter-page?view=aspnetcore-3.1
 
+### 實作
+先附上完成後作品
+{% asset_img "1.png" %}
+實際運作樣子GIF
+{% asset_img "3.gif" %}
 
-(未完 撰寫中
+目前整理程式碼中，預計明日放上。
+基本上算是個很強的萬用Table了。
+
 
 **參考資料**
 https://docs.microsoft.com/zh-tw/aspnet/core/data/ef-mvc/sort-filter-page?view=aspnetcore-3.1
+https://blog.csdn.net/mzl87/article/details/102924701
+https://jscinin.medium.com/asp-net-core-mvc-part-12-%E7%82%BA%E9%99%B3%E5%88%97%E7%9A%84%E8%B3%87%E6%96%99%E8%A3%BD%E4%BD%9C%E5%88%86%E9%A0%81%E6%95%88%E6%9E%9C-%E5%A5%97%E4%BB%B6x-pagedlist-core-mvc-a2191d86317d
+https://docs.microsoft.com/zh-tw/aspnet/mvc/overview/getting-started/getting-started-with-ef-using-mvc/sorting-filtering-and-paging-with-the-entity-framework-in-an-asp-net-mvc-application
