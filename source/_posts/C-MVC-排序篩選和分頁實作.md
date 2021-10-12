@@ -478,6 +478,8 @@ namespace ListExample.Controllers
 
 最後，讓我比較訝異的是竟然找不到現成的非官方範例可以參考...。
 
+完整程式碼:https://github.com/yuhsiang237/ASP.NET-Core-MVC-PaginatedList
+
 **參考資料**
 https://docs.microsoft.com/zh-tw/aspnet/core/data/ef-mvc/sort-filter-page?view=aspnetcore-3.1
 https://blog.csdn.net/mzl87/article/details/102924701
