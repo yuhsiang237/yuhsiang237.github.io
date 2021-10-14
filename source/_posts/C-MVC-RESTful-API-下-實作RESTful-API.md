@@ -7,6 +7,58 @@ categories:
 在上回中我們介紹了 {% post_link 'C-MVC-RESTful-API-中-建立API專案' '[Day20] C# MVC RESTful API (中) 建立API專案 - C#&MVC入門' %} ，我們在原本的MVC專案中加入了WEB API專案。
 
 而這回將會撰寫RESTful API!
+本文會以:https://docs.microsoft.com/zh-tw/aspnet/core/tutorials/first-web-api?view=aspnetcore-3.1&tabs=visual-studio 提供的範例作為實作依據。
+### RESTful API規格
+<table>
+<th>方法</th>
+<th>網址</th>
+<th>描述</th>
+<th>要求文本</th>
+<th>回應文本</th>
+<tr>
+<td>GET</td>
+<td><code>/api/todo</code></td>
+<td>取得所有待辦事項</td>
+<td>無</td>
+<td>待辦事項陣列</td>
+</tr>
+<tr>
+<td>GET</td>
+<td><code>/api/todo/{id}</code></td>
+<td>依識別碼取得待辦事項</td>
+<td>無</td>
+<td>待辦事項</td>
+</tr>
+<tr>
+<td>POST</td>
+<td><code>/api/todo</code></td>
+<td>新增待辦事項</td>
+<td>待辦事項</td>
+<td>待辦事項</td>
+</tr>
+<tr>
+<td>PUT</td>
+<td><code>/api/todo/{id}</code></td>
+<td>更新現有的待辦事項</td>
+<td>待辦事項</td>
+<td>待辦事項</td>
+</tr>
+<tr>
+<td>DELETE</td>
+<td><code>/api/todo/{id}</code></td>
+<td>刪除待辦事項</td>
+<td>無</td>
+<td>待辦事項</td>
+</tr>
+<!-- <tr>
+<td>POST</td>
+<td><code>/api/todo/batch</code></td>
+<td>批次處理待辦事項，可批次新增、刪除、編輯</td>
+<td>批次動作、待辦事項陣列</td>
+<td>批次動作、待辦事項陣列</td>
+</tr> -->
+<tr>
+</table>
 
 
 ### 實作RESTful API
