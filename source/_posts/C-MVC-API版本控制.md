@@ -171,6 +171,9 @@ TodoController.cs也是一樣喔，就不示範了。
 最後附上完整程式碼:
 https://github.com/yuhsiang237/ASP.NET-Core-RESTfulAPI-API-Version-Control
 
+再來就是添加Swagger:
+ {% post_link 'C-MVC-Web-API增加Swagger' '[Day23] C# MVC Web API版本增加Swagger - C#&MVC入門' %}
+
 額外補充:
 至於Controller多版本那Model呢?
 因為向下兼容，可能會回傳不同版的Model
