@@ -21,10 +21,10 @@ Swashbuckle.AspNetCore.Swagger
 Swashbuckle.AspNetCore.SwaggerGen
 Swashbuckle.AspNetCore.SwaggerUI
 
-{% asset_img 1.png %}
+{% asset_img 4.png %}
 
 2.再來是我們要修改的檔案
-{% asset_img 2.png %}
+{% asset_img 5.png %}
 
 首先是Swagger的定義類別
 
