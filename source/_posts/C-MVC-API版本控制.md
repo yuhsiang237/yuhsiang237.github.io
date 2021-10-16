@@ -117,5 +117,14 @@ TodoController.cs也是一樣喔，就不示範了。
 最後附上完整程式碼:
 https://github.com/yuhsiang237/ASP.NET-Core-RESTfulAPI-API-Version-Control
 
+額外補充:
+至於Controller多版本那Model呢?
+因為向下兼容，可能會回傳不同版的Model
+這時就可以使用繼承跟覆寫!
+如1.1繼承1.0:ModelV1_1:ModelV1_0
+之後添加屬性跟覆寫方法
+而主要就是避免資料庫異動太大，就可以避免break change造成不相容。
+
+
 **參考資料**
 https://dotblogs.com.tw/rainmaker/2017/03/12/130759
