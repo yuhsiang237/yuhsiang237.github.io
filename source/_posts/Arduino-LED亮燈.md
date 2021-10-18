@@ -45,13 +45,13 @@ Rt = 1/(1/R1+1/R2+1/R3+...+1/Rn)
 我們使用電阻是為了降低電壓、限流，讓IC能夠正常啟用下避免過熱燒毀、穩定運作，所以差不多就使用3顆電阻並聯。
 
 電路圖
-{% asset_img 電路圖.png %}
+{% asset_img 電路圖_fx.png %}
 
 接線圖
-{% asset_img 實際接線圖.png %}
+{% asset_img 實際接線圖_fx.png %}
 
 現實:
-{% asset_img real.png %}
+{% asset_img real_fx.png %}
 
 ### 總結
 
