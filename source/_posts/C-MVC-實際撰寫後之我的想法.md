@@ -1,12 +1,12 @@
 ---
-title:title: '[Day30] C# MVC 實際撰寫後之我的想法 - C#&MVC入門'
-date: 2021-12-27 20:23:52
+title: '[Day30] C# MVC 實際撰寫後之我的想法 - C#&MVC入門'
+date: 2021-12-28 20:23:52
 categories:
   - [程式語言,C#]
 ---
 在此先說明一下，大概花了一個月製作了了一套**商品出貨訂單系統**的Side Project。
 儲存庫:https://github.com/yuhsiang237/Order-System
-連結網址:https://www.youtube.com/watch?v=nSk6OZjhDMY
+影片網址:https://www.youtube.com/watch?v=nSk6OZjhDMY
 
 所以這文章內容會包含很多我與之前的製作系統經驗的分享。
 
