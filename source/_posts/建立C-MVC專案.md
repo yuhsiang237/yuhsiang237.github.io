@@ -1,11 +1,11 @@
 ---
-title:  '[Day3] 建立C# MVC專案 - C#&MVC入門'
+title:  '[Day3] 建立C# MVC專案 - C#&AspNetCore'
 date: 2021-09-28 17:03:14
 categories:
   - [程式語言,C#]
 ---
 
-在上回 {% post_link '什麼是MVC' '[Day2] 什麼是MVC，有什麼好處 - C#&MVC入門'%} 中我們理解到的MVC的核心概念。
+在上回 {% post_link '什麼是MVC' '[Day2] 什麼是MVC，有什麼好處 - C#&AspNetCore'%} 中我們理解到的MVC的核心概念。
 在這回中我們要利用Visual Studio來建立一個C# MVC專案，並運行起來。
 
 ### 安裝

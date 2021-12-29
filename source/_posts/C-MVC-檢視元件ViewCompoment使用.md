@@ -1,10 +1,10 @@
 ---
-title: '[Day10] C# MVC 檢視元件View Compoment使用- C#&MVC入門'
+title: '[Day10] C# MVC 檢視元件View Compoment使用- C#&AspNetCore'
 date: 2021-10-05 12:06:42
 categories:
   - [程式語言,C#]
 ---
-在上回 {% post_link 'C-MVC-View使用' '[Day9] C# MVC View使用 - C#&MVC入門' %} ，我們介紹了View的操作及用法，並稍微帶了Partial View。
+在上回 {% post_link 'C-MVC-View使用' '[Day9] C# MVC View使用 - C#&AspNetCore' %} ，我們介紹了View的操作及用法，並稍微帶了Partial View。
 而這回，我們將介紹檢視元件View Compoment。
 
 因為原本MVC5的<code>@HTML.action</code>在.net core MVC中已經被移除掉了，造成Partial View會無法綁後端Controller撰寫商業邏輯。

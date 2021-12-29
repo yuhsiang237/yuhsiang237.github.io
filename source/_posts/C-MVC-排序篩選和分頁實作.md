@@ -1,12 +1,12 @@
 ---
-title: '[Day17] C# MVC 排序、篩選和分頁實作 - C#&MVC入門'
+title: '[Day17] C# MVC 排序、篩選和分頁實作 - C#&AspNetCore'
 date: 2021-10-14 10:16:48
 categories:
   - [程式語言,C#]
 ---
 對於資料庫的操作我們介紹了兩種做法:
-+ {% post_link 'C-MVC-Dapper用法' '[Day16] C# MVC Dapper用法與連結資料庫 - C#&MVC入門' %} 
-+ {% post_link 'C-MVC-Model與資料庫連結' '[Day7] C# MVC Model模型連結資料庫，使用Entity Framework - C#&MVC入門'%}
++ {% post_link 'C-MVC-Dapper用法' '[Day16] C# MVC Dapper用法與連結資料庫 - C#&AspNetCore' %} 
++ {% post_link 'C-MVC-Model與資料庫連結' '[Day7] C# MVC Model模型連結資料庫，使用Entity Framework - C#&AspNetCore'%}
 
 而在上方兩篇文中我們都是撈頁面呈現單一資料。
 因此這回來談談列表吧!

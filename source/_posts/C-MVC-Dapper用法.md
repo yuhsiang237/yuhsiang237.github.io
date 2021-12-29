@@ -1,18 +1,18 @@
 ---
-title:  '[Day16] C# MVC Dapper用法與連結資料庫 - C#&MVC入門'
+title:  '[Day16] C# MVC Dapper用法與連結資料庫 - C#&AspNetCore'
 date: 2021-10-12 11:44:45
 categories:
   - [程式語言,C#]
 ---
 
 
-在上回 {% post_link 'C-MVC-LINQ-常見用法' '[Day15] C# MVC LINQ常見用法 - C#&MVC入門'%}  ，我們介紹了LINQ常見用法。
+在上回 {% post_link 'C-MVC-LINQ-常見用法' '[Day15] C# MVC LINQ常見用法 - C#&AspNetCore'%}  ，我們介紹了LINQ常見用法。
 
 
 發現LINQ在組合複雜的查詢比較困難，為了解決這困難通常會用原生寫法替代。
 因此，這回我們用另一種方式連結資料庫，Dapper。
 
-此外，如果是用Entity Framework core可以參考之前寫的這篇喔:{% post_link 'C-MVC-Model與資料庫連結' '[Day7] C# MVC Model模型連結資料庫 - C#&MVC入門'%}
+此外，如果是用Entity Framework core可以參考之前寫的這篇喔:{% post_link 'C-MVC-Model與資料庫連結' '[Day7] C# MVC Model模型連結資料庫 - C#&AspNetCore'%}
 
 ### Dapper
 Dapper是適用於Microsoft .NET平台的對象關係映射產品：它提供了將面向對象的域模型映射到傳統關係數據庫的框架。其目的是將開發人員從大部分與關係數據持久性相關的編程任務中解放出來。
@@ -188,7 +188,7 @@ Dapper配置非常簡單!整體安裝到撰寫連線不用15分鐘。
 更多的文件可以參考:https://dapper-tutorial.net/dapper
 主要在複雜查詢、提升效能可以用，而普通的新/刪/修/查還是用Entity Framework core強型別會好一些。
 
-如果是用Entity Framework core可以參考之前寫的這篇:{% post_link 'C-MVC-Model與資料庫連結' '[Day7] C# MVC Model模型連結資料庫 - C#&MVC入門'%}
+如果是用Entity Framework core可以參考之前寫的這篇:{% post_link 'C-MVC-Model與資料庫連結' '[Day7] C# MVC Model模型連結資料庫 - C#&AspNetCore'%}
 
 **參考資料**
 https://blog.darkthread.net/blog/dapper/

@@ -1,10 +1,10 @@
 ---
-title:  '[Day4] C# MVC的程式架構淺談 - C#&MVC入門'
+title:  '[Day4] C# MVC的程式架構淺談 - C#&AspNetCore'
 date: 2021-09-29 07:05:32
 categories:
   - [程式語言,C#]
 ---
-這篇主要檢討上回 {% post_link '建立C-MVC專案' '[Day3] 建立C# MVC專案 - C#&MVC入門'%} 透過.net core 3.1版本建立出的程式碼架構。
+這篇主要檢討上回 {% post_link '建立C-MVC專案' '[Day3] 建立C# MVC專案 - C#&AspNetCore'%} 透過.net core 3.1版本建立出的程式碼架構。
 
 
 ### 檔案架構

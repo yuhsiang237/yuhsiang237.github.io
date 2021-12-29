@@ -1,10 +1,10 @@
 ---
-title: '[Day19] C# MVC RESTful API (上) RESTful 基礎知識 - C#&MVC入門'
+title: '[Day19] C# MVC RESTful API (上) RESTful 基礎知識 - C#&AspNetCore'
 date: 2021-10-16 10:16:48
 categories:
   - [程式語言,C#]
 ---
-在上回中我們介紹了 {% post_link 'C-MVC專案中撰寫API' '[Day18] C# MVC專案中撰寫API - C#&MVC入門' %} ，能在MVC專案中撰寫API了。
+在上回中我們介紹了 {% post_link 'C-MVC專案中撰寫API' '[Day18] C# MVC專案中撰寫API - C#&AspNetCore' %} ，能在MVC專案中撰寫API了。
 
 而這回，探討Web API，他會開給APP(iOS或Android)、前端網站(React或Vue)這種主從式分離的架構。
 為了能開出比較公版的API，就必須先了解RESTful的核心概念。

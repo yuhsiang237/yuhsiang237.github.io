@@ -1,10 +1,10 @@
 ---
-title: '[Day14] C# MVC LINQ基礎用法 - C#&MVC入門'
+title: '[Day14] C# MVC LINQ基礎用法 - C#&AspNetCore'
 date: 2021-10-10 19:20:46
 categories:
   - [程式語言,C#]
 ---
-在上回 {% post_link 'C-MVC-驗證與授權，新刪修查按鈕權限' '[Day13] C# MVC 驗證與授權，新刪修查按鈕權限 - C#&MVC入門'%}  ，我們學會了進階的權限切割。
+在上回 {% post_link 'C-MVC-驗證與授權，新刪修查按鈕權限' '[Day13] C# MVC 驗證與授權，新刪修查按鈕權限 - C#&AspNetCore'%}  ，我們學會了進階的權限切割。
 
 而這回就要開始操作資料了，使用LINQ。
 

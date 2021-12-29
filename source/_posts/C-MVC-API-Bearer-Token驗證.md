@@ -1,11 +1,11 @@
 ---
-title: '[Day24] C# MVC API JWT Token驗證 (上) JWT基礎知識 - C#&MVC入門'
+title: '[Day24] C# MVC API JWT Token驗證 (上) JWT基礎知識 - C#&AspNetCore'
 date: 2021-10-27 21:57:47
 categories:
   - [程式語言,C#]
 ---
 在先前有介紹過Cookie-Based驗證於MVC專案裡。
-{% post_link 'C-MVC-驗證與授權登入與登出' '[Day12] C# MVC 驗證與授權，登入與登出 - C#&MVC入門' %}
+{% post_link 'C-MVC-驗證與授權登入與登出' '[Day12] C# MVC 驗證與授權，登入與登出 - C#&AspNetCore' %}
 
 而這回主要探討的是Token-Based驗證，也就是API常用的JWT (Json Web Token)。
 

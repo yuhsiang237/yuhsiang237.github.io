@@ -1,10 +1,10 @@
 ---
-title: '[Day21] C# MVC RESTful API (下) 實作RESTful API - C#&MVC入門'
+title: '[Day21] C# MVC RESTful API (下) 實作RESTful API - C#&AspNetCore'
 date: 2021-10-18 19:59:32
 categories:
   - [程式語言,C#]
 ---
-在上回中我們介紹了 {% post_link 'C-MVC-RESTful-API-中-建立API專案' '[Day20] C# MVC RESTful API (中) 建立API專案 - C#&MVC入門' %} ，我們在原本的MVC專案中加入了WEB API專案。
+在上回中我們介紹了 {% post_link 'C-MVC-RESTful-API-中-建立API專案' '[Day20] C# MVC RESTful API (中) 建立API專案 - C#&AspNetCore' %} ，我們在原本的MVC專案中加入了WEB API專案。
 
 而這回將會撰寫RESTful API!
 本文會以:https://docs.microsoft.com/zh-tw/aspnet/core/tutorials/first-web-api?view=aspnetcore-3.1&tabs=visual-studio 提供的範例作為實作依據。

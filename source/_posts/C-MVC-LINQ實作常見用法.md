@@ -1,5 +1,5 @@
 ---
-title: '[Day26] C# MVC LINQ實作常見用法 - C#&MVC入門'
+title: '[Day26] C# MVC LINQ實作常見用法 - C#&AspNetCore'
 date: 2021-12-27 19:20:46
 categories:
   - [程式語言,C#]

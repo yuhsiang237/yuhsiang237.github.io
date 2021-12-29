@@ -1,10 +1,10 @@
 ---
-title: '[Day22] C# MVC API版本控制 - C#&MVC入門'
+title: '[Day22] C# MVC API版本控制 - C#&AspNetCore'
 date: 2021-10-19 19:59:32
 categories:
   - [程式語言,C#]
 ---
-在上回中我們介紹了 {% post_link 'C-MVC-RESTful-API-下-實作RESTful-API' '[Day21] C# MVC RESTful API (下) 實作RESTful API - C#&MVC入門' %} ，實作了RESTful API。
+在上回中我們介紹了 {% post_link 'C-MVC-RESTful-API-下-實作RESTful-API' '[Day21] C# MVC RESTful API (下) 實作RESTful API - C#&AspNetCore' %} ，實作了RESTful API。
 
 而這回將要進行API版本控制!
 能處理前端(React/Vue)或APP(iOS/Android)不能馬上更新的最佳手段，有錯可以馬上先還原上一版本、達到向下相容。
@@ -172,7 +172,7 @@ TodoController.cs也是一樣喔，就不示範了。
 https://github.com/yuhsiang237/ASP.NET-Core-RESTfulAPI-API-Version-Control
 
 再來就是添加Swagger:
- {% post_link 'C-MVC-Web-API增加Swagger' '[Day23] C# MVC Web API版本增加Swagger - C#&MVC入門' %}
+ {% post_link 'C-MVC-Web-API增加Swagger' '[Day23] C# MVC Web API版本增加Swagger - C#&AspNetCore' %}
 
 額外補充:
 至於Controller多版本那Model呢?

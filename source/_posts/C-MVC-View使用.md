@@ -1,10 +1,10 @@
 ---
-title: '[Day9] C# MVC View使用 - C#&MVC入門'
+title: '[Day9] C# MVC View使用 - C#&AspNetCore'
 date: 2021-10-4 12:00:51
 categories:
   - [程式語言,C#]
 ---
-在上回 {% post_link 'C-MVC-Controller控制器使用' '[Day8] C# MVC Controller控制器使用 - C#&MVC入門'%}  ，我們介紹了Controller的基本用法。
+在上回 {% post_link 'C-MVC-Controller控制器使用' '[Day8] C# MVC Controller控制器使用 - C#&AspNetCore'%}  ，我們介紹了Controller的基本用法。
 
 而這回就是使用者畫面了，也就是MVC的View
 

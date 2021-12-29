@@ -1,10 +1,10 @@
 ---
-title: '[Day18] C# MVC專案中撰寫API - C#&MVC入門'
+title: '[Day18] C# MVC專案中撰寫API - C#&AspNetCore'
 date: 2021-10-15 10:16:48
 categories:
   - [程式語言,C#]
 ---
-在上回中我們介紹了 {% post_link 'C-MVC-排序篩選和分頁實作' '[Day17] C# MVC 排序、篩選和分頁實作 - C#&MVC入門' %} ，能呈現出列表了。
+在上回中我們介紹了 {% post_link 'C-MVC-排序篩選和分頁實作' '[Day17] C# MVC 排序、篩選和分頁實作 - C#&AspNetCore' %} ，能呈現出列表了。
 
 而這回就要講能讓事情比較省事的API。
 ### API

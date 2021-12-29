@@ -1,10 +1,10 @@
 ---
-title: '[Day6] C# MVC Model模型驗證 - C#&MVC入門'
+title: '[Day6] C# MVC Model模型驗證 - C#&AspNetCore'
 date: 2021-10-1 12:00:51
 categories:
   - [程式語言,C#]
 ---
-在上回 {% post_link 'C-MVC-Model模型使用' '[Day5] C# MVC Model模型使用 - C#&MVC入門'%}  ，我們建立了基本的Model，並且示範讓資料藉由Model資料呈現在網頁上。
+在上回 {% post_link 'C-MVC-Model模型使用' '[Day5] C# MVC Model模型使用 - C#&AspNetCore'%}  ，我們建立了基本的Model，並且示範讓資料藉由Model資料呈現在網頁上。
 在這篇主要談如何Model模型上進行驗證。
 
 ### Model的驗證

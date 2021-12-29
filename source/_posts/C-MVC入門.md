@@ -1,5 +1,5 @@
 ---
-title:  '[Day1] 學習C#的計畫與期望 - C#&MVC入門'
+title:  '[Day1] 學習C#的計畫與期望 - C#&AspNetCore'
 date: 2021-09-20 00:00:17
 categories:
   - [程式語言,C#]

@@ -1,10 +1,10 @@
 ---
-title: '[Day8] C# MVC Controller控制器使用 - C#&MVC入門'
+title: '[Day8] C# MVC Controller控制器使用 - C#&AspNetCore'
 date: 2021-10-3 12:00:51
 categories:
   - [程式語言,C#]
 ---
-在上回 {% post_link 'C-MVC-Model與資料庫連結' '[Day7] C# MVC Model模型連結資料庫 - C#&MVC入門'%}  ，我們把Model連上了資料庫，算是把Model的基礎流程跑完了。
+在上回 {% post_link 'C-MVC-Model與資料庫連結' '[Day7] C# MVC Model模型連結資料庫 - C#&AspNetCore'%}  ，我們把Model連上了資料庫，算是把Model的基礎流程跑完了。
 
 這回就來看Controller吧!
 

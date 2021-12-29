@@ -1,5 +1,5 @@
 ---
-title: '[Day27] C# MVC 回傳獨立頁面或整體頁面 - C#&MVC入門'
+title: '[Day27] C# MVC 回傳獨立頁面或整體頁面 - C#&AspNetCore'
 date: 2021-12-27 20:20:46
 categories:
   - [程式語言,C#]

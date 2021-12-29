@@ -1,10 +1,10 @@
 ---
-title: '[Day23] C# MVC Web API版本增加Swagger - C#&MVC入門'
+title: '[Day23] C# MVC Web API版本增加Swagger - C#&AspNetCore'
 date: 2021-10-26 19:59:32
 categories:
   - [程式語言,C#]
 ---
-在上回中我們介紹了 {% post_link 'C-MVC-API版本控制' '[Day22] C# MVC API版本控制 - C#&MVC入門' %} ，實作了RESTful API的版控。
+在上回中我們介紹了 {% post_link 'C-MVC-API版本控制' '[Day22] C# MVC API版本控制 - C#&AspNetCore' %} ，實作了RESTful API的版控。
 
 而這回將要進行API的部屬，使用Swagger UI。
 

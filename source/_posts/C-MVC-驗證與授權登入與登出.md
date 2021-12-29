@@ -1,10 +1,10 @@
 ---
-title: '[Day12] C# MVC 驗證與授權，登入與登出 - C#&MVC入門'
+title: '[Day12] C# MVC 驗證與授權，登入與登出 - C#&AspNetCore'
 date: 2021-10-7 12:00:51
 categories:
   - [程式語言,C#]
 ---
-在上回 {% post_link 'C-MVC傳遞參數的方式' '[Day11] C# MVC傳遞參數的方式 - C#&MVC入門'%}  ，我們介紹了頁面與頁面間的參數傳遞。
+在上回 {% post_link 'C-MVC傳遞參數的方式' '[Day11] C# MVC傳遞參數的方式 - C#&AspNetCore'%}  ，我們介紹了頁面與頁面間的參數傳遞。
 
 而這回，將探討的是**驗證與授權**，並以實作登入、登出為示範。
 

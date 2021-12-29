@@ -1,11 +1,11 @@
 ---
-title:  '[Day15] C# MVC LINQ常見用法 - C#&MVC入門'
+title:  '[Day15] C# MVC LINQ常見用法 - C#&AspNetCore'
 date: 2021-10-11 10:17:57
 categories:
   - [程式語言,C#]
 ---
 
-在上回 {% post_link 'C-MVC-LINQ基礎用法' '[Day14] C# MVC LINQ基礎用法 - C#&MVC入門'%}  ，我們介紹了LINQ基本用法。
+在上回 {% post_link 'C-MVC-LINQ基礎用法' '[Day14] C# MVC LINQ基礎用法 - C#&AspNetCore'%}  ，我們介紹了LINQ基本用法。
 
 而這回就要介紹LINQ常用的幾個JOIN、LEFT JOIN作法。
 

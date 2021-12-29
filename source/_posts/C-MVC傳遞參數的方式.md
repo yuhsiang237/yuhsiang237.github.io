@@ -1,10 +1,10 @@
 ---
-title: '[Day11] C# MVC傳遞參數的方式 - C#&MVC入門'
+title: '[Day11] C# MVC傳遞參數的方式 - C#&AspNetCore'
 date: 2021-10-06 12:06:42
 categories:
   - [程式語言,C#]
 ---
-在上回 {% post_link 'C-MVC-檢視元件ViewCompoment使用' '[Day10] C# MVC 檢視元件View Compoment使用- C#&MVC入門' %} ，我們介紹了View Component的做法，算是把整個MVC的View摸透了。
+在上回 {% post_link 'C-MVC-檢視元件ViewCompoment使用' '[Day10] C# MVC 檢視元件View Compoment使用- C#&AspNetCore' %} ，我們介紹了View Component的做法，算是把整個MVC的View摸透了。
 
 而這回則是要探討如何在這些頁面間傳遞參數。
 
