@@ -1,7 +1,8 @@
 ---
 title: '[Day28] C# MVC FluentValidation 好用的驗證格式套件 - C#&AspNetCore'
 date: 2021-12-27 23:19:59
-tags:
+categories:
+  - [程式語言,C#]
 ---
 這回介紹一個必用的驗證神器FluentValidation，在處理驗證時會比原本Model驗證好上很多。因為他能適應不同的條件變化。
 
