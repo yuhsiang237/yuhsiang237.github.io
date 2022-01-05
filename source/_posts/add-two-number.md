@@ -101,8 +101,8 @@ Memory Usage: 28.2 MB, less than 82.24% of C# online submissions for Add Two Num
 
 **思路**
 &nbsp;&nbsp;這題是中級題目，但對我來說其實已經蠻吃力了，在進位出807這段其實很容易，但後面那段linknode塞進去時卡很久(註解那部分)，最後還是上網查了一下，資料結構真的要熟悉，以及"抽象"思考的方式，目前就是要拿筆整理，腦中還是很難構造出。
-&nbsp;&nbsp;這也讓我認清，中階工程師跟語法工程師是天壤之別。
-
+後記補充:
+第18、43行是參考，當作一個cursor來遍歷。
 
 **參考**
 LeetCode 2. Add Two Numbers 
