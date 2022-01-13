@@ -298,6 +298,11 @@ MakeToastWithButterAndJamAsync:原本需3秒
 在異步執行只需取其中最大的秒數:6秒
 大幅度的減省時間花費。
 
+TaskAPI 包含兩種方法， Task.WhenAll 和 Task.WhenAny 撰寫非同步程式碼，能在多個背景工作上執行非封鎖等候。
+<code>await Task.WhenAny</code>
+<code>await Task.WhenAll</code>
+更多可參考:
+https://gist.github.com/relyky/52b4abf32b44d5d00a674b9cd34ca3a3
 
 {% asset_img "2.gif" %}
 用紅筆畫起來部分，表示其併發執行。
@@ -308,10 +313,13 @@ MakeToastWithButterAndJamAsync:原本需3秒
 並且搭配可以搭配await做Task的停頓。
 即讓每個可Async的Task充分利用時間。
 
-基本上這樣就能處理掉很多功能了，如果要再深入探討可以參考:
+在工作上可能遇到需要併發、可同時執行時會使用，如有N個迴圈任務且沒有順序性，則可以寫入Task，或是需要用後端呼叫HTTP請求，可以一次併發，增加系統效率。或是有順序性執行的任務就很適合採用Task拆成子項目。
+
+如果要再深入探討可以參考官方:
 https://docs.microsoft.com/zh-tw/dotnet/csharp/async
 
 
 ### 參考資料
 https://docs.microsoft.com/zh-tw/dotnet/csharp/programming-guide/concepts/async/
-
+https://gist.github.com/relyky/52b4abf32b44d5d00a674b9cd34ca3a3
+https://docs.microsoft.com/zh-tw/dotnet/csharp/async
