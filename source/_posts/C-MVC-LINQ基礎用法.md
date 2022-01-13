@@ -61,10 +61,11 @@ public IActionResult Index()
 而對於複雜的SQL查詢還是有困難QQ，變成翻譯家的感覺。
 基於以上原因，複雜查詢我應該會使用Dapper來做，寫原生。
 
-此外，以有寫過Laravel跟Java的經驗來說，LINQ基本上就是C#微軟Only。(在其他語言根本沒看過它)
+此外，以有寫過Laravel跟Java的經驗來說，LINQ是C#微軟Only。
 也就表示熟悉LINQ可能會有換其他語言SQL卡住、忘記正常該怎麼組的問題。
 
 在這篇中先小試一下，下篇將注重一些平常可能會做的LINQ查詢操作。
+
 
 **參考資料**
 https://docs.microsoft.com/zh-tw/dotnet/csharp/programming-guide/concepts/linq/
