@@ -1,5 +1,5 @@
 ---
-title: SQL Server Left Join只取第一筆做法Outer Apply
+title: 'SQL Server Left Join只取第一筆做法Outer Apply'
 date: 2022-03-03 15:08:51
 categories:
   - [Database,SQL Server]
