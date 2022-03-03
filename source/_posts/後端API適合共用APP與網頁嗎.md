@@ -2,7 +2,7 @@
 title: 後端API適合共用APP與WEB嗎?
 date: 2021-10-9 06:29:17
 categories:
-  - [程式語言,C#]
+  - [Code,C#]
 ---
 先說結論:不建議。
 

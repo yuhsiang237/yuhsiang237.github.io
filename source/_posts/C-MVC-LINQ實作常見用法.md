@@ -1,8 +1,10 @@
 ---
 title: '[Day26] C# MVC LINQ實作常見用法 - C#&AspNetCore'
 date: 2021-12-27 19:20:46
-categories:
-  - [程式語言,C#]
+categories:  
+  - [Topic,2021 C# AspNetCore鐵人賽]
+  - [Code,C#]
+  - [Framework,AspNetCore MVC]
 ---
 在這篇中主要紀錄一些常見的C# LINQ寫法，通常搭配資料庫EF Core使用。
 

@@ -2,7 +2,7 @@
 title: SQL Server NVARCHAR與VARCHAR差別比較
 date: 2022-02-17 10:34:02
 categories:
-  - [SQL]
+  - [Database,SQL Server]
 ---
 ### 前言
 在開資料時在存字串常會有選擇上的問題，到底該存哪種型別?

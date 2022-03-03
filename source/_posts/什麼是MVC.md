@@ -2,7 +2,8 @@
 title:  '[Day2] 什麼是MVC，有什麼好處 - C#&AspNetCore'
 date: 2021-09-21 03:57:08
 categories:
-  - [程式語言,C#]
+  - [Topic,2021 C# AspNetCore鐵人賽]
+  - [Code,C#]
 ---
 
 在上回 {% post_link 'C-MVC入門' '[Day1] 學習C#的計畫與期望 - C#&AspNetCore'%} 中介紹了自己的目的。

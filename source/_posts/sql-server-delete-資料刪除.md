@@ -2,7 +2,8 @@
 title: '[Day21] SQL server delete 資料刪除 - SQL Server資料庫入門'
 date: 2021-09-17 09:32:56
 categories:
-  - [SQL]
+  - [Topic,2021 SQL Server鐵人賽]
+  - [Database,SQL Server]
 ---
 在這回簡易示範SQL server資料刪除。
 

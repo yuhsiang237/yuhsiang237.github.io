@@ -2,9 +2,9 @@
 title: LeetCode - 2. add-two-number
 date: 2021-08-24 04:09:34
 categories:
-  - [程式語言,C#]
-  - [解題,C#]
-  - [解題,LeetCode]
+  - [Code,C#]
+  
+  - [Topic,LeetCode]
 tag:
     - C#
     - 解題

@@ -1,8 +1,10 @@
 ---
 title: '[Day7] C# MVC Model模型連結資料庫，使用Entity Framework - C#&AspNetCore'
 date: 2021-10-2 12:00:51
-categories:
-  - [程式語言,C#]
+categories:  
+  - [Topic,2021 C# AspNetCore鐵人賽]
+  - [Code,C#]
+  - [Framework,AspNetCore MVC]
 ---
 在上回 {% post_link 'C-MVC-Model模型驗證' '[Day6] C# MVC Model模型驗證 - C#&AspNetCore'%}  ，我們學會利用Model建立驗證機制。
 而這回將會介紹如何把Model與真實的資料庫連結再一起。

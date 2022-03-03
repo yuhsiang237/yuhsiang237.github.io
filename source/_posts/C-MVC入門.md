@@ -1,8 +1,10 @@
 ---
 title:  '[Day1] 學習C#的計畫與期望 - C#&AspNetCore'
 date: 2021-09-20 00:00:17
-categories:
-  - [程式語言,C#]
+categories:  
+  - [Topic,2021 C# AspNetCore鐵人賽]
+  - [Code,C#]
+  - [Framework,AspNetCore MVC]
 ---
 在這個鐵人賽中，我想一覽C# .net core MVC的基本做法，如何透過它建立一個小型網頁系統。
 並且搭配上一個鐵人賽中的SQL Server來作為儲存體。

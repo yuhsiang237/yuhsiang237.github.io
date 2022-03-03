@@ -2,7 +2,8 @@
 title:  '[Day4] SQL Server資料庫建立 - SQL Server資料庫入門'
 date: 2021-09-04 16:06:08
 categories:
-  - [SQL]
+  - [Topic,2021 SQL Server鐵人賽]
+  - [Database,SQL Server]
 ---
 
 ### 前言

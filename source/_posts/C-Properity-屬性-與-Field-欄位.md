@@ -2,7 +2,7 @@
 title: C# Properity(屬性) 與 Field(欄位)
 date: 2022-01-13 13:33:52
 categories:
-  - [程式語言,C#]
+  - [Code,C#]
 ---
 在這篇主要介紹Properity(屬性)、Field(欄位)在物件導向class中的差別。
 

@@ -2,7 +2,8 @@
 title: '[Day7] SQL server資料庫關聯 - SQL Server資料庫入門'
 date: 2021-09-07 23:07:26
 categories:
-  - [SQL]
+  - [Topic,2021 SQL Server鐵人賽]
+  - [Database,SQL Server]
 ---
 在上回中 {% post_link 'SQL-server資料表建立' '[Day6] SQL server資料表建立 - SQL Server資料庫入門' %} 我們建立了正規化後的資料表進資料庫。
 在這回中我們要知道資料庫中的關聯關係，並且拉好SQL server中表的主鍵、外來鍵關聯。

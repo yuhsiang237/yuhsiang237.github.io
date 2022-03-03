@@ -2,9 +2,9 @@
 title: LeetCode -  35. Search Insert Position
 date: 2021-09-21 09:20:34
 categories:
-  - [程式語言,C#]
-  - [解題,C#]
-  - [解題,LeetCode]
+  - [Code,C#]
+  
+  - [Topic,LeetCode]
 tag:
     - C#
     - 解題

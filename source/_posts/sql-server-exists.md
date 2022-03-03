@@ -2,7 +2,8 @@
 title: '[Day16] SQL server exists用法 - SQL Server資料庫入門'
 date: 2021-09-16 12:47:44
 categories:
-  - [SQL]
+  - [Topic,2021 SQL Server鐵人賽]
+  - [Database,SQL Server]
 ---
 這回探討SQL server exists用法。
 之前有在子查詢的範例中使用到，但覺得不夠清楚所以拉出來探討看看。

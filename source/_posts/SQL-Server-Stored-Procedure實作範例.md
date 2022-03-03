@@ -2,7 +2,7 @@
 title: SQL Server Stored Procedure 介紹&實作
 date: 2022-01-10 12:18:54
 categories:
-  - [SQL]
+  - [Database,SQL Server]
 ---
 在這篇文章中簡易的介紹Stored Procedure。
 

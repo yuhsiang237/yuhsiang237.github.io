@@ -1,8 +1,10 @@
 ---
 title: '[Day18] C# MVC專案中撰寫API - C#&AspNetCore'
 date: 2021-10-15 10:16:48
-categories:
-  - [程式語言,C#]
+categories:  
+  - [Topic,2021 C# AspNetCore鐵人賽]
+  - [Code,C#]
+  - [Framework,AspNetCore MVC]
 ---
 在上回中我們介紹了 {% post_link 'C-MVC-排序篩選和分頁實作' '[Day17] C# MVC 排序、篩選和分頁實作 - C#&AspNetCore' %} ，能呈現出列表了。
 

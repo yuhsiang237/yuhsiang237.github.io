@@ -2,7 +2,7 @@
 title: C# LINQ 延遲執行 (Deferred Execution)
 date: 2022-01-13 14:14:52
 categories:
-  - [程式語言,C#]
+  - [Code,C#]
 ---
 ### 前言
 在這篇中主要筆記LINQ 延遲執行的特性。

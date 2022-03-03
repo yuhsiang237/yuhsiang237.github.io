@@ -2,7 +2,8 @@
 title:  '[Day5] 規劃資料表，透過資料庫正規化 - SQL Server資料庫入門'
 date: 2021-09-05 00:54:08
 categories:
-  - [SQL]
+  - [Topic,2021 SQL Server鐵人賽]
+  - [Database,SQL Server]
 ---
 ### 前言
 這回主要淺談一下資料庫正規化，並且規劃我們的訂單資料表。

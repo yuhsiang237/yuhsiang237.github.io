@@ -2,7 +2,8 @@
 title: '[Day8] SQL server手動寫入資料 - SQL Server資料庫入門'
 date: 2021-09-08 00:05:59
 categories:
-  - [SQL]
+  - [Topic,2021 SQL Server鐵人賽]
+  - [Database,SQL Server]
 ---
 在上回 {% post_link 'sql-server資料庫關聯' '[Day7] SQL server資料庫關聯 - SQL Server資料庫入門'%} 中，我們拉完了訂單表單的資料庫關聯。
 在這回就要實際的將資料寫入。

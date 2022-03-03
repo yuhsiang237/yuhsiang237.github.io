@@ -1,8 +1,10 @@
 ---
 title: '[Day13] C# MVC 驗證與授權，新刪修查按鈕權限 - C#&AspNetCore'
 date: 2021-10-8 12:00:51
-categories:
-  - [程式語言,C#]
+categories:  
+  - [Topic,2021 C# AspNetCore鐵人賽]
+  - [Code,C#]
+  - [Framework,AspNetCore MVC]
 ---
 在上回 {% post_link 'C-MVC-驗證與授權登入與登出' '[Day12] C# MVC 驗證與授權，登入與登出 - C#&AspNetCore'%}  ，我們介紹了登入與登出。
 

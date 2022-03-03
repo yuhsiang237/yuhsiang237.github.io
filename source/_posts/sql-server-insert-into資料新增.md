@@ -2,7 +2,8 @@
 title: '[Day19] SQL server insert into 資料新增 - SQL Server資料庫入門'
 date: 2021-09-17 08:38:56
 categories:
-  - [SQL]
+  - [Topic,2021 SQL Server鐵人賽]
+  - [Database,SQL Server]
 ---
 在前面已經把大量的常見查詢語法做過一次實踐了。
 接下來就是比較簡單的語法了，這回講的是insert into用來在表中插入資料。

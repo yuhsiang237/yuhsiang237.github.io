@@ -1,8 +1,10 @@
 ---
 title: '[Day17] C# MVC 排序、篩選和分頁實作 - C#&AspNetCore'
 date: 2021-10-14 10:16:48
-categories:
-  - [程式語言,C#]
+categories:  
+  - [Topic,2021 C# AspNetCore鐵人賽]
+  - [Code,C#]
+  - [Framework,AspNetCore MVC]
 ---
 對於資料庫的操作我們介紹了兩種做法:
 + {% post_link 'C-MVC-Dapper用法' '[Day16] C# MVC Dapper用法與連結資料庫 - C#&AspNetCore' %} 

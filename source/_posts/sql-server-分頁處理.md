@@ -2,7 +2,8 @@
 title: '[Day26] SQL server 分頁處理 - SQL Server資料庫入門'
 date: 2021-09-17 17:09:56
 categories:
-  - [SQL]
+  - [Topic,2021 SQL Server鐵人賽]
+  - [Database,SQL Server]
 ---
 通常在寫表單時，我們不會一次索取所有資料，因為資料若有百萬筆，那效能可能會不好、浪費流量。
 所以，這時候就需要分頁了。

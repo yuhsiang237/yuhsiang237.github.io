@@ -1,8 +1,10 @@
 ---
 title: '[Day29] C# MVC 被使用在哪些地方 - C#&AspNetCore'
 date: 2021-12-28 00:24:17
-categories:
-  - [程式語言,C#]
+categories:  
+  - [Topic,2021 C# AspNetCore鐵人賽]
+  - [Code,C#]
+  - [Framework,AspNetCore MVC]
 ---
 先以C#語言實際用在那些地方開始講好了，可以製作遊戲Unity、命令列程式、跨平台(ASP.NET Core)、手機(但很少)、桌面應用、資料分析。唯一缺點大概就是嵌入式，因為通常嵌入式有記憶體限制，會壓的很低，會用純C，但是C#基本上語法跟C也很相像。
 

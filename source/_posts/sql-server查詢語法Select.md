@@ -2,7 +2,8 @@
 title:  '[Day9] SQL server查詢語法Select - SQL Server資料庫入門'
 date: 2021-09-09 00:54:08
 categories:
-  - [SQL]
+  - [Topic,2021 SQL Server鐵人賽]
+  - [Database,SQL Server]
 ---
 
 ### 前言

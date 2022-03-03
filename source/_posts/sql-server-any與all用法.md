@@ -2,7 +2,8 @@
 title: '[Day18] SQL server ANY與ALL用法 - SQL Server資料庫入門'
 date: 2021-09-16 21:00:25
 categories:
-  - [SQL]
+  - [Topic,2021 SQL Server鐵人賽]
+  - [Database,SQL Server]
 ---
 在這回中要介紹我很少很少很少用到的any與all用法。
 因為大部分搜尋條件都能靠前面介紹的那些組合度過了，並且更直覺。

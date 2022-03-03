@@ -2,7 +2,8 @@
 title: '[Day27] SQL server 數學函式 - SQL Server資料庫入門'
 date: 2021-09-17 17:37:44
 categories:
-  - [SQL]
+  - [Topic,2021 SQL Server鐵人賽]
+  - [Database,SQL Server]
 ---
 這回稍微帶一下可能會用到的數學函式。
 

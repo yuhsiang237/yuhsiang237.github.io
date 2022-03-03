@@ -2,7 +2,7 @@
 title: C# 產生PDF使用IText7
 date: 2022-02-11 17:58:22
 categories:
-  - [程式語言,C#]
+  - [Code,C#]
 ---
 在這篇文章中介紹如何用C#產生PDF檔案。
 使用套件為IText7。

@@ -2,7 +2,7 @@
 title: SQL基礎操作語法(select、insert、update、delete)
 date: 2021-08-28 15:42:42
 categories:
-  - [SQL]
+  - [Database,SQL Server]
 ---
 
 

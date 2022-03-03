@@ -2,7 +2,8 @@
 title:  '[Day17] SQL server having用法 - SQL Server資料庫入門'
 date: 2021-09-16 20:40:49
 categories:
-  - [SQL]
+  - [Topic,2021 SQL Server鐵人賽]
+  - [Database,SQL Server]
 ---
 在SQL查詢時對這個關鍵詞有印象，但非常陌生。
 於是這次就來探討一下having。

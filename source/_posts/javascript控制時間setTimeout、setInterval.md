@@ -2,7 +2,7 @@
 title: javascript控制時間setTimeout、setInterval
 date: 2021-08-29 14:53:02
 categories:
-  - [程式語言,Javascript]
+  - [Code,Javascript]
 ---
 javascript在處理網頁上"連續執行"、"只執行一次"必見到的時間控制函式setTimeout、setInterval。
 

@@ -1,8 +1,10 @@
 ---
 title: '[Day14] C# MVC LINQ基礎用法 - C#&AspNetCore'
 date: 2021-10-10 19:20:46
-categories:
-  - [程式語言,C#]
+categories:  
+  - [Topic,2021 C# AspNetCore鐵人賽]
+  - [Code,C#]
+  - [Framework,AspNetCore MVC]
 ---
 在上回 {% post_link 'C-MVC-驗證與授權，新刪修查按鈕權限' '[Day13] C# MVC 驗證與授權，新刪修查按鈕權限 - C#&AspNetCore'%}  ，我們學會了進階的權限切割。
 

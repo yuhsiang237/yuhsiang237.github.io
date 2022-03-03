@@ -2,7 +2,7 @@
 title: 單向鏈結串列(Singly linked list)
 date: 2021-08-24 11:15:05
 categories:
-  - [資料結構]
+  - [Computer Science,Data structure]
 ---
 
   

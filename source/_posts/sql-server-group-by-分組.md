@@ -2,7 +2,8 @@
 title: '[Day13] SQL server Group By 資料分組與聚合函數COUNT(), MAX(), MIN(), SUM(), AVG() - SQL Server資料庫入門'
 date: 2021-09-13 04:31:26
 categories:
-  - [SQL]
+  - [Topic,2021 SQL Server鐵人賽]
+  - [Database,SQL Server]
 ---
 在這回中，將要探討SQL server中的Group By用法，並搭配聚合函數使用。
 資料在資料表中都是一列一列的，而分組則是把這些列的某些特徵欄位視為分組依據，並且將他們合為一組，並使用聚合函數就能夠做出簡易的統計。

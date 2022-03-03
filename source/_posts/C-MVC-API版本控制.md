@@ -1,8 +1,10 @@
 ---
 title: '[Day22] C# MVC API版本控制 - C#&AspNetCore'
 date: 2021-10-19 19:59:32
-categories:
-  - [程式語言,C#]
+categories:  
+  - [Topic,2021 C# AspNetCore鐵人賽]
+  - [Code,C#]
+  - [Framework,AspNetCore API]
 ---
 在上回中我們介紹了 {% post_link 'C-MVC-RESTful-API-下-實作RESTful-API' '[Day21] C# MVC RESTful API (下) 實作RESTful API - C#&AspNetCore' %} ，實作了RESTful API。
 

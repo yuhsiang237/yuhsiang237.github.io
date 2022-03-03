@@ -2,7 +2,8 @@
 title: '[Day10] SQL server Select合併查詢JOIN用法 - SQL Server資料庫入門'
 date: 2021-09-10 22:31:26
 categories:
-  - [SQL]
+  - [Topic,2021 SQL Server鐵人賽]
+  - [Database,SQL Server]
 ---
 ### 前言
 在上回 {% post_link 'sql-server查詢語法Select' '[Day9] SQL server查詢語法Select - SQL Server資料庫入門'%} 中，我們練習了一些查詢語法，且都是針對同一張表的查詢。

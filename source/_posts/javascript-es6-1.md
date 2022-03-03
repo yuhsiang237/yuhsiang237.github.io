@@ -2,7 +2,7 @@
 title: javascript ES6 整理(上)
 date: 2021-08-24 17:30:22
 categories:
-   - [程式語言,Javascript]
+   - [Code,Javascript]
 ---
 
 

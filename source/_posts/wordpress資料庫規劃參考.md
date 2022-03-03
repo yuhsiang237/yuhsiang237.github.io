@@ -2,7 +2,8 @@
 title: '[Day29] Blog資料庫設計參考 - SQL Server資料庫入門'
 date: 2021-09-17 21:17:12
 categories:
-  - [SQL]
+  - [Topic,2021 SQL Server鐵人賽]
+  - [Database,SQL Server]
 ---
 剩下兩篇就30了，後面想看一下其他有規模的資料庫是怎麼設計的。
 這回以wordpress為例子，然後注意wordpress是用mysql，所以在型別上會跟SQL server有些不一樣。

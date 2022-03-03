@@ -2,7 +2,8 @@
 title: '[Day14] SQL server in與not in - SQL Server資料庫入門'
 date: 2021-09-16 11:45:33
 categories:
-  - [SQL]
+  - [Topic,2021 SQL Server鐵人賽]
+  - [Database,SQL Server]
 ---
 在這回中將探討SQL server的in與not in 用法。
 

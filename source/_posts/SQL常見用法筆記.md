@@ -2,7 +2,7 @@
 title: SQL Server 常見SQL語法筆記
 date: 2022-01-05 07:54:08
 categories:
-  - [SQL]
+  - [Database,SQL Server]
 ---
 ### 前言
 在這裡整理一些專案常用的SQL語法。

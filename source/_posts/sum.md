@@ -2,11 +2,11 @@
 title: LeetCode - 1. Two Sum
 date: 2021-08-23 21:48:10
 categories:
-  - [程式語言,C#]
-  - [程式語言,Javascript]
-  - [解題,C#]
-  - [解題,Javascript]
-  - [解題,LeetCode]
+  - [Code,C#]
+  - [Code,Javascript]
+  
+  - [Topic,LeetCode]
+  - [Topic,LeetCode]
 tag:
     - C#
     - JavaScript

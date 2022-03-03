@@ -2,7 +2,7 @@
 title: C# Dictionary字典操作
 date: 2021-09-03 18:16:52
 categories:
-  - [程式語言,C#]
+  - [Code,C#]
 ---
 
 這次練習使用C#的字典資料結構。

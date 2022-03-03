@@ -2,7 +2,7 @@
 title: javascript event loop機制(未完)
 date: 2021-08-30 03:40:36
 categories:
-   - [程式語言,Javascript]
+   - [Code,Javascript]
 ---
 
 ### 前言

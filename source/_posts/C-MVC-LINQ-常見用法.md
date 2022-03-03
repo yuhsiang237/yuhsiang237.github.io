@@ -1,8 +1,10 @@
 ---
 title:  '[Day15] C# MVC LINQ常見用法 - C#&AspNetCore'
 date: 2021-10-11 10:17:57
-categories:
-  - [程式語言,C#]
+categories:  
+  - [Topic,2021 C# AspNetCore鐵人賽]
+  - [Code,C#]
+  - [Framework,AspNetCore MVC]
 ---
 
 在上回 {% post_link 'C-MVC-LINQ基礎用法' '[Day14] C# MVC LINQ基礎用法 - C#&AspNetCore'%}  ，我們介紹了LINQ基本用法。

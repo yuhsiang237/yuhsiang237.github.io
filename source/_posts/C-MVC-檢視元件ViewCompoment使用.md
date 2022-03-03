@@ -1,8 +1,10 @@
 ---
 title: '[Day10] C# MVC 檢視元件View Compoment使用- C#&AspNetCore'
 date: 2021-10-05 12:06:42
-categories:
-  - [程式語言,C#]
+categories:  
+  - [Topic,2021 C# AspNetCore鐵人賽]
+  - [Code,C#]
+  - [Framework,AspNetCore MVC]
 ---
 在上回 {% post_link 'C-MVC-View使用' '[Day9] C# MVC View使用 - C#&AspNetCore' %} ，我們介紹了View的操作及用法，並稍微帶了Partial View。
 而這回，我們將介紹檢視元件View Compoment。

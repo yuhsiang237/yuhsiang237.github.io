@@ -2,7 +2,8 @@
 title: '[Day11] SQL server 子查詢 - SQL Server資料庫入門'
 date: 2021-09-11 18:47:01
 categories:
-  - [SQL]
+  - [Topic,2021 SQL Server鐵人賽]
+  - [Database,SQL Server]
 ---
 在上回 {% post_link 'sql-server-合併查詢join' '[Day10] SQL server Select合併查詢JOIN用法 - SQL Server資料庫入門'%} 中，我們練習了合併查詢的JOIN。
 

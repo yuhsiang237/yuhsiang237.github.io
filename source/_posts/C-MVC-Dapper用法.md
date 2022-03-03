@@ -1,8 +1,10 @@
 ---
 title:  '[Day16] C# MVC Dapper用法與連結資料庫 - C#&AspNetCore'
 date: 2021-10-12 11:44:45
-categories:
-  - [程式語言,C#]
+categories:  
+  - [Topic,2021 C# AspNetCore鐵人賽]
+  - [Code,C#]
+  - [Framework,AspNetCore MVC]
 ---
 
 

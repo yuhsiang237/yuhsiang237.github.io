@@ -1,8 +1,10 @@
 ---
 title: '[Day25] C# MVC API JWT Token驗證 (下) JWT實作 - C#&AspNetCore'
 date: 2021-10-28 21:57:47
-categories:
-  - [程式語言,C#]
+categories:  
+  - [Topic,2021 C# AspNetCore鐵人賽]
+  - [Code,C#]  
+  - [Framework,AspNetCore API]
 ---
 在這篇中主要實作JWT的登入認證，取得Token、透過Token對有權限的API進行存取。
 

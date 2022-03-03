@@ -2,7 +2,7 @@
 title: Arduino LED與Button控制
 date: 2021-10-29 17:04:44
 categories:
-  - [電子電路]
+  - [Computer Science,電子電路]
 ---
 ### 前言
 想以僅有的材料做個LED與按鈕控制實驗。

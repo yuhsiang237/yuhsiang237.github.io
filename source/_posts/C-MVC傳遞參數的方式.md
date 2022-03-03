@@ -1,8 +1,10 @@
 ---
 title: '[Day11] C# MVC傳遞參數的方式 - C#&AspNetCore'
 date: 2021-10-06 12:06:42
-categories:
-  - [程式語言,C#]
+categories:  
+  - [Topic,2021 C# AspNetCore鐵人賽]
+  - [Code,C#]
+  - [Framework,AspNetCore MVC]
 ---
 在上回 {% post_link 'C-MVC-檢視元件ViewCompoment使用' '[Day10] C# MVC 檢視元件View Compoment使用- C#&AspNetCore' %} ，我們介紹了View Component的做法，算是把整個MVC的View摸透了。
 

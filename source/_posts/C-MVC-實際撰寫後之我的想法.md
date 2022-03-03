@@ -1,8 +1,10 @@
 ---
 title: '[Day30] C# MVC 實際撰寫後之我的想法 - C#&AspNetCore'
 date: 2021-12-28 20:23:52
-categories:
-  - [程式語言,C#]
+categories:  
+  - [Topic,2021 C# AspNetCore鐵人賽]
+  - [Code,C#]
+  - [Framework,AspNetCore MVC]
 ---
 在此先說明一下，大概花了一個月製作了了一套**商品出貨訂單系統**的Side Project。
 儲存庫:https://github.com/yuhsiang237/Order-System

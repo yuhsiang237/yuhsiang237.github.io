@@ -1,8 +1,9 @@
 ---
 title:  '[Day3] 建立C# MVC專案 - C#&AspNetCore'
 date: 2021-09-28 17:03:14
-categories:
-  - [程式語言,C#]
+categories:  
+  - [Topic,2021 C# AspNetCore鐵人賽]
+  - [Code,C#]
 ---
 
 在上回 {% post_link '什麼是MVC' '[Day2] 什麼是MVC，有什麼好處 - C#&AspNetCore'%} 中我們理解到的MVC的核心概念。
