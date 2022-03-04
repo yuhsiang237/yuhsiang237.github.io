@@ -27,6 +27,10 @@ end; $$
 補充:
 stored prodcedure沒有回傳值，所以並不會有return expression;的寫法，但你可以加return;讓程式執行到一半停止執行。
 
+POSTGRESQL文件:
+A procedure does not have a return value. A procedure can therefore end without a RETURN statement. If a RETURN statement is desired to exit the code early, then NULL must be returned. Returning any other value will result in an error
+
+
 ### 實作
 **實際撰寫**
 
@@ -100,3 +104,4 @@ SQL-Server-Stored-Procedure實作範例' %}可以參考。
 ### 參考資料
 - https://www.postgresqltutorial.com/postgresql-create-procedure/
 - https://www.sqlines.com/postgresql/how-to/return_result_set_from_stored_procedure
+- https://stackoverflow.com/questions/50894269/how-to-return-result-set-from-postgresql-stored-procedure
