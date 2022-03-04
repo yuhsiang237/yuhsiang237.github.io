@@ -7,10 +7,7 @@ categories:
 ### 前言
 在這篇中介紹如何撰寫一個PostgreSQL的stored procedure。
 
-### 實作
-**目標:**
-撰寫一個傳送用戶ID回傳用戶資料的procedure。
-
+### Procedure模板
 以下是一個固定的模板，我們將以此模板來撰寫。
 ~~~~~sql
 create [or replace] procedure procedure_name(parameter_list)
@@ -30,7 +27,11 @@ end; $$
 補充:
 stored prodcedure沒有回傳值，所以並不會有return expression;的寫法，但你可以加return;讓程式執行到一半停止執行。
 
+### 實作
 **實際撰寫**
+
+**目標:**
+撰寫一個傳送用戶ID回傳用戶資料的procedure。
 
 users資料表:
 {% asset_img "1.PNG" %}
