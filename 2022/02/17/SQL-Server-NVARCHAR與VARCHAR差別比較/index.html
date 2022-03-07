@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>SQL Server NVARCHAR與VARCHAR差別比較 | UM程式研究日誌</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="前言在開資料時在存字串常會有選擇上的問題，到底該存哪種型別?而在此就稍微介紹NVARCHAR、VARCHAR的差異。以SQL Server 2019資料庫為準。 NVARCHAR [ ( n | max ) ]n表示可變大小字串資料。 n 會定義字串大小 (單位為位元組配對)，且可以是 1 到 4,000 之間的值。max 表示儲存大小上限是 2^30-1 個字元 (2 GB)。  VARCHAR">
+<meta property="og:type" content="article">
+<meta property="og:title" content="SQL Server NVARCHAR與VARCHAR差別比較">
+<meta property="og:url" content="https://yuhsiang237.github.io/2022/02/17/SQL-Server-NVARCHAR%E8%88%87VARCHAR%E5%B7%AE%E5%88%A5%E6%AF%94%E8%BC%83/index.html">
+<meta property="og:site_name" content="UM程式研究日誌">
+<meta property="og:description" content="前言在開資料時在存字串常會有選擇上的問題，到底該存哪種型別?而在此就稍微介紹NVARCHAR、VARCHAR的差異。以SQL Server 2019資料庫為準。 NVARCHAR [ ( n | max ) ]n表示可變大小字串資料。 n 會定義字串大小 (單位為位元組配對)，且可以是 1 到 4,000 之間的值。max 表示儲存大小上限是 2^30-1 個字元 (2 GB)。  VARCHAR">
+<meta property="og:locale" content="zh_TW">
+<meta property="article:published_time" content="2022-02-17T02:34:02.000Z">
+<meta property="article:modified_time" content="2022-03-07T02:53:17.456Z">
+<meta property="article:author" content="Yu Hsiang">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="UM程式研究日誌" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">UM程式研究日誌</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">你好，這邊記錄了我的經歷!</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Suche"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Suche"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://yuhsiang237.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-SQL-Server-NVARCHAR與VARCHAR差別比較" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2022/02/17/SQL-Server-NVARCHAR%E8%88%87VARCHAR%E5%B7%AE%E5%88%A5%E6%AF%94%E8%BC%83/" class="article-date">
+  <time class="dt-published" datetime="2022-02-17T02:34:02.000Z" itemprop="datePublished">2022-02-17</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Database/">Database</a>►<a class="article-category-link" href="/categories/Database/SQL-Server/">SQL Server</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      SQL Server NVARCHAR與VARCHAR差別比較
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>在開資料時在存字串常會有選擇上的問題，到底該存哪種型別?<br>而在此就稍微介紹NVARCHAR、VARCHAR的差異。<br>以SQL Server 2019資料庫為準。</p>
+<h3 id="NVARCHAR-n-max"><a href="#NVARCHAR-n-max" class="headerlink" title="NVARCHAR [ ( n | max ) ]"></a>NVARCHAR [ ( n | max ) ]</h3><p>n表示可變大小字串資料。 n 會定義字串大小 (單位為位元組配對)，且可以是 1 到 4,000 之間的值。max 表示儲存大小上限是 2^30-1 個字元 (2 GB)。 </p>
+<h3 id="VARCHAR-n-max"><a href="#VARCHAR-n-max" class="headerlink" title="VARCHAR [ ( n | max ) ]"></a>VARCHAR [ ( n | max ) ]</h3><p>使用 n 以位元組為單位來定義字串大小，該值可以介於 1 到 8,000，或使用 max 來表示資料行大小限制最多為 2^31-1 個位元組 (2 GB) 的儲存體。 </p>
+<table>
+<tr>
+<td></td>
+<td>NVARCHAR</td>
+<td>VARCHAR</td>
+</tr>
+<tr>
+<td>Unicode支援</td>
+<td>有</td>
+<td>無</td>
+</tr>
+<tr>
+<td>每個字元儲存容量</td>
+<td>英文字元2 Byte;非英文字元2 Byte</td>
+<td>英文字元1 Byte;非英文字元2 Byte</td>
+</tr>
+<tr>
+<td>儲存長度</td>
+<td>不定長，依照資料內容</td>
+<td>不定長，依照資料內容</td>
+</tr>
+<tr>
+<td>n的長度限制</td>
+<td>1~4000(表示可以用寫4000個中、英文字元)</td>
+<td>1~8000(表示可以用寫8000個英文字元)</td>
+</tr>
+<tr>
+<td>max</td>
+<td>2GB</td>
+<td>2GB</td>
+</tr>
+<tr>
+<td>結論</td>
+<td>要儲存英文以外的用NVARCHAR，可以避免亂碼問題，但儲存空間相較VARCHAR會多一些。</td>
+<td>只存英文VARCHAR沒問題，存其他可能會有亂碼問題。</td>
+</tr>
+</table>
+
+<h3 id="總結"><a href="#總結" class="headerlink" title="總結"></a>總結</h3><p>使用NVARCHAR來儲存字串會比較好，因為可避免字串因為中英混雜亂碼。</p>
+<h3 id="參考資料"><a href="#參考資料" class="headerlink" title="參考資料"></a>參考資料</h3><p><a target="_blank" rel="noopener" href="https://docs.microsoft.com/zh-tw/sql/t-sql/data-types/char-and-varchar-transact-sql?view=sql-server-ver15">https://docs.microsoft.com/zh-tw/sql/t-sql/data-types/char-and-varchar-transact-sql?view=sql-server-ver15</a><br><a target="_blank" rel="noopener" href="https://docs.microsoft.com/zh-tw/sql/t-sql/data-types/nchar-and-nvarchar-transact-sql?view=sql-server-ver15">https://docs.microsoft.com/zh-tw/sql/t-sql/data-types/nchar-and-nvarchar-transact-sql?view=sql-server-ver15</a><br><a target="_blank" rel="noopener" href="https://ithelp.ithome.com.tw/articles/10213922">https://ithelp.ithome.com.tw/articles/10213922</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://yuhsiang237.github.io/2022/02/17/SQL-Server-NVARCHAR%E8%88%87VARCHAR%E5%B7%AE%E5%88%A5%E6%AF%94%E8%BC%83/" data-id="cl0g433ot002dtwgh6prc0suf" data-title="SQL Server NVARCHAR與VARCHAR差別比較" class="article-share-link">Teilen</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2022/03/03/PostgreSQL%E8%B3%87%E6%96%99%E5%9E%8B%E5%88%A5/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Neuer</strong>
+      <div class="article-nav-title">
+        
+          PostgreSQL資料型別
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2022/02/11/C-pdf%E8%99%95%E7%90%86%E4%BD%BF%E7%94%A8itext7/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Älter</strong>
+      <div class="article-nav-title">C# 產生PDF使用IText7</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Kategorien</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Code/">Code</a><span class="category-list-count">51</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Code/C/">C#</a><span class="category-list-count">47</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Code/Javascript/">Javascript</a><span class="category-list-count">5</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/">Computer Science</a><span class="category-list-count">5</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/Algorithm/">Algorithm</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/Data-structure/">Data structure</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/%E9%9B%BB%E5%AD%90%E9%9B%BB%E8%B7%AF/">電子電路</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Daily-Log/">Daily Log</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/">Database</a><span class="category-list-count">39</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Database/PostgreSQL/">PostgreSQL</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/SQL-Server/">SQL Server</a><span class="category-list-count">37</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/">Framework</a><span class="category-list-count">27</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/AspNetCore-API/">AspNetCore API</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/AspNetCore-MVC/">AspNetCore MVC</a><span class="category-list-count">21</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/">Topic</a><span class="category-list-count">63</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2021-C-AspNetCore%E9%90%B5%E4%BA%BA%E8%B3%BD/">2021 C# AspNetCore鐵人賽</a><span class="category-list-count">30</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2021-SQL-Server%E9%90%B5%E4%BA%BA%E8%B3%BD/">2021 SQL Server鐵人賽</a><span class="category-list-count">30</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/LeetCode/">LeetCode</a><span class="category-list-count">3</span></li></ul></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archiv</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/03/">三月 2022</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/02/">二月 2022</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/01/">一月 2022</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">十二月 2021</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">十月 2021</a><span class="archive-list-count">24</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">九月 2021</a><span class="archive-list-count">46</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">八月 2021</a><span class="archive-list-count">12</span></li></ul>
+    </div>
+  </div>
+
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2022 Yu Hsiang<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

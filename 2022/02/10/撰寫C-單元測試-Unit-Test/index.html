@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>撰寫C#單元測試(Unit Test) | UM程式研究日誌</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="前言在這回中主要介紹C#的單元測試。將會以AspNetCore中的xUnit、Moq套件進行範例測試。 至於為什麼要單元測試?因為能夠快速的驗證結果、在撰寫時也只要執行片段程式碼。對於有些程式碼容易有改A壞B的問題，能夠透過測試直接幫我們一次測完。讓我們只需要針對錯誤案例進行程式碼錯誤區塊修改，加快整體專案除錯的時間。       完整測試專案連結:https:&#x2F;&#x2F;github.com&#x2F;yuhsi">
+<meta property="og:type" content="article">
+<meta property="og:title" content="撰寫C#單元測試(Unit Test)">
+<meta property="og:url" content="https://yuhsiang237.github.io/2022/02/10/%E6%92%B0%E5%AF%ABC-%E5%96%AE%E5%85%83%E6%B8%AC%E8%A9%A6-Unit-Test/index.html">
+<meta property="og:site_name" content="UM程式研究日誌">
+<meta property="og:description" content="前言在這回中主要介紹C#的單元測試。將會以AspNetCore中的xUnit、Moq套件進行範例測試。 至於為什麼要單元測試?因為能夠快速的驗證結果、在撰寫時也只要執行片段程式碼。對於有些程式碼容易有改A壞B的問題，能夠透過測試直接幫我們一次測完。讓我們只需要針對錯誤案例進行程式碼錯誤區塊修改，加快整體專案除錯的時間。       完整測試專案連結:https:&#x2F;&#x2F;github.com&#x2F;yuhsi">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://yuhsiang237.github.io/2022/02/10/%E6%92%B0%E5%AF%ABC-%E5%96%AE%E5%85%83%E6%B8%AC%E8%A9%A6-Unit-Test/output.png">
+<meta property="article:published_time" content="2022-02-09T23:42:43.000Z">
+<meta property="article:modified_time" content="2022-03-07T02:53:17.535Z">
+<meta property="article:author" content="Yu Hsiang">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://yuhsiang237.github.io/2022/02/10/%E6%92%B0%E5%AF%ABC-%E5%96%AE%E5%85%83%E6%B8%AC%E8%A9%A6-Unit-Test/output.png">
+  
+    <link rel="alternate" href="/atom.xml" title="UM程式研究日誌" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">UM程式研究日誌</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">你好，這邊記錄了我的經歷!</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Suche"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Suche"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://yuhsiang237.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-撰寫C-單元測試-Unit-Test" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2022/02/10/%E6%92%B0%E5%AF%ABC-%E5%96%AE%E5%85%83%E6%B8%AC%E8%A9%A6-Unit-Test/" class="article-date">
+  <time class="dt-published" datetime="2022-02-09T23:42:43.000Z" itemprop="datePublished">2022-02-10</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Code/">Code</a>►<a class="article-category-link" href="/categories/Code/C/">C#</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      撰寫C#單元測試(Unit Test)
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>在這回中主要介紹C#的單元測試。<br>將會以AspNetCore中的xUnit、Moq套件進行範例測試。</p>
+<p><strong>至於為什麼要單元測試?</strong><br>因為能夠快速的驗證結果、在撰寫時也只要執行片段程式碼。<br>對於有些程式碼容易有改A壞B的問題，能夠透過測試直接幫我們一次測完。<br>讓我們只需要針對錯誤案例進行程式碼錯誤區塊修改，加快整體專案除錯的時間。      </p>
+<p>完整測試專案連結:<br><a target="_blank" rel="noopener" href="https://github.com/yuhsiang237/csharp-unit-test">https://github.com/yuhsiang237/csharp-unit-test</a>  </p>
+<h3 id="範例"><a href="#範例" class="headerlink" title="範例"></a>範例</h3><p>使用Moq套件的Mock建立假的物件，並且設定函式、屬性、返回的值，再使用xUnit提供的驗證方法進行測試。</p>
+<p>首先建立我們要測試的介面與類別，一個是IFoo.cs、Bar.cs。</p>
+<p><strong>csharp-unit-test/UnitTestProject/Bar.cs</strong></p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> System;</span><br><span class="line"><span class="keyword">using</span> System.Collections.Generic;</span><br><span class="line"><span class="keyword">using</span> System.Text;</span><br><span class="line"></span><br><span class="line"><span class="keyword">namespace</span> <span class="title">UnitTestProject</span></span><br><span class="line">&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">class</span> <span class="title">Bar</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">virtual</span> <span class="built_in">bool</span> <span class="title">Submit</span>(<span class="params"></span>)</span> &#123; <span class="keyword">return</span> <span class="literal">false</span>; &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>csharp-unit-test/UnitTestProject/IFoo.cs</strong></p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> System;</span><br><span class="line"><span class="keyword">using</span> System.Collections.Generic;</span><br><span class="line"><span class="keyword">using</span> System.Text;</span><br><span class="line"></span><br><span class="line"><span class="keyword">namespace</span> <span class="title">UnitTestProject</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">interface</span> <span class="title">IFoo</span></span><br><span class="line">    &#123;</span><br><span class="line">        Bar Bar &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line">        <span class="built_in">string</span> Name &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line">        <span class="built_in">int</span> Value &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line">        <span class="function"><span class="built_in">bool</span> <span class="title">DoSomething</span>(<span class="params"><span class="built_in">string</span> <span class="keyword">value</span></span>)</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>再來建立測試，使用Moq、Xunit。<br>我們可以對函式返回值、假物件、屬性進行測試。<br>以下為測試範例:<br><strong>/csharp-unit-test/UnitTestProjectTests/UnitTest.cs</strong></p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> System;</span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> Xunit;</span><br><span class="line"><span class="keyword">using</span> Moq;</span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> UnitTestProject;</span><br><span class="line"></span><br><span class="line"><span class="keyword">namespace</span> <span class="title">UnitTestProjectTests</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> xUnit單元測試，並使用Moq的Mock</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 參考資料:</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> https://github.com/Moq/moq4/wiki/Quickstart#verification</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> https://vimsky.com/examples/detail/csharp-ex---Mock-VerifySet-method.html</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> https://codertw.com/%E5%89%8D%E7%AB%AF%E9%96%8B%E7%99%BC/206352/</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">class</span> <span class="title">UnitTest</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> 方法單元測試</span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">        [<span class="meta">Fact</span>]</span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">MethodsTest</span>(<span class="params"></span>)</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="comment">// 準備 Mock IFoo 介面</span></span><br><span class="line">            <span class="keyword">var</span> mock = <span class="keyword">new</span> Mock&lt;IFoo&gt;();</span><br><span class="line">            <span class="comment">// 配置準備模擬的方法，當呼叫介面中的 DoSomething 方法，並傳遞引數 &quot;bing&quot; 的時候，返回 true</span></span><br><span class="line">            mock.Setup(foo =&gt; foo.DoSomething(<span class="string">&quot;ping&quot;</span>)).Returns(<span class="literal">true</span>);</span><br><span class="line">            <span class="comment">// 現在，你可以: </span></span><br><span class="line">            IFoo foo = mock.Object;</span><br><span class="line">            <span class="comment">// 檢查使用時返回值為True</span></span><br><span class="line">            Assert.True(foo.DoSomething(<span class="string">&quot;ping&quot;</span>));</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> 屬性單元測試</span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">        [<span class="meta">Fact</span>]</span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">PropertiesTest</span>(<span class="params"></span>)</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="comment">// 準備 Mock IFoo 介面</span></span><br><span class="line">            <span class="keyword">var</span> mock = <span class="keyword">new</span> Mock&lt;IFoo&gt;();</span><br><span class="line">            <span class="comment">// 開始 &quot;tracking&quot; 屬性的 sets/gets </span></span><br><span class="line">            mock.SetupProperty(f =&gt; f.Name);</span><br><span class="line">            <span class="comment">// 提供一個預設的值</span></span><br><span class="line">            mock.SetupProperty(f =&gt; f.Name, <span class="string">&quot;foo&quot;</span>);</span><br><span class="line">            <span class="comment">// 現在，你可以: </span></span><br><span class="line">            IFoo foo = mock.Object;</span><br><span class="line">            <span class="comment">// 儲存的值 </span></span><br><span class="line">            Assert.Equal(<span class="string">&quot;foo&quot;</span>, foo.Name);</span><br><span class="line">            <span class="comment">// 重新設定一個值</span></span><br><span class="line">            foo.Name = <span class="string">&quot;bar&quot;</span>;</span><br><span class="line">            Assert.Equal(<span class="string">&quot;bar&quot;</span>, foo.Name);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>再來開啟VisualStudio的測試視窗運行，可以得到以下結果:</p>
+<img src="/2022/02/10/%E6%92%B0%E5%AF%ABC-%E5%96%AE%E5%85%83%E6%B8%AC%E8%A9%A6-Unit-Test/output.png" class="">
+<p>表示測試成功。</p>
+<h3 id="總結"><a href="#總結" class="headerlink" title="總結"></a>總結</h3><p>撰寫測試能夠改善平常除錯的速度，特別當專案大起來時。<br>此外有些平台有測試的功能(如Azure DevOps Server的TFS)，可以在CI自動整合時跑測試。   </p>
+<h3 id="參考資料"><a href="#參考資料" class="headerlink" title="參考資料"></a>參考資料</h3><ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/Moq/moq4/wiki/Quickstart#verification">https://github.com/Moq/moq4/wiki/Quickstart#verification</a></li>
+<li><a target="_blank" rel="noopener" href="https://vimsky.com/examples/detail/csharp-ex---Mock-VerifySet-method.html">https://vimsky.com/examples/detail/csharp-ex---Mock-VerifySet-method.html</a></li>
+<li><a target="_blank" rel="noopener" href="https://codertw.com/%E5%89%8D%E7%AB%AF%E9%96%8B%E7%99%BC/206352/">https://codertw.com/%E5%89%8D%E7%AB%AF%E9%96%8B%E7%99%BC/206352/</a></li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://yuhsiang237.github.io/2022/02/10/%E6%92%B0%E5%AF%ABC-%E5%96%AE%E5%85%83%E6%B8%AC%E8%A9%A6-Unit-Test/" data-id="cl0g433pn005dtwghd78qhr77" data-title="撰寫C#單元測試(Unit Test)" class="article-share-link">Teilen</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2022/02/10/%E7%89%A9%E4%BB%B6%E5%B0%8E%E5%90%91SOLID%E5%8E%9F%E5%89%87/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Neuer</strong>
+      <div class="article-nav-title">
+        
+          物件導向SOLID原則
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2022/02/10/LINQ%E8%AA%9E%E6%B3%95%E7%94%9F%E6%88%90%E5%B7%A5%E5%85%B7LinqPad%E4%BD%BF%E7%94%A8/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Älter</strong>
+      <div class="article-nav-title">LINQ語法生成工具LinqPad使用</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Kategorien</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Code/">Code</a><span class="category-list-count">51</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Code/C/">C#</a><span class="category-list-count">47</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Code/Javascript/">Javascript</a><span class="category-list-count">5</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/">Computer Science</a><span class="category-list-count">5</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/Algorithm/">Algorithm</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/Data-structure/">Data structure</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/%E9%9B%BB%E5%AD%90%E9%9B%BB%E8%B7%AF/">電子電路</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Daily-Log/">Daily Log</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/">Database</a><span class="category-list-count">39</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Database/PostgreSQL/">PostgreSQL</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/SQL-Server/">SQL Server</a><span class="category-list-count">37</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/">Framework</a><span class="category-list-count">27</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/AspNetCore-API/">AspNetCore API</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/AspNetCore-MVC/">AspNetCore MVC</a><span class="category-list-count">21</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/">Topic</a><span class="category-list-count">63</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2021-C-AspNetCore%E9%90%B5%E4%BA%BA%E8%B3%BD/">2021 C# AspNetCore鐵人賽</a><span class="category-list-count">30</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2021-SQL-Server%E9%90%B5%E4%BA%BA%E8%B3%BD/">2021 SQL Server鐵人賽</a><span class="category-list-count">30</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/LeetCode/">LeetCode</a><span class="category-list-count">3</span></li></ul></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archiv</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/03/">三月 2022</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/02/">二月 2022</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/01/">一月 2022</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">十二月 2021</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">十月 2021</a><span class="archive-list-count">24</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">九月 2021</a><span class="archive-list-count">46</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">八月 2021</a><span class="archive-list-count">12</span></li></ul>
+    </div>
+  </div>
+
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2022 Yu Hsiang<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

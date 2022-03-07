@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>[Day9] SQL server查詢語法Select - SQL Server資料庫入門 | UM程式研究日誌</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="前言在上回我們手動對資料庫填充了一些基礎資料:[Day8] SQL server手動寫入資料 - SQL Server資料庫入門在這回中我們要利用建立好的資料庫來練習查詢語法。 目前表中資料先看一下資料庫中的資料:customers 顧客  products 產品  orders 出貨單  order_details 出貨單明細   SQL SELECT 語法實踐select為資料庫查詢的語法，被">
+<meta property="og:type" content="article">
+<meta property="og:title" content="[Day9] SQL server查詢語法Select - SQL Server資料庫入門">
+<meta property="og:url" content="https://yuhsiang237.github.io/2021/09/09/sql-server%E6%9F%A5%E8%A9%A2%E8%AA%9E%E6%B3%95Select/index.html">
+<meta property="og:site_name" content="UM程式研究日誌">
+<meta property="og:description" content="前言在上回我們手動對資料庫填充了一些基礎資料:[Day8] SQL server手動寫入資料 - SQL Server資料庫入門在這回中我們要利用建立好的資料庫來練習查詢語法。 目前表中資料先看一下資料庫中的資料:customers 顧客  products 產品  orders 出貨單  order_details 出貨單明細   SQL SELECT 語法實踐select為資料庫查詢的語法，被">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://yuhsiang237.github.io/2021/09/09/sql-server%E6%9F%A5%E8%A9%A2%E8%AA%9E%E6%B3%95Select/%E9%A1%A7%E5%AE%A2.png">
+<meta property="og:image" content="https://yuhsiang237.github.io/2021/09/09/sql-server%E6%9F%A5%E8%A9%A2%E8%AA%9E%E6%B3%95Select/%E7%94%A2%E5%93%81.png">
+<meta property="og:image" content="https://yuhsiang237.github.io/2021/09/09/sql-server%E6%9F%A5%E8%A9%A2%E8%AA%9E%E6%B3%95Select/%E8%A8%82%E5%96%AE.png">
+<meta property="og:image" content="https://yuhsiang237.github.io/2021/09/09/sql-server%E6%9F%A5%E8%A9%A2%E8%AA%9E%E6%B3%95Select/%E6%98%8E%E7%B4%B0.png">
+<meta property="og:image" content="https://yuhsiang237.github.io/2021/09/09/sql-server%E6%9F%A5%E8%A9%A2%E8%AA%9E%E6%B3%95Select/select01.png">
+<meta property="og:image" content="https://yuhsiang237.github.io/2021/09/09/sql-server%E6%9F%A5%E8%A9%A2%E8%AA%9E%E6%B3%95Select/select02.png">
+<meta property="og:image" content="https://yuhsiang237.github.io/2021/09/09/sql-server%E6%9F%A5%E8%A9%A2%E8%AA%9E%E6%B3%95Select/select%20distinct01.PNG">
+<meta property="og:image" content="https://yuhsiang237.github.io/2021/09/09/sql-server%E6%9F%A5%E8%A9%A2%E8%AA%9E%E6%B3%95Select/select%20distinct02.PNG">
+<meta property="og:image" content="https://yuhsiang237.github.io/2021/09/09/sql-server%E6%9F%A5%E8%A9%A2%E8%AA%9E%E6%B3%95Select/where.PNG">
+<meta property="og:image" content="https://yuhsiang237.github.io/2021/09/09/sql-server%E6%9F%A5%E8%A9%A2%E8%AA%9E%E6%B3%95Select/where2.PNG">
+<meta property="og:image" content="https://yuhsiang237.github.io/2021/09/09/sql-server%E6%9F%A5%E8%A9%A2%E8%AA%9E%E6%B3%95Select/or.PNG">
+<meta property="og:image" content="https://yuhsiang237.github.io/2021/09/09/sql-server%E6%9F%A5%E8%A9%A2%E8%AA%9E%E6%B3%95Select/not.PNG">
+<meta property="og:image" content="https://yuhsiang237.github.io/2021/09/09/sql-server%E6%9F%A5%E8%A9%A2%E8%AA%9E%E6%B3%95Select/order.PNG">
+<meta property="og:image" content="https://yuhsiang237.github.io/2021/09/09/sql-server%E6%9F%A5%E8%A9%A2%E8%AA%9E%E6%B3%95Select/top.PNG">
+<meta property="og:image" content="https://yuhsiang237.github.io/2021/09/09/sql-server%E6%9F%A5%E8%A9%A2%E8%AA%9E%E6%B3%95Select/null.PNG">
+<meta property="article:published_time" content="2021-09-08T16:54:08.000Z">
+<meta property="article:modified_time" content="2022-03-07T02:53:17.519Z">
+<meta property="article:author" content="Yu Hsiang">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://yuhsiang237.github.io/2021/09/09/sql-server%E6%9F%A5%E8%A9%A2%E8%AA%9E%E6%B3%95Select/%E9%A1%A7%E5%AE%A2.png">
+  
+    <link rel="alternate" href="/atom.xml" title="UM程式研究日誌" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">UM程式研究日誌</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">你好，這邊記錄了我的經歷!</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Suche"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Suche"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://yuhsiang237.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-sql-server查詢語法Select" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2021/09/09/sql-server%E6%9F%A5%E8%A9%A2%E8%AA%9E%E6%B3%95Select/" class="article-date">
+  <time class="dt-published" datetime="2021-09-08T16:54:08.000Z" itemprop="datePublished">2021-09-09</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Database/">Database</a>►<a class="article-category-link" href="/categories/Database/SQL-Server/">SQL Server</a>►<a class="article-category-link" href="/categories/Topic/">Topic</a>►<a class="article-category-link" href="/categories/Topic/2021-SQL-Server%E9%90%B5%E4%BA%BA%E8%B3%BD/">2021 SQL Server鐵人賽</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      [Day9] SQL server查詢語法Select - SQL Server資料庫入門
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>在上回我們手動對資料庫填充了一些基礎資料:<a href="/2021/09/08/SQL-server%E6%89%8B%E5%8B%95%E5%AF%AB%E5%85%A5%E8%B3%87%E6%96%99/" title="[Day8] SQL server手動寫入資料 - SQL Server資料庫入門">[Day8] SQL server手動寫入資料 - SQL Server資料庫入門</a><br>在這回中我們要利用建立好的資料庫來練習查詢語法。</p>
+<h3 id="目前表中資料"><a href="#目前表中資料" class="headerlink" title="目前表中資料"></a>目前表中資料</h3><p>先看一下資料庫中的資料:<br><strong>customers 顧客</strong></p>
+<img src="/2021/09/09/sql-server%E6%9F%A5%E8%A9%A2%E8%AA%9E%E6%B3%95Select/%E9%A1%A7%E5%AE%A2.png" class="">
+<p><strong>products 產品</strong></p>
+<img src="/2021/09/09/sql-server%E6%9F%A5%E8%A9%A2%E8%AA%9E%E6%B3%95Select/%E7%94%A2%E5%93%81.png" class="">
+<p><strong>orders 出貨單</strong></p>
+<img src="/2021/09/09/sql-server%E6%9F%A5%E8%A9%A2%E8%AA%9E%E6%B3%95Select/%E8%A8%82%E5%96%AE.png" class="">
+<p><strong>order_details 出貨單明細</strong></p>
+<img src="/2021/09/09/sql-server%E6%9F%A5%E8%A9%A2%E8%AA%9E%E6%B3%95Select/%E6%98%8E%E7%B4%B0.png" class="">
+
+<h3 id="SQL-SELECT-語法實踐"><a href="#SQL-SELECT-語法實踐" class="headerlink" title="SQL SELECT 語法實踐"></a>SQL SELECT 語法實踐</h3><p>select為資料庫查詢的語法，被用來選取資料表中的資料。<br>當語法執行後，資料會被儲存在一個結果表(result table)，即結果集(result-set)。</p>
+<p><strong>1.選擇表中的部分欄位</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">SELECT column1, column2, ...</span><br><span class="line">FROM table_name; </span><br></pre></td></tr></table></figure>
+<p>實作:查詢orders中的編號、寄送日、寄送地址</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Select number,shipping_date,shipping_address from orders</span><br></pre></td></tr></table></figure>
+<p>結果:</p>
+<img src="/2021/09/09/sql-server%E6%9F%A5%E8%A9%A2%E8%AA%9E%E6%B3%95Select/select01.png" class="">
+<p><strong>2.選擇表中的全部欄位</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SELECT * FROM table_name; </span><br></pre></td></tr></table></figure>
+<p>實作:查詢orders中所有欄位</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Select * from orders</span><br></pre></td></tr></table></figure>
+<p>結果:</p>
+<img src="/2021/09/09/sql-server%E6%9F%A5%E8%A9%A2%E8%AA%9E%E6%B3%95Select/select02.png" class="">
+
+<h3 id="SQL-SELECT-DISTINCT-語法實踐"><a href="#SQL-SELECT-DISTINCT-語法實踐" class="headerlink" title="SQL SELECT DISTINCT 語法實踐"></a>SQL SELECT DISTINCT 語法實踐</h3><p>被用來取得非重複列的集合。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">SELECT DISTINCT column1, column2, ...</span><br><span class="line">FROM table_name; </span><br></pre></td></tr></table></figure>
+<p>實作:查詢order_details的order_number，並回傳非重複的列</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Select DISTINCT order_number from order_details </span><br></pre></td></tr></table></figure>
+<p>結果:</p>
+<img src="/2021/09/09/sql-server%E6%9F%A5%E8%A9%A2%E8%AA%9E%E6%B3%95Select/select%20distinct01.PNG" class="">
+
+<p>實作:查詢order_details的order_number、id，並回傳非重複的列</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Select DISTINCT id,order_number from order_details </span><br></pre></td></tr></table></figure>
+<p>結果:<br>會發現跟上面的只搜尋order_number多增加一列，因為id與order_number這樣視為一列</p>
+<img src="/2021/09/09/sql-server%E6%9F%A5%E8%A9%A2%E8%AA%9E%E6%B3%95Select/select%20distinct02.PNG" class="">
+
+<h3 id="SQL-WHERE-語法"><a href="#SQL-WHERE-語法" class="headerlink" title="SQL WHERE 語法"></a>SQL WHERE 語法</h3><p>用可來限制Select的條件、過濾資料。<br>可使用的限制條件:</p>
+<table class="ws-table-all notranslate">
+  <tbody><tr>
+    <th style="width:20%">Operator</th>
+    <th style="width:70%">Description</th>
+  </tr>
+  <tr>
+    <td>=</td>
+    <td>Equal</td>
+  </tr>
+  <tr>
+    <td>&gt;</td>
+    <td>Greater than</td>
+  </tr>
+  <tr>
+    <td>&lt;</td>
+    <td>Less than</td>
+  </tr>
+  <tr>
+    <td>&gt;=</td>
+    <td>Greater than or equal</td>
+  </tr>
+  <tr>
+    <td>&lt;=</td>
+    <td>Less than or equal</td>
+  </tr>
+  <tr>
+    <td>&lt;&gt;</td>
+    <td>Not equal. <b>Note:</b> In some versions of SQL this operator may be written as !=</td>
+  </tr>
+  <tr>
+    <td>BETWEEN</td>
+    <td>Between a certain range</td>
+  </tr>
+  <tr>
+    <td>LIKE</td>
+    <td>Search for a pattern</td>
+  </tr>
+  <tr>
+    <td>IN</td>
+    <td>To specify multiple possible values for a column</td>
+ 
+  </tr>
+</tbody></table>
+
+<p>語法:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">SELECT column1, column2, ...</span><br><span class="line">FROM table_name</span><br><span class="line">WHERE condition; </span><br></pre></td></tr></table></figure>
+<p>實作:查詢order_details，並且限制單價為10000的資料</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Select * from order_details  where price = &#x27;10000&#x27;</span><br></pre></td></tr></table></figure>
+<p>結果:</p>
+<img src="/2021/09/09/sql-server%E6%9F%A5%E8%A9%A2%E8%AA%9E%E6%B3%95Select/where.PNG" class="">
+
+<p>實作:查詢order_details，並且限制產品編號為P001、P002的結果</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Select * from order_details  where product_number IN (&#x27;P001&#x27;,&#x27;P002&#x27;)</span><br></pre></td></tr></table></figure>
+
+<p>結果:</p>
+<img src="/2021/09/09/sql-server%E6%9F%A5%E8%A9%A2%E8%AA%9E%E6%B3%95Select/where2.PNG" class="">
+
+<h3 id="SQL-AND-OR-and-NOT-語法"><a href="#SQL-AND-OR-and-NOT-語法" class="headerlink" title="SQL AND, OR and NOT 語法"></a>SQL AND, OR and NOT 語法</h3><p>在使用where時，我們可以用AND、 OR、 NOT去組合我們理想的條件。<br>AND:組合多個條件，全為TURE回傳</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">SELECT column1, column2, ...</span><br><span class="line">FROM table_name</span><br><span class="line">WHERE condition1 AND condition2 AND condition3 ...; </span><br></pre></td></tr></table></figure>
+<p>OR:組合多個條件，符合其中一個條件都算在資料集中，最後回傳。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">SELECT column1, column2, ...</span><br><span class="line">FROM table_name</span><br><span class="line">WHERE condition1 OR condition2 OR condition3 ...; </span><br></pre></td></tr></table></figure>
+<p>NOT:想排除某條件</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">SELECT column1, column2, ...</span><br><span class="line">FROM table_name</span><br><span class="line">WHERE NOT condition; </span><br></pre></td></tr></table></figure>
+
+<p>實作:查詢order_details，並且限制amount為2或total為30000的結果</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Select * from order_details where amount = &#x27;2&#x27; or total = &#x27;30000&#x27;</span><br></pre></td></tr></table></figure>
+
+<p>結果:</p>
+<img src="/2021/09/09/sql-server%E6%9F%A5%E8%A9%A2%E8%AA%9E%E6%B3%95Select/or.PNG" class="">
+
+<p>實作:查詢order_details，並且限制amount為2或total為30000，且id不為2的結果</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Select * from order_details where amount = &#x27;2&#x27; or total = &#x27;30000&#x27; and NOT id = &#x27;2&#x27;</span><br></pre></td></tr></table></figure>
+
+
+<p>結果:</p>
+<img src="/2021/09/09/sql-server%E6%9F%A5%E8%A9%A2%E8%AA%9E%E6%B3%95Select/not.PNG" class="">
+
+<h3 id="SQL-ORDER-BY-語法"><a href="#SQL-ORDER-BY-語法" class="headerlink" title="SQL ORDER BY 語法"></a>SQL ORDER BY 語法</h3><p>可用來排序Select結果表的結果集合，透過欄位可以遞增、遞減。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">SELECT column1, column2, ...</span><br><span class="line">FROM table_name</span><br><span class="line">ORDER BY column1, column2, ... ASC|DESC; </span><br></pre></td></tr></table></figure>
+
+<p>實作:查詢order_details，並把id遞減排序</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Select * from order_details order by id desc</span><br></pre></td></tr></table></figure>
+
+<p>結果:</p>
+<img src="/2021/09/09/sql-server%E6%9F%A5%E8%A9%A2%E8%AA%9E%E6%B3%95Select/order.PNG" class="">
+
+<h3 id="SQL-TOP-語法"><a href="#SQL-TOP-語法" class="headerlink" title="SQL TOP 語法"></a>SQL TOP 語法</h3><p>取得前幾筆資料，在MSSQL中則是用TOP；MYSQL用LIMIT，似乎每個DB都有不同的標準。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">SELECT TOP number|percent column_name(s)</span><br><span class="line">FROM table_name</span><br><span class="line">WHERE condition; </span><br></pre></td></tr></table></figure>
+<p>實作:查詢order_details，前一筆資料</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Select TOP 1 * from order_details </span><br></pre></td></tr></table></figure>
+
+<p>結果:</p>
+<img src="/2021/09/09/sql-server%E6%9F%A5%E8%A9%A2%E8%AA%9E%E6%B3%95Select/top.PNG" class="">
+
+<h3 id="SQL-NULL-Values-語法"><a href="#SQL-NULL-Values-語法" class="headerlink" title="SQL NULL Values 語法"></a>SQL NULL Values 語法</h3><p>可以用來篩選欄位是否為空值(未填充)。<br>為空:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">SELECT column_names</span><br><span class="line">FROM table_name</span><br><span class="line">WHERE column_name IS NULL; </span><br></pre></td></tr></table></figure>
+<p>不為空:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">SELECT column_names</span><br><span class="line">FROM table_name</span><br><span class="line">WHERE column_name IS NOT NULL; </span><br></pre></td></tr></table></figure>
+
+<p>實作:查詢order_details，remarks不為空的結果</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Select * from order_details where remark IS NOT NULL</span><br></pre></td></tr></table></figure>
+
+<p>結果:</p>
+<img src="/2021/09/09/sql-server%E6%9F%A5%E8%A9%A2%E8%AA%9E%E6%B3%95Select/null.PNG" class="">
+
+
+<h3 id="小結"><a href="#小結" class="headerlink" title="小結"></a>小結</h3><p>在這回中大量練習了表單的查詢，發現其實還蠻單純的，並不會特別難或什麼。<br>在下回中會開始練習跨表的搜尋JOIN。</p>
+<p><strong>參考資料</strong><br><a target="_blank" rel="noopener" href="https://ithelp.ithome.com.tw/articles/10214938">https://ithelp.ithome.com.tw/articles/10214938</a><br><a target="_blank" rel="noopener" href="https://www.w3schools.com/sql/sql_select.asp">https://www.w3schools.com/sql/sql_select.asp</a><br><a target="_blank" rel="noopener" href="https://www.w3schools.com/sql/sql_where.asp">https://www.w3schools.com/sql/sql_where.asp</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://yuhsiang237.github.io/2021/09/09/sql-server%E6%9F%A5%E8%A9%A2%E8%AA%9E%E6%B3%95Select/" data-id="cl0g433pc004ktwgh5ffu8gjp" data-title="[Day9] SQL server查詢語法Select - SQL Server資料庫入門" class="article-share-link">Teilen</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2021/09/10/sql-server-%E5%90%88%E4%BD%B5%E6%9F%A5%E8%A9%A2join/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Neuer</strong>
+      <div class="article-nav-title">
+        
+          [Day10] SQL server Select合併查詢JOIN用法 - SQL Server資料庫入門
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2021/09/08/SQL-server%E6%89%8B%E5%8B%95%E5%AF%AB%E5%85%A5%E8%B3%87%E6%96%99/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Älter</strong>
+      <div class="article-nav-title">[Day8] SQL server手動寫入資料 - SQL Server資料庫入門</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Kategorien</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Code/">Code</a><span class="category-list-count">51</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Code/C/">C#</a><span class="category-list-count">47</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Code/Javascript/">Javascript</a><span class="category-list-count">5</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/">Computer Science</a><span class="category-list-count">5</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/Algorithm/">Algorithm</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/Data-structure/">Data structure</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/%E9%9B%BB%E5%AD%90%E9%9B%BB%E8%B7%AF/">電子電路</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Daily-Log/">Daily Log</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/">Database</a><span class="category-list-count">39</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Database/PostgreSQL/">PostgreSQL</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/SQL-Server/">SQL Server</a><span class="category-list-count">37</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/">Framework</a><span class="category-list-count">27</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/AspNetCore-API/">AspNetCore API</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/AspNetCore-MVC/">AspNetCore MVC</a><span class="category-list-count">21</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/">Topic</a><span class="category-list-count">63</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2021-C-AspNetCore%E9%90%B5%E4%BA%BA%E8%B3%BD/">2021 C# AspNetCore鐵人賽</a><span class="category-list-count">30</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2021-SQL-Server%E9%90%B5%E4%BA%BA%E8%B3%BD/">2021 SQL Server鐵人賽</a><span class="category-list-count">30</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/LeetCode/">LeetCode</a><span class="category-list-count">3</span></li></ul></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archiv</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/03/">三月 2022</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/02/">二月 2022</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/01/">一月 2022</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">十二月 2021</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">十月 2021</a><span class="archive-list-count">24</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">九月 2021</a><span class="archive-list-count">46</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">八月 2021</a><span class="archive-list-count">12</span></li></ul>
+    </div>
+  </div>
+
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2022 Yu Hsiang<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>
