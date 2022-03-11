@@ -106,3 +106,12 @@ deploy:
   repository:  https://github.com/yuhsiang237/yuhsiang237.github.io.git
   branch: gh-pages
   message: deploy
+
+# Extensions
+plugins:
+  hexo-generator-feed
+#Feed Atom
+feed:
+  type: atom
+  path: atom.xml
+  limit: 20
