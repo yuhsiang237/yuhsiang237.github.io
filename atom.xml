@@ -6,7 +6,7 @@
   <link href="https://yuhsiang237.github.io/atom.xml" rel="self"/>
   
   <link href="https://yuhsiang237.github.io/"/>
-  <updated>2022-03-11T02:16:39.925Z</updated>
+  <updated>2022-03-16T05:33:57.605Z</updated>
   <id>https://yuhsiang237.github.io/</id>
   
   <author>
@@ -15,6 +15,58 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>PostgreSQL IN/NOT IN 判斷語句</title>
+    <link href="https://yuhsiang237.github.io/2022/03/16/PostgreSQL-IN-NOT-IN-%E5%88%A4%E6%96%B7%E8%AA%9E%E5%8F%A5/"/>
+    <id>https://yuhsiang237.github.io/2022/03/16/PostgreSQL-IN-NOT-IN-%E5%88%A4%E6%96%B7%E8%AA%9E%E5%8F%A5/</id>
+    <published>2022-03-16T05:24:20.000Z</published>
+    <updated>2022-03-16T05:33:57.605Z</updated>
+    
+    <content type="html"><![CDATA[<p>在這主要介紹PostgreSQL IN、NOT IN的用法<br>IN:數值在這集合裡面。<br>NOT IN:數值在不再這集合裡面。</p><p>如果有一表如下:</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">price_record</span><br><span class="line">id | price</span><br><span class="line">---+------</span><br><span class="line">1  | 100 </span><br><span class="line">2  | 200</span><br><span class="line">3  | 300</span><br></pre></td></tr></table></figure><p>IN:數值在這集合裡面。</p><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> PRICE_RECORD PR </span><br><span class="line"><span class="keyword">WHERE</span> PR.PRICE <span class="keyword">IN</span> (<span class="string">&#x27;100&#x27;</span>,<span class="string">&#x27;200&#x27;</span>) </span><br></pre></td></tr></table></figure><p>結果:</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">id | price</span><br><span class="line">---+------</span><br><span class="line">1  | 100 </span><br><span class="line">2  | 200</span><br></pre></td></tr></table></figure><p>NOT IN:數值在不再這集合裡面。</p><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> PRICE_RECORD PR </span><br><span class="line"><span class="keyword">WHERE</span> PR.PRICE <span class="keyword">NOT</span> <span class="keyword">IN</span> (<span class="string">&#x27;100&#x27;</span>,<span class="string">&#x27;200&#x27;</span>) </span><br></pre></td></tr></table></figure><p>結果:</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">id | price</span><br><span class="line">---+------</span><br><span class="line">3  | 300</span><br></pre></td></tr></table></figure>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;p&gt;在這主要介紹PostgreSQL IN、NOT IN的用法&lt;br&gt;IN:數值在這集合裡面。&lt;br&gt;NOT IN:數值在不再這集合裡面。&lt;/p&gt;
+&lt;p&gt;如果有一表如下:&lt;/p&gt;
+&lt;figure class=&quot;highlight plaintext&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;t</summary>
+      
+    
+    
+    
+    <category term="Database" scheme="https://yuhsiang237.github.io/categories/Database/"/>
+    
+    <category term="PostgreSQL" scheme="https://yuhsiang237.github.io/categories/Database/PostgreSQL/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>PostgreSQL Select解析JSON</title>
+    <link href="https://yuhsiang237.github.io/2022/03/11/PostgreSQL-Select%E8%A7%A3%E6%9E%90JSON/"/>
+    <id>https://yuhsiang237.github.io/2022/03/11/PostgreSQL-Select%E8%A7%A3%E6%9E%90JSON/</id>
+    <published>2022-03-11T05:19:03.000Z</published>
+    <updated>2022-03-11T05:20:14.722Z</updated>
+    
+    <content type="html"><![CDATA[<p>(撰寫中。)</p><h3 id="參考資料"><a href="#參考資料" class="headerlink" title="參考資料"></a>參考資料</h3><ul><li><a href="https://www.twblogs.net/a/5ee9f9bc29a78f6b0110a168">https://www.twblogs.net/a/5ee9f9bc29a78f6b0110a168</a></li></ul>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;p&gt;(撰寫中。)&lt;/p&gt;
+&lt;h3 id=&quot;參考資料&quot;&gt;&lt;a href=&quot;#參考資料&quot; class=&quot;headerlink&quot; title=&quot;參考資料&quot;&gt;&lt;/a&gt;參考資料&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;https://www.twblogs.net/a/5ee9f9b</summary>
+      
+    
+    
+    
+    <category term="Database" scheme="https://yuhsiang237.github.io/categories/Database/"/>
+    
+    <category term="PostgreSQL" scheme="https://yuhsiang237.github.io/categories/Database/PostgreSQL/"/>
+    
+    
+  </entry>
   
   <entry>
     <title>PostgreSQL Select 取得昨天、近幾天資料</title>
@@ -448,71 +500,6 @@
     <category term="Database" scheme="https://yuhsiang237.github.io/categories/Database/"/>
     
     <category term="SQL Server" scheme="https://yuhsiang237.github.io/categories/Database/SQL-Server/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>[Day30] C# MVC 實際撰寫後之我的想法 - C#&amp;AspNetCore</title>
-    <link href="https://yuhsiang237.github.io/2021/12/28/C-MVC-%E5%AF%A6%E9%9A%9B%E6%92%B0%E5%AF%AB%E5%BE%8C%E4%B9%8B%E6%88%91%E7%9A%84%E6%83%B3%E6%B3%95/"/>
-    <id>https://yuhsiang237.github.io/2021/12/28/C-MVC-%E5%AF%A6%E9%9A%9B%E6%92%B0%E5%AF%AB%E5%BE%8C%E4%B9%8B%E6%88%91%E7%9A%84%E6%83%B3%E6%B3%95/</id>
-    <published>2021-12-28T12:23:52.000Z</published>
-    <updated>2022-03-07T02:53:17.425Z</updated>
-    
-    <content type="html"><![CDATA[<p>在此先說明一下，大概花了一個月製作了了一套<strong>商品出貨訂單系統</strong>的Side Project。<br>儲存庫:<a href="https://github.com/yuhsiang237/Order-System">https://github.com/yuhsiang237/Order-System</a><br>影片網址:<a href="https://www.youtube.com/watch?v=nSk6OZjhDMY">https://www.youtube.com/watch?v=nSk6OZjhDMY</a></p><p>所以這文章內容會包含很多我與之前的製作系統經驗的分享。</p><p>首先，MVC現在已經算是很主流的網站架構了，我在之前有使用過Laravel、ASP.NET Core MVC這兩套框架來設計系統，因此在整體的觀感上因為<strong>設計模式</strong>是有共同的出發點，所以上手難度是差不多，甚至說是無痛換上的感覺。因此，依照這個推論，如果仍有下個世代的框架出來，也是標榜MVC那也夠無痛接手，頂多就是學一些基礎語法糖而已。</p><p>而專案內通常有少部分會寫到演算法，我目前處理過最複雜演算法就是BFS，主要是要產生訂單的子代、父代，並且將畫圖產生出來，就是一張圖論的圖。這算是我在專案裡面處理過最複雜的結構。<br>這是我的演算法筆記用的存庫，遇到一些算法需求會整理上去。<br><a href="https://github.com/yuhsiang237/AlgorithmStudy">https://github.com/yuhsiang237/AlgorithmStudy</a></p><p>而MVC基本上跟演算法無關。他只是給你一套共同認知的地基，讓你能夠跟其他人有共同基礎去打造事物，這有什麼好處呢?能夠增加維護性，因為在沒基礎下，需要知道整體脈絡怎麼寫必須去翻舊的程式碼，算是一部分技術債，而MVC則把這技術債降低，讓你能夠比較無痛的降低學習成本，有點像是一套彼此知道的內功，學會就能打天下。</p><p>再來我說說Laravel與ASP.NET Core MVC的差異。</p><p>在除錯上，C#有著地表最強IDE Visual Studio撐腰，所以除錯非常容易，只要中斷點下去跑一次八成就知道要改哪裡了。Laravel則需要肉眼DEBUG，或是自己插Return返回點。</p><p>在撰寫速度上，C#需要編譯時間，Laravel是直譯語言則不需要所以會快一些。但如果考量到C#便利的中斷點，那最後把時間拉長我認為是C#會是優勝。</p><p>在型別上，C#屬於強型別，每屬性有特定的類型，能夠讓自己很清楚知道要塞什麼數值。而Laravel則是弱型別，宣告是用$var所以大專案下來可能會不知道哪個是哪個變數，可能會造成數值塞錯報錯。</p><p>在直譯與編譯上，C#需要編譯才能知道撰寫成功與否，Laravel則是要當場跑才知道。如果C#可以成功編譯，那可能上線只會有邏輯錯誤；Laravel則是需要當場去試錯才比較可能知道問題。</p><p>在開發速度上，C# MVC有一套框架給你但並不給你便利的內建系統，如Seed塞值、資料庫遷移、內建Redius、等等。而Laravel則是全都給你了，所以你就只要寫邏輯就好。</p><p>在版本升級上，C# MVC基礎就View Model Controller所以升級版本只要考量套件問題，相容就沒問題，而現在ASP.NET Core仍然是用基礎寫法寫就能無痛升級。Laravel則是要考量目錄變動，因為它幫你內建很多功能，每個版本的寫法也不太相同。</p><p>在資料結構上，C#內建超多的資料結構，如List、Array、Directory、Hashset…幾乎是C++的STL演算法有的他都全包還擴增，而Laravel則是沒有，需要自己找套件包或自己寫，在處理複雜資料時就會稍微辛苦一點。</p><p>在其他領域應用上，C#能夠開發網頁、桌面程式、library、windows、linux(asp.net core)。而Laravel則是只能開發網頁。</p><h3 id="總結"><a href="#總結" class="headerlink" title="總結"></a>總結</h3><p>這是我對於這兩套MVC的差異理解，但總體來說還是看自己需求，以目前來看未來我會選擇C# MVC，因為在維護上方便許多、在台灣工作環境相對友善(?)。而更重要的是需求分析、設計模式、演算法方面，因此目前可能會往這邊走XD。<br>總之，哪種方法能夠讓我花最少成本大概就是它了，畢竟寫程式某種意義就是避免浪費時間。</p>]]></content>
-    
-    
-      
-      
-    <summary type="html">&lt;p&gt;在此先說明一下，大概花了一個月製作了了一套&lt;strong&gt;商品出貨訂單系統&lt;/strong&gt;的Side Project。&lt;br&gt;儲存庫:&lt;a href=&quot;https://github.com/yuhsiang237/Order-System&quot;&gt;https://github.</summary>
-      
-    
-    
-    
-    <category term="Code" scheme="https://yuhsiang237.github.io/categories/Code/"/>
-    
-    <category term="C#" scheme="https://yuhsiang237.github.io/categories/Code/C/"/>
-    
-    <category term="Topic" scheme="https://yuhsiang237.github.io/categories/Topic/"/>
-    
-    <category term="2021 C# AspNetCore鐵人賽" scheme="https://yuhsiang237.github.io/categories/Topic/2021-C-AspNetCore%E9%90%B5%E4%BA%BA%E8%B3%BD/"/>
-    
-    <category term="Framework" scheme="https://yuhsiang237.github.io/categories/Framework/"/>
-    
-    <category term="AspNetCore MVC" scheme="https://yuhsiang237.github.io/categories/Framework/AspNetCore-MVC/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>[Day29] C# MVC 被使用在哪些地方 - C#&amp;AspNetCore</title>
-    <link href="https://yuhsiang237.github.io/2021/12/28/C-MVC-%E5%AF%A6%E9%9A%9B%E8%A2%AB%E4%BD%BF%E7%94%A8%E5%9C%A8%E9%82%A3%E4%BA%9B%E5%9C%B0%E6%96%B9/"/>
-    <id>https://yuhsiang237.github.io/2021/12/28/C-MVC-%E5%AF%A6%E9%9A%9B%E8%A2%AB%E4%BD%BF%E7%94%A8%E5%9C%A8%E9%82%A3%E4%BA%9B%E5%9C%B0%E6%96%B9/</id>
-    <published>2021-12-27T16:24:17.000Z</published>
-    <updated>2022-03-07T02:53:17.441Z</updated>
-    
-    <content type="html"><![CDATA[<p>先以C#語言實際用在那些地方開始講好了，可以製作遊戲Unity、命令列程式、跨平台(ASP.NET Core)、手機(但很少)、桌面應用、資料分析。唯一缺點大概就是嵌入式，因為通常嵌入式有記憶體限制，會壓的很低，會用純C，但是C#基本上語法跟C也很相像。</p><p>而ASP.NET的MVC則是在處理網頁為多數，如現在普遍在台灣看到的政府機構網頁、大型服務網頁都可以用這套MVC去實現，算是處理大量資料已經有認證過可以實踐的框架了。</p><p>簡言之，就是沒什麼框架能與之抗衡，光是Visual Studio的除錯能力就能減少很多開發者的時間。以及背後的支持微軟，是自己家目前產品。而Linux則是偏向雜湊派，東加西加拼湊，整合度比較低。因此，目前首選還是微軟。</p><h3 id="結論"><a href="#結論" class="headerlink" title="結論"></a>結論</h3><p>總而言之，除了嵌入式、手機外，一些後端API、網頁程式基本上都可以看到它的蹤影。</p>]]></content>
-    
-    
-      
-      
-    <summary type="html">&lt;p&gt;先以C#語言實際用在那些地方開始講好了，可以製作遊戲Unity、命令列程式、跨平台(ASP.NET Core)、手機(但很少)、桌面應用、資料分析。唯一缺點大概就是嵌入式，因為通常嵌入式有記憶體限制，會壓的很低，會用純C，但是C#基本上語法跟C也很相像。&lt;/p&gt;
-&lt;p&gt;而A</summary>
-      
-    
-    
-    
-    <category term="Code" scheme="https://yuhsiang237.github.io/categories/Code/"/>
-    
-    <category term="C#" scheme="https://yuhsiang237.github.io/categories/Code/C/"/>
-    
-    <category term="Topic" scheme="https://yuhsiang237.github.io/categories/Topic/"/>
-    
-    <category term="2021 C# AspNetCore鐵人賽" scheme="https://yuhsiang237.github.io/categories/Topic/2021-C-AspNetCore%E9%90%B5%E4%BA%BA%E8%B3%BD/"/>
-    
-    <category term="Framework" scheme="https://yuhsiang237.github.io/categories/Framework/"/>
-    
-    <category term="AspNetCore MVC" scheme="https://yuhsiang237.github.io/categories/Framework/AspNetCore-MVC/"/>
     
     
   </entry>
