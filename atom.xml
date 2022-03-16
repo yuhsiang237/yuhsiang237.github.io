@@ -6,7 +6,7 @@
   <link href="https://yuhsiang237.github.io/atom.xml" rel="self"/>
   
   <link href="https://yuhsiang237.github.io/"/>
-  <updated>2022-03-16T05:33:57.605Z</updated>
+  <updated>2022-03-16T06:21:56.531Z</updated>
   <id>https://yuhsiang237.github.io/</id>
   
   <author>
@@ -15,6 +15,30 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>PostgreSQL 反條件式NOT</title>
+    <link href="https://yuhsiang237.github.io/2022/03/16/PostgreSQL-%E5%8F%8D%E6%A2%9D%E4%BB%B6%E5%BC%8FNOT/"/>
+    <id>https://yuhsiang237.github.io/2022/03/16/PostgreSQL-%E5%8F%8D%E6%A2%9D%E4%BB%B6%E5%BC%8FNOT/</id>
+    <published>2022-03-16T06:16:36.000Z</published>
+    <updated>2022-03-16T06:21:56.531Z</updated>
+    
+    <content type="html"><![CDATA[<h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>最近遇到要添加反例的案件，需要把整個條件反著寫。<br>但AND/OR反著寫就很違反閱讀習慣，於是找到了能用NOT這語句去概括整條件句，結果就可以變反。</p><p>如果有一表如下:</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">price_record</span><br><span class="line">id | price</span><br><span class="line">---+------</span><br><span class="line">1  | 100 </span><br><span class="line">2  | 200</span><br><span class="line">3  | 300</span><br></pre></td></tr></table></figure><p>IN:數值在這集合裡面。</p><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> PRICE_RECORD PR </span><br><span class="line"><span class="keyword">WHERE</span> <span class="keyword">NOT</span> </span><br><span class="line">    (</span><br><span class="line">        <span class="comment">-- 寫原本要反例的判斷邏輯</span></span><br><span class="line">        PR.PRICE <span class="keyword">IN</span> (<span class="string">&#x27;100&#x27;</span>,<span class="string">&#x27;200&#x27;</span>)</span><br><span class="line">    ) </span><br></pre></td></tr></table></figure><p>結果:</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">price_record</span><br><span class="line">id | price</span><br><span class="line">---+------</span><br><span class="line">3  | 300</span><br></pre></td></tr></table></figure>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;h3 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h3&gt;&lt;p&gt;最近遇到要添加反例的案件，需要把整個條件反著寫。&lt;br&gt;但AND/OR反著寫就很違反閱讀習慣，於是找到了能用NOT這語句去概括整條件句，結果</summary>
+      
+    
+    
+    
+    <category term="Database" scheme="https://yuhsiang237.github.io/categories/Database/"/>
+    
+    <category term="PostgreSQL" scheme="https://yuhsiang237.github.io/categories/Database/PostgreSQL/"/>
+    
+    
+  </entry>
   
   <entry>
     <title>PostgreSQL IN/NOT IN 判斷語句</title>
@@ -468,31 +492,6 @@
       
     <summary type="html">&lt;p&gt;在這篇文章中簡易的介紹Stored Procedure。&lt;/p&gt;
 &lt;h3 id=&quot;Stored-Procedure-預存程序&quot;&gt;&lt;a href=&quot;#Stored-Procedure-預存程序&quot; class=&quot;headerlink&quot; title=&quot;Stored Procedu</summary>
-      
-    
-    
-    
-    <category term="Database" scheme="https://yuhsiang237.github.io/categories/Database/"/>
-    
-    <category term="SQL Server" scheme="https://yuhsiang237.github.io/categories/Database/SQL-Server/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>SQL Server 常見SQL語法筆記</title>
-    <link href="https://yuhsiang237.github.io/2022/01/05/SQL%E5%B8%B8%E8%A6%8B%E7%94%A8%E6%B3%95%E7%AD%86%E8%A8%98/"/>
-    <id>https://yuhsiang237.github.io/2022/01/05/SQL%E5%B8%B8%E8%A6%8B%E7%94%A8%E6%B3%95%E7%AD%86%E8%A8%98/</id>
-    <published>2022-01-04T23:54:08.000Z</published>
-    <updated>2022-03-07T02:53:17.472Z</updated>
-    
-    <content type="html"><![CDATA[<h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>在這裡整理一些專案常用的SQL語法。</p><h3 id="語法"><a href="#語法" class="headerlink" title="語法"></a>語法</h3><p>1.新增一筆資料</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">insert into Todos (Name) Values (&#x27;123&#x27;)</span><br></pre></td></tr></table></figure><p>2.更新一筆資料</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">update Todos set Name = &#x27;4123&#x27;,IsComplete = 1 where Name = &#x27;123&#x27;</span><br></pre></td></tr></table></figure><p>3.刪除一筆資料</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">delete from Todos where id = 17</span><br></pre></td></tr></table></figure><p>4.查詢該表所有資料</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select * from Todos;</span><br></pre></td></tr></table></figure><p>5.使用查詢結果新增資料</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">insert into Todos (Name) select Name from Todos where Name = &#x27;4123&#x27;</span><br></pre></td></tr></table></figure><p>6.INNER JOIN 主表跟次要表都有相同的值才撈出</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">select * from ShipmentOrderDetails as a </span><br><span class="line">join Products as b on a.ProductId = b.Id</span><br></pre></td></tr></table></figure><p>7.LEFT JOIN 主表值為主嘗試撈取次要表值，次要表有值就撈，沒值就NULL</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">select * from ShipmentOrderDetails as a </span><br><span class="line">left join Products as b on a.ProductId = b.Id</span><br></pre></td></tr></table></figure><p>8.GROUP BY 取得以哪個欄位作為群，並且操作該群的集合資料</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">select OrderId,sum(ProductPrice * ProductUnit) sum from ShipmentOrderDetails </span><br><span class="line">group by OrderId</span><br></pre></td></tr></table></figure><p>9.多對多資料處理(即使用left join/join的組合技)</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">select a.Id,a.Name,c.Id as ProductCategoryId,c.Name as ProductCategoryName from Products as a</span><br><span class="line">left join ProductProductCategoryRelationships as b on a.Id = b.ProductId</span><br><span class="line">left join ProductCategory as c on c.Id = b.ProductCategoryId</span><br></pre></td></tr></table></figure><h3 id="總結"><a href="#總結" class="headerlink" title="總結"></a>總結</h3><p>這裡整理SQL常見用法。<br>因為在寫C#時其實內部會使用LINQ，所以就會對不常用的原生SQL生疏，因此在此整理在專案上常見的使用方法，有需要時就能節省再熟悉的時間。</p>]]></content>
-    
-    
-      
-      
-    <summary type="html">&lt;h3 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h3&gt;&lt;p&gt;在這裡整理一些專案常用的SQL語法。&lt;/p&gt;
-&lt;h3 id=&quot;語法&quot;&gt;&lt;a href=&quot;#語法&quot; class=&quot;headerlink&quot; ti</summary>
       
     
     
