@@ -6,7 +6,7 @@
   <link href="https://yuhsiang237.github.io/atom.xml" rel="self"/>
   
   <link href="https://yuhsiang237.github.io/"/>
-  <updated>2022-03-16T06:21:56.531Z</updated>
+  <updated>2022-03-17T02:33:15.742Z</updated>
   <id>https://yuhsiang237.github.io/</id>
   
   <author>
@@ -15,6 +15,30 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>PostgreSQL 建立自動遞增PK Table</title>
+    <link href="https://yuhsiang237.github.io/2022/03/17/PostgreSQL-%E5%BB%BA%E7%AB%8B%E8%87%AA%E5%8B%95%E9%81%9E%E5%A2%9EPK-Table/"/>
+    <id>https://yuhsiang237.github.io/2022/03/17/PostgreSQL-%E5%BB%BA%E7%AB%8B%E8%87%AA%E5%8B%95%E9%81%9E%E5%A2%9EPK-Table/</id>
+    <published>2022-03-17T02:26:17.000Z</published>
+    <updated>2022-03-17T02:33:15.742Z</updated>
+    
+    <content type="html"><![CDATA[<h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>因為發現用PGADMIN建立Table速度太慢(超久的Loading)，因此最後就習慣用指令去建立Table了。<br>以下為在PostgreSQL建立一個遞增+1的SEQ欄位，且為Table的PK。</p><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> (</span><br><span class="line">    SEQ SERIAL <span class="keyword">PRIMARY</span> KEY,</span><br><span class="line">    NAME <span class="type">CHARACTER</span> <span class="type">VARYING</span>(<span class="number">3</span>) <span class="keyword">NULL</span>,</span><br><span class="line">    REMARK TEXT,</span><br><span class="line">    IS_VALID <span class="type">BOOLEAN</span> <span class="keyword">NULL</span>,</span><br><span class="line">    CREATED_ON <span class="type">TIMESTAMP</span> <span class="keyword">WITHOUT</span> <span class="type">TIME</span> ZONE <span class="keyword">NULL</span>,</span><br><span class="line">    UPDATED_ON <span class="type">TIMESTAMP</span> <span class="keyword">WITHOUT</span> <span class="type">TIME</span> ZONE <span class="keyword">NULL</span>,</span><br><span class="line">)</span><br></pre></td></tr></table></figure>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;h3 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h3&gt;&lt;p&gt;因為發現用PGADMIN建立Table速度太慢(超久的Loading)，因此最後就習慣用指令去建立Table了。&lt;br&gt;以下為在Postgr</summary>
+      
+    
+    
+    
+    <category term="Database" scheme="https://yuhsiang237.github.io/categories/Database/"/>
+    
+    <category term="PostgreSQL" scheme="https://yuhsiang237.github.io/categories/Database/PostgreSQL/"/>
+    
+    
+  </entry>
   
   <entry>
     <title>PostgreSQL 反條件式NOT</title>
@@ -474,31 +498,6 @@
     <category term="Code" scheme="https://yuhsiang237.github.io/categories/Code/"/>
     
     <category term="C#" scheme="https://yuhsiang237.github.io/categories/Code/C/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>SQL Server Stored Procedure 介紹&amp;實作</title>
-    <link href="https://yuhsiang237.github.io/2022/01/10/SQL-Server-Stored-Procedure%E5%AF%A6%E4%BD%9C%E7%AF%84%E4%BE%8B/"/>
-    <id>https://yuhsiang237.github.io/2022/01/10/SQL-Server-Stored-Procedure%E5%AF%A6%E4%BD%9C%E7%AF%84%E4%BE%8B/</id>
-    <published>2022-01-10T04:18:54.000Z</published>
-    <updated>2022-03-07T02:53:17.456Z</updated>
-    
-    <content type="html"><![CDATA[<p>在這篇文章中簡易的介紹Stored Procedure。</p><h3 id="Stored-Procedure-預存程序"><a href="#Stored-Procedure-預存程序" class="headerlink" title="Stored Procedure(預存程序)"></a>Stored Procedure(預存程序)</h3><p>A stored procedure is a prepared SQL code that you can save, so the code can be reused over and over again.</p><p>So if you have an SQL query that you write over and over again, save it as a stored procedure, and then just call it to execute it.</p><p>You can also pass parameters to a stored procedure, so that the stored procedure can act based on the parameter value(s) that is passed.</p><p>簡單來說就是一種預存程序，寫在資料庫裡面，可以藉由外部傳入參數去呼叫數值，而得到結果。</p><h3 id="優點"><a href="#優點" class="headerlink" title="優點"></a>優點</h3><p>1.能夠讓不同應用程式直接呼叫，核心邏輯不用分散。<br>(但目前有微服務架構能改用API了，因此除非是特別有必要，否則還是很少碰到)</p><h3 id="缺點"><a href="#缺點" class="headerlink" title="缺點"></a>缺點</h3><p>1.撰寫因為沒辦法中斷點Debug所以除錯困難。</p><h3 id="簡易寫一個Stored-Procedure"><a href="#簡易寫一個Stored-Procedure" class="headerlink" title="簡易寫一個Stored Procedure"></a>簡易寫一個Stored Procedure</h3><p>1.建立一段searchProduct的Stored Procedure。用來查詢特定Id的商品。</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">CREATE PROCEDURE searchProduct </span><br><span class="line">    @productId int</span><br><span class="line">AS </span><br><span class="line">SELECT * from Products </span><br><span class="line">where Id = @productId</span><br></pre></td></tr></table></figure><p>2.執行後可以在資料庫的「資料庫&gt;Programmability&gt;Stored Procedures」裡面找到</p><img src="/2022/01/10/SQL-Server-Stored-Procedure%E5%AF%A6%E4%BD%9C%E7%AF%84%E4%BE%8B/1.png" class=""><p>3.執行</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">exec searchProduct 6</span><br></pre></td></tr></table></figure><p>即可得到結果:</p><img src="/2022/01/10/SQL-Server-Stored-Procedure%E5%AF%A6%E4%BD%9C%E7%AF%84%E4%BE%8B/2.png" class=""><p>4.這樣就完成了一段最簡單的Stored Procedure。<br>但在實作上主要維護時會很花時間，如果是千行T-SQL，無法使用中斷點會像是天書那樣。</p><h3 id="總結"><a href="#總結" class="headerlink" title="總結"></a>總結</h3><p>以目前寫過系統來說都是在後端程式裡面寫，而Stored Procedure算是一個新的體驗。<br>除非，真的有必要需求，否則還是用API式輕量化，因為比較好DEBUG。</p>]]></content>
-    
-    
-      
-      
-    <summary type="html">&lt;p&gt;在這篇文章中簡易的介紹Stored Procedure。&lt;/p&gt;
-&lt;h3 id=&quot;Stored-Procedure-預存程序&quot;&gt;&lt;a href=&quot;#Stored-Procedure-預存程序&quot; class=&quot;headerlink&quot; title=&quot;Stored Procedu</summary>
-      
-    
-    
-    
-    <category term="Database" scheme="https://yuhsiang237.github.io/categories/Database/"/>
-    
-    <category term="SQL Server" scheme="https://yuhsiang237.github.io/categories/Database/SQL-Server/"/>
     
     
   </entry>
