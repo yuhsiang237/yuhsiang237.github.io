@@ -6,7 +6,7 @@
   <link href="https://yuhsiang237.github.io/atom.xml" rel="self"/>
   
   <link href="https://yuhsiang237.github.io/"/>
-  <updated>2022-03-17T02:33:15.742Z</updated>
+  <updated>2022-03-17T02:35:42.436Z</updated>
   <id>https://yuhsiang237.github.io/</id>
   
   <author>
@@ -21,9 +21,9 @@
     <link href="https://yuhsiang237.github.io/2022/03/17/PostgreSQL-%E5%BB%BA%E7%AB%8B%E8%87%AA%E5%8B%95%E9%81%9E%E5%A2%9EPK-Table/"/>
     <id>https://yuhsiang237.github.io/2022/03/17/PostgreSQL-%E5%BB%BA%E7%AB%8B%E8%87%AA%E5%8B%95%E9%81%9E%E5%A2%9EPK-Table/</id>
     <published>2022-03-17T02:26:17.000Z</published>
-    <updated>2022-03-17T02:33:15.742Z</updated>
+    <updated>2022-03-17T02:35:42.436Z</updated>
     
-    <content type="html"><![CDATA[<h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>因為發現用PGADMIN建立Table速度太慢(超久的Loading)，因此最後就習慣用指令去建立Table了。<br>以下為在PostgreSQL建立一個遞增+1的SEQ欄位，且為Table的PK。</p><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> (</span><br><span class="line">    SEQ SERIAL <span class="keyword">PRIMARY</span> KEY,</span><br><span class="line">    NAME <span class="type">CHARACTER</span> <span class="type">VARYING</span>(<span class="number">3</span>) <span class="keyword">NULL</span>,</span><br><span class="line">    REMARK TEXT,</span><br><span class="line">    IS_VALID <span class="type">BOOLEAN</span> <span class="keyword">NULL</span>,</span><br><span class="line">    CREATED_ON <span class="type">TIMESTAMP</span> <span class="keyword">WITHOUT</span> <span class="type">TIME</span> ZONE <span class="keyword">NULL</span>,</span><br><span class="line">    UPDATED_ON <span class="type">TIMESTAMP</span> <span class="keyword">WITHOUT</span> <span class="type">TIME</span> ZONE <span class="keyword">NULL</span>,</span><br><span class="line">)</span><br></pre></td></tr></table></figure>]]></content>
+    <content type="html"><![CDATA[<h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>因為發現用PGADMIN建立Table速度太慢(超久的Loading)，因此最後就習慣用指令去建立Table了。<br>以下為在PostgreSQL建立一個遞增+1的SEQ欄位，且為Table的PK。</p><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> (</span><br><span class="line">    SEQ SERIAL <span class="keyword">PRIMARY</span> KEY,</span><br><span class="line">    NAME <span class="type">CHARACTER</span> <span class="type">VARYING</span>(<span class="number">100</span>) <span class="keyword">NULL</span>,</span><br><span class="line">    REMARK TEXT,</span><br><span class="line">    IS_VALID <span class="type">BOOLEAN</span> <span class="keyword">NULL</span>,</span><br><span class="line">    CREATED_ON <span class="type">TIMESTAMP</span> <span class="keyword">WITHOUT</span> <span class="type">TIME</span> ZONE <span class="keyword">NULL</span>,</span><br><span class="line">    UPDATED_ON <span class="type">TIMESTAMP</span> <span class="keyword">WITHOUT</span> <span class="type">TIME</span> ZONE <span class="keyword">NULL</span>,</span><br><span class="line">)</span><br></pre></td></tr></table></figure>]]></content>
     
     
       
