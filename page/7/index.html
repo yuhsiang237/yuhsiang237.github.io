@@ -77,6 +77,85 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-35-Search-Insert-Position" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2021/09/21/35-Search-Insert-Position/" class="article-date">
+  <time class="dt-published" datetime="2021-09-21T01:20:34.000Z" itemprop="datePublished">2021-09-21</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Code/">Code</a>►<a class="article-category-link" href="/categories/Code/C/">C#</a>►<a class="article-category-link" href="/categories/Topic/">Topic</a>►<a class="article-category-link" href="/categories/Topic/LeetCode/">LeetCode</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2021/09/21/35-Search-Insert-Position/">LeetCode -  35. Search Insert Position</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <div class="content__u3I1 question-content__JfgR"><div><p>Given a sorted array of distinct integers and a target value, return the index if the target is found. If not, return the index where it would be if it were inserted in order.</p>
+<p>You must&nbsp;write an algorithm with&nbsp;<code>O(log n)</code> runtime complexity.</p>
+<p>&nbsp;</p>
+<p><strong>Example 1:</strong></p>
+<pre><strong>Input:</strong> nums = [1,3,5,6], target = 5
+<strong>Output:</strong> 2
+</pre><p><strong>Example 2:</strong></p>
+<pre><strong>Input:</strong> nums = [1,3,5,6], target = 2
+<strong>Output:</strong> 1
+</pre><p><strong>Example 3:</strong></p>
+<pre><strong>Input:</strong> nums = [1,3,5,6], target = 7
+<strong>Output:</strong> 4
+</pre><p><strong>Example 4:</strong></p>
+<pre><strong>Input:</strong> nums = [1,3,5,6], target = 0
+<strong>Output:</strong> 0
+</pre><p><strong>Example 5:</strong></p>
+<pre><strong>Input:</strong> nums = [1], target = 0
+<strong>Output:</strong> 0
+</pre>
+<p>&nbsp;</p>
+<p><strong>Constraints:</strong></p>
+
+<ul>
+    <li><code>1 &lt;= nums.length &lt;= 10<sup>4</sup></code></li>
+    <li><code>-10<sup>4</sup> &lt;= nums[i] &lt;= 10<sup>4</sup></code></li>
+    <li><code>nums</code> contains <strong>distinct</strong> values sorted in <strong>ascending</strong> order.</li>
+    <li><code>-10<sup>4</sup> &lt;= target &lt;= 10<sup>4</sup></code></li>
+</ul>
+</div></div>
+C# Sol:
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">public class Solution &#123;</span><br><span class="line">    public int SearchInsert(int[] nums, int target) &#123;</span><br><span class="line">        int index = 0;</span><br><span class="line">        Boolean isFind = false;</span><br><span class="line">        for(int i=0;i&lt;nums.Length;i++)&#123;</span><br><span class="line">            if(nums[i] == target)&#123;</span><br><span class="line">                isFind = true;</span><br><span class="line">                index = i;</span><br><span class="line">                break;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        if(!isFind)&#123;</span><br><span class="line">            for(int i=0;i&lt;nums.Length;i++)&#123;</span><br><span class="line">                if(nums[i] &gt; target)&#123;</span><br><span class="line">                    index = i;</span><br><span class="line">                    break;</span><br><span class="line">                &#125;else if(i == nums.Length -1 )&#123;</span><br><span class="line">                    index = i+1;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        return index;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Runtime: 92 ms<br>Memory Usage: 24.9 MB
+    </p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://yuhsiang237.github.io/2021/09/21/35-Search-Insert-Position/" data-id="cl0g433nn0000twgh7bfx46qq" data-title="LeetCode -  35. Search Insert Position" class="article-share-link">Teilen</a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/C/" rel="tag">C#</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/LeetCode/" rel="tag">LeetCode</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E8%A7%A3%E9%A1%8C/" rel="tag">解題</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
     <article id="post-什麼是MVC" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
     <a href="/2021/09/21/%E4%BB%80%E9%BA%BC%E6%98%AFMVC/" class="article-date">
@@ -575,190 +654,6 @@
 
 
   
-    <article id="post-sql-server-日期函數" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2021/09/17/sql-server-%E6%97%A5%E6%9C%9F%E5%87%BD%E6%95%B8/" class="article-date">
-  <time class="dt-published" datetime="2021-09-17T08:28:08.000Z" itemprop="datePublished">2021-09-17</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/Database/">Database</a>►<a class="article-category-link" href="/categories/Database/SQL-Server/">SQL Server</a>►<a class="article-category-link" href="/categories/Topic/">Topic</a>►<a class="article-category-link" href="/categories/Topic/2021-SQL-Server%E9%90%B5%E4%BA%BA%E8%B3%BD/">2021 SQL Server鐵人賽</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2021/09/17/sql-server-%E6%97%A5%E6%9C%9F%E5%87%BD%E6%95%B8/">[Day25] SQL server 日期函數 - SQL Server資料庫入門</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p>這回介紹日期函數的使用。<br>在大多的資料庫都會有一些可以用的函式，讓我們做一些特殊操作。<br>在這回以SQL server資料庫為例子。</p>
-<h3 id="SQL-server日期函式"><a href="#SQL-server日期函式" class="headerlink" title="SQL server日期函式"></a>SQL server日期函式</h3><p>GETDATE() 取得現在的日期時間<br>DATEADD() 增加或減少指定的時間間隔<br>DATEPART() 取出日期時間中特定的部分<br>CONVERT() 格式化日期時間顯示<br>DATEDIFF() 日期相減</p>
-<h3 id="可用的關鍵字"><a href="#可用的關鍵字" class="headerlink" title="可用的關鍵字"></a>可用的關鍵字</h3><p>可用的關鍵字參數:</p>
-<table><thead><tr><th>datepart (全名和縮寫)</th><th>說明</th></tr></thead><tbody><tr><td>year, yyyy, yy</td><td>年</td></tr><tr><td>month, mm, m</td><td>月</td></tr><tr><td>day, dd, d</td><td>日</td></tr><tr><td>hour, hh</td><td>時</td></tr><tr><td>minute, n</td><td>分</td></tr><tr><td>second, ss, s</td><td>秒</td></tr><tr><td>millisecond, ms</td><td>毫秒</td></tr><tr><td>microsecond, mcs</td><td>微秒</td></tr><tr><td>nanosecond, ns</td><td>毫微秒</td></tr><tr><td>quarter, qq, q</td><td>季</td></tr><tr><td>dayofyear, dy, y</td><td>一年中的第幾天</td></tr><tr><td>week, wk, ww</td><td>週</td></tr><tr><td>weekday, dw</td><td>星期幾</td></tr></tbody></table>
-
-
-<h3 id="GETDATE"><a href="#GETDATE" class="headerlink" title="GETDATE"></a>GETDATE</h3><p>取得現在的日期時間</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Select </span><br><span class="line">GETDATE() as 現在的日期時間</span><br></pre></td></tr></table></figure>
-<p>結果</p>
-<img src="/2021/09/17/sql-server-%E6%97%A5%E6%9C%9F%E5%87%BD%E6%95%B8/1.png" class="">
-
-<h3 id="DATEADD"><a href="#DATEADD" class="headerlink" title="DATEADD"></a>DATEADD</h3><p>增加或減少指定的時間間隔<br>可以輸入負值，代表回推<br>正值則是往後推</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Select </span><br><span class="line">DATEADD(day, 2, GETDATE()) as 兩天後</span><br></pre></td></tr></table></figure>
-<p>結果</p>
-<img src="/2021/09/17/sql-server-%E6%97%A5%E6%9C%9F%E5%87%BD%E6%95%B8/2.png" class="">
-
-
-<h3 id="DATEPART"><a href="#DATEPART" class="headerlink" title="DATEPART"></a>DATEPART</h3><p>取出日期時間中特定的部分</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">SELECT DATEPART(yyyy, GETDATE())  as 年,</span><br><span class="line">DATEPART(mm, GETDATE())  as 月,</span><br><span class="line">DATEPART(dd, GETDATE())  as 日</span><br></pre></td></tr></table></figure>
-<p>結果</p>
-<img src="/2021/09/17/sql-server-%E6%97%A5%E6%9C%9F%E5%87%BD%E6%95%B8/3.png" class="">
-
-
-<h3 id="CONVERT"><a href="#CONVERT" class="headerlink" title="CONVERT"></a>CONVERT</h3><p>格式化日期時間顯示，可以用格式化代碼快速轉成指定規範格式。</p>
-<p>格式代碼:</p>
-<table>
-<tbody><tr>
-<th>Style ID</th>
-<th>Style 格式</th>
-</tr>
-
-<tr>
-<td>100 或者 0</td>
-<td>mon dd yyyy hh:miAM （或者 PM）</td>
-</tr>
-
-<tr>
-<td>101</td>
-<td>mm/dd/yy</td>
-</tr>
-
-<tr>
-<td>102</td>
-<td>yy.mm.dd</td>
-</tr>
-
-<tr>
-<td>103</td>
-<td>dd/mm/yy</td>
-</tr>
-
-<tr>
-<td>104</td>
-<td>dd.mm.yy</td>
-</tr>
-
-<tr>
-<td>105</td>
-<td>dd-mm-yy</td>
-</tr>
-
-<tr>
-<td>106</td>
-<td>dd mon yy</td>
-</tr>
-
-<tr>
-<td>107</td>
-<td>Mon dd, yy</td>
-</tr>
-
-<tr>
-<td>108</td>
-<td>hh:mm:ss</td>
-</tr>
-
-<tr>
-<td>109 或者 9</td>
-<td>mon dd yyyy hh:mi:ss:mmmAM（或者 PM）</td>
-</tr>
-
-<tr>
-<td>110</td>
-<td>mm-dd-yy</td>
-</tr>
-
-<tr>
-<td>111</td>
-<td>yy/mm/dd</td>
-</tr>
-
-<tr>
-<td>112</td>
-<td>yymmdd</td></tr>
-
-<tr>
-<td>113 或者 13</td>
-<td>dd mon yyyy hh:mm:ss:mmm(24h)</td>
-</tr>
-
-<tr>
-<td>114</td>
-<td>hh:mi:ss:mmm(24h)</td>
-</tr>
-
-<tr>
-<td>120 或者 20</td>
-<td>yyyy-mm-dd hh:mi:ss(24h)</td>
-</tr>
-
-<tr>
-<td>121 或者 21</td>
-<td>yyyy-mm-dd hh:mi:ss.mmm(24h)</td>
-</tr>
-
-<tr>
-<td>126</td>
-<td>yyyy-mm-ddThh:mm:ss.mmm（没有空格）</td>
-</tr>
-
-<tr>
-<td>130</td>
-<td>dd mon yyyy hh:mi:ss:mmmAM</td>
-</tr>
-
-<tr>
-<td>131</td>
-<td>dd/mm/yy hh:mi:ss:mmmAM</td>
-</tr>
-</tbody></table>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SELECT CONVERT(varchar, GETDATE(), 100) AS Converted</span><br></pre></td></tr></table></figure>
-結果
-<img src="/2021/09/17/sql-server-%E6%97%A5%E6%9C%9F%E5%87%BD%E6%95%B8/4.png" class="">
-
-<h3 id="DATEDIFF"><a href="#DATEDIFF" class="headerlink" title="DATEDIFF"></a>DATEDIFF</h3><p>日期相減</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SELECT DATEDIFF(day, &#x27;2008-06-10&#x27;, &#x27;2008-08-10&#x27;) AS 日期相差</span><br></pre></td></tr></table></figure>
-<p>結果</p>
-<img src="/2021/09/17/sql-server-%E6%97%A5%E6%9C%9F%E5%87%BD%E6%95%B8/5.png" class="">
-
-
-<h3 id="結論"><a href="#結論" class="headerlink" title="結論"></a>結論</h3><p>在SQL語法上比較常用的是DATEDIFF、DATEADD、CONVERT。GETDATE。<br>如:前1個月、今天-7天、上禮拜資料這種需求還蠻常見的。</p>
-<p><strong>參考資料</strong><br><a target="_blank" rel="noopener" href="https://www.fooish.com/sql/sql-server-getdate-function.html">https://www.fooish.com/sql/sql-server-getdate-function.html</a><br><a target="_blank" rel="noopener" href="https://www.w3school.com.cn/sql/func_convert.asp">https://www.w3school.com.cn/sql/func_convert.asp</a></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://yuhsiang237.github.io/2021/09/17/sql-server-%E6%97%A5%E6%9C%9F%E5%87%BD%E6%95%B8/" data-id="cl0g433pa004btwghfgg46ly1" data-title="[Day25] SQL server 日期函數 - SQL Server資料庫入門" class="article-share-link">Teilen</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
 
 
   <nav id="page-nav">
@@ -774,7 +669,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Kategorien</h3>
     <div class="widget">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Code/">Code</a><span class="category-list-count">51</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Code/C/">C#</a><span class="category-list-count">47</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Code/Javascript/">Javascript</a><span class="category-list-count">5</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/">Computer Science</a><span class="category-list-count">5</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/Algorithm/">Algorithm</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/Data-structure/">Data structure</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/%E9%9B%BB%E5%AD%90%E9%9B%BB%E8%B7%AF/">電子電路</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Daily-Log/">Daily Log</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/">Database</a><span class="category-list-count">45</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Database/PostgreSQL/">PostgreSQL</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/SQL-Server/">SQL Server</a><span class="category-list-count">37</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/">Framework</a><span class="category-list-count">27</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/AspNetCore-API/">AspNetCore API</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/AspNetCore-MVC/">AspNetCore MVC</a><span class="category-list-count">21</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/">Topic</a><span class="category-list-count">63</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2021-C-AspNetCore%E9%90%B5%E4%BA%BA%E8%B3%BD/">2021 C# AspNetCore鐵人賽</a><span class="category-list-count">30</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2021-SQL-Server%E9%90%B5%E4%BA%BA%E8%B3%BD/">2021 SQL Server鐵人賽</a><span class="category-list-count">30</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/LeetCode/">LeetCode</a><span class="category-list-count">3</span></li></ul></li></ul>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Code/">Code</a><span class="category-list-count">51</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Code/C/">C#</a><span class="category-list-count">47</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Code/Javascript/">Javascript</a><span class="category-list-count">5</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/">Computer Science</a><span class="category-list-count">5</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/Algorithm/">Algorithm</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/Data-structure/">Data structure</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/%E9%9B%BB%E5%AD%90%E9%9B%BB%E8%B7%AF/">電子電路</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Daily-Log/">Daily Log</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/">Database</a><span class="category-list-count">46</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Database/PostgreSQL/">PostgreSQL</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/SQL-Server/">SQL Server</a><span class="category-list-count">38</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/">Framework</a><span class="category-list-count">27</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/AspNetCore-API/">AspNetCore API</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/AspNetCore-MVC/">AspNetCore MVC</a><span class="category-list-count">21</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/">Topic</a><span class="category-list-count">63</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2021-C-AspNetCore%E9%90%B5%E4%BA%BA%E8%B3%BD/">2021 C# AspNetCore鐵人賽</a><span class="category-list-count">30</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2021-SQL-Server%E9%90%B5%E4%BA%BA%E8%B3%BD/">2021 SQL Server鐵人賽</a><span class="category-list-count">30</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/LeetCode/">LeetCode</a><span class="category-list-count">3</span></li></ul></li></ul>
     </div>
   </div>
 
@@ -784,7 +679,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Archiv</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/03/">三月 2022</a><span class="archive-list-count">10</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/02/">二月 2022</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/01/">一月 2022</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">十二月 2021</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">十月 2021</a><span class="archive-list-count">24</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">九月 2021</a><span class="archive-list-count">46</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">八月 2021</a><span class="archive-list-count">12</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/03/">三月 2022</a><span class="archive-list-count">11</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/02/">二月 2022</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/01/">一月 2022</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">十二月 2021</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">十月 2021</a><span class="archive-list-count">24</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">九月 2021</a><span class="archive-list-count">46</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">八月 2021</a><span class="archive-list-count">12</span></li></ul>
     </div>
   </div>
 
