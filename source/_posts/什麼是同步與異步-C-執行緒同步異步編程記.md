@@ -27,6 +27,10 @@ categories:
 <td>同時，一次做多件事情</td>
 <td>同時，一次做一件事情</td>
 </tr>
+<td>圖例</td>
+<td>{% asset_img "1.png" %}</td>
+<td>{% asset_img "2.png" %}</td>
+</tr>
 <tr>
 <td>例子</td>
 <td>非同步串行通信、AJAX</td>
@@ -44,7 +48,8 @@ categories:
 且非同步方法調用後立即返回，因此不會有結果，而是用通知、回調方式去獲得結果。
 而在C#中Thread與Task都能做到異步，下回則主要介紹Thread與Task的差異囉。
 
-### 參考資料
+
+### 參考資料 
 - https://zh.wikipedia.org/wiki/%E9%9D%9E%E5%90%8C%E6%AD%A5
 - https://zh.wikipedia.org/wiki/%E5%90%8C%E6%AD%A5
 - https://docs.microsoft.com/zh-tw/dotnet/csharp/programming-guide/concepts/async/
