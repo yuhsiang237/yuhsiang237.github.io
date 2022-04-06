@@ -77,6 +77,432 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-PostgreSQL-IN-NOT-IN-判斷語句" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2022/03/16/PostgreSQL-IN-NOT-IN-%E5%88%A4%E6%96%B7%E8%AA%9E%E5%8F%A5/" class="article-date">
+  <time class="dt-published" datetime="2022-03-16T05:24:20.000Z" itemprop="datePublished">2022-03-16</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Database/">Database</a>►<a class="article-category-link" href="/categories/Database/PostgreSQL/">PostgreSQL</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2022/03/16/PostgreSQL-IN-NOT-IN-%E5%88%A4%E6%96%B7%E8%AA%9E%E5%8F%A5/">PostgreSQL IN/NOT IN 判斷語句</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>在這主要介紹PostgreSQL IN、NOT IN的用法<br>IN:數值在這集合裡面。<br>NOT IN:數值在不再這集合裡面。</p>
+<p>如果有一表如下:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">price_record</span><br><span class="line">id | price</span><br><span class="line">---+------</span><br><span class="line">1  | 100 </span><br><span class="line">2  | 200</span><br><span class="line">3  | 300</span><br></pre></td></tr></table></figure>
+
+<p>IN:數值在這集合裡面。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> PRICE_RECORD PR </span><br><span class="line"><span class="keyword">WHERE</span> PR.PRICE <span class="keyword">IN</span> (<span class="string">&#x27;100&#x27;</span>,<span class="string">&#x27;200&#x27;</span>) </span><br></pre></td></tr></table></figure>
+
+<p>結果:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">id | price</span><br><span class="line">---+------</span><br><span class="line">1  | 100 </span><br><span class="line">2  | 200</span><br></pre></td></tr></table></figure>
+<p>NOT IN:數值在不再這集合裡面。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> PRICE_RECORD PR </span><br><span class="line"><span class="keyword">WHERE</span> PR.PRICE <span class="keyword">NOT</span> <span class="keyword">IN</span> (<span class="string">&#x27;100&#x27;</span>,<span class="string">&#x27;200&#x27;</span>) </span><br></pre></td></tr></table></figure>
+
+<p>結果:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">id | price</span><br><span class="line">---+------</span><br><span class="line">3  | 300</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://yuhsiang237.github.io/2022/03/16/PostgreSQL-IN-NOT-IN-%E5%88%A4%E6%96%B7%E8%AA%9E%E5%8F%A5/" data-id="cl0t4mx0c0000zgghcbjpahce" data-title="PostgreSQL IN/NOT IN 判斷語句" class="article-share-link">Teilen</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-PostgreSQL-Select解析JSON" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2022/03/11/PostgreSQL-Select%E8%A7%A3%E6%9E%90JSON/" class="article-date">
+  <time class="dt-published" datetime="2022-03-11T05:19:03.000Z" itemprop="datePublished">2022-03-11</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Database/">Database</a>►<a class="article-category-link" href="/categories/Database/PostgreSQL/">PostgreSQL</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2022/03/11/PostgreSQL-Select%E8%A7%A3%E6%9E%90JSON/">PostgreSQL Select解析JSON</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>(撰寫中。)</p>
+<h3 id="參考資料"><a href="#參考資料" class="headerlink" title="參考資料"></a>參考資料</h3><ul>
+<li><a target="_blank" rel="noopener" href="https://www.twblogs.net/a/5ee9f9bc29a78f6b0110a168">https://www.twblogs.net/a/5ee9f9bc29a78f6b0110a168</a></li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://yuhsiang237.github.io/2022/03/11/PostgreSQL-Select%E8%A7%A3%E6%9E%90JSON/" data-id="cl0t4mx0g0001zggh21c79hhw" data-title="PostgreSQL Select解析JSON" class="article-share-link">Teilen</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-PostgreSQL-Select-取得昨天、近幾天資料" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2022/03/11/PostgreSQL-Select-%E5%8F%96%E5%BE%97%E6%98%A8%E5%A4%A9%E3%80%81%E8%BF%91%E5%B9%BE%E5%A4%A9%E8%B3%87%E6%96%99/" class="article-date">
+  <time class="dt-published" datetime="2022-03-11T01:46:14.000Z" itemprop="datePublished">2022-03-11</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Database/">Database</a>►<a class="article-category-link" href="/categories/Database/PostgreSQL/">PostgreSQL</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2022/03/11/PostgreSQL-Select-%E5%8F%96%E5%BE%97%E6%98%A8%E5%A4%A9%E3%80%81%E8%BF%91%E5%B9%BE%E5%A4%A9%E8%B3%87%E6%96%99/">PostgreSQL Select 取得昨天、近幾天資料</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>最近遇到在PostgreSQL取得近幾天資料的問題，於是在思考是否有比較直覺得寫法?<br>後來發現用Between或&gt;=都可以。</p>
+<p>以下有一個table:</p>
+<p><strong>tb_record</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">seq | record_date(character varying(8))</span><br><span class="line">---- -----</span><br><span class="line">1   | 20220101</span><br><span class="line">2   | 20220103</span><br><span class="line">3   | 20220305</span><br><span class="line">4   | 20220308</span><br><span class="line">5   | 20220310</span><br></pre></td></tr></table></figure>
+
+<p>比如今天是，20220310則:</p>
+<p>取得昨天到今天的資料</p>
+<p>between寫法:</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> </span><br><span class="line">    <span class="operator">*</span> </span><br><span class="line"><span class="keyword">FROM</span> </span><br><span class="line">    TB_RECORD </span><br><span class="line"><span class="keyword">WHERE</span></span><br><span class="line">    RECORD_DATE <span class="keyword">BETWEEN</span> TO_CHAR(NOW() <span class="operator">-</span> <span class="type">INTERVAL</span> <span class="string">&#x27;1 DAY&#x27;</span>,<span class="string">&#x27;YYYYMMDD&#x27;</span>) <span class="keyword">AND</span> TO_CHAR(NOW(),<span class="string">&#x27;YYYYMMDD&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+<p>大於等於寫法:</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> </span><br><span class="line">    <span class="operator">*</span> </span><br><span class="line"><span class="keyword">FROM</span> </span><br><span class="line">    TB_RECORD </span><br><span class="line"><span class="keyword">WHERE</span></span><br><span class="line">    RECORD_DATE <span class="operator">&gt;=</span> TO_CHAR(NOW() <span class="operator">-</span> <span class="type">INTERVAL</span> <span class="string">&#x27;1 DAY&#x27;</span>,<span class="string">&#x27;YYYYMMDD&#x27;</span>)</span><br></pre></td></tr></table></figure>
+<p>結果:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">5   | 20220310</span><br></pre></td></tr></table></figure>
+
+
+<p>取得近五天資料</p>
+<p>between寫法:</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> </span><br><span class="line">    <span class="operator">*</span> </span><br><span class="line"><span class="keyword">FROM</span> </span><br><span class="line">    TB_RECORD </span><br><span class="line"><span class="keyword">WHERE</span></span><br><span class="line">    RECORD_DATE <span class="keyword">BETWEEN</span> TO_CHAR(NOW() <span class="operator">-</span> <span class="type">INTERVAL</span> <span class="string">&#x27;5 DAY&#x27;</span>,<span class="string">&#x27;YYYYMMDD&#x27;</span>) <span class="keyword">AND</span> TO_CHAR(NOW(),<span class="string">&#x27;YYYYMMDD&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+<p>大於等於寫法:</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> </span><br><span class="line">    <span class="operator">*</span> </span><br><span class="line"><span class="keyword">FROM</span> </span><br><span class="line">    TB_RECORD </span><br><span class="line"><span class="keyword">WHERE</span></span><br><span class="line">    RECORD_DATE <span class="operator">&gt;=</span> TO_CHAR(NOW() <span class="operator">-</span> <span class="type">INTERVAL</span> <span class="string">&#x27;5 DAY&#x27;</span>,<span class="string">&#x27;YYYYMMDD&#x27;</span>)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>結果:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">3   | 20220305</span><br><span class="line">4   | 20220308</span><br><span class="line">5   | 20220310</span><br></pre></td></tr></table></figure>
+<h3 id="總結"><a href="#總結" class="headerlink" title="總結"></a>總結</h3><p>其實就是使用NOW()函數與INTERVAL條件去組日期區間去篩選(O)。<br>並且搭配一些內部的轉型。<br>以上面結果就是都轉成YYYYMMDD的字串去比較。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://yuhsiang237.github.io/2022/03/11/PostgreSQL-Select-%E5%8F%96%E5%BE%97%E6%98%A8%E5%A4%A9%E3%80%81%E8%BF%91%E5%B9%BE%E5%A4%A9%E8%B3%87%E6%96%99/" data-id="cl0lrsu3j00011sghedux2sk5" data-title="PostgreSQL Select 取得昨天、近幾天資料" class="article-share-link">Teilen</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-PostgreSQL-Left-Join-Lateral-用法" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2022/03/10/PostgreSQL-Left-Join-Lateral-%E7%94%A8%E6%B3%95/" class="article-date">
+  <time class="dt-published" datetime="2022-03-10T08:50:57.000Z" itemprop="datePublished">2022-03-10</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Database/">Database</a>►<a class="article-category-link" href="/categories/Database/PostgreSQL/">PostgreSQL</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2022/03/10/PostgreSQL-Left-Join-Lateral-%E7%94%A8%E6%B3%95/">PostgreSQL Left Join Lateral 用法</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>最近碰到一個PostgreSQL搜尋與句的問題。<br>就是怎樣在PostgreSQL達到類似SQL Server的Outer Apply的寫法。<br>因為需要在原本一對一的表，再去LEFT JOIN一個一對多資料。<br>並且把一對多資料取得一個結果存進一對一的表，像是Boolean、數量。</p>
+<p>目標:<br>一張是訂單主表，一張是訂單明細表<br>想以主表為主，取得有幾張明細表數量。<br>Table如下:</p>
+<p><strong>Table ORDER</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">SEQ</span><br><span class="line">---- </span><br><span class="line">1</span><br><span class="line">2</span><br></pre></td></tr></table></figure>
+
+<p><strong>Table ORDER_DETAIL</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">SEQ  | ORDER_SEQ | NAME </span><br><span class="line">---------------------------</span><br><span class="line">1    | 1         | 訂單明細1</span><br><span class="line">2    | 2         | 訂單明細2</span><br><span class="line">3    | 2         | 訂單明細3</span><br></pre></td></tr></table></figure>
+
+<p><strong>使用 Lateral :</strong></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> </span><br><span class="line">    O.SEQ <span class="keyword">AS</span> ORDER_SEQ,</span><br><span class="line">    RS.ORDER_DETAIL_COUNT</span><br><span class="line"><span class="keyword">FROM</span> <span class="keyword">ORDER</span> <span class="keyword">AS</span> O</span><br><span class="line"><span class="keyword">LEFT</span> <span class="keyword">JOIN</span> <span class="keyword">LATERAL</span>(</span><br><span class="line">    <span class="keyword">SELECT</span> <span class="built_in">COUNT</span>(OD.SEQ) <span class="keyword">AS</span> ORDER_DETAIL_COUNT <span class="keyword">FROM</span>  ORDER_DETAIL <span class="keyword">AS</span> OD </span><br><span class="line">    <span class="keyword">WHERE</span>   OD.ORDER_SEQ <span class="operator">=</span> O.SEQ</span><br><span class="line">) <span class="keyword">AS</span> RS <span class="keyword">ON</span> <span class="literal">TRUE</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>結果</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">ORDER_SEQ | ORDER_DETAIL_COUNT</span><br><span class="line">------------------------------</span><br><span class="line">1         | 1</span><br><span class="line">2         | 2</span><br></pre></td></tr></table></figure>
+
+
+<p><strong>不用 Lateral:</strong></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> </span><br><span class="line">    O.SEQ <span class="keyword">AS</span> ORDER_SEQ,</span><br><span class="line">    RS.ORDER_DETAIL_COUNT</span><br><span class="line"><span class="keyword">FROM</span> <span class="keyword">ORDER</span> <span class="keyword">AS</span> O</span><br><span class="line"><span class="keyword">LEFT</span> <span class="keyword">JOIN</span> ORDER_DETAIL <span class="keyword">AS</span> OD <span class="keyword">on</span> OD.ORDER_SEQ <span class="operator">=</span> O.SEQ</span><br><span class="line"><span class="keyword">GROUP</span> <span class="keyword">BY</span> O.SEQ</span><br></pre></td></tr></table></figure>
+
+<p><strong>結果</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">ORDER_SEQ | ORDER_DETAIL_COUNT</span><br><span class="line">------------------------------</span><br><span class="line">1         | 1</span><br><span class="line">2         | 2</span><br></pre></td></tr></table></figure>
+
+<h3 id="總結"><a href="#總結" class="headerlink" title="總結"></a>總結</h3><p>用LATERAL會比較直覺，就不用最後再去GROUP BY。<br>如果想繼承上面LEFT JOIN表的條件，那LATERAL優勢就會出來，會顯得簡單很多。</p>
+<h3 id="參考資料"><a href="#參考資料" class="headerlink" title="參考資料"></a>參考資料</h3><ul>
+<li><a target="_blank" rel="noopener" href="https://www.cnblogs.com/ricklz/p/12122808.html">https://www.cnblogs.com/ricklz/p/12122808.html</a></li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://yuhsiang237.github.io/2022/03/10/PostgreSQL-Left-Join-Lateral-%E7%94%A8%E6%B3%95/" data-id="cl0lrsu3f00001sgh3rpk2a36" data-title="PostgreSQL Left Join Lateral 用法" class="article-share-link">Teilen</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-Javascript-雙問號用法" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2022/03/07/Javascript-%E9%9B%99%E5%95%8F%E8%99%9F%E7%94%A8%E6%B3%95/" class="article-date">
+  <time class="dt-published" datetime="2022-03-07T02:57:25.000Z" itemprop="datePublished">2022-03-07</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Code/">Code</a>►<a class="article-category-link" href="/categories/Code/Javascript/">Javascript</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2022/03/07/Javascript-%E9%9B%99%E5%95%8F%E8%99%9F%E7%94%A8%E6%B3%95/">Javascript 雙問號、可選鏈用法</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>在寫Javascript時會看到??的語法或?.的用法。<br>在這稍微做解釋:  </p>
+<p><strong>?.可選鏈:</strong><br>作用:可以簡化寫法，因為Javascript如果強制叫出不存在的物件會出現錯誤，所以原本寫法都要寫很長去檢查物件屬性是否存在。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> user = &#123;<span class="attr">data</span>:&#123;<span class="attr">address</span>:<span class="string">&quot;my address&quot;</span>&#125;&#125;</span><br><span class="line"><span class="comment">// 原本寫法 output:my address</span></span><br><span class="line"><span class="keyword">const</span> userAddress = user.data &amp;&amp; user.data.address</span><br><span class="line"><span class="comment">// 替換如下 output:my address</span></span><br><span class="line"><span class="keyword">const</span> userAddress = user.data?.address</span><br></pre></td></tr></table></figure>
+<p>可以減少巢狀物件取的屬性的程式碼。</p>
+<p><strong>??:</strong><br>作用:左方為null或undefined則會直接回傳右方的值。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> detail = &#123;<span class="attr">data</span>:&#123;<span class="attr">address</span>:<span class="string">&quot;my address&quot;</span>&#125;&#125;</span><br><span class="line"><span class="comment">// 原本寫法 output:10</span></span><br><span class="line"><span class="keyword">const</span> detailAmount = (detail.data.amount &amp;&amp; detail.data.amount) ? detail.data.amount : <span class="number">10</span> ;</span><br><span class="line"><span class="comment">// 替換如下 output:10</span></span><br><span class="line"><span class="keyword">const</span> detailAmount = detail.data?.amount ?? <span class="number">10</span>;</span><br></pre></td></tr></table></figure>
+<p>上面因為找不到amount所以接回傳10，有的話則回傳amount</p>
+<h3 id="總結"><a href="#總結" class="headerlink" title="總結"></a>總結</h3><p>感覺未來的Javascript會充斥著 「??」、「?.」<br>到時候又配上Javascript函式寫法感覺閱讀性會複雜了。(雖然簡化語法，但學習門檻變高)<br>看自己手上的專案斟酌吧。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://yuhsiang237.github.io/2022/03/07/Javascript-%E9%9B%99%E5%95%8F%E8%99%9F%E7%94%A8%E6%B3%95/" data-id="cl0g4b0fv0000mcgh3aei1qri" data-title="Javascript 雙問號、可選鏈用法" class="article-share-link">Teilen</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-PostgreSQL撰寫stored-procedure範例" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2022/03/04/PostgreSQL%E6%92%B0%E5%AF%ABstored-procedure%E7%AF%84%E4%BE%8B/" class="article-date">
+  <time class="dt-published" datetime="2022-03-04T05:38:19.000Z" itemprop="datePublished">2022-03-04</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Database/">Database</a>►<a class="article-category-link" href="/categories/Database/PostgreSQL/">PostgreSQL</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2022/03/04/PostgreSQL%E6%92%B0%E5%AF%ABstored-procedure%E7%AF%84%E4%BE%8B/">PostgreSQL撰寫stored procedure範例</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>在這篇中介紹如何撰寫一個PostgreSQL的stored procedure。</p>
+<h3 id="Procedure模板"><a href="#Procedure模板" class="headerlink" title="Procedure模板"></a>Procedure模板</h3><p>以下是一個固定的模板，我們將以此模板來撰寫。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">create</span> [<span class="keyword">or</span> replace] <span class="keyword">procedure</span> procedure_name(parameter_list)</span><br><span class="line"><span class="keyword">language</span> plpgsql</span><br><span class="line"><span class="keyword">as</span> $$</span><br><span class="line"><span class="keyword">declare</span></span><br><span class="line"><span class="comment">-- variable declaration</span></span><br><span class="line"><span class="keyword">begin</span></span><br><span class="line"><span class="comment">-- stored procedure body</span></span><br><span class="line"><span class="keyword">end</span>; $$</span><br></pre></td></tr></table></figure>
+<ul>
+<li>procedure_name : 是prodcedure的名子</li>
+<li>parameter_list : 放傳進參數。可以選擇兩種方式:inout、out</li>
+<li>plpgsql : 使用的prodcedure內的語法，可以改sql或C等等，看自己用哪種方式寫</li>
+<li>$$:可以看到有被各一個$$圍住的區塊就是body，寫語法的區塊就在$$內。</li>
+</ul>
+<p>補充:<br>stored prodcedure沒有回傳值，所以並不會有return expression;的寫法，但你可以加return;讓程式執行到一半停止執行。</p>
+<p>POSTGRESQL文件:<br>A procedure does not have a return value. A procedure can therefore end without a RETURN statement. If a RETURN statement is desired to exit the code early, then NULL must be returned. Returning any other value will result in an error</p>
+<h3 id="實作"><a href="#實作" class="headerlink" title="實作"></a>實作</h3><p><strong>實際撰寫</strong></p>
+<p><strong>目標:</strong><br>撰寫一個傳送用戶ID回傳用戶資料的procedure。</p>
+<p>users資料表:</p>
+<img src="/2022/03/04/PostgreSQL%E6%92%B0%E5%AF%ABstored-procedure%E7%AF%84%E4%BE%8B/1.PNG" class="">
+
+<p>因為PostgreSQL的stored procedure沒有回傳值，所以就要用參考的方式去拿值。<br>以下用INOUT refcursor refcursor去當作參考。<br>IN user_id integer則是要取得資料的使用者id。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">OR</span> REPLACE <span class="keyword">PROCEDURE</span> get_user_data</span><br><span class="line">(</span><br><span class="line">	<span class="keyword">IN</span> user_id <span class="type">integer</span>,</span><br><span class="line">	<span class="keyword">INOUT</span> refcursor refcursor</span><br><span class="line">) </span><br><span class="line"><span class="keyword">LANGUAGE</span> <span class="string">&#x27;plpgsql&#x27;</span></span><br><span class="line"><span class="keyword">AS</span> $$</span><br><span class="line"><span class="keyword">DECLARE</span></span><br><span class="line">  str_sql <span class="type">varchar</span>;                                                    </span><br><span class="line"><span class="keyword">BEGIN</span></span><br><span class="line">  str_sql :<span class="operator">=</span> <span class="string">&#x27;SELECT * FROM users WHERE id = &#x27;</span><span class="operator">||</span> user_id ;</span><br><span class="line">  <span class="keyword">OPEN</span> refcursor <span class="keyword">FOR</span> <span class="keyword">EXECUTE</span> str_sql;                             </span><br><span class="line"><span class="keyword">END</span>;</span><br><span class="line">$$</span><br></pre></td></tr></table></figure>
+<ul>
+<li>|| : 是字串的連結符號<br>傳進一個user_id跟參考的物件。</li>
+</ul>
+<p>建好後可在左方PGADMIN看到</p>
+<img src="/2022/03/04/PostgreSQL%E6%92%B0%E5%AF%ABstored-procedure%E7%AF%84%E4%BE%8B/4.PNG" class="">
+
+
+<p>之後可以用call來執行。<br>建立一個區域，宣告一個RECORD物件用來印資料、一個refcursor物件用來參考<br>接著跑loop迴圈，將每個out_ref放進rcd，再用raise notice印出。<br>如果沒資料則用IF判斷式離開。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">DO $$</span><br><span class="line"><span class="keyword">DECLARE</span></span><br><span class="line">	rcd RECORD;</span><br><span class="line">	out_ref refcursor;</span><br><span class="line"><span class="keyword">BEGIN</span></span><br><span class="line">	<span class="keyword">call</span> get_user_data(<span class="number">2</span>,out_ref);</span><br><span class="line">	loop</span><br><span class="line">		<span class="keyword">fetch</span> <span class="keyword">in</span> out_ref <span class="keyword">into</span> rcd;</span><br><span class="line">		IF <span class="keyword">NOT</span> FOUND <span class="keyword">THEN</span></span><br><span class="line">			EXIT;</span><br><span class="line">		<span class="keyword">END</span> IF;</span><br><span class="line">		raise notice <span class="string">&#x27;user_id=%&#x27;</span>, rcd.id;</span><br><span class="line">		raise notice <span class="string">&#x27;user_name=%&#x27;</span>, rcd.name;</span><br><span class="line">  	<span class="keyword">end</span> loop;</span><br><span class="line">	<span class="keyword">close</span> out_ref;</span><br><span class="line"><span class="keyword">END</span>;</span><br><span class="line">$$ <span class="keyword">LANGUAGE</span> plpgsql;</span><br></pre></td></tr></table></figure>
+<p>結果:</p>
+<img src="/2022/03/04/PostgreSQL%E6%92%B0%E5%AF%ABstored-procedure%E7%AF%84%E4%BE%8B/3.PNG" class="">
+
+
+<h3 id="總結"><a href="#總結" class="headerlink" title="總結"></a>總結</h3><p>PostgreSQL的prodcedure並不好寫，因為他沒辦法直接有返回值。要用參考的方式。他不像SQL Server一樣簡單，能直接Select完畢，因為並不具備回傳值。要回傳值就得寫他的function，就不是prodcedure了。</p>
+<p>然後，如果想參考SQL Server的prodcedure我之前也有寫一篇:<a href="/2022/01/10/SQL-Server-Stored-Procedure%E5%AF%A6%E4%BD%9C%E7%AF%84%E4%BE%8B/" title="SQL-Server-Stored-Procedure實作範例">SQL-Server-Stored-Procedure實作範例</a>可以參考。</p>
+<h3 id="參考資料"><a href="#參考資料" class="headerlink" title="參考資料"></a>參考資料</h3><ul>
+<li><a target="_blank" rel="noopener" href="https://www.postgresqltutorial.com/postgresql-create-procedure/">https://www.postgresqltutorial.com/postgresql-create-procedure/</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.sqlines.com/postgresql/how-to/return_result_set_from_stored_procedure">https://www.sqlines.com/postgresql/how-to/return_result_set_from_stored_procedure</a></li>
+<li><a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/50894269/how-to-return-result-set-from-postgresql-stored-procedure">https://stackoverflow.com/questions/50894269/how-to-return-result-set-from-postgresql-stored-procedure</a></li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://yuhsiang237.github.io/2022/03/04/PostgreSQL%E6%92%B0%E5%AF%ABstored-procedure%E7%AF%84%E4%BE%8B/" data-id="cl0g433os0028twgh700i0eum" data-title="PostgreSQL撰寫stored procedure範例" class="article-share-link">Teilen</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-SQL-Server-Outer-Apply另一種Left-Join作法" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2022/03/03/SQL-Server-Outer-Apply%E5%8F%A6%E4%B8%80%E7%A8%AELeft-Join%E4%BD%9C%E6%B3%95/" class="article-date">
+  <time class="dt-published" datetime="2022-03-03T07:08:51.000Z" itemprop="datePublished">2022-03-03</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Database/">Database</a>►<a class="article-category-link" href="/categories/Database/SQL-Server/">SQL Server</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2022/03/03/SQL-Server-Outer-Apply%E5%8F%A6%E4%B8%80%E7%A8%AELeft-Join%E4%BD%9C%E6%B3%95/">SQL Server Left Join只取第一筆做法Outer Apply</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>最近剛好有要在SQL Server中Left Join N筆結果排序後只取得第一筆的需求。<br>發現Left Join資料結果會有問題，所以發現了Outer Apply作法能夠達到，因此筆記一下。</p>
+<h3 id="實作"><a href="#實作" class="headerlink" title="實作"></a>實作</h3><p>需求:<br>撈出每位使用者還沒完成的最早一筆任務。<br>並以Priority做排序，如果遇到相同層級則以最早新建的資料為主。</p>
+<p>Todos資料表:</p>
+<img src="/2022/03/03/SQL-Server-Outer-Apply%E5%8F%A6%E4%B8%80%E7%A8%AELeft-Join%E4%BD%9C%E6%B3%95/2.PNG" class="">
+
+<p>Users資料表:</p>
+<img src="/2022/03/03/SQL-Server-Outer-Apply%E5%8F%A6%E4%B8%80%E7%A8%AELeft-Join%E4%BD%9C%E6%B3%95/3.PNG" class="">
+
+<p>sql:</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> </span><br><span class="line">	A.UserName,</span><br><span class="line">	B.Name TaskName,</span><br><span class="line">	B.Id TaskId,</span><br><span class="line">	B.Priority</span><br><span class="line"><span class="keyword">FROM</span> Users A</span><br><span class="line">	<span class="keyword">OUTER</span> APPLY</span><br><span class="line">	(</span><br><span class="line">		<span class="keyword">SELECT</span> TOP <span class="number">1</span> </span><br><span class="line">			Name,Priority,Id</span><br><span class="line">		<span class="keyword">FROM</span> Todos </span><br><span class="line">		<span class="keyword">WHERE</span> </span><br><span class="line">			A.Id <span class="operator">=</span> UserId </span><br><span class="line">			<span class="keyword">AND</span> Todos.IsValid <span class="operator">=</span> <span class="number">1</span> </span><br><span class="line">			<span class="keyword">AND</span> IsComplete <span class="operator">=</span> <span class="number">0</span></span><br><span class="line">		<span class="keyword">ORDER</span> <span class="keyword">BY</span> Priority <span class="keyword">ASC</span>,Id <span class="keyword">ASC</span> </span><br><span class="line">	) B</span><br><span class="line"><span class="keyword">WHERE</span></span><br><span class="line">	A.IsValid <span class="operator">=</span> <span class="number">1</span></span><br></pre></td></tr></table></figure>
+<p>執行結果:</p>
+<img src="/2022/03/03/SQL-Server-Outer-Apply%E5%8F%A6%E4%B8%80%E7%A8%AELeft-Join%E4%BD%9C%E6%B3%95/1.PNG" class="">
+
+<h3 id="總結"><a href="#總結" class="headerlink" title="總結"></a>總結</h3><p>SQL Server有些特殊語法，有時真的得在實作時才會真的碰到。(坑)</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://yuhsiang237.github.io/2022/03/03/SQL-Server-Outer-Apply%E5%8F%A6%E4%B8%80%E7%A8%AELeft-Join%E4%BD%9C%E6%B3%95/" data-id="cl0g433ou002ftwgh1j6ubuwk" data-title="SQL Server Left Join只取第一筆做法Outer Apply" class="article-share-link">Teilen</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
     <article id="post-PostgreSQL資料型別" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
     <a href="/2022/03/03/PostgreSQL%E8%B3%87%E6%96%99%E5%9E%8B%E5%88%A5/" class="article-date">
@@ -424,362 +850,11 @@ both date and time, with time zone，
 
 
   
-    <article id="post-C-擷取中英混雜字串" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2022/02/11/C-%E6%93%B7%E5%8F%96%E4%B8%AD%E8%8B%B1%E6%B7%B7%E9%9B%9C%E5%AD%97%E4%B8%B2/" class="article-date">
-  <time class="dt-published" datetime="2022-02-11T01:00:26.000Z" itemprop="datePublished">2022-02-11</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/Code/">Code</a>►<a class="article-category-link" href="/categories/Code/C/">C#</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2022/02/11/C-%E6%93%B7%E5%8F%96%E4%B8%AD%E8%8B%B1%E6%B7%B7%E9%9B%9C%E5%AD%97%E4%B8%B2/">C#擷取中英混雜字串</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p>在這篇文中紀錄如何擷取中英混雜的子字串。</p>
-<p>以下是我想到的作法，就是利用big5中文兩字元、英文一字元的特性去做。<br>20220217，使用Linq重構部分程式碼。  </p>
-<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> System;</span><br><span class="line"><span class="keyword">using</span> System.Text;</span><br><span class="line"><span class="keyword">using</span> System.Linq;</span><br><span class="line"></span><br><span class="line"><span class="keyword">namespace</span> <span class="title">SubEnglishChineseString</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">class</span> <span class="title">Program</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> C#中擷取某長度中英混雜字串範例</span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;args&quot;&gt;</span><span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">        <span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">Main</span>(<span class="params"><span class="built_in">string</span>[] args</span>)</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="built_in">string</span> str = <span class="string">&quot;TESTWORD測試文字TEST&quot;</span>;</span><br><span class="line">            Console.WriteLine(SubBig5String(str, <span class="number">1</span>, <span class="number">15</span>));</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> C#中擷取Big5子字串</span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;str&quot;&gt;</span>字串<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;start&quot;&gt;</span>擷取起始索引<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;length&quot;&gt;</span>擷取長度<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;returns&gt;</span>string<span class="doctag">&lt;/returns&gt;</span></span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="built_in">string</span> <span class="title">SubBig5String</span>(<span class="params"><span class="built_in">string</span> str, <span class="built_in">int</span> start, <span class="built_in">int</span> length</span>)</span></span><br><span class="line">        &#123;</span><br><span class="line">            Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);</span><br><span class="line">            <span class="built_in">byte</span>[] subByteArray = Encoding.GetEncoding(<span class="string">&quot;big5&quot;</span>).GetBytes(str).Skip(start).Take(length).ToArray();</span><br><span class="line">            <span class="keyword">return</span> Encoding.GetEncoding(<span class="string">&quot;big5&quot;</span>).GetString(subByteArray);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>專案存庫:<a target="_blank" rel="noopener" href="https://github.com/yuhsiang237/csharp-notes/tree/master/SubEnglishChineseString">https://github.com/yuhsiang237/csharp-notes/tree/master/SubEnglishChineseString</a></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://yuhsiang237.github.io/2022/02/11/C-%E6%93%B7%E5%8F%96%E4%B8%AD%E8%8B%B1%E6%B7%B7%E9%9B%9C%E5%AD%97%E4%B8%B2/" data-id="cl0g433op001vtwgh0z3r2jvn" data-title="C#擷取中英混雜字串" class="article-share-link">Teilen</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-物件導向SOLID原則" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2022/02/10/%E7%89%A9%E4%BB%B6%E5%B0%8E%E5%90%91SOLID%E5%8E%9F%E5%89%87/" class="article-date">
-  <time class="dt-published" datetime="2022-02-09T23:48:45.000Z" itemprop="datePublished">2022-02-10</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2022/02/10/%E7%89%A9%E4%BB%B6%E5%B0%8E%E5%90%91SOLID%E5%8E%9F%E5%89%87/">物件導向SOLID原則</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p>撰寫中…</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://yuhsiang237.github.io/2022/02/10/%E7%89%A9%E4%BB%B6%E5%B0%8E%E5%90%91SOLID%E5%8E%9F%E5%89%87/" data-id="cl0g433po005jtwgh59jp8450" data-title="物件導向SOLID原則" class="article-share-link">Teilen</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-撰寫C-單元測試-Unit-Test" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2022/02/10/%E6%92%B0%E5%AF%ABC-%E5%96%AE%E5%85%83%E6%B8%AC%E8%A9%A6-Unit-Test/" class="article-date">
-  <time class="dt-published" datetime="2022-02-09T23:42:43.000Z" itemprop="datePublished">2022-02-10</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/Code/">Code</a>►<a class="article-category-link" href="/categories/Code/C/">C#</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2022/02/10/%E6%92%B0%E5%AF%ABC-%E5%96%AE%E5%85%83%E6%B8%AC%E8%A9%A6-Unit-Test/">撰寫C#單元測試(Unit Test)</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>在這回中主要介紹C#的單元測試。<br>將會以AspNetCore中的xUnit、Moq套件進行範例測試。</p>
-<p><strong>至於為什麼要單元測試?</strong><br>因為能夠快速的驗證結果、在撰寫時也只要執行片段程式碼。<br>對於有些程式碼容易有改A壞B的問題，能夠透過測試直接幫我們一次測完。<br>讓我們只需要針對錯誤案例進行程式碼錯誤區塊修改，加快整體專案除錯的時間。      </p>
-<p>完整測試專案連結:<br><a target="_blank" rel="noopener" href="https://github.com/yuhsiang237/csharp-unit-test">https://github.com/yuhsiang237/csharp-unit-test</a>  </p>
-<h3 id="範例"><a href="#範例" class="headerlink" title="範例"></a>範例</h3><p>使用Moq套件的Mock建立假的物件，並且設定函式、屬性、返回的值，再使用xUnit提供的驗證方法進行測試。</p>
-<p>首先建立我們要測試的介面與類別，一個是IFoo.cs、Bar.cs。</p>
-<p><strong>csharp-unit-test/UnitTestProject/Bar.cs</strong></p>
-<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> System;</span><br><span class="line"><span class="keyword">using</span> System.Collections.Generic;</span><br><span class="line"><span class="keyword">using</span> System.Text;</span><br><span class="line"></span><br><span class="line"><span class="keyword">namespace</span> <span class="title">UnitTestProject</span></span><br><span class="line">&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">class</span> <span class="title">Bar</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">virtual</span> <span class="built_in">bool</span> <span class="title">Submit</span>(<span class="params"></span>)</span> &#123; <span class="keyword">return</span> <span class="literal">false</span>; &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p><strong>csharp-unit-test/UnitTestProject/IFoo.cs</strong></p>
-<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> System;</span><br><span class="line"><span class="keyword">using</span> System.Collections.Generic;</span><br><span class="line"><span class="keyword">using</span> System.Text;</span><br><span class="line"></span><br><span class="line"><span class="keyword">namespace</span> <span class="title">UnitTestProject</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">interface</span> <span class="title">IFoo</span></span><br><span class="line">    &#123;</span><br><span class="line">        Bar Bar &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line">        <span class="built_in">string</span> Name &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line">        <span class="built_in">int</span> Value &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line">        <span class="function"><span class="built_in">bool</span> <span class="title">DoSomething</span>(<span class="params"><span class="built_in">string</span> <span class="keyword">value</span></span>)</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>再來建立測試，使用Moq、Xunit。<br>我們可以對函式返回值、假物件、屬性進行測試。<br>以下為測試範例:<br><strong>/csharp-unit-test/UnitTestProjectTests/UnitTest.cs</strong></p>
-<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> System;</span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> Xunit;</span><br><span class="line"><span class="keyword">using</span> Moq;</span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> UnitTestProject;</span><br><span class="line"></span><br><span class="line"><span class="keyword">namespace</span> <span class="title">UnitTestProjectTests</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> xUnit單元測試，並使用Moq的Mock</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 參考資料:</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> https://github.com/Moq/moq4/wiki/Quickstart#verification</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> https://vimsky.com/examples/detail/csharp-ex---Mock-VerifySet-method.html</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> https://codertw.com/%E5%89%8D%E7%AB%AF%E9%96%8B%E7%99%BC/206352/</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">class</span> <span class="title">UnitTest</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> 方法單元測試</span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">        [<span class="meta">Fact</span>]</span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">MethodsTest</span>(<span class="params"></span>)</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="comment">// 準備 Mock IFoo 介面</span></span><br><span class="line">            <span class="keyword">var</span> mock = <span class="keyword">new</span> Mock&lt;IFoo&gt;();</span><br><span class="line">            <span class="comment">// 配置準備模擬的方法，當呼叫介面中的 DoSomething 方法，並傳遞引數 &quot;bing&quot; 的時候，返回 true</span></span><br><span class="line">            mock.Setup(foo =&gt; foo.DoSomething(<span class="string">&quot;ping&quot;</span>)).Returns(<span class="literal">true</span>);</span><br><span class="line">            <span class="comment">// 現在，你可以: </span></span><br><span class="line">            IFoo foo = mock.Object;</span><br><span class="line">            <span class="comment">// 檢查使用時返回值為True</span></span><br><span class="line">            Assert.True(foo.DoSomething(<span class="string">&quot;ping&quot;</span>));</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> 屬性單元測試</span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">        [<span class="meta">Fact</span>]</span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">PropertiesTest</span>(<span class="params"></span>)</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="comment">// 準備 Mock IFoo 介面</span></span><br><span class="line">            <span class="keyword">var</span> mock = <span class="keyword">new</span> Mock&lt;IFoo&gt;();</span><br><span class="line">            <span class="comment">// 開始 &quot;tracking&quot; 屬性的 sets/gets </span></span><br><span class="line">            mock.SetupProperty(f =&gt; f.Name);</span><br><span class="line">            <span class="comment">// 提供一個預設的值</span></span><br><span class="line">            mock.SetupProperty(f =&gt; f.Name, <span class="string">&quot;foo&quot;</span>);</span><br><span class="line">            <span class="comment">// 現在，你可以: </span></span><br><span class="line">            IFoo foo = mock.Object;</span><br><span class="line">            <span class="comment">// 儲存的值 </span></span><br><span class="line">            Assert.Equal(<span class="string">&quot;foo&quot;</span>, foo.Name);</span><br><span class="line">            <span class="comment">// 重新設定一個值</span></span><br><span class="line">            foo.Name = <span class="string">&quot;bar&quot;</span>;</span><br><span class="line">            Assert.Equal(<span class="string">&quot;bar&quot;</span>, foo.Name);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>再來開啟VisualStudio的測試視窗運行，可以得到以下結果:</p>
-<img src="/2022/02/10/%E6%92%B0%E5%AF%ABC-%E5%96%AE%E5%85%83%E6%B8%AC%E8%A9%A6-Unit-Test/output.png" class="">
-<p>表示測試成功。</p>
-<h3 id="總結"><a href="#總結" class="headerlink" title="總結"></a>總結</h3><p>撰寫測試能夠改善平常除錯的速度，特別當專案大起來時。<br>此外有些平台有測試的功能(如Azure DevOps Server的TFS)，可以在CI自動整合時跑測試。   </p>
-<h3 id="參考資料"><a href="#參考資料" class="headerlink" title="參考資料"></a>參考資料</h3><ul>
-<li><a target="_blank" rel="noopener" href="https://github.com/Moq/moq4/wiki/Quickstart#verification">https://github.com/Moq/moq4/wiki/Quickstart#verification</a></li>
-<li><a target="_blank" rel="noopener" href="https://vimsky.com/examples/detail/csharp-ex---Mock-VerifySet-method.html">https://vimsky.com/examples/detail/csharp-ex---Mock-VerifySet-method.html</a></li>
-<li><a target="_blank" rel="noopener" href="https://codertw.com/%E5%89%8D%E7%AB%AF%E9%96%8B%E7%99%BC/206352/">https://codertw.com/%E5%89%8D%E7%AB%AF%E9%96%8B%E7%99%BC/206352/</a></li>
-</ul>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://yuhsiang237.github.io/2022/02/10/%E6%92%B0%E5%AF%ABC-%E5%96%AE%E5%85%83%E6%B8%AC%E8%A9%A6-Unit-Test/" data-id="cl0g433pn005dtwghd78qhr77" data-title="撰寫C#單元測試(Unit Test)" class="article-share-link">Teilen</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-LINQ語法生成工具LinqPad使用" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2022/02/10/LINQ%E8%AA%9E%E6%B3%95%E7%94%9F%E6%88%90%E5%B7%A5%E5%85%B7LinqPad%E4%BD%BF%E7%94%A8/" class="article-date">
-  <time class="dt-published" datetime="2022-02-09T23:41:25.000Z" itemprop="datePublished">2022-02-10</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2022/02/10/LINQ%E8%AA%9E%E6%B3%95%E7%94%9F%E6%88%90%E5%B7%A5%E5%85%B7LinqPad%E4%BD%BF%E7%94%A8/">LINQ語法生成工具LinqPad使用</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p>撰寫中…</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://yuhsiang237.github.io/2022/02/10/LINQ%E8%AA%9E%E6%B3%95%E7%94%9F%E6%88%90%E5%B7%A5%E5%85%B7LinqPad%E4%BD%BF%E7%94%A8/" data-id="cl0g433oq0023twgh1ja3buyc" data-title="LINQ語法生成工具LinqPad使用" class="article-share-link">Teilen</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-csharp-nameof" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2022/02/09/csharp-nameof/" class="article-date">
-  <time class="dt-published" datetime="2022-02-09T06:19:50.000Z" itemprop="datePublished">2022-02-09</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/Code/">Code</a>►<a class="article-category-link" href="/categories/Code/C/">C#</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2022/02/09/csharp-nameof/">C# nameof用法</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p>如果在C#中遇到一些重複的String字串變數，是由變數的命名而來，就可以使用nameof直接提取出自串，避免再打一次造成打錯的問題。</p>
-<h3 id="nameof"><a href="#nameof" class="headerlink" title="nameof"></a>nameof</h3><p>nameof運算式會產生變數、類型或成員的名稱做為字串常數</p>
-<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">Console.WriteLine(<span class="keyword">nameof</span>(System.Collections.Generic));  <span class="comment">// output: Generic</span></span><br><span class="line">Console.WriteLine(<span class="keyword">nameof</span>(List&lt;<span class="built_in">int</span>&gt;));  <span class="comment">// output: List</span></span><br><span class="line">Console.WriteLine(<span class="keyword">nameof</span>(List&lt;<span class="built_in">int</span>&gt;.Count));  <span class="comment">// output: Count</span></span><br><span class="line">Console.WriteLine(<span class="keyword">nameof</span>(List&lt;<span class="built_in">int</span>&gt;.Add));  <span class="comment">// output: Add</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> numbers = <span class="keyword">new</span> List&lt;<span class="built_in">int</span>&gt; &#123; <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span> &#125;;</span><br><span class="line">Console.WriteLine(<span class="keyword">nameof</span>(numbers));  <span class="comment">// output: numbers</span></span><br><span class="line">Console.WriteLine(<span class="keyword">nameof</span>(numbers.Count));  <span class="comment">// output: Count</span></span><br><span class="line">Console.WriteLine(<span class="keyword">nameof</span>(numbers.Add));  <span class="comment">// output: Add</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="參考資料"><a href="#參考資料" class="headerlink" title="參考資料:"></a>參考資料:</h3><p><a target="_blank" rel="noopener" href="https://docs.microsoft.com/zh-tw/dotnet/csharp/language-reference/operators/nameof#code-try-0">https://docs.microsoft.com/zh-tw/dotnet/csharp/language-reference/operators/nameof#code-try-0</a></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://yuhsiang237.github.io/2022/02/09/csharp-nameof/" data-id="cl0g433oy002xtwghfgx0dicc" data-title="C# nameof用法" class="article-share-link">Teilen</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-C-LINQ-延遲執行-Deferred-Execution" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2022/01/13/C-LINQ-%E5%BB%B6%E9%81%B2%E5%9F%B7%E8%A1%8C-Deferred-Execution/" class="article-date">
-  <time class="dt-published" datetime="2022-01-13T06:14:52.000Z" itemprop="datePublished">2022-01-13</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/Code/">Code</a>►<a class="article-category-link" href="/categories/Code/C/">C#</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2022/01/13/C-LINQ-%E5%BB%B6%E9%81%B2%E5%9F%B7%E8%A1%8C-Deferred-Execution/">C# LINQ 延遲執行 (Deferred Execution)</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>在這篇中主要筆記LINQ 延遲執行的特性。<br>一般我們如果使用純SQL語言去與資料庫查詢通常一下指令就會被馬上執行，而LINQ卻不一樣，是直到某個觸發點他才會開始運作。<br>即寫Select時並不會馬上運作。</p>
-<h3 id="常見的觸發點"><a href="#常見的觸發點" class="headerlink" title="常見的觸發點"></a>常見的觸發點</h3><p>1.foreach(var item in items)<br>2.轉為ToList(), ToArray(), ToDictionary()，因為需巡覽才能轉型，所以會直接執行。<br>3.取得彙總結果的聚合函数 Count(), Max(), Sum(), First(), Last()。</p>
-<h3 id="主要原因"><a href="#主要原因" class="headerlink" title="主要原因"></a>主要原因</h3><p>延遲執行的基礎 － Iterator、yield</p>
-<ol>
-<li>您只要提供 Iterator，它會只往返於類別中的資料結構。當編譯器偵測到您的 Iterator 時，它會自動產生 IEnumerable 或 IEnumerable<T> 介面的 Current、MoveNext 和 Dispose 方法。</li>
-<li>Iterator 程式碼會使用 yield return 陳述式輪流傳回各元素。yield break 則會結束反覆運算。</li>
-</ol>
-<p>關鍵:使用 yield 關鍵字，C# 會自動將該 block 實作為 iterator 方式執行。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">using System;</span><br><span class="line">using System.Collections;</span><br><span class="line"></span><br><span class="line">namespace DeferredExec</span><br><span class="line">&#123;</span><br><span class="line">    class Program</span><br><span class="line">    &#123;</span><br><span class="line">        public class Data : IEnumerable</span><br><span class="line">        &#123;</span><br><span class="line">            public IEnumerator GetEnumerator()</span><br><span class="line">            &#123;</span><br><span class="line">                Console.WriteLine(&quot;yield 1&quot;);</span><br><span class="line">                yield return 1;</span><br><span class="line">                Console.WriteLine(&quot;yield 2&quot;);</span><br><span class="line">                yield return 2;</span><br><span class="line">                Console.WriteLine(&quot;yield 3&quot;);</span><br><span class="line">                yield return 3;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        static void Main(string[] args)</span><br><span class="line">        &#123;</span><br><span class="line">            Data data = new Data();</span><br><span class="line">            foreach(var item in data)</span><br><span class="line">            &#123;</span><br><span class="line">                Console.WriteLine(item);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>實作IEnumerable介面，並且撰寫方法GetEnumerator，yield會把每個區塊視為iterator(迭代器)。<br>而foreach中取得每個item在逆向工程可以見到其實是呼叫GetEnumerator取得一個IEnumerator(即iterator)。</p>
-<p>有這觀念再拉回來看LINQ的方法，可以發現是IEnumerable。<br>Where:</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">public static IEnumerable&lt;TSource&gt; Where&lt;TSource&gt;(this IEnumerable&lt;TSource&gt; source, Func&lt;TSource, bool&gt; predicate)</span><br></pre></td></tr></table></figure>
-<p>Select:</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">public static IEnumerable&lt;TResult&gt; Select&lt;TSource, TResult&gt;(this IEnumerable&lt;TSource&gt; source, Func&lt;TSource, TResult&gt; selector)</span><br></pre></td></tr></table></figure>
-<p>想知道是不是延遲執行可以看返回值是否為以下3種物件:</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">IEnumerable&lt;TSource&gt;</span><br></pre></td></tr></table></figure>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">IEnumerable&lt;IGrouping&lt;TKey, TSource&gt;&gt;</span><br></pre></td></tr></table></figure>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">IOrderedEnumerable&lt;TSource&gt;</span><br></pre></td></tr></table></figure>
-<h3 id="範例"><a href="#範例" class="headerlink" title="範例"></a>範例</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br></pre></td><td class="code"><pre><span class="line">using System;</span><br><span class="line">using System.Collections;</span><br><span class="line">using System.Collections.Generic;</span><br><span class="line">using System.Linq;</span><br><span class="line"></span><br><span class="line">namespace DeferredExec</span><br><span class="line">&#123;</span><br><span class="line">    class Program</span><br><span class="line">    &#123;</span><br><span class="line">        private static void Main(string[] args)</span><br><span class="line">        &#123;</span><br><span class="line">            var people = GetPeople();</span><br><span class="line">            var names = people</span><br><span class="line">                .Where(person =&gt; person.Age &gt; 18)</span><br><span class="line">                .Select(person =&gt; person.Name);</span><br><span class="line"></span><br><span class="line">            foreach (var name in names)</span><br><span class="line">            &#123;</span><br><span class="line">                Console.WriteLine(name);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        private static IEnumerable&lt;Person&gt; GetPeople()</span><br><span class="line">        &#123;</span><br><span class="line">            yield return new Person &#123; Id = 1, Name = &quot;John&quot;, Age = 36 &#125;;</span><br><span class="line">            yield return new Person &#123; Id = 2, Name = &quot;Bill&quot;, Age = 6 &#125;;</span><br><span class="line">            yield return new Person &#123; Id = 3, Name = &quot;Steve&quot;, Age = 23 &#125;;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        public class Person</span><br><span class="line">        &#123;</span><br><span class="line"></span><br><span class="line">           private int _id;</span><br><span class="line">           private string _name;</span><br><span class="line">           private int _age;</span><br><span class="line">           public int Id &#123;</span><br><span class="line">                get &#123;</span><br><span class="line">                    return _id;</span><br><span class="line">                &#125;</span><br><span class="line">                set</span><br><span class="line">                &#123;</span><br><span class="line">                     _id = value;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            public string Name</span><br><span class="line">            &#123;</span><br><span class="line">                get</span><br><span class="line">                &#123;</span><br><span class="line">                    return _name;</span><br><span class="line">                &#125;</span><br><span class="line">                set</span><br><span class="line">                &#123;</span><br><span class="line">                    _name = value;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            public int Age</span><br><span class="line">            &#123;</span><br><span class="line">                get</span><br><span class="line">                &#123;</span><br><span class="line">                    return _age;</span><br><span class="line">                &#125;</span><br><span class="line">                set</span><br><span class="line">                &#123;</span><br><span class="line">                    _age = value;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<p>在這範例中使用泛型(Generic)的IEnumerable</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">IEnumerable&lt;T&gt;</span><br></pre></td></tr></table></figure>
-<p>因為Select、Where方法是IEnumerable，所以會在foreach觸發GetEnumerator時執行，進而達到延遲執行的效果。</p>
-<h3 id="延遲執行好處"><a href="#延遲執行好處" class="headerlink" title="延遲執行好處"></a>延遲執行好處</h3><p>1.可以再添加額外的表達式，如主要的查詢表達式後面可以添加子表達式過濾作為最終結果。<br>2.取得資料是最新的，因為當下才執行</p>
-<h3 id="總結"><a href="#總結" class="headerlink" title="總結"></a>總結</h3><p>可以得知C#的LINQ為什麼能夠延遲執行是因為採用IEnumerable介面，裡面會有yield區塊形成迭代器，所以直到foreach執行時才會開始觸發。</p>
-<h3 id="參考資料"><a href="#參考資料" class="headerlink" title="參考資料"></a>參考資料</h3><p><a target="_blank" rel="noopener" href="https://dotblogs.com.tw/hatelove/2013/09/10/csharp-linq-deferred-execution-introduction">https://dotblogs.com.tw/hatelove/2013/09/10/csharp-linq-deferred-execution-introduction</a><br><a target="_blank" rel="noopener" href="https://dotblogs.com.tw/hatelove/2012/05/10/introducing-foreach-ienumerable-ienumerator-yield-iterator">https://dotblogs.com.tw/hatelove/2012/05/10/introducing-foreach-ienumerable-ienumerator-yield-iterator</a><br><a target="_blank" rel="noopener" href="https://dotblogs.com.tw/regionbbs/2012/01/12/linq_deferred_execution">https://dotblogs.com.tw/regionbbs/2012/01/12/linq_deferred_execution</a></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://yuhsiang237.github.io/2022/01/13/C-LINQ-%E5%BB%B6%E9%81%B2%E5%9F%B7%E8%A1%8C-Deferred-Execution/" data-id="cl0g433nu0005twghbqakgzps" data-title="C# LINQ 延遲執行 (Deferred Execution)" class="article-share-link">Teilen</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-C-Properity-屬性-與-Field-欄位" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2022/01/13/C-Properity-%E5%B1%AC%E6%80%A7-%E8%88%87-Field-%E6%AC%84%E4%BD%8D/" class="article-date">
-  <time class="dt-published" datetime="2022-01-13T05:33:52.000Z" itemprop="datePublished">2022-01-13</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/Code/">Code</a>►<a class="article-category-link" href="/categories/Code/C/">C#</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2022/01/13/C-Properity-%E5%B1%AC%E6%80%A7-%E8%88%87-Field-%E6%AC%84%E4%BD%8D/">C# Properity(屬性) 與 Field(欄位)</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p>在這篇主要介紹Properity(屬性)、Field(欄位)在物件導向class中的差別。</p>
-<h3 id="Properity-屬性"><a href="#Properity-屬性" class="headerlink" title="Properity(屬性)"></a>Properity(屬性)</h3><p>1.以public為主，能夠讓外部能存取。<br>2.包含get、set訪問器(能要求欄位只能讀或只能寫)。<br>3.可以增加邏輯處理，在改變一個欄位的值的時候希望改變物件的其它一些狀態，舉例:更改某外部公開屬性值x為1時，另一個內部私有欄位y需要連動更改數值為2。<br>4.不佔有實際內存，主要為get;set;存取私有欄位資料。</p>
-<h3 id="Field-欄位"><a href="#Field-欄位" class="headerlink" title="Field(欄位)"></a>Field(欄位)</h3><p>1.以private為主(有時會以protected)，主要以class內部使用為主。<br>2.命名會加_在前面。<br>3.可能為靜態值所以設定為readonly<br>4.佔有實際內存、位址。</p>
-<h3 id="範例"><a href="#範例" class="headerlink" title="範例"></a>範例</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">public class User</span><br><span class="line">&#123;</span><br><span class="line">    private string _name;// _name為欄位</span><br><span class="line">    public string Name   // Name為屬性，它含有程式碼塊</span><br><span class="line">    &#123;</span><br><span class="line">        get</span><br><span class="line">        &#123;</span><br><span class="line">            // 可以在此添加額外會影響的私有變數</span><br><span class="line">            return _name;// 讀取（返回_name值）</span><br><span class="line">        &#125;</span><br><span class="line">        set </span><br><span class="line">        &#123;</span><br><span class="line">            _name = value;// 為_name賦值</span><br><span class="line">            // 可以在此添加額外會影響的私有變數</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="總結"><a href="#總結" class="headerlink" title="總結"></a>總結</h3><p>為什麼要使用屬性為什麼不用欄位就好?<br>因為能夠確保內部私有資料的安全性，並且能夠透過get;set;方式訪問時能夠增加邏輯處理、方便限制可讀、可寫。</p>
-<h3 id="參考資料"><a href="#參考資料" class="headerlink" title="參考資料"></a>參考資料</h3><p><a target="_blank" rel="noopener" href="https://kevintsengtw.blogspot.com/2011/09/property-field.html?m=1#:~:text=Field%EF%BC%9A_FullDescription%E7%82%BA%E7%89%A9%E4%BB%B6%E7%A7%81%E6%9C%89,%E4%BE%86%E5%AD%98%E6%94%BE%E5%B1%AC%E6%80%A7%E7%9A%84%E8%B3%87%E6%96%99%E3%80%82&amp;text=%E7%AF%80%E9%8C%84%E6%95%B4%E7%90%86%EF%BC%9A,%E9%9C%80%E8%A6%81%E5%AE%8C%E5%85%A8%E7%9B%B8%E5%90%8C%E7%9A%84%E8%AA%9E%E6%B3%95%E3%80%82">https://kevintsengtw.blogspot.com/2011/09/property-field.html?m=1#:~:text=Field%EF%BC%9A_FullDescription%E7%82%BA%E7%89%A9%E4%BB%B6%E7%A7%81%E6%9C%89,%E4%BE%86%E5%AD%98%E6%94%BE%E5%B1%AC%E6%80%A7%E7%9A%84%E8%B3%87%E6%96%99%E3%80%82&amp;text=%E7%AF%80%E9%8C%84%E6%95%B4%E7%90%86%EF%BC%9A,%E9%9C%80%E8%A6%81%E5%AE%8C%E5%85%A8%E7%9B%B8%E5%90%8C%E7%9A%84%E8%AA%9E%E6%B3%95%E3%80%82</a><br><a target="_blank" rel="noopener" href="https://www.itread01.com/content/1548110544.html">https://www.itread01.com/content/1548110544.html</a></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://yuhsiang237.github.io/2022/01/13/C-Properity-%E5%B1%AC%E6%80%A7-%E8%88%87-Field-%E6%AC%84%E4%BD%8D/" data-id="cl0g433om001otwgh746q1gja" data-title="C# Properity(屬性) 與 Field(欄位)" class="article-share-link">Teilen</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
 
 
   <nav id="page-nav">
     
-    <a class="extend prev" rel="prev" href="/">&laquo; zurück</a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><span class="space">&hellip;</span><a class="page-number" href="/page/11/">11</a><a class="extend next" rel="next" href="/page/3/">weiter &raquo;</a>
+    <a class="extend prev" rel="prev" href="/">&laquo; zurück</a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><span class="space">&hellip;</span><a class="page-number" href="/page/12/">12</a><a class="extend next" rel="next" href="/page/3/">weiter &raquo;</a>
   </nav>
 
 </section>
@@ -790,7 +865,7 @@ both date and time, with time zone，
   <div class="widget-wrap">
     <h3 class="widget-title">Kategorien</h3>
     <div class="widget">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Code/">Code</a><span class="category-list-count">51</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Code/C/">C#</a><span class="category-list-count">47</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Code/Javascript/">Javascript</a><span class="category-list-count">5</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/">Computer Science</a><span class="category-list-count">5</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/Algorithm/">Algorithm</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/Data-structure/">Data structure</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/%E9%9B%BB%E5%AD%90%E9%9B%BB%E8%B7%AF/">電子電路</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Daily-Log/">Daily Log</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/">Database</a><span class="category-list-count">46</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Database/PostgreSQL/">PostgreSQL</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/SQL-Server/">SQL Server</a><span class="category-list-count">38</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/">Framework</a><span class="category-list-count">27</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/AspNetCore-API/">AspNetCore API</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/AspNetCore-MVC/">AspNetCore MVC</a><span class="category-list-count">21</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/">Topic</a><span class="category-list-count">63</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2021-C-AspNetCore%E9%90%B5%E4%BA%BA%E8%B3%BD/">2021 C# AspNetCore鐵人賽</a><span class="category-list-count">30</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2021-SQL-Server%E9%90%B5%E4%BA%BA%E8%B3%BD/">2021 SQL Server鐵人賽</a><span class="category-list-count">30</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/LeetCode/">LeetCode</a><span class="category-list-count">3</span></li></ul></li></ul>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Code/">Code</a><span class="category-list-count">58</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Code/C/">C#</a><span class="category-list-count">54</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Code/Javascript/">Javascript</a><span class="category-list-count">5</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/">Computer Science</a><span class="category-list-count">5</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/Algorithm/">Algorithm</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/Data-structure/">Data structure</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/%E9%9B%BB%E5%AD%90%E9%9B%BB%E8%B7%AF/">電子電路</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Daily-Log/">Daily Log</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/">Database</a><span class="category-list-count">46</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Database/PostgreSQL/">PostgreSQL</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/SQL-Server/">SQL Server</a><span class="category-list-count">38</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/">Framework</a><span class="category-list-count">27</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/AspNetCore-API/">AspNetCore API</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/AspNetCore-MVC/">AspNetCore MVC</a><span class="category-list-count">21</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/">Topic</a><span class="category-list-count">69</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2021-C-AspNetCore%E9%90%B5%E4%BA%BA%E8%B3%BD/">2021 C# AspNetCore鐵人賽</a><span class="category-list-count">30</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2021-SQL-Server%E9%90%B5%E4%BA%BA%E8%B3%BD/">2021 SQL Server鐵人賽</a><span class="category-list-count">30</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2022-C-%E5%9F%B7%E8%A1%8C%E7%B7%92%E5%90%8C%E6%AD%A5%E7%95%B0%E6%AD%A5%E7%B7%A8%E7%A8%8B%E8%A8%98/">2022 C# 執行緒同步異步編程記</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/LeetCode/">LeetCode</a><span class="category-list-count">3</span></li></ul></li></ul>
     </div>
   </div>
 
@@ -800,7 +875,7 @@ both date and time, with time zone，
   <div class="widget-wrap">
     <h3 class="widget-title">Archiv</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/03/">三月 2022</a><span class="archive-list-count">11</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/02/">二月 2022</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/01/">一月 2022</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">十二月 2021</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">十月 2021</a><span class="archive-list-count">24</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">九月 2021</a><span class="archive-list-count">46</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">八月 2021</a><span class="archive-list-count">12</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/04/">四月 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/03/">三月 2022</a><span class="archive-list-count">17</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/02/">二月 2022</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/01/">一月 2022</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">十二月 2021</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">十月 2021</a><span class="archive-list-count">24</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">九月 2021</a><span class="archive-list-count">46</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">八月 2021</a><span class="archive-list-count">12</span></li></ul>
     </div>
   </div>
 

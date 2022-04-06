@@ -77,6 +77,566 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-C-MVC的程式架構淺談" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2021/09/29/C-MVC%E7%9A%84%E7%A8%8B%E5%BC%8F%E6%9E%B6%E6%A7%8B%E6%B7%BA%E8%AB%87/" class="article-date">
+  <time class="dt-published" datetime="2021-09-28T23:05:32.000Z" itemprop="datePublished">2021-09-29</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Code/">Code</a>►<a class="article-category-link" href="/categories/Code/C/">C#</a>►<a class="article-category-link" href="/categories/Framework/">Framework</a>►<a class="article-category-link" href="/categories/Framework/AspNetCore-MVC/">AspNetCore MVC</a>►<a class="article-category-link" href="/categories/Topic/">Topic</a>►<a class="article-category-link" href="/categories/Topic/2021-C-AspNetCore%E9%90%B5%E4%BA%BA%E8%B3%BD/">2021 C# AspNetCore鐵人賽</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2021/09/29/C-MVC%E7%9A%84%E7%A8%8B%E5%BC%8F%E6%9E%B6%E6%A7%8B%E6%B7%BA%E8%AB%87/">[Day4] C# MVC的程式架構淺談 - C#&amp;AspNetCore</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>這篇主要檢討上回 <a href="/2021/09/28/%E5%BB%BA%E7%AB%8BC-MVC%E5%B0%88%E6%A1%88/" title="[Day3] 建立C# MVC專案 - C#&amp;AspNetCore">[Day3] 建立C# MVC專案 - C#&amp;AspNetCore</a> 透過.net core 3.1版本建立出的程式碼架構。</p>
+<h3 id="檔案架構"><a href="#檔案架構" class="headerlink" title="檔案架構"></a>檔案架構</h3><ul>
+<li>wwwroot資料夾: 是放置靜態檔案如js、css等前台需要的檔案</li>
+<li>Controllers資料夾: 是放置MVC的控制器Controller的地方，與使用者請求並給予回應有關</li>
+<li>Models資料夾: 是放置MVC的控制器Models的地方，與資料庫有緊密關係</li>
+<li>Views資料夾: 是放置MVC的控制器Views的地方，在頁面上和使用者互動的畫面</li>
+<li>appsetting.json 設定檔案。</li>
+<li>Program.cs 主要的進入點Main的所在，在此建立Host。</li>
+<li>Startup.cs 在這裡可以設定網站的啟用設定，如添加中介層(Middleware) </li>
+</ul>
+<img src="/2021/09/29/C-MVC%E7%9A%84%E7%A8%8B%E5%BC%8F%E6%9E%B6%E6%A7%8B%E6%B7%BA%E8%AB%87/1.png" class="">
+
+<h3 id="程式碼探究"><a href="#程式碼探究" class="headerlink" title="程式碼探究"></a>程式碼探究</h3><h4 id="Program-cs"><a href="#Program-cs" class="headerlink" title="Program.cs"></a>Program.cs</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">using Microsoft.AspNetCore.Hosting;</span><br><span class="line">using Microsoft.Extensions.Configuration;</span><br><span class="line">using Microsoft.Extensions.Hosting;</span><br><span class="line">using Microsoft.Extensions.Logging;</span><br><span class="line">using System;</span><br><span class="line">using System.Collections.Generic;</span><br><span class="line">using System.Linq;</span><br><span class="line">using System.Threading.Tasks;</span><br><span class="line"></span><br><span class="line">namespace WebApplication1</span><br><span class="line">&#123;</span><br><span class="line">    public class Program</span><br><span class="line">    &#123;</span><br><span class="line">        public static void Main(string[] args)</span><br><span class="line">        &#123;</span><br><span class="line">            CreateHostBuilder(args).Build().Run();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        public static IHostBuilder CreateHostBuilder(string[] args) =&gt;</span><br><span class="line">            Host.CreateDefaultBuilder(args)</span><br><span class="line">                .ConfigureWebHostDefaults(webBuilder =&gt;</span><br><span class="line">                &#123;</span><br><span class="line">                    webBuilder.UseStartup&lt;Startup&gt;();</span><br><span class="line">                &#125;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>Main:程式碼進入點，並在裡面呼叫<code>CreateHostBuilder</code>，建立初始化的<code>IHostBuilder</code>。之後，Build建立實體，再透過Run運行。</li>
+<li>CreateDefaultBuilder:預設為空參數，也可以自行添加。</li>
+<li>ConfigureWebHostDefaults:其中包含用來裝載 web 應用程式的預設值</li>
+<li>UseStartup:指定要供 web 主機使用的啟動類型，這裡套用Startup.cs的程式碼，也可以自訂Class然後套用至此。</li>
+</ul>
+<p>小結:透過一個Console程式運行網站伺服器，可在此設定一開始要執行什麼、套用什麼設定。</p>
+<h4 id="Startup-cs"><a href="#Startup-cs" class="headerlink" title="Startup.cs"></a>Startup.cs</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br></pre></td><td class="code"><pre><span class="line">using Microsoft.AspNetCore.Builder;</span><br><span class="line">using Microsoft.AspNetCore.Hosting;</span><br><span class="line">using Microsoft.AspNetCore.HttpsPolicy;</span><br><span class="line">using Microsoft.Extensions.Configuration;</span><br><span class="line">using Microsoft.Extensions.DependencyInjection;</span><br><span class="line">using Microsoft.Extensions.Hosting;</span><br><span class="line">using System;</span><br><span class="line">using System.Collections.Generic;</span><br><span class="line">using System.Linq;</span><br><span class="line">using System.Threading.Tasks;</span><br><span class="line"></span><br><span class="line">namespace WebApplication1</span><br><span class="line">&#123;</span><br><span class="line">    public class Startup</span><br><span class="line">    &#123;</span><br><span class="line">        public Startup(IConfiguration configuration)</span><br><span class="line">        &#123;</span><br><span class="line">            Configuration = configuration;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        public IConfiguration Configuration &#123; get; &#125;</span><br><span class="line"></span><br><span class="line">        // This method gets called by the runtime. Use this method to add services to the container.</span><br><span class="line">        public void ConfigureServices(IServiceCollection services)</span><br><span class="line">        &#123;</span><br><span class="line">            // 添加服務</span><br><span class="line">            services.AddControllersWithViews();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.</span><br><span class="line">        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)</span><br><span class="line">        &#123;</span><br><span class="line">            if (env.IsDevelopment())</span><br><span class="line">            &#123;</span><br><span class="line">                app.UseDeveloperExceptionPage();</span><br><span class="line">            &#125;</span><br><span class="line">            else</span><br><span class="line">            &#123;</span><br><span class="line">                app.UseExceptionHandler(&quot;/Home/Error&quot;);</span><br><span class="line">                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.</span><br><span class="line">                app.UseHsts();</span><br><span class="line">            &#125;</span><br><span class="line">            app.UseHttpsRedirection();</span><br><span class="line">            app.UseStaticFiles();</span><br><span class="line"></span><br><span class="line">            app.UseRouting();</span><br><span class="line"></span><br><span class="line">            app.UseAuthorization();</span><br><span class="line"></span><br><span class="line">            app.UseEndpoints(endpoints =&gt;</span><br><span class="line">            &#123;</span><br><span class="line">                endpoints.MapControllerRoute(</span><br><span class="line">                    name: &quot;default&quot;,</span><br><span class="line">                    pattern: &quot;&#123;controller=Home&#125;/&#123;action=Index&#125;/&#123;id?&#125;&quot;);</span><br><span class="line">            &#125;);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<ul>
+<li>Startup:建構式，程式進入點，裡面設定configuration(如:appsetting.json的資料就會在此被帶進來)。</li>
+<li>ConfigureServices:設定添加的服務。<code>AddControllersWithViews</code>，主要用來設定添加MVC服務，舊版是AddMvc。</li>
+<li>Configure:設定HTTP request pipeline，針對http請求進行設定。<ul>
+<li>IsDevelopmen:套用開發版/上線版兩種模式。</li>
+<li>UseHsts:將 HTTP Strict 傳輸安全性通訊協定 (HSTS) 標頭傳送給用戶端</li>
+<li>UseDeveloperExceptionPage:使用開發者例外頁面</li>
+<li>UseExceptionHandler:例外時導向某頁</li>
+<li>UseHttpsRedirection:強制導向HTTPS</li>
+<li>UseStaticFiles:會在中呼叫方法 Startup.Configure，以啟用靜態檔案的服務</li>
+<li>UseRouting:將路由對應新增到Middleware中</li>
+<li>UseAuthorization:授權使用端點路由傳送的資源時，此呼叫必須出現在對應用程式的呼叫之間 。UseRouting () 和 應用程式。UseEndpoints ( … ) ，讓中介軟體能夠正常運作。</li>
+<li>UseEndpoints:Middleware提供了endpoints可以擴充一些方法去針對route去做設定</li>
+</ul>
+</li>
+</ul>
+<p>小結:添加哪些服務、設定一些初始架構(HTTP協定、開發版/上線版)、中介層設定都在這Startup.cs裡。</p>
+<h4 id="appsettings-json"><a href="#appsettings-json" class="headerlink" title="appsettings.json"></a>appsettings.json</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;Logging&quot;: &#123;</span><br><span class="line">    &quot;LogLevel&quot;: &#123;</span><br><span class="line">      &quot;Default&quot;: &quot;Information&quot;,</span><br><span class="line">      &quot;Microsoft&quot;: &quot;Warning&quot;,</span><br><span class="line">      &quot;Microsoft.Hosting.Lifetime&quot;: &quot;Information&quot;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  &quot;AllowedHosts&quot;: &quot;*&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>小結:在此建立的值可以在Startup.cs被讀取，通常是一些外部字串設定檔，像是舊版的webconfig</p>
+<h4 id="HomeController-cs"><a href="#HomeController-cs" class="headerlink" title="HomeController.cs"></a>HomeController.cs</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">using Microsoft.AspNetCore.Mvc;</span><br><span class="line">using Microsoft.Extensions.Logging;</span><br><span class="line">using System;</span><br><span class="line">using System.Collections.Generic;</span><br><span class="line">using System.Diagnostics;</span><br><span class="line">using System.Linq;</span><br><span class="line">using System.Threading.Tasks;</span><br><span class="line">using WebApplication1.Models;</span><br><span class="line"></span><br><span class="line">namespace WebApplication1.Controllers</span><br><span class="line">&#123;</span><br><span class="line">    public class HomeController : Controller</span><br><span class="line">    &#123;</span><br><span class="line">        private readonly ILogger&lt;HomeController&gt; _logger;</span><br><span class="line"></span><br><span class="line">        public HomeController(ILogger&lt;HomeController&gt; logger)</span><br><span class="line">        &#123;</span><br><span class="line">            _logger = logger;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        public IActionResult Index()</span><br><span class="line">        &#123;</span><br><span class="line">            return View();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        public IActionResult Privacy()</span><br><span class="line">        &#123;</span><br><span class="line">            return View();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]</span><br><span class="line">        public IActionResult Error()</span><br><span class="line">        &#123;</span><br><span class="line">            return View(new ErrorViewModel &#123; RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier &#125;);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>ILogger:提供寫入log的介面，在 ASP.NET Core 統一透過 ILogger 來記錄 Log。</li>
+<li>Index()、Privacy():是Controller裡的action，用來載入的View資料夾的頁面。</li>
+<li>ResponseCache:設定 Response 的暫存方式。並套用到要使用 Response 快取的 Controller 或 Action。以此就是套用到Error()。</li>
+<li>Error():錯誤時返回的頁面，這邊回傳了ErrorViewModel模型格式的內容。<br>[補充]C#問號用法:<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">int? x = null;//定義可空型別變數</span><br><span class="line">int? y = x ?? 1000;//使用合併運算子，當變數x為null時，預設賦值1000</span><br></pre></td></tr></table></figure></li>
+</ul>
+<p>小結:控制器可依需求返回頁面、可在此紀錄LOG。</p>
+<h4 id="ErrorViewModel-cs"><a href="#ErrorViewModel-cs" class="headerlink" title="ErrorViewModel.cs"></a>ErrorViewModel.cs</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">using System;</span><br><span class="line"></span><br><span class="line">namespace WebApplication1.Models</span><br><span class="line">&#123;</span><br><span class="line">    public class ErrorViewModel</span><br><span class="line">    &#123;</span><br><span class="line">        public string RequestId &#123; get; set; &#125;</span><br><span class="line"></span><br><span class="line">        public bool ShowRequestId =&gt; !string.IsNullOrEmpty(RequestId);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>ErrorViewModel:建立Class</li>
+<li>RequestId:model中的string值</li>
+<li>ShowRequestId:model中的bool值，返回一個lambda函式結果</li>
+</ul>
+<p>給View用的Model，跟MVVM概念中所提到的ViewModel是不一樣的<br>在MVC的View中，一個View Binding一個Model，如果要使用多個不同的資料表就會用到View Model。</p>
+<p>小結:在此建立一些模型規格，供頁面呈現使用。</p>
+<h4 id="Index-cshtml"><a href="#Index-cshtml" class="headerlink" title="Index.cshtml"></a>Index.cshtml</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">@&#123;</span><br><span class="line">    ViewData[&quot;Title&quot;] = &quot;Home Page&quot;;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">&lt;div class=&quot;text-center&quot;&gt;</span><br><span class="line">    &lt;h1 class=&quot;display-4&quot;&gt;Welcome&lt;/h1&gt;</span><br><span class="line">    &lt;p&gt;Learn about &lt;a href=&quot;https://docs.microsoft.com/aspnet/core&quot;&gt;building Web apps with ASP.NET Core&lt;/a&gt;.&lt;/p&gt;</span><br><span class="line">&lt;/div&gt;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>ViewData:引用System.Web.Mvc.ViewDataDictionary，屬於Dictionary Object，能放Property或是一個Model的IEnumerable，使用Key/Value的概念存取。生命週期為一個頁面</li>
+<li>@{}區塊:Razor語法，可以在裡面寫C#語法，但建議前台盡量少業務邏輯、只以純顯示為幕的比較好。</li>
+</ul>
+<p>小結:在此可以寫html、前端畫面。</p>
+<h3 id="Privacy-cshtml"><a href="#Privacy-cshtml" class="headerlink" title="Privacy.cshtml"></a>Privacy.cshtml</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">@&#123;</span><br><span class="line">    ViewData[&quot;Title&quot;] = &quot;Privacy Policy&quot;;</span><br><span class="line">&#125;</span><br><span class="line">&lt;h1&gt;@ViewData[&quot;Title&quot;]&lt;/h1&gt;</span><br><span class="line"></span><br><span class="line">&lt;p&gt;Use this page to detail your site&#x27;s privacy policy.&lt;/p&gt;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>@ViewData:可用Razor語法叫出值顯示。</li>
+</ul>
+<p>小結:同 Index.cshtml</p>
+<h3 id="Layout-cshtml"><a href="#Layout-cshtml" class="headerlink" title="_Layout.cshtml"></a>_Layout.cshtml</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line">&lt;!DOCTYPE html&gt;</span><br><span class="line">&lt;html lang=&quot;en&quot;&gt;</span><br><span class="line">&lt;head&gt;</span><br><span class="line">    &lt;meta charset=&quot;utf-8&quot; /&gt;</span><br><span class="line">    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot; /&gt;</span><br><span class="line">    &lt;title&gt;@ViewData[&quot;Title&quot;] - WebApplication1&lt;/title&gt;</span><br><span class="line">    &lt;link rel=&quot;stylesheet&quot; href=&quot;~/lib/bootstrap/dist/css/bootstrap.min.css&quot; /&gt;</span><br><span class="line">    &lt;link rel=&quot;stylesheet&quot; href=&quot;~/css/site.css&quot; /&gt;</span><br><span class="line">&lt;/head&gt;</span><br><span class="line">&lt;body&gt;</span><br><span class="line">    &lt;header&gt;</span><br><span class="line">        &lt;nav class=&quot;navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3&quot;&gt;</span><br><span class="line">            &lt;div class=&quot;container&quot;&gt;</span><br><span class="line">                &lt;a class=&quot;navbar-brand&quot; asp-area=&quot;&quot; asp-controller=&quot;Home&quot; asp-action=&quot;Index&quot;&gt;WebApplication1&lt;/a&gt;</span><br><span class="line">                &lt;button class=&quot;navbar-toggler&quot; type=&quot;button&quot; data-toggle=&quot;collapse&quot; data-target=&quot;.navbar-collapse&quot; aria-controls=&quot;navbarSupportedContent&quot;</span><br><span class="line">                        aria-expanded=&quot;false&quot; aria-label=&quot;Toggle navigation&quot;&gt;</span><br><span class="line">                    &lt;span class=&quot;navbar-toggler-icon&quot;&gt;&lt;/span&gt;</span><br><span class="line">                &lt;/button&gt;</span><br><span class="line">                &lt;div class=&quot;navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse&quot;&gt;</span><br><span class="line">                    &lt;ul class=&quot;navbar-nav flex-grow-1&quot;&gt;</span><br><span class="line">                        &lt;li class=&quot;nav-item&quot;&gt;</span><br><span class="line">                            &lt;a class=&quot;nav-link text-dark&quot; asp-area=&quot;&quot; asp-controller=&quot;Home&quot; asp-action=&quot;Index&quot;&gt;Home&lt;/a&gt;</span><br><span class="line">                        &lt;/li&gt;</span><br><span class="line">                        &lt;li class=&quot;nav-item&quot;&gt;</span><br><span class="line">                            &lt;a class=&quot;nav-link text-dark&quot; asp-area=&quot;&quot; asp-controller=&quot;Home&quot; asp-action=&quot;Privacy&quot;&gt;Privacy&lt;/a&gt;</span><br><span class="line">                        &lt;/li&gt;</span><br><span class="line">                    &lt;/ul&gt;</span><br><span class="line">                &lt;/div&gt;</span><br><span class="line">            &lt;/div&gt;</span><br><span class="line">        &lt;/nav&gt;</span><br><span class="line">    &lt;/header&gt;</span><br><span class="line">    &lt;div class=&quot;container&quot;&gt;</span><br><span class="line">        &lt;main role=&quot;main&quot; class=&quot;pb-3&quot;&gt;</span><br><span class="line">            @RenderBody()</span><br><span class="line">        &lt;/main&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line"></span><br><span class="line">    &lt;footer class=&quot;border-top footer text-muted&quot;&gt;</span><br><span class="line">        &lt;div class=&quot;container&quot;&gt;</span><br><span class="line">            &amp;copy; 2021 - WebApplication1 - &lt;a asp-area=&quot;&quot; asp-controller=&quot;Home&quot; asp-action=&quot;Privacy&quot;&gt;Privacy&lt;/a&gt;</span><br><span class="line">        &lt;/div&gt;</span><br><span class="line">    &lt;/footer&gt;</span><br><span class="line">    &lt;script src=&quot;~/lib/jquery/dist/jquery.min.js&quot;&gt;&lt;/script&gt;</span><br><span class="line">    &lt;script src=&quot;~/lib/bootstrap/dist/js/bootstrap.bundle.min.js&quot;&gt;&lt;/script&gt;</span><br><span class="line">    &lt;script src=&quot;~/js/site.js&quot; asp-append-version=&quot;true&quot;&gt;&lt;/script&gt;</span><br><span class="line">    @RenderSection(&quot;Scripts&quot;, required: false)</span><br><span class="line">&lt;/body&gt;</span><br><span class="line">&lt;/html&gt;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<ul>
+<li>@ViewData[“Title”]:底下頁面PASS過來的Title。</li>
+<li>@RenderBody():把整塊子頁面放進來。</li>
+<li>@RenderSection():建立放js區塊的程式碼區域，required表示是否一定要提供。</li>
+</ul>
+<p>小結:共用的頁面主架構。</p>
+<h4 id="ValidationScriptsPartial-cshtml"><a href="#ValidationScriptsPartial-cshtml" class="headerlink" title="_ValidationScriptsPartial.cshtml"></a>_ValidationScriptsPartial.cshtml</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&lt;script src=&quot;~/lib/jquery-validation/dist/jquery.validate.min.js&quot;&gt;&lt;/script&gt;</span><br><span class="line">&lt;script src=&quot;~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js&quot;&gt;&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+<p>小結:放切出來的區塊。</p>
+<h4 id="Error-cshtml"><a href="#Error-cshtml" class="headerlink" title="Error.cshtml"></a>Error.cshtml</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">@model ErrorViewModel</span><br><span class="line">@&#123;</span><br><span class="line">    ViewData[&quot;Title&quot;] = &quot;Error&quot;;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">&lt;h1 class=&quot;text-danger&quot;&gt;Error.&lt;/h1&gt;</span><br><span class="line">&lt;h2 class=&quot;text-danger&quot;&gt;An error occurred while processing your request.&lt;/h2&gt;</span><br><span class="line"></span><br><span class="line">@if (Model.ShowRequestId)</span><br><span class="line">&#123;</span><br><span class="line">    &lt;p&gt;</span><br><span class="line">        &lt;strong&gt;Request ID:&lt;/strong&gt; &lt;code&gt;@Model.RequestId&lt;/code&gt;</span><br><span class="line">    &lt;/p&gt;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">&lt;h3&gt;Development Mode&lt;/h3&gt;</span><br><span class="line">&lt;p&gt;</span><br><span class="line">    Swapping to &lt;strong&gt;Development&lt;/strong&gt; environment will display more detailed information about the error that occurred.</span><br><span class="line">&lt;/p&gt;</span><br><span class="line">&lt;p&gt;</span><br><span class="line">    &lt;strong&gt;The Development environment shouldn&#x27;t be enabled for deployed applications.&lt;/strong&gt;</span><br><span class="line">    It can result in displaying sensitive information from exceptions to end users.</span><br><span class="line">    For local debugging, enable the &lt;strong&gt;Development&lt;/strong&gt; environment by setting the &lt;strong&gt;ASPNETCORE_ENVIRONMENT&lt;/strong&gt; environment variable to &lt;strong&gt;Development&lt;/strong&gt;</span><br><span class="line">    and restarting the app.</span><br><span class="line">&lt;/p&gt;</span><br></pre></td></tr></table></figure>
+<p>@model:Razor語法，可以使用model的物件<br>小結:套用了ErrorViewModel，主要印出ErrorViewModel內的資料。</p>
+<h4 id="ViewImports-cshtml"><a href="#ViewImports-cshtml" class="headerlink" title="_ViewImports.cshtml"></a>_ViewImports.cshtml</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">@using WebApplication1</span><br><span class="line">@using WebApplication1.Models</span><br><span class="line">@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers</span><br></pre></td></tr></table></figure>
+<p>小結:設定使用那些程式模組</p>
+<h4 id="ViewStart-cshtml"><a href="#ViewStart-cshtml" class="headerlink" title="_ViewStart.cshtml"></a>_ViewStart.cshtml</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">@&#123;</span><br><span class="line">    Layout = &quot;_Layout&quot;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>小結:頁面進入點套用。</p>
+<h3 id="總結"><a href="#總結" class="headerlink" title="總結"></a>總結</h3><p>從程式碼片段中可以得知整個架構上如何運作。<br>從一開始的Console建置啟動程式、Startup設定，至單個頁面程式碼符合MVC架構的撰寫，最後運行起整個系統。</p>
+<p>因為MVC所以知道這設計模式的人就能很快的熟悉這架構的寫法與邏輯。<br>如果是自幹的專案，就會有這地方是什麼架構、要怎麼改的才能達到功能的各種歪路。</p>
+<p>預計下回會針對在Model、View、Controller上的細節程式碼撰寫。</p>
+<p><strong>參考資料</strong><br><a target="_blank" rel="noopener" href="https://www.tutorialsteacher.com/core/aspnet-core-startup">https://www.tutorialsteacher.com/core/aspnet-core-startup</a><br><a target="_blank" rel="noopener" href="https://blog.johnwu.cc/article/asp-net-core-3-application-lifetime.html">https://blog.johnwu.cc/article/asp-net-core-3-application-lifetime.html</a><br><a target="_blank" rel="noopener" href="https://ithelp.ithome.com.tw/articles/10240077">https://ithelp.ithome.com.tw/articles/10240077</a><br><a target="_blank" rel="noopener" href="https://docs.microsoft.com/zh-tw/dotnet/api/microsoft.extensions.hosting.host.createdefaultbuilder?view=dotnet-plat-ext-5.0">https://docs.microsoft.com/zh-tw/dotnet/api/microsoft.extensions.hosting.host.createdefaultbuilder?view=dotnet-plat-ext-5.0</a><br><a target="_blank" rel="noopener" href="https://ithelp.ithome.com.tw/articles/10243332">https://ithelp.ithome.com.tw/articles/10243332</a><br><a target="_blank" rel="noopener" href="https://ithelp.ithome.com.tw/articles/10186520">https://ithelp.ithome.com.tw/articles/10186520</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://yuhsiang237.github.io/2021/09/29/C-MVC%E7%9A%84%E7%A8%8B%E5%BC%8F%E6%9E%B6%E6%A7%8B%E6%B7%BA%E8%AB%87/" data-id="cl0g433on001qtwgh272recng" data-title="[Day4] C# MVC的程式架構淺談 - C#&amp;AspNetCore" class="article-share-link">Teilen</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-建立C-MVC專案" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2021/09/28/%E5%BB%BA%E7%AB%8BC-MVC%E5%B0%88%E6%A1%88/" class="article-date">
+  <time class="dt-published" datetime="2021-09-28T09:03:14.000Z" itemprop="datePublished">2021-09-28</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Code/">Code</a>►<a class="article-category-link" href="/categories/Code/C/">C#</a>►<a class="article-category-link" href="/categories/Topic/">Topic</a>►<a class="article-category-link" href="/categories/Topic/2021-C-AspNetCore%E9%90%B5%E4%BA%BA%E8%B3%BD/">2021 C# AspNetCore鐵人賽</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2021/09/28/%E5%BB%BA%E7%AB%8BC-MVC%E5%B0%88%E6%A1%88/">[Day3] 建立C# MVC專案 - C#&amp;AspNetCore</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>在上回 <a href="/2021/09/21/%E4%BB%80%E9%BA%BC%E6%98%AFMVC/" title="[Day2] 什麼是MVC，有什麼好處 - C#&amp;AspNetCore">[Day2] 什麼是MVC，有什麼好處 - C#&amp;AspNetCore</a> 中我們理解到的MVC的核心概念。<br>在這回中我們要利用Visual Studio來建立一個C# MVC專案，並運行起來。</p>
+<h3 id="安裝"><a href="#安裝" class="headerlink" title="安裝"></a>安裝</h3><p>Visual Studio Community 2019:<br><a target="_blank" rel="noopener" href="https://visualstudio.microsoft.com/zh-hant/downloads/">https://visualstudio.microsoft.com/zh-hant/downloads/</a></p>
+<h3 id="建立專案"><a href="#建立專案" class="headerlink" title="建立專案"></a>建立專案</h3><p>1.下載完後就可以開啟Visual Studio建立專案，New&gt;Project</p>
+<img src="/2021/09/28/%E5%BB%BA%E7%AB%8BC-MVC%E5%B0%88%E6%A1%88/1.png" class="">
+<p>2.選ASP.NET Core Web App(Model-View-Controller)，不然會建立出傳統沒有設計模式(Design Pattern)架構的專案。</p>
+<img src="/2021/09/28/%E5%BB%BA%E7%AB%8BC-MVC%E5%B0%88%E6%A1%88/2.png" class="">
+<p>3.設定專案名稱及資料夾</p>
+<img src="/2021/09/28/%E5%BB%BA%E7%AB%8BC-MVC%E5%B0%88%E6%A1%88/3.png" class="">
+<p>4.Enable Razor runtime compilation 執行期編譯要記得打勾，不然每次要重新執行才能看到修改的結果。</p>
+<img src="/2021/09/28/%E5%BB%BA%E7%AB%8BC-MVC%E5%B0%88%E6%A1%88/4.png" class="">
+<p>5.專案建立</p>
+<img src="/2021/09/28/%E5%BB%BA%E7%AB%8BC-MVC%E5%B0%88%E6%A1%88/5.png" class="">
+<p>6.可看見Model、View、Controller</p>
+<img src="/2021/09/28/%E5%BB%BA%E7%AB%8BC-MVC%E5%B0%88%E6%A1%88/6.png" class="">
+<p>7.點下Express執行</p>
+<img src="/2021/09/28/%E5%BB%BA%E7%AB%8BC-MVC%E5%B0%88%E6%A1%88/7.png" class="">
+<p>8.成功運行在網頁上了!</p>
+<img src="/2021/09/28/%E5%BB%BA%E7%AB%8BC-MVC%E5%B0%88%E6%A1%88/8.png" class="">
+
+
+<h3 id="總結"><a href="#總結" class="headerlink" title="總結"></a>總結</h3><p>建立MVC專案成功!<br>相對於PHP的LARAVEL框架來說，這套建立起來的MVC系統比較輕量，也就代表未來擴充的程式碼要設計好，否則量大起來加上多人協作可能就會有難以維護的問題。<br>為了在維護、co-work好改，之後也會注重在設計模式上。<br>最後，對於微軟程式只要能用IDE運行起來就成功一半了。因為程式碼除錯、追蹤功能強大。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://yuhsiang237.github.io/2021/09/28/%E5%BB%BA%E7%AB%8BC-MVC%E5%B0%88%E6%A1%88/" data-id="cl0g433pm0058twgh7s8j8kjl" data-title="[Day3] 建立C# MVC專案 - C#&amp;AspNetCore" class="article-share-link">Teilen</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-基礎資料結構" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2021/09/26/%E5%9F%BA%E7%A4%8E%E8%B3%87%E6%96%99%E7%B5%90%E6%A7%8B/" class="article-date">
+  <time class="dt-published" datetime="2021-09-25T20:10:11.000Z" itemprop="datePublished">2021-09-26</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Computer-Science/">Computer Science</a>►<a class="article-category-link" href="/categories/Computer-Science/Data-structure/">Data structure</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2021/09/26/%E5%9F%BA%E7%A4%8E%E8%B3%87%E6%96%99%E7%B5%90%E6%A7%8B/">基礎資料結構</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p><strong>資料結構:</strong></p>
+<ol>
+<li>如何在電腦中儲存資料。</li>
+<li>是一種工具，如:演算法搭配適合的資料結構。</li>
+</ol>
+<p><strong>選擇不同的資料結構:</strong></p>
+<ol>
+<li>時間複雜度:非常頻繁拿、取，希望時間可以短一點。</li>
+<li>空間複雜度:需要另外用空間來加速，那空間可能要比較多。</li>
+<li>coding複雜度:比如有兩種結構可以實作這程式，那選較容易、不容易出錯的那個。</li>
+</ol>
+<h3 id="常見操作"><a href="#常見操作" class="headerlink" title="常見操作"></a>常見操作</h3><p>push放入一個元素、pop取出一個元素、query查詢</p>
+<h3 id="堆疊"><a href="#堆疊" class="headerlink" title="堆疊"></a>堆疊</h3><p>堆疊(stack，FILO，first in last out)，先進後出，如碟盤子。<br>實作搭配linked list<br>push:在head插入一個節點<br>pop:刪除head指向的節點<br>時間複雜度:<br>push:O(1)<br>pop:O(1)</p>
+<h3 id="佇列"><a href="#佇列" class="headerlink" title="佇列"></a>佇列</h3><p>佇列(queue，FIFO，first in first out)，先進先出，如排隊。有環狀、單向之分。<br>實作搭配linked list或環狀佇列。<br>push:在end後面插入一個節點<br>pop:刪除head指向的節點<br>時間複雜度:<br>enqueue:O(1)<br>dequeue:O(1)</p>
+<h3 id="鏈結串列"><a href="#鏈結串列" class="headerlink" title="鏈結串列"></a>鏈結串列</h3><p>鏈結串列(linked list)。<br>基本單元:Node(data+pointer)<br>將很多Node接起。<br>head指向第一個node，最後一個指標指向NULL。</p>
+<img src="/2021/09/26/%E5%9F%BA%E7%A4%8E%E8%B3%87%E6%96%99%E7%B5%90%E6%A7%8B/linked-list.png" class="">
+<p>性質:</p>
+<ol>
+<li>每個元素只記錄他下一個元素，外部只記錄起點(head)</li>
+<li>動態宣告記憶體，需要時就要，不需要就還給系統</li>
+<li>分類:單向、雙向、環狀</li>
+<li>不能隨機存取，因為外部只記錄起點(head)，所以只能從頭去一個一個下去找，第一個告訴我第二個在哪，第二個告訴我第三個在哪…。</li>
+</ol>
+<p>操作:<br>insert新增元素，在兩個元素間，或是頭、尾插入<br>delete刪除元素</p>
+<p>時間複雜度:<br>insert:O(1)，只要重新更改pointer指向<br>delete:O(1)，只要重新更改pointer指向</p>
+<p>為什麼不用陣列，還能隨機存取?<br>1.避免記憶體浪費，但array的dynamic array也能做到<br>2.可以快速刪除、插入節點，這array沒辦法做到。</p>
+<p>下面兩個是延伸，不過要控制的資料變多，可能維護下來除起bug的機率會高。</p>
+<h5 id="雙向鏈結串列"><a href="#雙向鏈結串列" class="headerlink" title="雙向鏈結串列"></a>雙向鏈結串列</h5><img src="/2021/09/26/%E5%9F%BA%E7%A4%8E%E8%B3%87%E6%96%99%E7%B5%90%E6%A7%8B/linked-list2.png" class="">
+<h5 id="環狀鏈結串列"><a href="#環狀鏈結串列" class="headerlink" title="環狀鏈結串列"></a>環狀鏈結串列</h5><img src="/2021/09/26/%E5%9F%BA%E7%A4%8E%E8%B3%87%E6%96%99%E7%B5%90%E6%A7%8B/linked-list3.png" class="">
+<h3 id="時間複雜度比較"><a href="#時間複雜度比較" class="headerlink" title="時間複雜度比較"></a>時間複雜度比較</h3><img src="/2021/09/26/%E5%9F%BA%E7%A4%8E%E8%B3%87%E6%96%99%E7%B5%90%E6%A7%8B/array-vs-linkedlist.png" class="">
+<p>此外，兩個linked list合併速度很快，因為只要指向另一個的頭即可，只要O(1)。</p>
+<h3 id="總結"><a href="#總結" class="headerlink" title="總結"></a>總結</h3><p>從這章中理解到為什麼要用資料結構，選用適合的資料結構可以改善程式的速度、程式碼難易度。在前面這幾篇中預計以理解原理為主，底層實作則未來有時間再另外拿出來寫。</p>
+<p>如果是頻繁讀取，可以用array；如果頻繁新增、刪除，可以用linked list。</p>
+<p><strong>參考資料</strong><br><a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=EH5XO2iYJvM">https://www.youtube.com/watch?v=EH5XO2iYJvM</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://yuhsiang237.github.io/2021/09/26/%E5%9F%BA%E7%A4%8E%E8%B3%87%E6%96%99%E7%B5%90%E6%A7%8B/" data-id="cl0g433pj004ytwghdl0l9jk2" data-title="基礎資料結構" class="article-share-link">Teilen</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-演算法複雜度" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2021/09/25/%E6%BC%94%E7%AE%97%E6%B3%95%E8%A4%87%E9%9B%9C%E5%BA%A6/" class="article-date">
+  <time class="dt-published" datetime="2021-09-24T18:53:26.000Z" itemprop="datePublished">2021-09-25</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Computer-Science/">Computer Science</a>►<a class="article-category-link" href="/categories/Computer-Science/Algorithm/">Algorithm</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2021/09/25/%E6%BC%94%E7%AE%97%E6%B3%95%E8%A4%87%E9%9B%9C%E5%BA%A6/">Big-O 複雜度分析</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h3 id="好程式的迷思"><a href="#好程式的迷思" class="headerlink" title="好程式的迷思"></a>好程式的迷思</h3><p>一個程式好不好通常看你要解決的問題。</p>
+<ol>
+<li>時間花得少(運行速度) ex:網頁跑很快、資料載入快</li>
+<li>空間花得少 ex:硬體不夠充裕，要使用比較少記憶體</li>
+<li>正確率較高 ex:防毒軟體隊攻擊作防範、更高機率偵測</li>
+<li>相容性較高 ex:好延伸擴充、裡面程式太複雜造成很難擴充</li>
+<li>開發成本低 ex:開發軟體時，很快的做法但寫起來很困難，普通速度的作法但寫起來容易。</li>
+</ol>
+<p>所以要適當的平衡，並不是哪種一定是好。<br>相容性、開發成本，通常仰賴當下開發者評估。<br>正確率則是在實作的細節上、Case量、理論分析上。</p>
+<h3 id="複雜度概念"><a href="#複雜度概念" class="headerlink" title="複雜度概念"></a>複雜度概念</h3><p>把所有操作都視為一樣的時間，如:加減乘除、位運算、存取記憶體、判斷運算子…等<br>把所有操作次數計算出來。<br>看量級大小，來評估執行時間。有些程式容易TLE超時就是因為這問題，比較在意的是量級，而不是精確的值。</p>
+<p>舉例:被指派長期作業，有兩種方案可選:</p>
+<ol>
+<li>每天算10題。</li>
+<li>第一天算1題，第二天算2題，第三天算3題…。</li>
+</ol>
+<p><strong>兩種方案怎麼選?</strong><br>如果每算一題要5秒<br>第n天:</p>
+<ol>
+<li>10 * n * 5 = 50n</li>
+<li>(n+1) * n/2 * 5 = 2.5(n^2+n)</li>
+</ol>
+<p>n=5天時，</p>
+<ol>
+<li>250秒</li>
+<li>75秒</li>
+</ol>
+<p>n=365天時，</p>
+<ol>
+<li>18250秒</li>
+<li>333975秒</li>
+</ol>
+<p>可以發現操作數的量級(複雜)比較多，所以以長期來看會是方案1比較好。</p>
+<h3 id="量級概念"><a href="#量級概念" class="headerlink" title="量級概念"></a>量級概念</h3><p>成長的速度不同等級。<br>如f(n)與g(n)兩個函數，當n趨近無窮大，誰會比較大?</p>
+<ol>
+<li>3n^2+n+20 vs 100n 如果n = 10000，左邊會變成億；右邊只有百萬，所以左邊量級大</li>
+<li>n^100 vs 2^n</li>
+<li>n^2 vs 10nlogn</li>
+<li>100^n vs n! 如果n=200，左邊100倍，右邊成長200倍，所以右邊量級大於左邊。</li>
+<li>30*2^n vs 3^n</li>
+<li>100n vs 200n 同一量級，因為極限的概念</li>
+</ol>
+<p><strong>極限概念</strong></p>
+<p>如果f(n)/g(n)，n趨近無限大時趨近0，那麼說f(n)比g(n)小。<br>如果f(n)/g(n)，n趨近無限大時趨近無限大，那麼說f(n)比g(n)大。<br>否則稱作兩者一樣量級。<br>所以，100n/200n = 1/2，所以不管n多大都一樣，稱作一樣量級。<br>但是，科技進步可以補100n與200n的差異，如平行運算可能可以把100n與200n的作法都視為一樣。但如果不是同一量級，還是會有科技進步彌補不了的，如上面的例子1。</p>
+<h3 id="量級的比較"><a href="#量級的比較" class="headerlink" title="量級的比較"></a>量級的比較</h3><p>以一台每秒可以進行10億次運算的電腦:</p>
+<img src="/2021/09/25/%E6%BC%94%E7%AE%97%E6%B3%95%E8%A4%87%E9%9B%9C%E5%BA%A6/%E9%87%8F%E7%B4%9A%E6%AF%94%E8%BC%83.png" class="">
+<p>所以好算法、壞算法需要的時間是有很大差距的。</p>
+<h3 id="大歐符號-Big-O"><a href="#大歐符號-Big-O" class="headerlink" title="大歐符號 Big-O"></a>大歐符號 Big-O</h3><p>記為O(f(n))，f(n)為複雜度量級的”上界”。所以實際結果可能會比他還要小。<br>常數會省略只寫一個n</p>
+<ol>
+<li>3n^3+5n^2+10n+3 ∈ O(n^3)</li>
+<li>f(n) ∈ O(n^2)，則f(n) ∈ O(n^3)，因為是上界</li>
+<li>1000 ∈ O(1) </li>
+</ol>
+<p>ps.最緊上界:如果一個算法同時是O(n^2)算法、O(n^3)算法，通常會取比較小的O(n^2)，以避免過度悲觀評估。&lt;&lt;=這句我不太懂</p>
+<ol>
+<li>3n^2+n+20 vs 100n ；O(n^2) vs O(n)</li>
+<li>n^2 vs 10nlogn；O(n^2) vs O(nlogn)</li>
+<li>100^n vs n! ；O(100^n) vs O(n!)</li>
+<li>30*2^n vs 3^n ；O(2^n) vs O(3^n)</li>
+<li>100n vs 200n ；O(n) vs O(n)</li>
+</ol>
+<p>常見的時間複雜度函式:</p>
+<img src="/2021/09/25/%E6%BC%94%E7%AE%97%E6%B3%95%E8%A4%87%E9%9B%9C%E5%BA%A6/%E9%87%8F%E7%B4%9A%E6%AF%94%E8%BC%83%E7%AF%84%E4%BE%8B%E5%9C%96.png" class="">
+
+<h3 id="如果時間不穩定"><a href="#如果時間不穩定" class="headerlink" title="如果時間不穩定"></a>如果時間不穩定</h3><p>如一個人姓名存在資料庫，想找到那個人<br>如果是排第一個情況，O(1)<br>如果是排最後一個情況，O(n)</p>
+<p>多數關注的是最壞的case，如:插入排序，最好是O(n)；最壞是O(n^2)</p>
+<h3 id="總結"><a href="#總結" class="headerlink" title="總結"></a>總結</h3><p>從參考資料中整理的一些對演算法複雜度的知識。<br>如果有機會寫到要追求「時間花得少」或「空間花得少」時就能派上用場，但這些通常使用在底層實作上，在應用的層面非常少用到，不過能透過理解複雜度，盡量選擇好的實踐方法。</p>
+<p>此外，在應用層面上，相容性較高、開發成本低，我認為比較重要；底層函式庫則是追求時間花得少、空間花得少。所以，看是寫哪個層面的程式，如果兩者反過來會蠻可怕的。</p>
+<h3 id="參考資料"><a href="#參考資料" class="headerlink" title="參考資料"></a>參考資料</h3><p><a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E5%A4%A7O%E7%AC%A6%E5%8F%B7">https://zh.wikipedia.org/wiki/%E5%A4%A7O%E7%AC%A6%E5%8F%B7</a><br><a target="_blank" rel="noopener" href="https://www.youtube.com/watch?app=desktop&amp;v=_r7cfVrn28c">https://www.youtube.com/watch?app=desktop&amp;v=_r7cfVrn28c</a><br><a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E6%97%B6%E9%97%B4%E5%A4%8D%E6%9D%82%E5%BA%A6">https://zh.wikipedia.org/wiki/%E6%97%B6%E9%97%B4%E5%A4%8D%E6%9D%82%E5%BA%A6</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://yuhsiang237.github.io/2021/09/25/%E6%BC%94%E7%AE%97%E6%B3%95%E8%A4%87%E9%9B%9C%E5%BA%A6/" data-id="cl0g433pn005gtwghedhn6269" data-title="Big-O 複雜度分析" class="article-share-link">Teilen</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-無限階層留言資料表規劃" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2021/09/23/%E7%84%A1%E9%99%90%E9%9A%8E%E5%B1%A4%E7%95%99%E8%A8%80%E8%B3%87%E6%96%99%E8%A1%A8%E8%A6%8F%E5%8A%83/" class="article-date">
+  <time class="dt-published" datetime="2021-09-22T16:17:56.000Z" itemprop="datePublished">2021-09-23</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Database/">Database</a>►<a class="article-category-link" href="/categories/Database/SQL-Server/">SQL Server</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2021/09/23/%E7%84%A1%E9%99%90%E9%9A%8E%E5%B1%A4%E7%95%99%E8%A8%80%E8%B3%87%E6%96%99%E8%A1%A8%E8%A6%8F%E5%8A%83/">無限階層留言規劃，含資料表設計</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>這個議題算是只要有留言系統，並且想實作無限層級的留言都會碰到的。<br>如:Facebook的留言、wordpress的留言。<br>當然也有簡單類的留言，只有一層的，如:古早的無名小站，但這不是我們今天要探討的。<br>就單刀直入了，如何實作「無限階層的留言」。</p>
+<h3 id="資料表"><a href="#資料表" class="headerlink" title="資料表"></a>資料表</h3><p>只要一張comments表加上parent_id即可，如下。<br>再來就可以利用程式方式(遞迴或迴圈)去印出他。</p>
+<img src="/2021/09/23/%E7%84%A1%E9%99%90%E9%9A%8E%E5%B1%A4%E7%95%99%E8%A8%80%E8%B3%87%E6%96%99%E8%A1%A8%E8%A6%8F%E5%8A%83/nested-comments.png" class="">
+
+<h3 id="程式部分"><a href="#程式部分" class="headerlink" title="程式部分"></a>程式部分</h3><p>把comments當主表，撈出資料SQL:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">select</span><br><span class="line">users.name,</span><br><span class="line">comments.id,</span><br><span class="line">comments.comment_parent_id,</span><br><span class="line">comments.title,</span><br><span class="line">comments.content</span><br><span class="line">from comments left join users on comments.user_id = users.id</span><br></pre></td></tr></table></figure>
+
+<p>把上面資料表進行關聯後撈出後的資料:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[</span><br><span class="line">    &#123;id:1,comment_parent_id:null,title:&#x27;留言1&#x27;,content:&#x27;內容&#x27;,name:&#x27;路人A&#x27;&#125;,</span><br><span class="line">    &#123;id:2,comment_parent_id:null,title:&#x27;留言2&#x27;,content:&#x27;內容&#x27;,name:&#x27;路人B&#x27;&#125;,</span><br><span class="line">    &#123;id:3,comment_parent_id:2,title:&#x27;留言3&#x27;,content:&#x27;內容&#x27;,name:&#x27;路人C&#x27;&#125;,</span><br><span class="line">    &#123;id:4,comment_parent_id:3,title:&#x27;留言4&#x27;,content:&#x27;內容&#x27;,name:&#x27;路人D&#x27;&#125;,</span><br><span class="line">    &#123;id:5,comment_parent_id:3,title:&#x27;留言5&#x27;,content:&#x27;內容&#x27;,name:&#x27;路人E&#x27;&#125;</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+<p>再來就可以實作程式碼了，我們要先把上面SQL撈出來的「打平結構」變成「樹狀結構」。<br>這會需要使用到遞迴。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line">&lt;!DOCTYPE html&gt;</span><br><span class="line">&lt;html&gt;</span><br><span class="line">&lt;head&gt;</span><br><span class="line">&lt;title&gt;Page Title&lt;/title&gt;</span><br><span class="line">&lt;/head&gt;</span><br><span class="line">&lt;body&gt;</span><br><span class="line">&lt;/body&gt;</span><br><span class="line">&lt;/html&gt;</span><br><span class="line">&lt;script&gt;</span><br><span class="line">const commentList = [</span><br><span class="line">    &#123;id:1,comment_parent_id:null,title:&#x27;留言1&#x27;,content:&#x27;內容&#x27;,name:&#x27;路人A&#x27;&#125;,</span><br><span class="line">    &#123;id:2,comment_parent_id:null,title:&#x27;留言2&#x27;,content:&#x27;內容&#x27;,name:&#x27;路人B&#x27;&#125;,</span><br><span class="line">    &#123;id:3,comment_parent_id:2,title:&#x27;留言3&#x27;,content:&#x27;內容&#x27;,name:&#x27;路人C&#x27;&#125;,</span><br><span class="line">    &#123;id:4,comment_parent_id:3,title:&#x27;留言4&#x27;,content:&#x27;內容&#x27;,name:&#x27;路人D&#x27;&#125;,</span><br><span class="line">    &#123;id:5,comment_parent_id:3,title:&#x27;留言5&#x27;,content:&#x27;內容&#x27;,name:&#x27;路人E&#x27;&#125;</span><br><span class="line">]</span><br><span class="line"></span><br><span class="line">// 建立樹狀階層</span><br><span class="line">function buildTree(commentList)&#123;</span><br><span class="line">    // 根節點</span><br><span class="line">    const rootNode = commentList.filter(it=&gt; it.comment_parent_id === null)</span><br><span class="line">    // 增加子節點</span><br><span class="line">    return addNode(rootNode,commentList)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// 添加子節點</span><br><span class="line">function addNode(children,commentList)&#123;</span><br><span class="line">    // 找不到子節點返回</span><br><span class="line">    if(children.length === 0)&#123;</span><br><span class="line">    	return []</span><br><span class="line">    &#125;</span><br><span class="line">    // 添加子節點</span><br><span class="line">    const arr = [] </span><br><span class="line">    // 遍歷當前children節點</span><br><span class="line">    for(let i=0;i&lt;children.length;i++)&#123;</span><br><span class="line">    	// 查詢底下的子節點</span><br><span class="line">        const childrenNode = commentList.filter(it=&gt; </span><br><span class="line">        it.comment_parent_id === children[i].id)</span><br><span class="line">        // 把底下子節點添加進陣列</span><br><span class="line">        arr.push(&#123;</span><br><span class="line">            id:children[i].id,</span><br><span class="line">            name:children[i].name,</span><br><span class="line">            title:children[i].title,</span><br><span class="line">            content:children[i].content,</span><br><span class="line">            children:addNode(childrenNode,commentList)</span><br><span class="line">        &#125;)</span><br><span class="line">    &#125;</span><br><span class="line">    // 返回子節點陣列</span><br><span class="line">    return arr</span><br><span class="line">&#125;</span><br><span class="line">// 印出結果</span><br><span class="line">console.log(JSON.stringify(buildTree(commentList)));</span><br><span class="line"></span><br><span class="line">&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+<p><strong>轉成樹狀階層後的資料:</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line">[</span><br><span class="line">    &#123;</span><br><span class="line">        &quot;id&quot;: 1,</span><br><span class="line">        &quot;name&quot;: &quot;路人A&quot;,</span><br><span class="line">        &quot;title&quot;: &quot;留言1&quot;,</span><br><span class="line">        &quot;content&quot;: &quot;內容&quot;,</span><br><span class="line">        &quot;children&quot;: []</span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">        &quot;id&quot;: 2,</span><br><span class="line">        &quot;name&quot;: &quot;路人B&quot;,</span><br><span class="line">        &quot;title&quot;: &quot;留言2&quot;,</span><br><span class="line">        &quot;content&quot;: &quot;內容&quot;,</span><br><span class="line">        &quot;children&quot;: [</span><br><span class="line">            &#123;</span><br><span class="line">                &quot;id&quot;: 3,</span><br><span class="line">                &quot;name&quot;: &quot;路人C&quot;,</span><br><span class="line">                &quot;title&quot;: &quot;留言3&quot;,</span><br><span class="line">                &quot;content&quot;: &quot;內容&quot;,</span><br><span class="line">                &quot;children&quot;: [</span><br><span class="line">                    &#123;</span><br><span class="line">                        &quot;id&quot;: 4,</span><br><span class="line">                        &quot;name&quot;: &quot;路人D&quot;,</span><br><span class="line">                        &quot;title&quot;: &quot;留言4&quot;,</span><br><span class="line">                        &quot;content&quot;: &quot;內容&quot;,</span><br><span class="line">                        &quot;children&quot;: []</span><br><span class="line">                    &#125;,</span><br><span class="line">                    &#123;</span><br><span class="line">                        &quot;id&quot;: 5,</span><br><span class="line">                        &quot;name&quot;: &quot;路人E&quot;,</span><br><span class="line">                        &quot;title&quot;: &quot;留言5&quot;,</span><br><span class="line">                        &quot;content&quot;: &quot;內容&quot;,</span><br><span class="line">                        &quot;children&quot;: []</span><br><span class="line">                    &#125;</span><br><span class="line">                ]</span><br><span class="line">            &#125;</span><br><span class="line">        ]</span><br><span class="line">    &#125;</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+<p>光轉成上面那串，就想了快3小時的遞迴，然後上網找些範例參考才組出來。<br>我當時的疑問就是:「怎麼讓遞迴去回傳整包陣列」，所幸有找到參考，然後小改自己程式就成功了。</p>
+<p>再來就是把上面那階層式資料在網頁上印出來。<br>還是要用遞迴。</p>
+<h3 id="網頁上內容呈現"><a href="#網頁上內容呈現" class="headerlink" title="網頁上內容呈現"></a>網頁上內容呈現</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br></pre></td><td class="code"><pre><span class="line">&lt;!DOCTYPE html&gt;</span><br><span class="line">&lt;html&gt;</span><br><span class="line">&lt;head&gt;</span><br><span class="line">&lt;title&gt;Page Title&lt;/title&gt;</span><br><span class="line">&lt;/head&gt;</span><br><span class="line">&lt;body&gt;</span><br><span class="line"></span><br><span class="line">&lt;div id=&quot;comment&quot;&gt;</span><br><span class="line">&lt;/div&gt;</span><br><span class="line"></span><br><span class="line">&lt;/body&gt;</span><br><span class="line">&lt;/html&gt;</span><br><span class="line">&lt;script&gt;</span><br><span class="line">const commentList = [</span><br><span class="line">    &#123; id: 1, comment_parent_id: null, title: &#x27;留言1&#x27;, content: &#x27;內容&#x27;, name: &#x27;路人A&#x27; &#125;,</span><br><span class="line">    &#123; id: 2, comment_parent_id: null, title: &#x27;留言2&#x27;, content: &#x27;內容&#x27;, name: &#x27;路人B&#x27; &#125;,</span><br><span class="line">    &#123; id: 3, comment_parent_id: 2, title: &#x27;留言3&#x27;, content: &#x27;內容&#x27;, name: &#x27;路人C&#x27; &#125;,</span><br><span class="line">    &#123; id: 4, comment_parent_id: 3, title: &#x27;留言4&#x27;, content: &#x27;內容&#x27;, name: &#x27;路人D&#x27; &#125;,</span><br><span class="line">    &#123; id: 5, comment_parent_id: 3, title: &#x27;留言5&#x27;, content: &#x27;內容&#x27;, name: &#x27;路人E&#x27; &#125;</span><br><span class="line">]</span><br><span class="line"></span><br><span class="line">// 建立樹狀階層</span><br><span class="line">function buildTree(commentList) &#123;</span><br><span class="line">    // 根節點</span><br><span class="line">    const rootNode = commentList.filter(it =&gt; it.comment_parent_id === null)</span><br><span class="line">    // 增加子節點</span><br><span class="line">    return addNode(rootNode, commentList)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// 添加子節點</span><br><span class="line">function addNode(children, commentList) &#123;</span><br><span class="line">    // 找不到子節點返回</span><br><span class="line">    if (children.length === 0) &#123;</span><br><span class="line">        return []</span><br><span class="line">    &#125;</span><br><span class="line">    // 添加子節點</span><br><span class="line">    const arr = []</span><br><span class="line">    // 遍歷當前children節點</span><br><span class="line">    for (let i = 0; i &lt; children.length; i++) &#123;</span><br><span class="line">        // 查詢底下的子節點</span><br><span class="line">        const childrenNode = commentList.filter(it =&gt;</span><br><span class="line">            it.comment_parent_id === children[i].id)</span><br><span class="line">        // 把底下子節點添加進陣列</span><br><span class="line">        arr.push(&#123;</span><br><span class="line">            id: children[i].id,</span><br><span class="line">            name: children[i].name,</span><br><span class="line">            title: children[i].title,</span><br><span class="line">            content: children[i].content,</span><br><span class="line">            children: addNode(childrenNode, commentList)</span><br><span class="line">        &#125;)</span><br><span class="line">    &#125;</span><br><span class="line">    // 返回子節點陣列</span><br><span class="line">    return arr</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// 在網頁上呈現出結果</span><br><span class="line">function generateCommentTemplate(children) &#123;</span><br><span class="line">    let template = &#x27;&lt;ul&gt;&#x27;</span><br><span class="line">    for (let i = 0; i &lt; children.length; i++) &#123;</span><br><span class="line">        template += &#x27;&lt;li&gt;&#x27;</span><br><span class="line">        template += children[i].title + &#x27;&lt;br&gt;&#x27;</span><br><span class="line">        template += children[i].content + &#x27;&lt;br&gt;&#x27;</span><br><span class="line">        template += children[i].name + &#x27;&lt;br&gt;&#x27;</span><br><span class="line"></span><br><span class="line">        // 如果有子節點則遞迴再次呼叫</span><br><span class="line">        if (children[i].children.length !== 0) &#123;</span><br><span class="line">            template += generateCommentTemplate(children[i].children)</span><br><span class="line">        &#125;</span><br><span class="line">        template += &#x27;&lt;/li&gt;&#x27;</span><br><span class="line">    &#125;</span><br><span class="line">    template += &#x27;&lt;/ul&gt;&#x27;</span><br><span class="line">    return template</span><br><span class="line">&#125;</span><br><span class="line">// 建立樹狀結構</span><br><span class="line">const tree = buildTree(commentList)</span><br><span class="line">// 產生HTML模板</span><br><span class="line">document.getElementById(&quot;comment&quot;).innerHTML = generateCommentTemplate(tree)</span><br><span class="line">&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+<p><strong>輸出結果:</strong></p>
+<img src="/2021/09/23/%E7%84%A1%E9%99%90%E9%9A%8E%E5%B1%A4%E7%95%99%E8%A8%80%E8%B3%87%E6%96%99%E8%A1%A8%E8%A6%8F%E5%8A%83/demo.png" class="">
+
+
+<h3 id="總結"><a href="#總結" class="headerlink" title="總結"></a>總結</h3><p>整篇大概花了5小時左右寫完，算是網頁系統裡最難的”遞迴”。<br>在網路上查，很難有一篇現成完整範例T_T，所以在這篇中就把整套都放上來。<br>同時練習對於樹的掌握。</p>
+<p>流程如下:<br>1.規劃無限階層的留言 - 約10分鐘<br>2.樹的組合(遞迴) - 約3小時<br>3.轉譯成HTML模板(遞迴) - 約30分鐘</p>
+<p>總之，有點成就感，因為真的不好寫。<br>如果後端一開始吐給你的是已經階層化的，那就很輕鬆了，因為那段的遞迴比較簡單。</p>
+<p>ps.這留言的實作方法也能用來處理分類、類別、側邊欄，就內文改一下即可。</p>
+<p>我有封裝了方法變成一隻.js函式庫，可以直接拿去用。<br><a target="_blank" rel="noopener" href="https://github.com/yuhsiang237/buildTree.js">https://github.com/yuhsiang237/buildTree.js</a></p>
+<p><strong>參考資料</strong><br><a target="_blank" rel="noopener" href="https://blog.51cto.com/dd118/2095671">https://blog.51cto.com/dd118/2095671</a><br><a target="_blank" rel="noopener" href="https://kevintsengtw.blogspot.com/2013/07/aspnet-mvc-jquery-easy-ui-tree-json.html">https://kevintsengtw.blogspot.com/2013/07/aspnet-mvc-jquery-easy-ui-tree-json.html</a><br><a target="_blank" rel="noopener" href="https://ithelp.ithome.com.tw/articles/10028129">https://ithelp.ithome.com.tw/articles/10028129</a><br><a target="_blank" rel="noopener" href="https://itw01.com/UBNZIEU.html">https://itw01.com/UBNZIEU.html</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://yuhsiang237.github.io/2021/09/23/%E7%84%A1%E9%99%90%E9%9A%8E%E5%B1%A4%E7%95%99%E8%A8%80%E8%B3%87%E6%96%99%E8%A1%A8%E8%A6%8F%E5%8A%83/" data-id="cl0g433po005htwgh0gv54gvp" data-title="無限階層留言規劃，含資料表設計" class="article-share-link">Teilen</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-角色權限資料表規劃" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2021/09/22/%E8%A7%92%E8%89%B2%E6%AC%8A%E9%99%90%E8%B3%87%E6%96%99%E8%A1%A8%E8%A6%8F%E5%8A%83/" class="article-date">
+  <time class="dt-published" datetime="2021-09-22T02:07:16.000Z" itemprop="datePublished">2021-09-22</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Database/">Database</a>►<a class="article-category-link" href="/categories/Database/SQL-Server/">SQL Server</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2021/09/22/%E8%A7%92%E8%89%B2%E6%AC%8A%E9%99%90%E8%B3%87%E6%96%99%E8%A1%A8%E8%A6%8F%E5%8A%83/">資訊系統的角色權限規劃，含資料表設計</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>寫後台系統時，有個很複雜的難點在於「角色權限」。<br>難點在如何變得好擴充，又能讓整個後台系統容易分權。<br>如:A進到一個頁面，在這頁面只能看，不能編輯。</p>
+<h3 id="思考的角度"><a href="#思考的角度" class="headerlink" title="思考的角度"></a>思考的角度</h3><p>如果同時思考「頁面權限」和「新刪修查權限」，很容易陷入混亂。<br>因此，建議先有個 <strong>「這個系統主要是要幹嘛」</strong> 的概念，說不定根本不用權限，因為使用者就那幾個，或是只到頁面上的分權，先有了使用者需求是什麼，再來確定要用哪種方法。</p>
+<p>在此，我想探討的會是「頁面權限」到「新刪修查權限」的作法。<br>考量到使用者操作的直覺，以「模組&gt;功能&gt;操作權限」這樣排。</p>
+<p>如此一來，我們功能只要對到「查看、新增、編輯、刪除」，先解決了細部的部分。<br>再來就只要把模組與功能分類關聯即可。</p>
+<img src="/2021/09/22/%E8%A7%92%E8%89%B2%E6%AC%8A%E9%99%90%E8%B3%87%E6%96%99%E8%A1%A8%E8%A6%8F%E5%8A%83/%E6%AC%8A%E9%99%90%E8%A8%AD%E8%A8%88.PNG" class="">
+
+<h3 id="資料表規劃"><a href="#資料表規劃" class="headerlink" title="資料表規劃"></a>資料表規劃</h3><p>users:使用者，上面綁角色role_id，每個使用者都有一種角色。<br>roles:角色，用來設定權限用。<br>module_permissions:模組權限，用來綁定底下功能權限。<br>func_permissions:功能權限，用來綁底層的權限。<br>permissions:權限，用來綁func_permissions與permission_types的表。<br>permission_types:權限分類，可自行定義分類，如:查看、新增、編輯、刪除…等。</p>
+<p>ps.資料表上的name欄位也能說是code、key值，就是在網頁上你要抓檢查用的。</p>
+<p>以下做的這張表就能進行分權。因為是以功能劃分，所以之後如果有APP或其他前端介面，只要照著「模組&gt;功能」這樣去設計一樣能夠適用。</p>
+<p>如果一個A使用者進到「基礎管理&gt;角色管理功能」頁面，只要檢查他的檢視權限有沒有，沒有就返回首頁即可。只要有勾取功能權限，那必有檢視的權限。</p>
+<p>如果更新角色時，把module_permissions、func_permissions、permissions有關聯的清空再重新建立即可。</p>
+<img src="/2021/09/22/%E8%A7%92%E8%89%B2%E6%AC%8A%E9%99%90%E8%B3%87%E6%96%99%E8%A1%A8%E8%A6%8F%E5%8A%83/%E8%B3%87%E6%96%99%E5%BA%AB%E6%AC%8A%E9%99%90%E8%A8%AD%E8%A8%88.png" class="">
+<p>[補充]*代表多，1代表1，可以看出是一對多還多對一<br>如果想知道更多:<a href="/2021/09/07/sql-server%E8%B3%87%E6%96%99%E5%BA%AB%E9%97%9C%E8%81%AF/" title="[Day7] SQL server資料庫關聯 - SQL Server資料庫入門">[Day7] SQL server資料庫關聯 - SQL Server資料庫入門</a> </p>
+<h3 id="更多階層的權限"><a href="#更多階層的權限" class="headerlink" title="更多階層的權限?"></a>更多階層的權限?</h3><p>如果是巢狀的話也是可以，func_permissions加個func_permissions_parent_id欄位，就能變成巢狀了。<br>不過以現有系統架構來講，也是能偷吃步直接在name上說是功能A的XXX項目也是可以的。</p>
+<p>通常不會有超過5階以上的頁面，不然使用者會迷路、功能分則過細也不好用，即使遇到也是能用上面兩種方法去克服。</p>
+<p>然後，建議權限這種不要做成動態的樹，因為哪天要改會很麻煩，建議這種階層還是寫死，變動次數通常不會太多，寫的簡單些未來也好改。</p>
+<h3 id="如果是API權限如RESTful-API"><a href="#如果是API權限如RESTful-API" class="headerlink" title="如果是API權限如RESTful API ?"></a>如果是API權限如RESTful API ?</h3><p>目前我還沒有想到比較好的解法，目前只想到能在送出去前免強撈資料表判斷。<br>在新、刪、修時都卡，而查則是盡量了，因為RESTful本身就容易查出一些原本不相干的資料，所以不好分權。</p>
+<h3 id="總結"><a href="#總結" class="headerlink" title="總結"></a>總結</h3><p>花了兩小時左右打完了這篇文跟設計表，實際規劃後覺得權限這部分不算難，只是要想清楚系統到底要做什麼，再來跟PM或SA確定一種可以的結構去開發就行。<br>如今，網路上也有不同解答，如果有共事的工程師也能一起討論方法，讓這系統能順利產製便可以，千萬別執迷不悟硬幹阿@@…孩子。</p>
+<p>然後我是用 <a target="_blank" rel="noopener" href="https://dbdiagram.io/">https://dbdiagram.io/</a> 來畫下面那張圖的，很方便。</p>
+<p>此外，也可以參考”以角色為基礎的存取控制”（Role-based access control，RBAC）<br><a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E4%BB%A5%E8%A7%92%E8%89%B2%E7%82%BA%E5%9F%BA%E7%A4%8E%E7%9A%84%E5%AD%98%E5%8F%96%E6%8E%A7%E5%88%B6">https://zh.wikipedia.org/wiki/%E4%BB%A5%E8%A7%92%E8%89%B2%E7%82%BA%E5%9F%BA%E7%A4%8E%E7%9A%84%E5%AD%98%E5%8F%96%E6%8E%A7%E5%88%B6</a></p>
+<p><strong>參考資料</strong><br><a target="_blank" rel="noopener" href="http://www.chanpin100.com/article/110136">http://www.chanpin100.com/article/110136</a><br><a target="_blank" rel="noopener" href="https://ithelp.ithome.com.tw/questions/10190444">https://ithelp.ithome.com.tw/questions/10190444</a><br><a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E4%BB%A5%E8%A7%92%E8%89%B2%E7%82%BA%E5%9F%BA%E7%A4%8E%E7%9A%84%E5%AD%98%E5%8F%96%E6%8E%A7%E5%88%B6">https://zh.wikipedia.org/wiki/%E4%BB%A5%E8%A7%92%E8%89%B2%E7%82%BA%E5%9F%BA%E7%A4%8E%E7%9A%84%E5%AD%98%E5%8F%96%E6%8E%A7%E5%88%B6</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://yuhsiang237.github.io/2021/09/22/%E8%A7%92%E8%89%B2%E6%AC%8A%E9%99%90%E8%B3%87%E6%96%99%E8%A1%A8%E8%A6%8F%E5%8A%83/" data-id="cl0g433pp005ntwghdjnn1z8i" data-title="資訊系統的角色權限規劃，含資料表設計" class="article-share-link">Teilen</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-自己對程式的看法" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2021/09/21/%E8%87%AA%E5%B7%B1%E5%B0%8D%E7%A8%8B%E5%BC%8F%E7%9A%84%E7%9C%8B%E6%B3%95/" class="article-date">
+  <time class="dt-published" datetime="2021-09-21T02:16:42.000Z" itemprop="datePublished">2021-09-21</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Daily-Log/">Daily Log</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2021/09/21/%E8%87%AA%E5%B7%B1%E5%B0%8D%E7%A8%8B%E5%BC%8F%E7%9A%84%E7%9C%8B%E6%B3%95/">自己對自己程式的看法</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>自己算是一個寫程式的人，做過前端，也實習過後端。</p>
+<img src="/2021/09/21/%E8%87%AA%E5%B7%B1%E5%B0%8D%E7%A8%8B%E5%BC%8F%E7%9A%84%E7%9C%8B%E6%B3%95/1.jpg" class="">
+
+<p>我數學並不強，只會用比較簡單的概念去實作程式。所以在演算法、資料結構上偏向應用居多，我能知道在哪種情況下，可能要搭配的結構，但如果要空手寫出來底層，除非背過，不然要寫很久，有需要才會回去看、參考，然後才實作出來。</p>
+<p>因此，我知道以自己的數學能力是沒辦法把程式弄到很頂尖的，可能前20%那種，而後面的80%或許還是有機會。<br>就是偏向應用、非演算法那塊。</p>
+<p>我覺得自己優勢在整合能力，能夠把不同的東西拼起來，可以正常運行、滿足需求。到目前為止，我還沒碰過寫不出來的應用系統。</p>
+<p>雖然看網路上很多文人相輕的評論，如：不會寫資結、演算法就不算工程師，但軟體工程師也分很多種，並不是每種都需要很強的資結、演算法。<br>也許，就只是要穩定的交付可運行的程式而已。</p>
+<p>我遇過演算法很強但卻沒辦法在時程內完成案子的工程師，也遇過能力普普但能很穩定能夠完成案子的工程師。</p>
+<p>總之，以我觀點來說就是<strong>能夠解決問題</strong>。</p>
+<p>而在這片領域，我能解的可能只有80%，而那20%個人天賦影響既然沒辦法改變，那就坦然接受吧!<br>(就像每人都會寫數學，但又有幾個能變得像高斯或愛因斯坦那樣的開創者)<br><del>說來說去，別看得太重而否定自己，不過是要口飯而已。</del></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://yuhsiang237.github.io/2021/09/21/%E8%87%AA%E5%B7%B1%E5%B0%8D%E7%A8%8B%E5%BC%8F%E7%9A%84%E7%9C%8B%E6%B3%95/" data-id="cl0g433pp005ltwghdh4j80a2" data-title="自己對自己程式的看法" class="article-share-link">Teilen</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
     <article id="post-35-Search-Insert-Position" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
     <a href="/2021/09/21/35-Search-Insert-Position/" class="article-date">
@@ -284,381 +844,11 @@ C# Sol:
 
 
   
-    <article id="post-電商資料庫設計參考" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2021/09/19/%E9%9B%BB%E5%95%86%E8%B3%87%E6%96%99%E5%BA%AB%E8%A8%AD%E8%A8%88%E5%8F%83%E8%80%83/" class="article-date">
-  <time class="dt-published" datetime="2021-09-18T18:53:39.000Z" itemprop="datePublished">2021-09-19</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/Database/">Database</a>►<a class="article-category-link" href="/categories/Database/SQL-Server/">SQL Server</a>►<a class="article-category-link" href="/categories/Topic/">Topic</a>►<a class="article-category-link" href="/categories/Topic/2021-SQL-Server%E9%90%B5%E4%BA%BA%E8%B3%BD/">2021 SQL Server鐵人賽</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2021/09/19/%E9%9B%BB%E5%95%86%E8%B3%87%E6%96%99%E5%BA%AB%E8%A8%AD%E8%A8%88%E5%8F%83%E8%80%83/">[Day30] 電商資料庫設計參考 - SQL Server資料庫入門</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p>最後的兩回中研究別人怎麼設計資料庫。<br>這回主要探討電商，因為沒有現成的範例，所以只好去找一個大略可以講的範例。</p>
-<h3 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h3><p>因為電商，所以最主要是販售物品為主，會有庫存、商品、結帳，讓顧客如何順利地購買產品、保留過往資料以供糾紛調查是最重要的。<br>以下是我找到的電商模擬資料表:</p>
-<img src="/2021/09/19/%E9%9B%BB%E5%95%86%E8%B3%87%E6%96%99%E5%BA%AB%E8%A8%AD%E8%A8%88%E5%8F%83%E8%80%83/ecommerce-platform-data.png" class="">
-
-<h3 id="從資料表上分析"><a href="#從資料表上分析" class="headerlink" title="從資料表上分析"></a>從資料表上分析</h3><p>先從user來說，首先要建立的就是顧客資料。<br>於是有了user、user_address、user_payment三張表。<br>而關係到能否正常運送、付款，所以把關鍵功能拿出來開表也是很正常的。<br>為了避免欄位過多，把不相干的項目拉出去就是資料庫正規化。<br>不斷比較各個欄位與該列表的主鍵關係，把表拆出，即2NF、3NF。</p>
-<p>再來是product，產品。<br>因此有了product_category、product_inventory、discount三張表。<br>產品的分類、庫存、折扣，而其中庫存最重要，因為它關係到能否正常賣出東西。<br>雖然我不知道為什麼不直接把product_inventory的外來鍵設定成product的主鍵，這樣能更直覺的去Mapping。總之，多開這一張庫存表可以知道販售的情況、庫存異動情況。在價格變動上，想追蹤也是可以這麼做的。<br>而discount表，則是拉出來，獨立處理這商品套用的折扣，有個active，可以啟用、關閉。我覺得這張折扣表上可以加一個修正價錢，等於有一段時間打折能直接套用這折扣價，照原本設計是用百分比去折扣。<br>我覺得這商品是最難的規劃，會有多種不同價格，怎麼記錄他異動等等。</p>
-<p>再來是購物車shopping_session、cart_item。<br>因為我們可能會換電腦操作，所以不能放在Cookie，會需要購物車幫我們紀錄要買哪些資料。<br>在這cart_item裡面就是不斷添加產品product，可能有N個產品，之後這N個產品都算在同一個shopping_session上。<br>這段我自己覺得只要cart_item就好，就是購物車裡放哪些東西，因為只是用來暫存用的。</p>
-<p>結帳完成訂單order_details、order_items、payment_details。<br>在最後流程就是使用者要能夠結帳、產生訂單。<br>把cart_item的資料都拿出來，放到order_items，之後點下結帳時，用程式的”交易”的寫法，去檢查能正常扣除庫存，就建立這筆訂單。<br>此外，訂單建立就是付款了，只要照著付款流程付完款，在更新payment_details即可。<br>而order_details則是記錄這筆訂單總金額、備註等等。<br>如果被刪除了，是否要自動把庫存加回去就看個人需求，總之能做到。<br>如果怕有糾紛問題就是多存一份沒關聯的字串資料。把當時結帳的商品名稱、款項都寫明，已備不時之需使用。</p>
-<p>此外，商品那些都做成軟刪除，因為未來可能會需要關聯，所以能看到有deleted_at欄位。<br>deleted_at、modified_at、created_at在資料庫的表建議都建立，以供人工好追蹤。<br>然後，發現好像大多數資料表設計如type類型都設定成varchar，應該在拉出去一層關聯會比較好，往後類型被改會比較容易更新，只取代一個跟取代N個的差別。</p>
-<h3 id="從型別上分析"><a href="#從型別上分析" class="headerlink" title="從型別上分析"></a>從型別上分析</h3><p>時間它是用timestamp，但如果SQL server用datetime2會更好。<br>商品的價格上price用decimal，跟我前面幾回探討過的型別有關，就是選沒有誤差精確數值。<br>在id上是int，但其實也可以用bigint如wordpress就是用bigint。<br>文字用varchar。</p>
-<h3 id="總結"><a href="#總結" class="headerlink" title="總結"></a>總結</h3><p>從這個資料庫來看，已能滿足大多的需求，我覺得關鍵在這系統主要想幹嘛，在把那部份特別補強設計架構，就八九不離時了。<br>主要的功能表能設計的穩固，後面要擴建就能容易些。<br>此外，我覺得還能再加上個折價券表，可以套用在最後的結帳上。</p>
-<p><strong>參考資料</strong><br><a target="_blank" rel="noopener" href="https://resources.fabric.inc/blog/answers/ecommerce-database-design-example?fbclid=IwAR388b0qI1maAfEDWguD9y4pOEywv3TG2gJIEq4jDW2jNQsZWdYfdTSVr-I">https://resources.fabric.inc/blog/answers/ecommerce-database-design-example?fbclid=IwAR388b0qI1maAfEDWguD9y4pOEywv3TG2gJIEq4jDW2jNQsZWdYfdTSVr-I</a></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://yuhsiang237.github.io/2021/09/19/%E9%9B%BB%E5%95%86%E8%B3%87%E6%96%99%E5%BA%AB%E8%A8%AD%E8%A8%88%E5%8F%83%E8%80%83/" data-id="cl0g433qz00ittwgh0xay6ef8" data-title="[Day30] 電商資料庫設計參考 - SQL Server資料庫入門" class="article-share-link">Teilen</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-如何讓自己的想法變正面" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2021/09/19/%E5%A6%82%E4%BD%95%E8%AE%93%E8%87%AA%E5%B7%B1%E7%9A%84%E6%83%B3%E6%B3%95%E8%AE%8A%E6%AD%A3%E9%9D%A2/" class="article-date">
-  <time class="dt-published" datetime="2021-09-18T17:51:30.000Z" itemprop="datePublished">2021-09-19</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/Daily-Log/">Daily Log</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2021/09/19/%E5%A6%82%E4%BD%95%E8%AE%93%E8%87%AA%E5%B7%B1%E7%9A%84%E6%83%B3%E6%B3%95%E8%AE%8A%E6%AD%A3%E9%9D%A2/">如何讓自己的想法變正面</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p>先讓自己吃飽，身體的能量夠。</p>
-<img src="/2021/09/19/%E5%A6%82%E4%BD%95%E8%AE%93%E8%87%AA%E5%B7%B1%E7%9A%84%E6%83%B3%E6%B3%95%E8%AE%8A%E6%AD%A3%E9%9D%A2/1.jpg" class="">
-<p><strong><center>GJ! 幸運星-此方</center></strong><br>不要開網路，不要去看留言，不要去看新聞。<br>期待每天可能會發生的好事。<br>多走向戶外，讓自己轉換眼界。<br>做自己有興趣的事，讓自己滿足有成就感。<br>活著有無限的可能性，多嘗試。<br>每天做點能夠實際改變現況的事。<br>看書。<br>行動。<br>如此一來，時機一到，佛系的正面想法就來了。(棒)</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://yuhsiang237.github.io/2021/09/19/%E5%A6%82%E4%BD%95%E8%AE%93%E8%87%AA%E5%B7%B1%E7%9A%84%E6%83%B3%E6%B3%95%E8%AE%8A%E6%AD%A3%E9%9D%A2/" data-id="cl0g433pk0053twghgo428sug" data-title="如何讓自己的想法變正面" class="article-share-link">Teilen</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-壓力的調解，一切都是該承受的嗎" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2021/09/19/%E5%A3%93%E5%8A%9B%E7%9A%84%E8%AA%BF%E8%A7%A3%EF%BC%8C%E4%B8%80%E5%88%87%E9%83%BD%E6%98%AF%E8%A9%B2%E6%89%BF%E5%8F%97%E7%9A%84%E5%97%8E/" class="article-date">
-  <time class="dt-published" datetime="2021-09-18T16:58:12.000Z" itemprop="datePublished">2021-09-19</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/Daily-Log/">Daily Log</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2021/09/19/%E5%A3%93%E5%8A%9B%E7%9A%84%E8%AA%BF%E8%A7%A3%EF%BC%8C%E4%B8%80%E5%88%87%E9%83%BD%E6%98%AF%E8%A9%B2%E6%89%BF%E5%8F%97%E7%9A%84%E5%97%8E/">壓力的調解，一切都是該承受的嗎?</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p>我從遊戲裡面學到一件很重要的事，就是「選擇面對、迴避都是一條好路」。<br>在過去，我往往每件事都選擇直接面對，但發現這樣並不是好的，因為壓力會很大。</p>
-<img src="/2021/09/19/%E5%A3%93%E5%8A%9B%E7%9A%84%E8%AA%BF%E8%A7%A3%EF%BC%8C%E4%B8%80%E5%88%87%E9%83%BD%E6%98%AF%E8%A9%B2%E6%89%BF%E5%8F%97%E7%9A%84%E5%97%8E/1.png" class="">
-<p><strong><center>宮崎英高(老賊)的微笑</center></strong></p>
-<h3 id="以遊戲來說"><a href="#以遊戲來說" class="headerlink" title="以遊戲來說"></a>以遊戲來說</h3><p>聊一下這遊戲叫做「血源詛咒」，作者是宮崎英高。<br>我們一進遊戲就會被一堆殭屍、亡靈給追殺，如果遇到單一隻那還能免強解決，如果一次遇上三隻以上，那就難逃一命。<br>而在這遊戲中，我們的目標就是打倒每個關卡點的王，所以遇到的那些小怪都是能免就免，除非自己想切磋、有必要，不然不要主動去引小怪。</p>
-<h3 id="以人生來說"><a href="#以人生來說" class="headerlink" title="以人生來說"></a>以人生來說</h3><p>我從上面的遊戲經驗得到一個自己的見解。<br>把人生的小目標比喻成關卡點的王，而你就是只是在選擇一條相對好走的路。<br>遇到一個工作，如果發現不適合，還有別條路可走，那就自己決定要不要硬撐。有時及早退回上一步重新選擇也是方法。</p>
-<h3 id="調解壓力的方法"><a href="#調解壓力的方法" class="headerlink" title="調解壓力的方法"></a>調解壓力的方法</h3><p>壓力這種無形的東西，容易放在腦子裡一直積著，很抽象，你想解它，卻無從而解的被約束。<br>我的方法很簡單，其實就是拿筆、紙，把面對的壓力寫下來(具象化它)，寫完後把它放到一個封印的盒子裡面，告訴自己我下次打開盒子前它都跟我無關。</p>
-<p>雖然這看起來有點神奇，但對我而言是有效的。<br>而有些被封印的壓力，時間一過後也煙消雲散了，就只是一時的不愉快、解不了。</p>
-<p>把那些壓力封印後，繼續專注在現實那些能發生改變”踏實”的事，走在一條新的路上。</p>
-<p>最後，還是一樣，肯定有人也遇到相同問題，所以我在這提供自己的想法，協助遇到跟我一樣問題的人。</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://yuhsiang237.github.io/2021/09/19/%E5%A3%93%E5%8A%9B%E7%9A%84%E8%AA%BF%E8%A7%A3%EF%BC%8C%E4%B8%80%E5%88%87%E9%83%BD%E6%98%AF%E8%A9%B2%E6%89%BF%E5%8F%97%E7%9A%84%E5%97%8E/" data-id="cl0g433pj0051twghdmtdbmt6" data-title="壓力的調解，一切都是該承受的嗎?" class="article-share-link">Teilen</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-wordpress資料庫規劃參考" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2021/09/17/wordpress%E8%B3%87%E6%96%99%E5%BA%AB%E8%A6%8F%E5%8A%83%E5%8F%83%E8%80%83/" class="article-date">
-  <time class="dt-published" datetime="2021-09-17T13:17:12.000Z" itemprop="datePublished">2021-09-17</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/Database/">Database</a>►<a class="article-category-link" href="/categories/Database/SQL-Server/">SQL Server</a>►<a class="article-category-link" href="/categories/Topic/">Topic</a>►<a class="article-category-link" href="/categories/Topic/2021-SQL-Server%E9%90%B5%E4%BA%BA%E8%B3%BD/">2021 SQL Server鐵人賽</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2021/09/17/wordpress%E8%B3%87%E6%96%99%E5%BA%AB%E8%A6%8F%E5%8A%83%E5%8F%83%E8%80%83/">[Day29] Blog資料庫設計參考 - SQL Server資料庫入門</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p>剩下兩篇就30了，後面想看一下其他有規模的資料庫是怎麼設計的。<br>這回以wordpress為例子，然後注意wordpress是用mysql，所以在型別上會跟SQL server有些不一樣。</p>
-<h3 id="資料型別上"><a href="#資料型別上" class="headerlink" title="資料型別上"></a>資料型別上</h3><p>表的主鍵ID是使用BIGINT，可以存(-9223372036854775808 ~ 9223372036854776807 )<br>時間則是用DATETIME，MYSQL的DATEIME可以存‘1000-01-01 00:00:00’ to ‘9999-12-31 23:59:59’.<br>如果是用SQL Server要用DATETIME2，可以存0001-01-01 ~ 9999-12-31<br>除了主鍵ID外的整數用INT<br>文字則是VARCHAR<br>在MYSQL上<br>TINYTEXT: 256 bytes<br>TEXT: 65,535 bytes =&gt; ~64kb<br>MEDIUMTEXT: 16,777,215 bytes =&gt; ~16MB<br>LONGTEXT: 4,294,967,295 bytes =&gt; ~4GB</p>
-<h3 id="單一資料表上的設計"><a href="#單一資料表上的設計" class="headerlink" title="單一資料表上的設計"></a>單一資料表上的設計</h3><p>wp_comments:<br>1.透過comment_ID、comment_parent搭配可以設計出樹狀階層留言。<br>2.發現comment_type是varchar，不是再開一張表用ID關聯回去，就直接存文字。<br>3.發現有兩種時間comment_date_gmt、comment_date，可能是要處理跨時區問題。<br>4.發現很多需要另鍵表再做關聯的都直接用varchar，如comment_approved、comment_type。</p>
-<p>wp_users:<br>1.ID是wp_post、wp_comments的外來鍵，可以知道操作者。<br>2.email只要varchar(100)。</p>
-<p>wp_posts:<br>1.ID是wp_comments的comment_post_ID外來鍵。<br>2.對日期都多存一個gmt。<br>3.多存一個comment_count，可能是為了讓要取得留言數不用再做一次sum，讓效能好些。<br>4.很多需要另鍵表再做關聯的都直接用varchar，如post_status、comment_status、post_type。<br>5.使用了GUID(255)不知道是要做什麼，因為本身已有個ID可以識別了，且在其他表也沒看到它的存在。<br>6.有建立時間、修改時間。</p>
-<p>wp_term_relationships:<br>1.object_id、term_taxonomy_id用來做多對多的表，文章、分類。一篇文章有很多個分類，一個分類有很多個文章。</p>
-<p>wp_term_taxonomy:<br>1.ID、parent可以跟留言一樣做出樹狀結構的分類。</p>
-<p>wp_options:<br>1.options_name、options_value，儲存像是字典型別的系統資料，每個資料名稱與數值都1對1。</p>
-<p>wp_usermeta、wp_postmeta、wp_commentmata:<br>1.key、value，儲存字典，用於再網頁上印出metadata，SEO使用。</p>
-<img src="/2021/09/17/wordpress%E8%B3%87%E6%96%99%E5%BA%AB%E8%A6%8F%E5%8A%83%E5%8F%83%E8%80%83/wordpress_db_schema.png" class="">
-
-<h3 id="小結"><a href="#小結" class="headerlink" title="小結"></a>小結</h3><p>wordpress很明顯就是文章、留言導向，所以這兩張表設計得比較用心，有多去紀錄一些額外資訊如修改日期。<br>其他相對不重要的表，則設計的堪用就好，像是一些型別應該要在開個表做個ID在關聯回去，但他直接用varchar文字來做。<br>此外，考量到跨區問題，所以有多存一個gmt時間，但目前不知道他會怎麼用它。<br>且一些計算欄位的count都直接開出來，而不是用資料庫算(我是覺得不太好，但如果為了效能是可以加)。<br>而在多對多的表命名上則是命名relationships，這樣一眼就知道這是個來做關聯用的表。<br>對於系統定義值以字典方式儲存，就只要key、value，就能避免無限增加的欄了。</p>
-<p>最後，多參考一些套裝軟體的資料庫規劃，會更直覺得設計出彈性的資料表，以上。</p>
-<p><strong>參考資料</strong><br><a target="_blank" rel="noopener" href="https://blog.longwin.com.tw/2009/10/mysql-text-field-type-length-limit-2009/">https://blog.longwin.com.tw/2009/10/mysql-text-field-type-length-limit-2009/</a></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://yuhsiang237.github.io/2021/09/17/wordpress%E8%B3%87%E6%96%99%E5%BA%AB%E8%A6%8F%E5%8A%83%E5%8F%83%E8%80%83/" data-id="cl0g433pg004qtwgh7f6t3vk7" data-title="[Day29] Blog資料庫設計參考 - SQL Server資料庫入門" class="article-share-link">Teilen</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-學會操作資料庫的好處" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2021/09/17/%E5%AD%B8%E6%9C%83%E6%93%8D%E4%BD%9C%E8%B3%87%E6%96%99%E5%BA%AB%E7%9A%84%E5%A5%BD%E8%99%95/" class="article-date">
-  <time class="dt-published" datetime="2021-09-17T10:09:41.000Z" itemprop="datePublished">2021-09-17</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/Database/">Database</a>►<a class="article-category-link" href="/categories/Database/SQL-Server/">SQL Server</a>►<a class="article-category-link" href="/categories/Topic/">Topic</a>►<a class="article-category-link" href="/categories/Topic/2021-SQL-Server%E9%90%B5%E4%BA%BA%E8%B3%BD/">2021 SQL Server鐵人賽</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2021/09/17/%E5%AD%B8%E6%9C%83%E6%93%8D%E4%BD%9C%E8%B3%87%E6%96%99%E5%BA%AB%E7%9A%84%E5%A5%BD%E8%99%95/">[Day28] 聊聊學會操作資料庫的好處 - SQL Server資料庫入門</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p>為什麼要學資料庫呢?為了工作?為了自己興趣?為了學歷?</p>
-<img src="/2021/09/17/%E5%AD%B8%E6%9C%83%E6%93%8D%E4%BD%9C%E8%B3%87%E6%96%99%E5%BA%AB%E7%9A%84%E5%A5%BD%E8%99%95/header.jpg" class="">
-
-<p>我學操作資料庫的原因比較跟興趣有關。<br>為了能夠更知道像是undertale(地下傳說)、魔物獵人:世界(MHW)、血源詛咒Bloodborne那樣的遊戲背後的儲存體該如何設計。<br>如果我不會資料庫，把他們全存在Excel，一個數值一個欄位，可能要存到天荒地老。</p>
-<p>寫個電玩遊戲出來會用到，如果有從事後端工作也會用到，學一下其實算一石二鳥。<br>雖然說以這淺談並不會講到很深，但卻能幫助我先整理好這片地圖，需要時在快速回來參考即可。</p>
-<p>雖然市面上大多數都用來設計應用類程式，因為身在台灣就這比較好賺。<br>但老實說要帶給人成就感還是遊戲更好一些。至少它不是冰冷的(?)</p>
-<p>再來學習設計資料庫有助於鍛鍊我抽象思考的能力，把屬性分類歸位。<br>能夠從看到畫面轉化成數值再變成表格，即一種逆向工程的能力。</p>
-<p>總之，資料庫對我而言大概就是這樣了，協助我提升未來再儲存資料上的架構、存取方式。<br>然後，我並不是追求完美的那種大神，我只要符合需求、好維護就好，雖然有各種奇淫技巧能夠不斷改善他的效能，但對我來說它就是個分類好的文件夾…，我的目標是放在程式本身外的目標跟整體上。就是把他們組再一起成為一個獨一無二的創作，讓後帶給自己感動就這樣。</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://yuhsiang237.github.io/2021/09/17/%E5%AD%B8%E6%9C%83%E6%93%8D%E4%BD%9C%E8%B3%87%E6%96%99%E5%BA%AB%E7%9A%84%E5%A5%BD%E8%99%95/" data-id="cl0g433pl0056twgh10ibhokc" data-title="[Day28] 聊聊學會操作資料庫的好處 - SQL Server資料庫入門" class="article-share-link">Teilen</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-sql-server-數學函式" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2021/09/17/sql-server-%E6%95%B8%E5%AD%B8%E5%87%BD%E5%BC%8F/" class="article-date">
-  <time class="dt-published" datetime="2021-09-17T09:37:44.000Z" itemprop="datePublished">2021-09-17</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/Database/">Database</a>►<a class="article-category-link" href="/categories/Database/SQL-Server/">SQL Server</a>►<a class="article-category-link" href="/categories/Topic/">Topic</a>►<a class="article-category-link" href="/categories/Topic/2021-SQL-Server%E9%90%B5%E4%BA%BA%E8%B3%BD/">2021 SQL Server鐵人賽</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2021/09/17/sql-server-%E6%95%B8%E5%AD%B8%E5%87%BD%E5%BC%8F/">[Day27] SQL server 數學函式 - SQL Server資料庫入門</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p>這回稍微帶一下可能會用到的數學函式。</p>
-<h3 id="ROUND-四捨五入"><a href="#ROUND-四捨五入" class="headerlink" title="ROUND 四捨五入"></a>ROUND 四捨五入</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SELECT ROUND(235.41500, 2) AS RoundValue;</span><br></pre></td></tr></table></figure>
-<p>結果:235.42000</p>
-<h3 id="SQUARE-平方"><a href="#SQUARE-平方" class="headerlink" title="SQUARE 平方"></a>SQUARE 平方</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select SQUARE(6);</span><br></pre></td></tr></table></figure>
-<p>結果:36</p>
-<h3 id="SQRT-開根號"><a href="#SQRT-開根號" class="headerlink" title="SQRT 開根號"></a>SQRT 開根號</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select SQRT(36);</span><br></pre></td></tr></table></figure>
-<p>結果:6</p>
-<h3 id="FLOOR-地板"><a href="#FLOOR-地板" class="headerlink" title="FLOOR 地板"></a>FLOOR 地板</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SELECT FLOOR(25.75) AS FloorValue; </span><br></pre></td></tr></table></figure>
-<p>結果:25</p>
-<h3 id="CEILING-天花板"><a href="#CEILING-天花板" class="headerlink" title="CEILING 天花板"></a>CEILING 天花板</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SELECT CEILING(25.1) AS CeilValue; </span><br></pre></td></tr></table></figure>
-<p>結果:26</p>
-<h3 id="Abs-絕對值"><a href="#Abs-絕對值" class="headerlink" title="Abs 絕對值"></a>Abs 絕對值</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SELECT Abs(-243.5) AS AbsNum; </span><br></pre></td></tr></table></figure>
-<p>結果:243.5</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://yuhsiang237.github.io/2021/09/17/sql-server-%E6%95%B8%E5%AD%B8%E5%87%BD%E5%BC%8F/" data-id="cl0g433p9004atwghdsdd114r" data-title="[Day27] SQL server 數學函式 - SQL Server資料庫入門" class="article-share-link">Teilen</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-sql-server-分頁處理" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2021/09/17/sql-server-%E5%88%86%E9%A0%81%E8%99%95%E7%90%86/" class="article-date">
-  <time class="dt-published" datetime="2021-09-17T09:09:56.000Z" itemprop="datePublished">2021-09-17</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/Database/">Database</a>►<a class="article-category-link" href="/categories/Database/SQL-Server/">SQL Server</a>►<a class="article-category-link" href="/categories/Topic/">Topic</a>►<a class="article-category-link" href="/categories/Topic/2021-SQL-Server%E9%90%B5%E4%BA%BA%E8%B3%BD/">2021 SQL Server鐵人賽</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2021/09/17/sql-server-%E5%88%86%E9%A0%81%E8%99%95%E7%90%86/">[Day26] SQL server 分頁處理 - SQL Server資料庫入門</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p>通常在寫表單時，我們不會一次索取所有資料，因為資料若有百萬筆，那效能可能會不好、浪費流量。<br>所以，這時候就需要分頁了。<br>但是SQL server沒有Mysql的limit功能，所以要自己組出來QQ。</p>
-<p>稍微查了一下Google，發現已有不少現成做法，就當作紀錄記下來。</p>
-<p>他的做法其實就是用子查詢。<br>就是內層先做一個有row欄位，這row欄位透過 ROW_NUMBER() OVER 去產生順序編號<br>製作好內部的子查詢後，再由外部把這子查詢視為一張temp_table<br>之後就可以用where去判斷想取哪段的row了。</p>
-<p>但是我比較好奇的是，如果是很多left join、inner join好像用這方法會變得很亂。(?)</p>
-<p>要:1~5筆資料。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">SELECT * FROM ( </span><br><span class="line"> SELECT *, ROW_NUMBER() OVER (ORDER BY id desc)  row </span><br><span class="line"> FROM test</span><br><span class="line"> ) as temp_table</span><br><span class="line">WHERE row &gt;= 1 and row &lt;= 5</span><br></pre></td></tr></table></figure>
-<p>結果:</p>
-<img src="/2021/09/17/sql-server-%E5%88%86%E9%A0%81%E8%99%95%E7%90%86/1.png" class="">
-
-<p>要:6~10筆資料。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">SELECT * FROM ( </span><br><span class="line"> SELECT *, ROW_NUMBER() OVER (ORDER BY id desc)  row </span><br><span class="line"> FROM test</span><br><span class="line"> ) as temp_table</span><br><span class="line">WHERE row &gt;= 6 and row &lt;= 10</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<p>結果:</p>
-<img src="/2021/09/17/sql-server-%E5%88%86%E9%A0%81%E8%99%95%E7%90%86/2.png" class="">
-
-
-
-<p><strong>參考資料</strong><br><a target="_blank" rel="noopener" href="http://bioankeyang.blogspot.com/2013/03/ms-sql-servermysql-limit.html">http://bioankeyang.blogspot.com/2013/03/ms-sql-servermysql-limit.html</a></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://yuhsiang237.github.io/2021/09/17/sql-server-%E5%88%86%E9%A0%81%E8%99%95%E7%90%86/" data-id="cl0g433p80044twghdddxgly4" data-title="[Day26] SQL server 分頁處理 - SQL Server資料庫入門" class="article-share-link">Teilen</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
 
 
   <nav id="page-nav">
     
-    <a class="extend prev" rel="prev" href="/page/6/">&laquo; zurück</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><a class="page-number" href="/page/6/">6</a><span class="page-number current">7</span><a class="page-number" href="/page/8/">8</a><a class="page-number" href="/page/9/">9</a><span class="space">&hellip;</span><a class="page-number" href="/page/11/">11</a><a class="extend next" rel="next" href="/page/8/">weiter &raquo;</a>
+    <a class="extend prev" rel="prev" href="/page/6/">&laquo; zurück</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><a class="page-number" href="/page/6/">6</a><span class="page-number current">7</span><a class="page-number" href="/page/8/">8</a><a class="page-number" href="/page/9/">9</a><span class="space">&hellip;</span><a class="page-number" href="/page/12/">12</a><a class="extend next" rel="next" href="/page/8/">weiter &raquo;</a>
   </nav>
 
 </section>
@@ -669,7 +859,7 @@ C# Sol:
   <div class="widget-wrap">
     <h3 class="widget-title">Kategorien</h3>
     <div class="widget">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Code/">Code</a><span class="category-list-count">51</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Code/C/">C#</a><span class="category-list-count">47</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Code/Javascript/">Javascript</a><span class="category-list-count">5</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/">Computer Science</a><span class="category-list-count">5</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/Algorithm/">Algorithm</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/Data-structure/">Data structure</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/%E9%9B%BB%E5%AD%90%E9%9B%BB%E8%B7%AF/">電子電路</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Daily-Log/">Daily Log</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/">Database</a><span class="category-list-count">46</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Database/PostgreSQL/">PostgreSQL</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/SQL-Server/">SQL Server</a><span class="category-list-count">38</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/">Framework</a><span class="category-list-count">27</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/AspNetCore-API/">AspNetCore API</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/AspNetCore-MVC/">AspNetCore MVC</a><span class="category-list-count">21</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/">Topic</a><span class="category-list-count">63</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2021-C-AspNetCore%E9%90%B5%E4%BA%BA%E8%B3%BD/">2021 C# AspNetCore鐵人賽</a><span class="category-list-count">30</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2021-SQL-Server%E9%90%B5%E4%BA%BA%E8%B3%BD/">2021 SQL Server鐵人賽</a><span class="category-list-count">30</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/LeetCode/">LeetCode</a><span class="category-list-count">3</span></li></ul></li></ul>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Code/">Code</a><span class="category-list-count">58</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Code/C/">C#</a><span class="category-list-count">54</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Code/Javascript/">Javascript</a><span class="category-list-count">5</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/">Computer Science</a><span class="category-list-count">5</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/Algorithm/">Algorithm</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/Data-structure/">Data structure</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/%E9%9B%BB%E5%AD%90%E9%9B%BB%E8%B7%AF/">電子電路</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Daily-Log/">Daily Log</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/">Database</a><span class="category-list-count">46</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Database/PostgreSQL/">PostgreSQL</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/SQL-Server/">SQL Server</a><span class="category-list-count">38</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/">Framework</a><span class="category-list-count">27</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/AspNetCore-API/">AspNetCore API</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/AspNetCore-MVC/">AspNetCore MVC</a><span class="category-list-count">21</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/">Topic</a><span class="category-list-count">69</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2021-C-AspNetCore%E9%90%B5%E4%BA%BA%E8%B3%BD/">2021 C# AspNetCore鐵人賽</a><span class="category-list-count">30</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2021-SQL-Server%E9%90%B5%E4%BA%BA%E8%B3%BD/">2021 SQL Server鐵人賽</a><span class="category-list-count">30</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2022-C-%E5%9F%B7%E8%A1%8C%E7%B7%92%E5%90%8C%E6%AD%A5%E7%95%B0%E6%AD%A5%E7%B7%A8%E7%A8%8B%E8%A8%98/">2022 C# 執行緒同步異步編程記</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/LeetCode/">LeetCode</a><span class="category-list-count">3</span></li></ul></li></ul>
     </div>
   </div>
 
@@ -679,7 +869,7 @@ C# Sol:
   <div class="widget-wrap">
     <h3 class="widget-title">Archiv</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/03/">三月 2022</a><span class="archive-list-count">11</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/02/">二月 2022</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/01/">一月 2022</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">十二月 2021</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">十月 2021</a><span class="archive-list-count">24</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">九月 2021</a><span class="archive-list-count">46</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">八月 2021</a><span class="archive-list-count">12</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/04/">四月 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/03/">三月 2022</a><span class="archive-list-count">17</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/02/">二月 2022</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/01/">一月 2022</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">十二月 2021</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">十月 2021</a><span class="archive-list-count">24</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">九月 2021</a><span class="archive-list-count">46</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">八月 2021</a><span class="archive-list-count">12</span></li></ul>
     </div>
   </div>
 

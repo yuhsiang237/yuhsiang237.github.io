@@ -77,6 +77,590 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-sql-server資料型態" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2021/09/03/sql-server%E8%B3%87%E6%96%99%E5%9E%8B%E6%85%8B/" class="article-date">
+  <time class="dt-published" datetime="2021-09-03T10:33:36.000Z" itemprop="datePublished">2021-09-03</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Database/">Database</a>►<a class="article-category-link" href="/categories/Database/SQL-Server/">SQL Server</a>►<a class="article-category-link" href="/categories/Topic/">Topic</a>►<a class="article-category-link" href="/categories/Topic/2021-SQL-Server%E9%90%B5%E4%BA%BA%E8%B3%BD/">2021 SQL Server鐵人賽</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2021/09/03/sql-server%E8%B3%87%E6%96%99%E5%9E%8B%E6%85%8B/">[Day3] SQL Server資料型態 - SQL Server資料庫入門</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>為了能夠讓每種資料有比較好的儲存方式，所以這回來看一下SQL server內建哪些資料型態。<br>我們平常常見資料可能會有日期、數字、文字等等。<br>爬了很多文後發現SQL Server的資料型態真的爆多，所以先列舉，未來如果有用到會陸續回來修補這篇文(X)。</p>
+<h3 id="整數"><a href="#整數" class="headerlink" title="整數"></a>整數</h3><table style="text-align: left; height: 113px;" width="550" border="1">
+<tbody>
+<tr>
+<th><span style="font-size: 12pt;">資料型別</span></th>
+<th><span style="font-size: 12pt;">位元數</span></th>
+<th><span style="font-size: 12pt;">資料範圍</span></th>
+</tr>
+<tr>
+<td><span style="font-size: 12pt;">tinyint</span></td>
+<td><span style="font-size: 12pt;">&nbsp;1 Byte</span></td>
+<td><span style="font-size: 12pt;">0 ~ 2^8 -1<br>( 0 ~ 255 )</span></td>
+</tr>
+<tr>
+<td><span style="font-size: 12pt;">smallint</span></td>
+<td><span style="font-size: 12pt;">&nbsp;2 Bytes</span></td>
+<td><span style="font-size: 12pt;">-2^15 ~ 2^15-1<br>( -32738 ~ 32767 )</span></td>
+</tr>
+<tr>
+<td><span style="font-size: 12pt;">int</span></td>
+<td><span style="font-size: 12pt;">&nbsp;4 Bytes</span></td>
+<td>
+<p><span style="font-size: 12pt;">-2^31 ~ 2^31 -1<br>( -2147483648 ~ 2147483467)</span></p>
+</td>
+</tr>
+<tr>
+<td><span style="font-size: 12pt;">bigint</span></td>
+<td><span style="font-size: 12pt;">&nbsp;8 Bytes</span></td>
+<td><span style="font-size: 12pt;">-2^63~2^63 -1<br>
+<span style="font-size: 10pt;">(-9223372036854775808 ~ 9223372036854776807 )</span></span></td>
+</tr>
+<tr>
+<td><span style="font-size: 12pt;">bit</span></td>
+<td><span style="font-size: 12pt;">&nbsp;1 Byte</span></td>
+<td><span style="font-size: 12pt;">&nbsp;0 , 1 , Null</span></td>
+</tr>
+</tbody>
+</table>
+
+<h3 id="精確位數與浮點數"><a href="#精確位數與浮點數" class="headerlink" title="精確位數與浮點數"></a>精確位數與浮點數</h3><table style="height: 94px;" width="550" border="1">
+<tbody>
+<tr>
+<th><span style="font-size: 12pt;">資料型別</span></th>
+<th><span style="font-size: 12pt;">位元數</span></th>
+<th><span style="font-size: 12pt;">資料範圍</span></th>
+<th><span style="font-size: 12pt;">備註</span></th>
+</tr>
+<tr>
+<td><span style="font-size: 12pt;">numeric</span></td>
+<td><span style="font-size: 12pt;">視精確度而定</span></td>
+<td><span style="font-size: 12pt;">-10^38 +1 ~ 10^38 -1<br></span></td>
+<td></td>
+</tr>
+<tr>
+<td><span style="font-size: 12pt;">decimal</span></td>
+<td><span style="font-size: 12pt;">視精確度而定</span></td>
+<td><span style="font-size: 12pt;">-10^38 +1 ~ 10^38 -1</span></td>
+<td>如果要存有小數點的錢、金額請使用decimal，不要使用float，避免造成誤差<br/>
+decimal(p,s) 需要分別指定小數的最大位數（p）和小數位的數量（s）。
+p (precision) ：指定小數的最大位數，小數點的左側和右側的數字的總數量不能超過p，p的取值範圍是從1到38，默認值爲18。
+s (scale)：指定在小數點右側的小數位數，p-s是小數點左邊的最大位數。s必須是從0到p的值，只有在指定了精度的情況下才能指定s，s的默認值是0，因此，0 <= s <= p。 
+<img src="/2021/09/03/sql-server%E8%B3%87%E6%96%99%E5%9E%8B%E6%85%8B/decimal.png" class="" title="decimal">
+
+</td>
+</tr>
+<tr>
+<td><span style="font-size: 12pt;">float</span></td>
+<td><span style="font-size: 12pt;">&nbsp;8 Bytes</span></td>
+<td><span style="font-size: 12pt;">&nbsp;-1.79E+308 ~ 1.79E+308<br>15 位數<br></span></td>
+<td>不要使用float存小數點的錢，避免造成誤差。他適合儲存科學用的數字。</td>
+</tr>
+<tr>
+<td><span style="font-size: 12pt;">real</span></td>
+<td><span style="font-size: 12pt;">&nbsp;4 Bytes<br></span></td>
+<td><span style="font-size: 12pt;">-3.40E+38 ~ 3.40E+38<br>&nbsp;
+7 位數</span></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+
+<h3 id="字串-Unicode-字串-Binary-字串"><a href="#字串-Unicode-字串-Binary-字串" class="headerlink" title="字串 - Unicode 字串 - Binary 字串"></a>字串 - Unicode 字串 - Binary 字串</h3><table style="height: 166px;" width="550" border="1">
+<tbody>
+<tr>
+<th><span style="font-size: 12pt;">資料型別</span></th>
+<th><span style="font-size: 12pt;">位元數</span></th>
+<th><span style="font-size: 12pt;">資料範圍</span></th>
+<th><span style="font-size: 12pt;">備註</span></th>
+</tr>
+<tr>
+<td><span style="font-size: 12pt;">&nbsp;char(n)</span></td>
+<td><span style="font-size: 12pt;">1字元 1Byte</span></td>
+<td><span style="font-size: 12pt;">&nbsp;1 ~ 8000 字元</span></td>
+<td>輸入的數據長度沒有達到指定的長度時將自動以英文空格在其後面填充，讓長度達到相對應的長度。</td>
+</tr>
+<tr>
+<td><span style="font-size: 12pt;">&nbsp;varchar(n)</span></td>
+<td><span style="font-size: 12pt;">1字元 1Byte</span></td>
+<td><span style="font-size: 12pt;">&nbsp;1 ~ 8000 字元</span></td>
+<td><br>輸入的數據長度沒有達到指定的長度時不會在後面填充空格。</td>
+</tr>
+<tr>
+<td><span style="font-size: 12pt;">&nbsp;varchar(max)</span></td>
+<td><span style="font-size: 12pt;">變動長度 max=2GB</span></td>
+<td><span style="font-size: 12pt;">&nbsp;1 ~ 2^31 -1 字元<br/></span></td>
+<td>輸入的數據長度沒有達到指定的長度時不會在後面填充空格。</td>
+</tr>
+<tr>
+<td><span style="font-size: 12pt;">&nbsp;text</span></td>
+<td><span style="font-size: 12pt;">變動長度 max=2GB</span></td>
+<td><span style="font-size: 12pt;">&nbsp;1 ~ 2^31 -1 字元</span></td>
+<td></td>
+
+</tr>
+<tr>
+<td><span style="font-size: 12pt;">&nbsp;nchar(n)</span></td>
+<td><span style="font-size: 12pt;">1字元 2Byte</span></td>
+<td><span style="font-size: 12pt;">&nbsp;1 ~ 4000 字元</span></td>
+<td>所有的文字都用2 Byte來儲存<br>輸入的數據長度沒有達到指定的長度時將自動以英文空格在其後面填充，讓長度達到相對應的長度。</td>
+
+</tr>
+<tr>
+<td><span style="font-size: 12pt;">&nbsp;nvarchar(n)</span></td>
+<td><span style="font-size: 12pt;">1字元 2Byte</span></td>
+<td><span style="font-size: 12pt;">&nbsp;1 ~ 4000 字元</span></td>
+<td>所有的文字都用2 Byte來儲存<br>輸入的數據長度沒有達到指定的長度時不會在後面填充空格。</td>
+</tr>
+<tr>
+<td><span style="font-size: 12pt;">&nbsp;nvarchar(max)</span></td>
+<td><span style="font-size: 12pt;">1字元 2Byte</span><br><span style="font-size: 12pt;">變動長度 max=2GB</span></td>
+<td><span style="font-size: 12pt;">&nbsp;1 ~ 2^30 -1 字元</span></td>
+<td>所有的文字都用2 Byte來儲存<br>輸入的數據長度沒有達到指定的長度時不會在後面填充空格。</td>
+
+</tr>
+<tr>
+<td><span style="font-size: 12pt;">&nbsp;ntext</span></td>
+<td><span style="font-size: 12pt;">1字元 2Byte</span><br><span style="font-size: 12pt;">變動長度 max=2GB</span></td>
+<td><span style="font-size: 12pt;">&nbsp;1 ~ 2^30 -1 字元</span></td>
+<td></td>
+</tr>
+<tr>
+<td><span style="font-size: 12pt;">&nbsp;binary(n)</span></td>
+<td><span style="font-size: 12pt;">固定長度 8000 Bytes,不足自動補上 0x00<br></span></td>
+<td><span style="font-size: 12pt;">&nbsp;1 ~ 8000 Bytes</span></td>
+<td></td>
+
+</tr>
+<tr>
+<td><span style="font-size: 12pt;">&nbsp;varbinary(n)</span></td>
+<td><span style="font-size: 12pt;">變動長度</span></td>
+<td><span style="font-size: 12pt;">&nbsp;1 ~ 8000 Bytes</span></td>
+<td></td>
+
+</tr>
+<tr>
+<td><span style="font-size: 12pt;">&nbsp;varbinary(max)</span></td>
+<td><span style="font-size: 12pt;">變動長度 max=2GB</span></td>
+<td><span style="font-size: 12pt;">&nbsp;1 ~ 2^31 -1 Bytes</span></td>
+<td></td>
+
+</tr>
+<tr>
+<td><span style="font-size: 12pt;">&nbsp;image</span></td>
+<td><span style="font-size: 12pt;">變動長度 max=2GB</span></td>
+<td><span style="font-size: 12pt;">&nbsp;1 ~ 2^31 -1 Bytes</span></td>
+<td></td>
+
+</tr>
+</tbody>
+</table>
+
+<h3 id="日期-時間-貨幣-Timestamp"><a href="#日期-時間-貨幣-Timestamp" class="headerlink" title="日期 - 時間 - 貨幣 - Timestamp"></a>日期 - 時間 - 貨幣 - Timestamp</h3><table style="height: 94px;" width="550" border="1">
+<tbody>
+<tr>
+<th><span style="font-size: 12pt;">資料型別</span></th>
+<th><span style="font-size: 12pt;">位元數</span></th>
+<th><span style="font-size: 12pt;">資料範圍</span></th>
+</tr>
+<tr>
+<td><span style="font-size: 12pt;">datatime</span></td>
+<td><span style="font-size: 12pt;">&nbsp;8 Bytes</span></td>
+<td><span style="font-size: 12pt;">1753/1/1 ~ 9999/12/31<br>ex: 2008-11-27 08:08:08.888<br></span></td>
+</tr>
+<tr>
+<td><span style="font-size: 12pt;">datatime2</span></td>
+<td><span style="font-size: 12pt;">6 bytes for precision less than 3.<br>
+7 bytes for precision 3 or 4.<br>
+All other precision require 8 bytes.2<br></span></td>
+<td><span style="font-size: 12pt;">0001-01-01 ~ 9999-12-31</span></td>
+</tr>
+<tr>
+<td><span style="font-size: 12pt;">smalldatatime</span></td>
+<td><span style="font-size: 12pt;">&nbsp;4 Bytes<br></span></td>
+<td><span style="font-size: 12pt;">1900/1/1 ~ 2079/6/6<br>ex: 2008-11-24 15:11<br></span></td>
+</tr>
+<tr>
+<td><span style="font-size: 12pt;">money</span></td>
+<td><span style="font-size: 12pt;">&nbsp;8 Bytes</span></td>
+<td><span style="font-size: 12pt;">&nbsp;-2^63 ~ 2^63 -1 </span><span style="font-size: 12pt;">小數4位</span><br><span style="font-size: 12pt;">( -922337203685477.5808 ~ 922337203685477.5807)<br></span></td>
+</tr>
+<tr>
+<td><span style="font-size: 12pt;">smallmoney</span></td>
+<td><span style="font-size: 12pt;">&nbsp;4 Bytes<br></span></td>
+<td><span style="font-size: 12pt;">-2^31 ~ 2^31 -1 小數4位&nbsp; <br>( -214748.3648 ~ 214748.3647)&nbsp;</span></td>
+</tr>
+<tr>
+<td><span style="font-size: 12pt;">timestamp</span></td>
+<td><span style="font-size: 12pt;">&nbsp;8 Bytes</span></td>
+<td><span style="font-size: 12pt;">8 Bytes 的&nbsp; 16 進位值</span><span style="font-size: 12pt;"><br></span></td>
+</tr>
+<tr>
+<td><span style="font-size: 12pt;">uniqueidentifier</span></td>
+<td><span style="font-size: 12pt;">&nbsp;16 Bytes<br></span></td>
+<td><span style="font-size: 12pt;">16 Bytes 的 16 進位值</span></td>
+</tr>
+</tbody>
+</table>
+
+<h3 id="結語"><a href="#結語" class="headerlink" title="結語"></a>結語</h3><p>這回以SQL Server的資料型別列舉出資料範圍，對於日後再選擇時就能稍微留意空間大小、資料的範圍等規劃問題。<br>自己在使用上則是字串nvarchar，整數int、科學數字用浮點數float、有小數的金額用decimal避免誤差、日期datetime2，就能解決大多問題。<br>而SQL Server沒有MySQL的boolean型態，要改用0、1去存，可以考慮tinyint。<br>而在不同時區的資料則是統一都用一個標準去儲存日期UTC時間，如果有機會未來會在寫一篇跨國時間可能會遇到的問題。</p>
+<p><strong>參考資料</strong><br><a target="_blank" rel="noopener" href="https://docs.microsoft.com/zh-tw/sql/t-sql/data-types/data-types-transact-sql?view=sql-server-ver15">https://docs.microsoft.com/zh-tw/sql/t-sql/data-types/data-types-transact-sql?view=sql-server-ver15</a><br><a target="_blank" rel="noopener" href="https://ithelp.ithome.com.tw/articles/10203456">https://ithelp.ithome.com.tw/articles/10203456</a><br><a target="_blank" rel="noopener" href="https://blog.xuite.net/tolarku/blog/20968398-SQL+Data+Type+%E8%B3%87%E6%96%99%E5%9E%8B%E5%88%A5">https://blog.xuite.net/tolarku/blog/20968398-SQL+Data+Type+%E8%B3%87%E6%96%99%E5%9E%8B%E5%88%A5</a><br><a target="_blank" rel="noopener" href="https://docs.microsoft.com/en-us/sql/t-sql/data-types/datetime2-transact-sql?view=sql-server-ver15">https://docs.microsoft.com/en-us/sql/t-sql/data-types/datetime2-transact-sql?view=sql-server-ver15</a><br><a target="_blank" rel="noopener" href="https://ithelp.ithome.com.tw/articles/10213922">https://ithelp.ithome.com.tw/articles/10213922</a><br><a target="_blank" rel="noopener" href="https://ithelp.ithome.com.tw/articles/10203456?sc=iThelpR">https://ithelp.ithome.com.tw/articles/10203456?sc=iThelpR</a><br><a target="_blank" rel="noopener" href="https://malagege.github.io/blog/2018/11/09/DB%E5%88%B0%E5%BA%95%E6%9C%89%E6%B2%92%E6%9C%89boolean%E5%9E%8B%E6%85%8B%E5%91%A2/">https://malagege.github.io/blog/2018/11/09/DB%E5%88%B0%E5%BA%95%E6%9C%89%E6%B2%92%E6%9C%89boolean%E5%9E%8B%E6%85%8B%E5%91%A2/</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://yuhsiang237.github.io/2021/09/03/sql-server%E8%B3%87%E6%96%99%E5%9E%8B%E6%85%8B/" data-id="cl0g433pf004mtwgh96qt2gcu" data-title="[Day3] SQL Server資料型態 - SQL Server資料庫入門" class="article-share-link">Teilen</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-C-Dictionary字典操作" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2021/09/03/C-Dictionary%E5%AD%97%E5%85%B8%E6%93%8D%E4%BD%9C/" class="article-date">
+  <time class="dt-published" datetime="2021-09-03T10:16:52.000Z" itemprop="datePublished">2021-09-03</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Code/">Code</a>►<a class="article-category-link" href="/categories/Code/C/">C#</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2021/09/03/C-Dictionary%E5%AD%97%E5%85%B8%E6%93%8D%E4%BD%9C/">C# Dictionary字典操作</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>這次練習使用C#的字典資料結構。</p>
+<h3 id="Dictionary"><a href="#Dictionary" class="headerlink" title="Dictionary"></a>Dictionary</h3><p>字典型別，一個Key對上一個Value，一對一關係。<br>像是查字典，你查某個單字，會給你他的解釋。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">using System;</span><br><span class="line">using System.Collections.Generic;</span><br><span class="line"></span><br><span class="line">public class Program</span><br><span class="line">&#123;</span><br><span class="line">	</span><br><span class="line">	public static void Main()</span><br><span class="line">	&#123;</span><br><span class="line">		Dictionary&lt;string, string&gt; dictionary = new Dictionary&lt;string, string&gt;( ); // 建立字典key:string,value:string</span><br><span class="line">		dictionary.Add(&quot;LastName&quot;,&quot;Lin&quot;);</span><br><span class="line">		dictionary.Add(&quot;FirstName&quot;,&quot;Yu-Hsiang&quot;);</span><br><span class="line">			</span><br><span class="line">		// 從字典中取出對應值</span><br><span class="line">		Console.WriteLine(&quot;FirstName:&quot; + dictionary[&quot;FirstName&quot;]);</span><br><span class="line">		Console.WriteLine(&quot;LastName:&quot; + dictionary[&quot;LastName&quot;]);</span><br><span class="line">		</span><br><span class="line">		// 遍歷字典</span><br><span class="line">		foreach ( var item in dictionary )</span><br><span class="line">		&#123;</span><br><span class="line">			Console.WriteLine( &quot;Key = &quot; + item.Key + &quot;, Value = &quot; + item.Value );</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>輸出</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">FirstName:Yu-Hsiang</span><br><span class="line">LastName:Lin</span><br><span class="line">Key = LastName, Value = Lin</span><br><span class="line">Key = FirstName, Value = Yu-Hsiang</span><br></pre></td></tr></table></figure>
+<h3 id="結語"><a href="#結語" class="headerlink" title="結語"></a>結語</h3><p>有一對一關係的資料，可以利用字典去整理，就能不用二維陣列去做，資料也比較清楚。<br>如果有重複的Key值，在添加時也會跳出例外事件。例:An item with the same key has already been added.</p>
+<p><strong>參考資料</strong><br><a target="_blank" rel="noopener" href="http://code2study.blogspot.com/2012/01/c-dictionary.html">http://code2study.blogspot.com/2012/01/c-dictionary.html</a><br><a target="_blank" rel="noopener" href="https://ithelp.ithome.com.tw/articles/10234391">https://ithelp.ithome.com.tw/articles/10234391</a><br><a target="_blank" rel="noopener" href="https://docs.microsoft.com/en-us/dotnet/api/system.collections.generic.dictionary-2?view=net-5.0">https://docs.microsoft.com/en-us/dotnet/api/system.collections.generic.dictionary-2?view=net-5.0</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://yuhsiang237.github.io/2021/09/03/C-Dictionary%E5%AD%97%E5%85%B8%E6%93%8D%E4%BD%9C/" data-id="cl0g433nq0001twghb1kzf3rz" data-title="C# Dictionary字典操作" class="article-share-link">Teilen</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-C-的class宣告與使用" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2021/09/02/C-%E7%9A%84class%E5%AE%A3%E5%91%8A%E8%88%87%E4%BD%BF%E7%94%A8/" class="article-date">
+  <time class="dt-published" datetime="2021-09-02T15:30:39.000Z" itemprop="datePublished">2021-09-02</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Code/">Code</a>►<a class="article-category-link" href="/categories/Code/C/">C#</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2021/09/02/C-%E7%9A%84class%E5%AE%A3%E5%91%8A%E8%88%87%E4%BD%BF%E7%94%A8/">C# class宣告及使用</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>在C++後有很多物件導向(Object-oriented programming，OOP)的語言竄起，如JAVA、VB、C#等等。<br>未來可能會以C#為主要語言，所以就來練習一下C#的類別宣告吧。</p>
+<h3 id="物件導向程式設計"><a href="#物件導向程式設計" class="headerlink" title="物件導向程式設計"></a>物件導向程式設計</h3><p>是種具有物件概念的程式設計典範，同時也是一種程式開發的抽象方針。它可能包含資料、特性、程式碼與方法。物件則指的是類別（class）的實例。物件導向程式設計可以看作一種在程式中包含各種獨立而又互相呼叫的物件的思想，這與傳統的思想剛好相反：傳統的程式設計主張將程式看作一系列函式的集合，或者直接就是一系列對電腦下達的指令。</p>
+<p>物件導向程式語言包含Common Lisp、Python、C++、Objective-C、Smalltalk、Delphi、Java、Swift、C#、Perl、Ruby、JavaScript(雖然javascript通常都用function在寫，但ES6有class) 與 PHP等。 </p>
+<h3 id="C-class宣告及使用"><a href="#C-class宣告及使用" class="headerlink" title="C# class宣告及使用"></a>C# class宣告及使用</h3><p>透過人(Person)的類別class，宣告一個人的實例。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">using System;</span><br><span class="line">					</span><br><span class="line">public class Program</span><br><span class="line">&#123;</span><br><span class="line">	public class Person&#123;</span><br><span class="line">		</span><br><span class="line">		private string name; // 內部私有的name變數</span><br><span class="line">		</span><br><span class="line">		public string Name &#123;</span><br><span class="line">			get&#123;return name;&#125; // getter 取出私有的name變數</span><br><span class="line">			set&#123;this.name = value;&#125; // setter 將value設定到私有的name變數</span><br><span class="line">		&#125;</span><br><span class="line">		</span><br><span class="line">		public Person()&#123; // 建構子</span><br><span class="line">			this.name = &quot;沒有名子&quot;;</span><br><span class="line">		&#125;</span><br><span class="line">		</span><br><span class="line">		public Person(string name)&#123; // 多載(Overload)的建構子，可初始化name</span><br><span class="line">			this.name = name;</span><br><span class="line">		&#125;</span><br><span class="line">	</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	public static void Main()</span><br><span class="line">	&#123;</span><br><span class="line">		Person person= new Person();// 宣告一個人的實例</span><br><span class="line">		Console.WriteLine(person.Name);// 透過getter取出變數</span><br><span class="line">		person.Name = &quot;Yu Hsiang&quot;; // 透過setter設定變數</span><br><span class="line">		Console.WriteLine(person.Name); // 透過getter取出變數</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>輸出</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">沒有名子</span><br><span class="line">Yu Hsiang</span><br></pre></td></tr></table></figure>
+
+<h3 id="結語"><a href="#結語" class="headerlink" title="結語"></a>結語</h3><p>為什麼要用getter、setter?<br>為了避免誤改到變數及維護性的需求。<br>比如，未來想要加一個*在每個人名前面，這時如果沒有setter、getter，就得改每一行的程式碼。<br>如果有setter、getter就像有一個緩衝的函式，可以讓我們直接在這裏面修正好值再存入。<br>當然，也有人不寫getter或setter，也是能運作，見仁見智，符合本身團隊需求就可以了。</p>
+<p>C#有點簡化了getter、setter，以前在寫C++時都會寫成setName、getName，再回傳本身指標，就能無限點下去。<br><a target="_blank" rel="noopener" href="https://github.com/yuhsiang237/C-plusplus-homework/blob/master/HomeworkBoss/final/2/2/Place.cpp">https://github.com/yuhsiang237/C-plusplus-homework/blob/master/HomeworkBoss/final/2/2/Place.cpp</a></p>
+<p>這練習想起了大學的C++作業:<br><a target="_blank" rel="noopener" href="https://github.com/yuhsiang237/C-plusplus-homework">https://github.com/yuhsiang237/C-plusplus-homework</a></p>
+<p><strong>參考資料</strong><br><a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1">https://zh.wikipedia.org/wiki/%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1</a><br><a target="_blank" rel="noopener" href="https://docs.microsoft.com/zh-tw/dotnet/csharp/fundamentals/types/classes">https://docs.microsoft.com/zh-tw/dotnet/csharp/fundamentals/types/classes</a><br><a target="_blank" rel="noopener" href="https://www.w3schools.com/cs/cs_properties.php">https://www.w3schools.com/cs/cs_properties.php</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://yuhsiang237.github.io/2021/09/02/C-%E7%9A%84class%E5%AE%A3%E5%91%8A%E8%88%87%E4%BD%BF%E7%94%A8/" data-id="cl0g433op001ytwgh3zcz91i5" data-title="C# class宣告及使用" class="article-share-link">Teilen</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-主索引鍵與外部索引鍵" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2021/09/02/%E4%B8%BB%E7%B4%A2%E5%BC%95%E9%8D%B5%E8%88%87%E5%A4%96%E9%83%A8%E7%B4%A2%E5%BC%95%E9%8D%B5/" class="article-date">
+  <time class="dt-published" datetime="2021-09-02T06:30:12.000Z" itemprop="datePublished">2021-09-02</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Database/">Database</a>►<a class="article-category-link" href="/categories/Database/SQL-Server/">SQL Server</a>►<a class="article-category-link" href="/categories/Topic/">Topic</a>►<a class="article-category-link" href="/categories/Topic/2021-SQL-Server%E9%90%B5%E4%BA%BA%E8%B3%BD/">2021 SQL Server鐵人賽</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2021/09/02/%E4%B8%BB%E7%B4%A2%E5%BC%95%E9%8D%B5%E8%88%87%E5%A4%96%E9%83%A8%E7%B4%A2%E5%BC%95%E9%8D%B5/">[Day2] 主索引鍵與外部索引鍵，及其他關係鍵 - SQL Server資料庫入門</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>在資料庫的資料表中，我們常藉「主索引鍵(Primary Key，PK，主鍵)、外部索引鍵（Foreign Key，FK，外來鍵）」，對不同的表進行關聯，最後串起整個資料庫。</p>
+<h3 id="主索引鍵-Primary-Key"><a href="#主索引鍵-Primary-Key" class="headerlink" title="主索引鍵(Primary Key)"></a>主索引鍵(Primary Key)</h3><p>在一張資料表中，<br>唯一性且不允許重複。</p>
+<h3 id="外部索引鍵-Foreign-Key"><a href="#外部索引鍵-Foreign-Key" class="headerlink" title="外部索引鍵(Foreign Key)"></a>外部索引鍵(Foreign Key)</h3><p>在一張資料表中，<br>外部索引鍵並不一定要唯一。<br>外部索引鍵是另一個資料表的主索引鍵。</p>
+<h3 id="範例"><a href="#範例" class="headerlink" title="範例"></a>範例</h3><img src="/2021/09/02/%E4%B8%BB%E7%B4%A2%E5%BC%95%E9%8D%B5%E8%88%87%E5%A4%96%E9%83%A8%E7%B4%A2%E5%BC%95%E9%8D%B5/20119925MvOyMbX3Cd.png" class="" title="資料表主鍵、外來鍵關係">
+<p>以上是資料表主鍵、外來鍵的關係。</p>
+<p>在客戶資料表中，id是主鍵。<br>在產品資料表中，id是主鍵。<br>在訂單詳情資料表中，id是主鍵；客戶id、產品id分別是外來鍵，他們各自是客戶資料表中的主鍵、產品資料表中的主鍵。</p>
+<p>舉例:<br>如我想找某筆訂單中的客戶是誰，就能夠用訂單裡的客戶id去客戶資料表中找到對應的客戶。</p>
+<h2 id="補充"><a href="#補充" class="headerlink" title="補充"></a>補充</h2><h3 id="超鍵-superkey"><a href="#超鍵-superkey" class="headerlink" title="超鍵(superkey)"></a>超鍵(superkey)</h3><p>是指在一個資料表中，選出兩個或兩個以上的欄位組合起來，以作為唯一識別資料的欄位。</p>
+<h3 id="候選鍵-candidate-key"><a href="#候選鍵-candidate-key" class="headerlink" title="候選鍵(candidate key)"></a>候選鍵(candidate key)</h3><p>這個屬性集合始終能夠確保在關係中能唯一標識元組<br>在這個屬性集合中找不出真子集能夠滿足條件。</p>
+<h3 id="代理鍵-surrogate-key"><a href="#代理鍵-surrogate-key" class="headerlink" title="代理鍵(surrogate key)"></a>代理鍵(surrogate key)</h3><p>是在當資料表中的候選鍵都不適合當主鍵時，例如資料太長，或是意義層面太多，就會請一個無意義的但唯一的欄位來代為作主鍵。</p>
+<h3 id="次要鍵-Secondary-Key"><a href="#次要鍵-Secondary-Key" class="headerlink" title="次要鍵(Secondary Key)"></a>次要鍵(Secondary Key)</h3><p>主要的功能是提供資料索引。資料庫系統中，除了主鍵這個唯一的識別值，可以用做索引外，也可以設定其他欄位用作資料索引，這類的鍵值並不是主鍵，但因為資料內容並不會重複，所以也可作為資料索引，這就是次要鍵。在員工資料表中，員工姓名、到職日期等欄位都沒有重複，就可以做為次要鍵，提供不同於主鍵的資料索引。</p>
+<h3 id="複合鍵-Composite-Key"><a href="#複合鍵-Composite-Key" class="headerlink" title="複合鍵(Composite Key)"></a>複合鍵(Composite Key)</h3><p>是指資料表中的主鍵，是由兩個或兩個欄位以上所組成，這種主鍵稱為複合鍵(Composite Key)。<br>當表格中某一欄位的值無法區分資料記錄時可以使用此方法。</p>
+<h3 id="結語"><a href="#結語" class="headerlink" title="結語"></a>結語</h3><p>在整理過各種鍵後，理解到各種鍵的使用時機。(未來可能在資料庫正規化方面能夠更加順手。)<br>而以自身經驗來說，實際設計過的資料表中通常只會用到主鍵、外來鍵居多，其餘的特殊鍵則比較少，甚至沒有用到的情況。</p>
+<p><strong>參考資料:</strong><br><a target="_blank" rel="noopener" href="https://ithelp.ithome.com.tw/articles/10213896">https://ithelp.ithome.com.tw/articles/10213896</a><br><a target="_blank" rel="noopener" href="https://rileylin91.github.io/2020/05/29/MSSQL-9-Primary-Foreign-Key/">https://rileylin91.github.io/2020/05/29/MSSQL-9-Primary-Foreign-Key/</a><br><a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E5%85%B3%E7%B3%BB%E9%94%AE">https://zh.wikipedia.org/wiki/%E5%85%B3%E7%B3%BB%E9%94%AE</a><br><a target="_blank" rel="noopener" href="https://www.1keydata.com/tw/sql/sql-foreign-key.html">https://www.1keydata.com/tw/sql/sql-foreign-key.html</a><br><a target="_blank" rel="noopener" href="https://www.ithome.com.tw/node/46156">https://www.ithome.com.tw/node/46156</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://yuhsiang237.github.io/2021/09/02/%E4%B8%BB%E7%B4%A2%E5%BC%95%E9%8D%B5%E8%88%87%E5%A4%96%E9%83%A8%E7%B4%A2%E5%BC%95%E9%8D%B5/" data-id="cl0g433ph004ttwghd92rae0q" data-title="[Day2] 主索引鍵與外部索引鍵，及其他關係鍵 - SQL Server資料庫入門" class="article-share-link">Teilen</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-sql-server安裝" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2021/09/01/sql-server%E5%AE%89%E8%A3%9D/" class="article-date">
+  <time class="dt-published" datetime="2021-09-01T15:49:25.000Z" itemprop="datePublished">2021-09-01</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Database/">Database</a>►<a class="article-category-link" href="/categories/Database/SQL-Server/">SQL Server</a>►<a class="article-category-link" href="/categories/Topic/">Topic</a>►<a class="article-category-link" href="/categories/Topic/2021-SQL-Server%E9%90%B5%E4%BA%BA%E8%B3%BD/">2021 SQL Server鐵人賽</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2021/09/01/sql-server%E5%AE%89%E8%A3%9D/">[Day1] SQL Server 安裝 - SQL Server資料庫入門</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>因為工作與後端有關連，不免需要操作資料，而這些資料的儲存體就是資料庫。<br>網路上有不同種的SQL，如MySQL、MongoDB、SQL Server、Oracle、PostgreSQL…等等。<br>在未來工作上可能以關聯式資料庫(RDBMS)居多，因此以SQL Server當作練習的修練場。</p>
+<p><strong>在此之前需要下載:</strong></p>
+<ol>
+<li>SQL Server Express:微軟的資料庫，沒有介面。<br><a target="_blank" rel="noopener" href="https://www.microsoft.com/en-us/sql-server/sql-server-downloads">https://www.microsoft.com/en-us/sql-server/sql-server-downloads</a></li>
+<li>SQL Server Management Studio:透過介面式管理SQL Server Express資料庫的工具。(約6G空間)<br><a target="_blank" rel="noopener" href="https://docs.microsoft.com/en-us/sql/ssms/download-sql-server-management-studio-ssms?view=sql-server-ver15">https://docs.microsoft.com/en-us/sql/ssms/download-sql-server-management-studio-ssms?view=sql-server-ver15</a></li>
+</ol>
+<p>下載安裝後:</p>
+<img src="/2021/09/01/sql-server%E5%AE%89%E8%A3%9D/sql%20server%E9%A0%90%E8%A6%BD%E5%9C%96.PNG" class="" title="SQL Server Management Studio">
+
+<h3 id="結語"><a href="#結語" class="headerlink" title="結語"></a>結語</h3><p>這系列預計會從<strong>「資料表建立&gt;SQL語法&gt;進階語法」</strong>這樣前進。</p>
+<p>目標:是練過一輪基礎SQL語法、SQL進階用法、釐清資料表設計的方式。</p>
+<p>基本上會跟這篇鐵人賽參考資料雷同，但是會加一些自己不同的見解XD。<br><a target="_blank" rel="noopener" href="https://ithelp.ithome.com.tw/articles/10219497">https://ithelp.ithome.com.tw/articles/10219497</a></p>
+<p>然後，也會藉由這些主題，逐漸擴充實戰經驗累積的資料。</p>
+<p><strong>參考資料</strong><br><a target="_blank" rel="noopener" href="https://ithelp.ithome.com.tw/articles/10219497">https://ithelp.ithome.com.tw/articles/10219497</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://yuhsiang237.github.io/2021/09/01/sql-server%E5%AE%89%E8%A3%9D/" data-id="cl0g433pc004jtwgh2umx56ad" data-title="[Day1] SQL Server 安裝 - SQL Server資料庫入門" class="article-share-link">Teilen</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-C-亂數" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2021/08/30/C-%E4%BA%82%E6%95%B8/" class="article-date">
+  <time class="dt-published" datetime="2021-08-30T12:53:06.000Z" itemprop="datePublished">2021-08-30</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Code/">Code</a>►<a class="article-category-link" href="/categories/Code/C/">C#</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2021/08/30/C-%E4%BA%82%E6%95%B8/">C#亂數</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>亂數(Random)是在程式語言中常見的內建類別。<br>如陣列洗牌、模擬骰子等等都會常用到，所以就來寫一下他的用法。</p>
+<h3 id="Random"><a href="#Random" class="headerlink" title="Random"></a>Random</h3><p>1.Next用法<br>32 位元帶正負號的整數大於或等於 0，並且小於 MaxValue。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">using System;</span><br><span class="line"></span><br><span class="line">public class Program</span><br><span class="line">&#123;</span><br><span class="line">	public static void Main()</span><br><span class="line">	&#123;</span><br><span class="line">		Random r = new Random(); //宣告亂數種子</span><br><span class="line">		int result = r.Next(1,7); // 可能回傳1~6的整數數字，因為Next第二個參數是小於，以此例為小於7</span><br><span class="line">		Console.WriteLine(result); // 可能回傳1~6的整數數字</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>輸出結果</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">2</span><br></pre></td></tr></table></figure>
+
+<p>2.Random洗亂陣列<br>以array長度洗牌，隨意骰出符合陣列的兩個index，比較是否相同，不相同就將其交換。<br>最後得到一個洗牌後陣列。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">using System;</span><br><span class="line"></span><br><span class="line">public class Program</span><br><span class="line">&#123;</span><br><span class="line">	public static void Main()</span><br><span class="line">	&#123;</span><br><span class="line">		Random r = new Random(); //宣告亂數種子	</span><br><span class="line">		</span><br><span class="line">		int [] array = new int[5]&#123;1,2,3,4,5&#125;; // 宣告陣列並初始化</span><br><span class="line">		</span><br><span class="line">		for(int i=0;i&lt;array.Length;i++)&#123;</span><br><span class="line">			int index1 = r.Next(0,array.Length); </span><br><span class="line">			int index2 = r.Next(0,array.Length); </span><br><span class="line">			if(index1 != index2)&#123; // 交換陣列內容</span><br><span class="line">				int temp = array[index1];</span><br><span class="line">				array[index1] = array[index2];</span><br><span class="line">				array[index2] = temp;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">		Console.WriteLine(&quot;陣列洗牌後結果:&quot;);</span><br><span class="line">		foreach(int item in array)&#123;</span><br><span class="line">			Console.WriteLine(item);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>輸出結果</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">陣列洗牌後結果:</span><br><span class="line">2</span><br><span class="line">4</span><br><span class="line">1</span><br><span class="line">3</span><br><span class="line">5</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://yuhsiang237.github.io/2021/08/30/C-%E4%BA%82%E6%95%B8/" data-id="cl0g433oo001rtwgh31exc7rx" data-title="C#亂數" class="article-share-link">Teilen</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-Queue與Stack操作" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2021/08/30/Queue%E8%88%87Stack%E6%93%8D%E4%BD%9C/" class="article-date">
+  <time class="dt-published" datetime="2021-08-30T12:11:10.000Z" itemprop="datePublished">2021-08-30</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Code/">Code</a>►<a class="article-category-link" href="/categories/Code/C/">C#</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2021/08/30/Queue%E8%88%87Stack%E6%93%8D%E4%BD%9C/">C# Queue與Stack操作</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>為了熟悉C#處理資料的方式，所以找了兩種比較常見的資料結構來練習。<br>分別是Queue(佇列)、Stack(堆疊)。</p>
+<h3 id="Queue"><a href="#Queue" class="headerlink" title="Queue"></a>Queue</h3><p>先進先出</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">using System;</span><br><span class="line">using System.Collections;</span><br><span class="line"></span><br><span class="line">public class Program</span><br><span class="line">&#123;</span><br><span class="line">	public static void Main()</span><br><span class="line">	&#123;</span><br><span class="line">		Queue q = new Queue();</span><br><span class="line">		q.Enqueue(&quot;hello&quot;); // 向 Queue 的末尾新增一個物件。</span><br><span class="line">		q.Enqueue(32);</span><br><span class="line">		q.Enqueue(5);</span><br><span class="line">		q.Enqueue(&#x27;N&#x27;);</span><br><span class="line">		</span><br><span class="line">		Console.WriteLine(&quot;印出Queue的內容:&quot;);</span><br><span class="line">		foreach(var item in q)&#123;</span><br><span class="line">			Console.WriteLine(item);</span><br><span class="line">		&#125;</span><br><span class="line">		</span><br><span class="line">		Console.WriteLine(&quot;取出一個資料:&quot;);</span><br><span class="line">		var result = q.Dequeue(); // 從 Queue 的前端取出一個資料</span><br><span class="line">		Console.WriteLine(result);</span><br><span class="line">        </span><br><span class="line">		Console.WriteLine(&quot;轉成陣列印出:&quot;);</span><br><span class="line">		var array = q.ToArray();</span><br><span class="line">		foreach(var item in array)&#123;</span><br><span class="line">			Console.WriteLine(item);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>輸出:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">印出Queue的內容:</span><br><span class="line">hello</span><br><span class="line">32</span><br><span class="line">5</span><br><span class="line">N</span><br><span class="line">取出一個資料:</span><br><span class="line">hello</span><br><span class="line">轉成陣列印出:</span><br><span class="line">32</span><br><span class="line">5</span><br><span class="line">N</span><br></pre></td></tr></table></figure>
+
+<h3 id="Stack"><a href="#Stack" class="headerlink" title="Stack"></a>Stack</h3><p>先進後出</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">using System;</span><br><span class="line">using System.Collections;</span><br><span class="line"></span><br><span class="line">public class Program</span><br><span class="line">&#123;</span><br><span class="line">	public static void Main()</span><br><span class="line">	&#123;</span><br><span class="line">		Stack s = new Stack();</span><br><span class="line">		s.Push(&quot;hello&quot;); // 向 Stack 的頂部新增一個物件。</span><br><span class="line">		s.Push(32);</span><br><span class="line">		s.Push(5);</span><br><span class="line">		s.Push(&#x27;N&#x27;);</span><br><span class="line">		</span><br><span class="line">		Console.WriteLine(&quot;印出Stack的內容:&quot;);</span><br><span class="line">		foreach(var item in s)&#123;</span><br><span class="line">			Console.WriteLine(item);</span><br><span class="line">		&#125;</span><br><span class="line">		</span><br><span class="line">		Console.WriteLine(&quot;取出一個資料:&quot;);</span><br><span class="line">		var result = s.Pop(); // 移除並返回在 Stack 的頂部的物件。</span><br><span class="line">		Console.WriteLine(result);</span><br><span class="line">		</span><br><span class="line">		Console.WriteLine(&quot;Peek觀察頂部物件但不移除:&quot;);</span><br><span class="line">		result = s.Peek(); // Peek觀察頂部物件但不移除</span><br><span class="line">		Console.WriteLine(result);</span><br><span class="line">		</span><br><span class="line">		Console.WriteLine(&quot;轉成陣列印出:&quot;);</span><br><span class="line">		var array = s.ToArray();</span><br><span class="line">		foreach(var item in array)&#123;</span><br><span class="line">			Console.WriteLine(item);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>輸出:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">印出Stack的內容:</span><br><span class="line">N</span><br><span class="line">5</span><br><span class="line">32</span><br><span class="line">hello</span><br><span class="line">取出一個資料:</span><br><span class="line">N</span><br><span class="line">Peek觀察頂部物件但不移除:</span><br><span class="line">5</span><br><span class="line">轉成陣列印出:</span><br><span class="line">5</span><br><span class="line">32</span><br><span class="line">hello</span><br></pre></td></tr></table></figure>
+
+<h3 id="結語"><a href="#結語" class="headerlink" title="結語"></a>結語</h3><p>C#除了已經內置了基礎的佇列(Queue)、堆疊(Stack)，還內建了一些簡易的語法。<br>如Contains，可以對整個資料結構去檢查是否存在某個特定元素。亦有toArray()可以快速的把資料結構轉為陣列型態。</p>
+<p><strong>參考資料</strong><br><a target="_blank" rel="noopener" href="https://www.itread01.com/content/1550138429.html?fbclid=IwAR3ty4HR0DlmSWRMl19IFBgESeXM2aH5GsJxxcKHMGdzY6WIJm90brUzsvI">https://www.itread01.com/content/1550138429.html?fbclid=IwAR3ty4HR0DlmSWRMl19IFBgESeXM2aH5GsJxxcKHMGdzY6WIJm90brUzsvI</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://yuhsiang237.github.io/2021/08/30/Queue%E8%88%87Stack%E6%93%8D%E4%BD%9C/" data-id="cl0g433os002atwghf4ixawk8" data-title="C# Queue與Stack操作" class="article-share-link">Teilen</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
     <article id="post-javascript-event-loop機制" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
     <a href="/2021/08/30/javascript-event-loop%E6%A9%9F%E5%88%B6/" class="article-date">
@@ -257,440 +841,11 @@
 
 
   
-    <article id="post-遞迴" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2021/08/29/%E9%81%9E%E8%BF%B4/" class="article-date">
-  <time class="dt-published" datetime="2021-08-28T16:38:37.000Z" itemprop="datePublished">2021-08-29</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/Code/">Code</a>►<a class="article-category-link" href="/categories/Code/C/">C#</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2021/08/29/%E9%81%9E%E8%BF%B4/">C# 遞迴</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <h3 id="遞迴定義"><a href="#遞迴定義" class="headerlink" title="遞迴定義"></a>遞迴定義</h3><ol>
-<li>遞迴（Recursion），是指在函式中使用函式自身的方法。</li>
-<li>遞迴函式必須有終止條件，才能被計算。</li>
-</ol>
-<h3 id="實際演練"><a href="#實際演練" class="headerlink" title="實際演練"></a>實際演練</h3><p>累加，計算1+2+3…+n的遞迴。</p>
-<p><strong>C#程式碼</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">using System;</span><br><span class="line">					</span><br><span class="line">public class Program</span><br><span class="line">&#123;</span><br><span class="line">	public static int accumulate(int n)&#123;</span><br><span class="line">		if(n==1)&#123;</span><br><span class="line">			return 1;</span><br><span class="line">		&#125;else if(n &gt;=2 )&#123;</span><br><span class="line">			return n + accumulate(n-1);</span><br><span class="line">		&#125;</span><br><span class="line">		return 0;</span><br><span class="line">	&#125;</span><br><span class="line">		</span><br><span class="line">	public static void Main()</span><br><span class="line">	&#123;</span><br><span class="line">		Console.WriteLine(&quot;1+2+3..+10=&quot; + accumulate(10)); // 1+2+3..+10=55</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h3 id="結語"><a href="#結語" class="headerlink" title="結語"></a>結語</h3><p>觀察前後項，然後對改變的數字去推出一個數學的關係。以目前這題算直覺，但扯到二元樹遍歷時就要燒些惱了。<br>而這題為什麼最後要寫的return 0; 那是因為C#語法不允許函式沒有回傳值，所以隨意傳個0。</p>
-<p><strong>參考資料</strong><br><a target="_blank" rel="noopener" href="https://www.csie.ntu.edu.tw/~b98902112/cpp_and_algo/cpp02/recursion.html">https://www.csie.ntu.edu.tw/~b98902112/cpp_and_algo/cpp02/recursion.html</a></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://yuhsiang237.github.io/2021/08/29/%E9%81%9E%E8%BF%B4/" data-id="cl0g433pq005qtwgh2oxm0d7u" data-title="C# 遞迴" class="article-share-link">Teilen</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-sql-basic" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2021/08/28/sql-basic/" class="article-date">
-  <time class="dt-published" datetime="2021-08-28T07:42:42.000Z" itemprop="datePublished">2021-08-28</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/Database/">Database</a>►<a class="article-category-link" href="/categories/Database/SQL-Server/">SQL Server</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2021/08/28/sql-basic/">SQL基礎操作語法(select、insert、update、delete)</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p>記得大學時常常寫SQL，所以語法很熟悉。<br>但先前工作是前端變成很少接觸這塊，幾乎快2年沒碰，現在就盡可能的把我學的記錄下來。<br>而更早之前則是使用ORM，之後就超級少遇到了，被ORM慣壞了。</p>
-<p>這篇先從基礎開始。</p>
-<p>查詢，對Table01裡的所有欄位進行搜尋<br>*表示所有欄位</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select * from Table01</span><br></pre></td></tr></table></figure>
-
-<p>新增，對table插入一列值</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">insert into Table01 (name,email) values (&#x27;yuhsiang&#x27;,&#x27;test@test.com&#x27;)</span><br></pre></td></tr></table></figure>
-
-<p>修改，對table的欄位去設定數值，並指定id為6的資料去修改</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">update Table01 set name=&#x27;tom&#x27;,email=&#x27;tom@email.com&#x27; where id=&#x27;6&#x27;</span><br></pre></td></tr></table></figure>
-<p>刪除，對指定的資料去刪除</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">delete Table01 where id=&#x27;1&#x27;</span><br></pre></td></tr></table></figure>
-
-<p>可以發現，我們賦予值的資料都有’’，而欄位則沒有。<br>且要修改特定某一筆時，是使用where加上該列的主鍵(PK)去辨識出該列的資料。</p>
-<p><strong>參考資料：</strong><br><a target="_blank" rel="noopener" href="https://dotblogs.com.tw/jackbgova/2014/12/03/147522">https://dotblogs.com.tw/jackbgova/2014/12/03/147522</a></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://yuhsiang237.github.io/2021/08/28/sql-basic/" data-id="cl0g433p2003htwgh8gc66inw" data-title="SQL基礎操作語法(select、insert、update、delete)" class="article-share-link">Teilen</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-javascript-es6-1" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2021/08/24/javascript-es6-1/" class="article-date">
-  <time class="dt-published" datetime="2021-08-24T09:30:22.000Z" itemprop="datePublished">2021-08-24</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/Code/">Code</a>►<a class="article-category-link" href="/categories/Code/Javascript/">Javascript</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2021/08/24/javascript-es6-1/">javascript ES6 整理(上)</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p>陣列、變數、函數。</p>
-<h2 id="1-let-const-變數宣告"><a href="#1-let-const-變數宣告" class="headerlink" title="1. let const 變數宣告"></a>1. let const 變數宣告</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">let  x = 10</span><br><span class="line">&#123;  </span><br><span class="line">  let x = 2</span><br><span class="line">  console.log(x) // 2 </span><br><span class="line">&#125;</span><br><span class="line">console.log(x) // 10</span><br></pre></td></tr></table></figure>
-
-<p>let，有自己的區塊作用域，不會蓋掉底下宣告的變數</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">var x = 10</span><br><span class="line">for(var i=0;i&lt;5;i++)&#123;</span><br><span class="line">   var x = 5</span><br><span class="line">   console.log(x) //5</span><br><span class="line">&#125;</span><br><span class="line">console.log(x) // 5</span><br></pre></td></tr></table></figure>
-<p>var，沒有自己的區塊作用域，會蓋掉底下宣告的變數</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">const x = 10; </span><br></pre></td></tr></table></figure>
-<p>const用來宣告常數不會被改變，不過如果是物件，仍然可以使用提供的方法去改變裡面的數值。</p>
-<p><strong>結論</strong><br>如果沒有必要需求還是用let或const好，因為不會往下覆之後宣告的變數。</p>
-<h2 id="2-arrow-function"><a href="#2-arrow-function" class="headerlink" title="2. arrow function"></a>2. arrow function</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">&lt;button&gt;按鈕&lt;/button&gt;</span><br><span class="line">&lt;script&gt;</span><br><span class="line">// 使用 addEventListener 監聽事件</span><br><span class="line">var button = document.querySelector(&#x27;button&#x27;);</span><br><span class="line">var fn_arrow = () =&gt; &#123;</span><br><span class="line">  // 建立 function 時 this 指向 Window</span><br><span class="line">    console.log(this.constructor.name);  // 執行 function 時 this 指向 Window</span><br><span class="line">&#125;;</span><br><span class="line">var fn = function()&#123;</span><br><span class="line">  // 建立 function 時 this 指向 Window</span><br><span class="line">    console.log(this.constructor.name);  // 執行 function 時 this 指向 HTMLButtonElement</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">button.addEventListener(&#x27;click&#x27;, fn_arrow);</span><br><span class="line">button.addEventListener(&#x27;click&#x27;, fn);</span><br></pre></td></tr></table></figure>
-<p><strong>結論</strong><br>ES6可以簡化ES5的function寫法(匿名函式)等。<br>ES6 arrow function的this都指向Window，是固定的。<br>ES5 this 指向在運作時的作用域中，以上範例就是在button的作用域。<br>看起來如果只是單純callback那ES6箭頭函式會簡潔些，但如果要操作某作用域還是得用ES5寫法。<br>參考:<a target="_blank" rel="noopener" href="https://ithelp.ithome.com.tw/articles/10195669">https://ithelp.ithome.com.tw/articles/10195669</a><br>(*未完還有this問題待補)</p>
-<h2 id="3-陣列操作"><a href="#3-陣列操作" class="headerlink" title="3. 陣列操作"></a>3. 陣列操作</h2><p><strong>forEach</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">const array = [</span><br><span class="line">  1,2,3,4,5</span><br><span class="line">];</span><br><span class="line"></span><br><span class="line">array.forEach((item,index) =&gt; console.log(index,item));</span><br></pre></td></tr></table></figure>
-<p>遍歷元素使用，基本上可以取代掉for。但在裡面async/await不能生效，要用for。<br>此外，不會回傳任何值。<br>參考:<br><a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/37576685/using-async-await-with-a-foreach-loop">https://stackoverflow.com/questions/37576685/using-async-await-with-a-foreach-loop</a></p>
-<p><strong>map</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">const array1 = [1, 2, 3 ,4];</span><br><span class="line">const array2 = array1.map(item =&gt; item*2);</span><br><span class="line">console.log(array1) // [ 1, 2, 3, 4 ]</span><br><span class="line">console.log(array2) //  [ 2, 4, 6, 8 ]</span><br></pre></td></tr></table></figure>
-<p>會透過函式內所回傳的值組合成一個新的陣列<br>並不會改變原陣列</p>
-<p><strong>reduce</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">const array1 = [1, 2, 3, 4];</span><br><span class="line">const reducer = (accumulator, currentValue) =&gt; accumulator + currentValue;</span><br><span class="line"></span><br><span class="line">// 1 + 2 + 3 + 4</span><br><span class="line">console.log(array1.reduce(reducer));</span><br><span class="line">// output: 10</span><br><span class="line"></span><br><span class="line">// 5 + 1 + 2 + 3 + 4</span><br><span class="line">console.log(array1.reduce(reducer, 5));</span><br><span class="line">// output: 15</span><br></pre></td></tr></table></figure>
-<p>累加器，通常是要把所有陣列內容加起來才會用到，將陣列化為單一值。</p>
-<p>參考:<br><a target="_blank" rel="noopener" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/Reduce">https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/Reduce</a></p>
-<p><strong>from</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">const myArr = Array.from(&quot;ABCDEFG&quot;);</span><br><span class="line">console.log(myArr)  // 拆數組[ &quot;A&quot;, &quot;B&quot;, &quot;C&quot;, &quot;D&quot;, &quot;E&quot;, &quot;F&quot;, &quot;G&quot; ]</span><br></pre></td></tr></table></figure>
-<p>幾乎很少用到，可將字串拆成字組。而在IE上無法運行此函式。</p>
-<p><strong>find</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">const numbers = [4, 9, 16, 25, 29];</span><br><span class="line">const target = numbers.find(item=&gt;item === 4);</span><br><span class="line">console.log(target)</span><br></pre></td></tr></table></figure>
-<p>通常在找陣列中的某元素(物件)會用到，返回是單一的元素。</p>
-<p><strong>keys</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">const fruits = [&quot;Banana&quot;, &quot;Orange&quot;, &quot;Apple&quot;, &quot;Mango&quot;];</span><br><span class="line">const keys = fruits.keys();</span><br><span class="line"></span><br><span class="line">let text = &quot;&quot;;</span><br><span class="line">for (let x of keys) &#123;</span><br><span class="line">  console.log(x)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">//0 1 2 3</span><br></pre></td></tr></table></figure>
-<p>取得陣列所有index</p>
-<p><strong>findIndex</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">const numbers = [4, 9, 16, 25, 29];</span><br><span class="line">const targetIndex = numbers.findIndex((value, index)=&gt;value &gt; 9);</span><br><span class="line">console.log(targetIndex) // 2 (即數字16陣列位置)</span><br></pre></td></tr></table></figure>
-<p>返回第一個符合條件的陣列index。</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://yuhsiang237.github.io/2021/08/24/javascript-es6-1/" data-id="cl0g433p00037twgh9cpt2kfb" data-title="javascript ES6 整理(上)" class="article-share-link">Teilen</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-linked-list" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2021/08/24/linked-list/" class="article-date">
-  <time class="dt-published" datetime="2021-08-24T03:15:05.000Z" itemprop="datePublished">2021-08-24</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/Computer-Science/">Computer Science</a>►<a class="article-category-link" href="/categories/Computer-Science/Data-structure/">Data structure</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2021/08/24/linked-list/">單向鏈結串列(Singly linked list)</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p><strong>整理</strong></p>
-<img src="/2021/08/24/linked-list/Singly-linked-list.svg.png" class="" title="單向鏈結串列">
-
-<p><strong><center>單向鏈結串列(Singly linked list)示意圖</center></strong></p>
-<p><strong>每一個節點內含</strong><br>next  // 儲存下一個的節點<br>val // 數值</p>
-<p>如果該節點next為null代表已經沒有下個節點串接。</p>
-<p>如上圖範例:<br>數值為12節點的下個節點(next)，接數值為99節點<br>數值為99節點的下個節點(next)，接數值為37節點<br>而數值37節點的下個節點(next)，表示沒有結點串接為null</p>
-<p><strong>Big-O</strong><br>search    搜尋    O(N)</p>
-<p><strong>特點</strong><br>只能做循序存取 (Sequential access)</p>
-<p><strong>C#程式碼</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">using System;</span><br><span class="line"></span><br><span class="line">//節點</span><br><span class="line">public class LinkNode</span><br><span class="line">&#123;</span><br><span class="line">   public int val;</span><br><span class="line">   public LinkNode next;</span><br><span class="line">   public LinkNode(int val,LinkNode next)&#123;</span><br><span class="line">	   this.val = val;</span><br><span class="line">	   this.next = next;</span><br><span class="line">   &#125;</span><br><span class="line">   public LinkNode(int val)&#123;</span><br><span class="line">	   this.val = val;</span><br><span class="line">	   this.next = null;</span><br><span class="line">   &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">public class Program</span><br><span class="line">&#123;</span><br><span class="line">	// SingleLinkList 串接節點</span><br><span class="line">	public static void Main()</span><br><span class="line">	&#123;</span><br><span class="line">	</span><br><span class="line">		LinkNode node1 = new LinkNode(12); </span><br><span class="line">		LinkNode node2 = new LinkNode(99); </span><br><span class="line">		LinkNode node3 = new LinkNode(37); </span><br><span class="line">		</span><br><span class="line">		node1.next = node2; // 綁定node1的尾端接node2</span><br><span class="line">		node2.next = node3; // 綁定node2的尾端接node3</span><br><span class="line">		</span><br><span class="line">	</span><br><span class="line">		Console.WriteLine(&quot;手動印出節點:&quot;);</span><br><span class="line">		Console.WriteLine(node1.val); // 節點1</span><br><span class="line">		Console.WriteLine(node1.next.val);// 節點2 (節點1的下1個元素)</span><br><span class="line">		Console.WriteLine(node1.next.next.val);// 節點3 (節點1的下2個元素)</span><br><span class="line">		if(node1.next.next.next == null)&#123; //節點4，尾端沒串接任何資料為null</span><br><span class="line">			Console.WriteLine(&quot;null&quot;);</span><br><span class="line">		&#125;</span><br><span class="line">		</span><br><span class="line">		Console.WriteLine(&quot;遍歷節點:&quot;);</span><br><span class="line">		LinkNode currentNode = node1;</span><br><span class="line">		while(currentNode != null)&#123; // null表示為末端</span><br><span class="line">			Console.WriteLine(currentNode.val);</span><br><span class="line">			// 將當前節點指到下個節點</span><br><span class="line">			currentNode = currentNode.next;</span><br><span class="line">		&#125;</span><br><span class="line">		</span><br><span class="line">		Console.WriteLine(&quot;在節點1末端添加一個數值38的節點:&quot;);</span><br><span class="line">		</span><br><span class="line">		LinkNode cursor = node1; </span><br><span class="line">		LinkNode newNode = new LinkNode(38);</span><br><span class="line">		</span><br><span class="line">		// 添加節點在最後面</span><br><span class="line">		while(true)&#123;</span><br><span class="line">			if(cursor.next == null)&#123; </span><br><span class="line">				cursor.next = newNode; // 找到最尾端把null指派成新節點38</span><br><span class="line">				break;</span><br><span class="line">			&#125;else&#123;</span><br><span class="line">				cursor = cursor.next; //不斷往下找節點</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">		</span><br><span class="line">		Console.WriteLine(node1.next.next.next.val); //Q1:可取得38，這邊其實我有些不懂，是new參考的關係嗎，為什麼能夠改到node1?</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p><strong>結果:</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">手動印出節點:</span><br><span class="line">12</span><br><span class="line">99</span><br><span class="line">37</span><br><span class="line">null</span><br><span class="line">遍歷節點:</span><br><span class="line">12</span><br><span class="line">99</span><br><span class="line">37</span><br><span class="line">在節點1末端添加一個數值38的節點:</span><br><span class="line">38</span><br></pre></td></tr></table></figure>
-
-<p>目前有標記的Q1是現在不懂的地方，是new參考的關係嗎，為什麼能夠改到node1的值?<br>按照這篇來說，他指出C#只有call by value、call by address。<br><a target="_blank" rel="noopener" href="https://dotblogs.com.tw/daniel/2018/02/26/150443">https://dotblogs.com.tw/daniel/2018/02/26/150443</a></p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">在C#廣義來說</span><br><span class="line">基本型別 Struct (int,double,float,byte ...)  可看作 傳值</span><br><span class="line">一般型別 Class (自訂Class ,SqlConnectio....)  可看作 傳址  更精確來說是傳Stack的值(指向Heap的記憶體位置)</span><br></pre></td></tr></table></figure>
-
-<p>沒傳參考，只有傳值和傳址，所以Q1可能是因為把node1當時的記憶體位置指派給cursor，所以就代表著node1的位置。<br>而直到最後終端null時，在把new出來的節點38的位址接上去。<br>把記憶體位置傳到另一個記憶體位置的值上</p>
-<p><strong>參考資料</strong><br><a target="_blank" rel="noopener" href="https://kopu.chat/2017/06/02/c-%e8%aa%9e%e8%a8%80%ef%bc%9a%e9%8f%88%e7%b5%90%e4%b8%b2%e5%88%97linked-list%e7%9a%84%e5%bb%ba%e7%ab%8b%e8%88%87%e5%88%aa%e9%99%a4/">https://kopu.chat/2017/06/02/c-%e8%aa%9e%e8%a8%80%ef%bc%9a%e9%8f%88%e7%b5%90%e4%b8%b2%e5%88%97linked-list%e7%9a%84%e5%bb%ba%e7%ab%8b%e8%88%87%e5%88%aa%e9%99%a4/</a><br><a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Linked_list">https://en.wikipedia.org/wiki/Linked_list</a><br><a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E9%93%BE%E8%A1%A8">https://zh.wikipedia.org/wiki/%E9%93%BE%E8%A1%A8</a></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://yuhsiang237.github.io/2021/08/24/linked-list/" data-id="cl0g433p1003ftwghe66r6e9w" data-title="單向鏈結串列(Singly linked list)" class="article-share-link">Teilen</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-add-two-number" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2021/08/24/add-two-number/" class="article-date">
-  <time class="dt-published" datetime="2021-08-23T20:09:34.000Z" itemprop="datePublished">2021-08-24</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/Code/">Code</a>►<a class="article-category-link" href="/categories/Code/C/">C#</a>►<a class="article-category-link" href="/categories/Topic/">Topic</a>►<a class="article-category-link" href="/categories/Topic/LeetCode/">LeetCode</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2021/08/24/add-two-number/">LeetCode - 2. add-two-number</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p>You are given two non-empty linked lists representing two non-negative integers. The digits are stored in reverse order, and each of their nodes contains a single digit. Add the two numbers and return the sum as a linked list.</p>
-<p>You may assume the two numbers do not contain any leading zero, except the number 0 itself.</p>
-<p>Example 1:</p>
-<img src="/2021/08/24/add-two-number/addtwonumber1.jpg" class="" title="題目">
-
-<p>Input: l1 = [2,4,3], l2 = [5,6,4]<br>Output: [7,0,8]<br>Explanation: 342 + 465 = 807.</p>
-<p>Example 2:</p>
-<p>Input: l1 = [0], l2 = [0]<br>Output: [0]</p>
-<p>Example 3:</p>
-<p>Input: l1 = [9,9,9,9,9,9,9], l2 = [9,9,9,9]<br>Output: [8,9,9,9,0,0,0,1]</p>
-<p>Constraints:</p>
-<pre><code>The number of nodes in each linked list is in the range [1, 100].
-0 &lt;= Node.val &lt;= 9
-It is guaranteed that the list represents a number that does not have leading zeros.
-</code></pre>
-<p><strong>C#解答1</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line"> * Definition for singly-linked list.</span><br><span class="line"> * public class ListNode &#123;</span><br><span class="line"> *     public int val;</span><br><span class="line"> *     public ListNode next;</span><br><span class="line"> *     public ListNode(int val=0, ListNode next=null) &#123;</span><br><span class="line"> *         this.val = val;</span><br><span class="line"> *         this.next = next;</span><br><span class="line"> *     &#125;</span><br><span class="line"> * &#125;</span><br><span class="line"> */</span><br><span class="line"></span><br><span class="line">public class Solution &#123;</span><br><span class="line">  </span><br><span class="line">    public ListNode AddTwoNumbers(ListNode l1, ListNode l2) &#123;</span><br><span class="line">        ListNode currentL1=l1,currentL2=l2;</span><br><span class="line">        ListNode resultListNode = new ListNode();</span><br><span class="line">        ListNode resultList = resultListNode; // 為什麼可以儲存?</span><br><span class="line">        Boolean isAddOne = false;</span><br><span class="line">        while(true)&#123;</span><br><span class="line">            int sum = 0;</span><br><span class="line">            if(currentL1!= null)&#123;</span><br><span class="line">                sum +=  currentL1.val;</span><br><span class="line">                currentL1 = currentL1.next;</span><br><span class="line">            &#125;</span><br><span class="line">            if(currentL2!= null)&#123;</span><br><span class="line">              sum +=  currentL2.val;</span><br><span class="line">              currentL2 = currentL2.next;</span><br><span class="line">            &#125;</span><br><span class="line">            </span><br><span class="line">            if(isAddOne)&#123;</span><br><span class="line">                sum+=1;</span><br><span class="line">            &#125;</span><br><span class="line">            </span><br><span class="line">            if(sum &gt;= 10)&#123;</span><br><span class="line">                isAddOne = true;</span><br><span class="line">                sum = sum%10; </span><br><span class="line">            &#125;else&#123;</span><br><span class="line">                isAddOne = false;</span><br><span class="line">            &#125;</span><br><span class="line">            </span><br><span class="line">            resultListNode.next = new ListNode(sum); </span><br><span class="line">            resultListNode = resultListNode.next; // ?? 因C#傳址可影響到原本的resultList</span><br><span class="line">            </span><br><span class="line">            if(currentL1 == null &amp;&amp; currentL2 == null &amp;&amp; isAddOne == false)&#123;</span><br><span class="line">                break;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        return resultList.next;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>Runtime: 96 ms, faster than 97.02% of C# online submissions for Add Two Numbers.<br>Memory Usage: 28.2 MB, less than 82.24% of C# online submissions for Add Two Numbers.</p>
-<p><strong>思路</strong><br>&nbsp;&nbsp;這題是中級題目，但對我來說其實已經蠻吃力了，在進位出807這段其實很容易，但後面那段linknode塞進去時卡很久(註解那部分)，最後還是上網查了一下，資料結構真的要熟悉，以及”抽象”思考的方式，目前就是要拿筆整理，腦中還是很難構造出。<br>後記補充:<br>第18、43行是參考，當作一個cursor來遍歷。</p>
-<p><strong>參考</strong><br>LeetCode 2. Add Two Numbers<br><a target="_blank" rel="noopener" href="https://skyyen999.gitbooks.io/-leetcode-with-javascript/content/questions/2md.html">https://skyyen999.gitbooks.io/-leetcode-with-javascript/content/questions/2md.html</a><br><a target="_blank" rel="noopener" href="https://dotblogs.com.tw/daniel/2018/02/26/150443">https://dotblogs.com.tw/daniel/2018/02/26/150443</a></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://yuhsiang237.github.io/2021/08/24/add-two-number/" data-id="cl0g433ox002utwgh10w86e20" data-title="LeetCode - 2. add-two-number" class="article-share-link">Teilen</a>
-      
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/C/" rel="tag">C#</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/LeetCode/" rel="tag">LeetCode</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E8%A7%A3%E9%A1%8C/" rel="tag">解題</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-sum" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2021/08/23/sum/" class="article-date">
-  <time class="dt-published" datetime="2021-08-23T13:48:10.000Z" itemprop="datePublished">2021-08-23</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/Code/">Code</a>►<a class="article-category-link" href="/categories/Code/C/">C#</a>►<a class="article-category-link" href="/categories/Code/Javascript/">Javascript</a>►<a class="article-category-link" href="/categories/Topic/">Topic</a>►<a class="article-category-link" href="/categories/Topic/LeetCode/">LeetCode</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2021/08/23/sum/">LeetCode - 1. Two Sum</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p>Given an array of integers nums and an integer target, return indices of the two numbers such that they add up to target.</p>
-<p>You may assume that each input would have exactly one solution, and you may not use the same element twice.</p>
-<p>You can return the answer in any order.</p>
-<p>Example 1:</p>
-<p>Input: nums = [2,7,11,15], target = 9<br>Output: [0,1]<br>Output: Because nums[0] + nums[1] == 9, we return [0, 1].</p>
-<p>Example 2:</p>
-<p>Input: nums = [3,2,4], target = 6<br>Output: [1,2]</p>
-<p>Example 3:</p>
-<p>Input: nums = [3,3], target = 6<br>Output: [0,1]</p>
-<p>Constraints:</p>
-<pre><code>2 &lt;= nums.length &lt;= 104
--109 &lt;= nums[i] &lt;= 109
--109 &lt;= target &lt;= 109
-Only one valid answer exists.
-</code></pre>
-<p>Follow-up: Can you come up with an algorithm that is less than O(n^2) time complexity?</p>
-<p><strong>C#解答1</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">public class Solution &#123;</span><br><span class="line">    public int[] TwoSum(int[] nums, int target) &#123;</span><br><span class="line">        for (int i = 0; i &lt; nums.Length - 1 ; i++)</span><br><span class="line">        &#123;</span><br><span class="line">            for(int j=i+1;j &lt; nums.Length;j++)&#123;</span><br><span class="line">                if(nums[i]+nums[j] == target)&#123;</span><br><span class="line">                     return new int[] &#123; i,j &#125;;</span><br><span class="line">               &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        return new int[]&#123;&#125;;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>Runtime: 316 ms, faster than 51.22% of C# online submissions for Two Sum.<br>Memory Usage: 32.1 MB, less than 96.22% of C# online submissions for Two Sum.</p>
-<p><strong>javascript解答1</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line"> * @param &#123;number[]&#125; nums</span><br><span class="line"> * @param &#123;number&#125; target</span><br><span class="line"> * @return &#123;number[]&#125;</span><br><span class="line"> */</span><br><span class="line">var twoSum = function(nums, target) &#123;</span><br><span class="line">      for (let i = 0; i &lt; nums.length - 1 ; i++)</span><br><span class="line">        &#123;</span><br><span class="line">            for(let j=i+1;j &lt; nums.length;j++)&#123;</span><br><span class="line">                if(nums[i]+nums[j] === target)&#123;</span><br><span class="line">                     return [i,j];</span><br><span class="line">               &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        return [];</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<p>Runtime: 116 ms, faster than 35.30% of JavaScript online submissions for Two Sum.<br>Memory Usage: 39.2 MB, less than 93.93% of JavaScript online submissions for Two Sum.</p>
-<p><strong>思路</strong><br>目前解法1是用兩個for迴圈，時間複雜度O(n^2)。<br>如果有問題歡迎指證!@@</p>
-<p><strong>延伸閱讀</strong><br><a target="_blank" rel="noopener" href="https://ithelp.ithome.com.tw/articles/10203082">[演算法]如何衡量程式的效率？——論時間複雜度（Time Complexity）</a></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://yuhsiang237.github.io/2021/08/23/sum/" data-id="cl0g433pg004ptwgh2lxueu0c" data-title="LeetCode - 1. Two Sum" class="article-share-link">Teilen</a>
-      
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/C/" rel="tag">C#</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/" rel="tag">JavaScript</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/LeetCode/" rel="tag">LeetCode</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E8%A7%A3%E9%A1%8C/" rel="tag">解題</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-change" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2021/08/23/change/" class="article-date">
-  <time class="dt-published" datetime="2021-08-23T12:23:09.000Z" itemprop="datePublished">2021-08-23</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/Daily-Log/">Daily Log</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2021/08/23/change/">決定未來走的方向</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p>決定未來走的方向了。</p>
-<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>目前有正職2年軟體工程師經驗，之後SOHO接了大學同學案子以及維護到現在，但疫情原因加上案源不穩下，覺得勢必要重回職場。工作到現在這段期間也學到不少事，覺得該給自己訂下一條路了－－<strong>Web Developer</strong> 這條路，並以後端為主去延伸。</p>
-<h2 id="這是個好決定嗎"><a href="#這是個好決定嗎" class="headerlink" title="這是個好決定嗎?"></a>這是個好決定嗎?</h2><p>以目前來講，前端、後端部分已有產出的經驗，所以目標開始走向後端、架構為重的開發。我不能說是最好的決定，但在摸熟了前端的大致內容，覺得在快速的變遷下還是有必要走到後端。以往後端都是偏向用laravel(因為當時微軟還沒開始開源)，而現在走微軟.net core，將會是以C#為主要開發語言，以現在來說有相對完整的學習地圖，而C#也是我2015年接觸過的語言，前公司亦是用C#，所以要精進也比較容易些。</p>
-<p>然後，下面是在工作期間曾經處理過、實際參與過的，API串接、切版、業務邏輯、設計規劃討論，前端的畫面、業務邏輯，期間使用RESTful API，後端經驗就是API、BUG修正等等。</p>
-<p><strong>目前完成且有實際上線的作品：</strong></p>
-<p>1.ERP形象頁<br><a target="_blank" rel="noopener" href="https://www.linkchain.tw/erp/">https://www.linkchain.tw/erp/</a><br>2.豬場e把抓<br><a target="_blank" rel="noopener" href="https://pigepm.coa.gov.tw/">https://pigepm.coa.gov.tw/</a><br>3.農業易遊網<br><a target="_blank" rel="noopener" href="https://ezgo.coa.gov.tw/">https://ezgo.coa.gov.tw/</a><br>4.田邊好幫手<br><a target="_blank" rel="noopener" href="https://m.coa.gov.tw/">https://m.coa.gov.tw/</a><br>5.農產品生產追溯<br><a target="_blank" rel="noopener" href="https://qrc.afa.gov.tw/">https://qrc.afa.gov.tw/</a></p>
-<h2 id="結論"><a href="#結論" class="headerlink" title="結論"></a>結論</h2><p>以目前來說，就是製作一個涵蓋前、後端加上自己經驗的作品，然後一個月後再去面試。不知道結果會如何，不過是目前比較踏實的路了。現在25歲，還來得及，怕的是遲遲做不下結論。</p>
-<img src="/2021/08/23/change/img.png" class="" title="鋼之鍊金術師的一句話">
-<p>最後，引用鋼之鍊金術師的一段話：<strong>「人沒有犧牲就什麼都得不到，為了得到什麼東西，就需要付出同等的代價。」</strong><br>我已經決定了，就走下去。</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://yuhsiang237.github.io/2021/08/23/change/" data-id="cl0g433oz0030twgh7m9mdu5d" data-title="決定未來走的方向" class="article-share-link">Teilen</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
 
 
   <nav id="page-nav">
     
-    <a class="extend prev" rel="prev" href="/page/10/">&laquo; zurück</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/9/">9</a><a class="page-number" href="/page/10/">10</a><span class="page-number current">11</span>
+    <a class="extend prev" rel="prev" href="/page/10/">&laquo; zurück</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/9/">9</a><a class="page-number" href="/page/10/">10</a><span class="page-number current">11</span><a class="page-number" href="/page/12/">12</a><a class="extend next" rel="next" href="/page/12/">weiter &raquo;</a>
   </nav>
 
 </section>
@@ -701,7 +856,7 @@ Only one valid answer exists.
   <div class="widget-wrap">
     <h3 class="widget-title">Kategorien</h3>
     <div class="widget">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Code/">Code</a><span class="category-list-count">51</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Code/C/">C#</a><span class="category-list-count">47</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Code/Javascript/">Javascript</a><span class="category-list-count">5</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/">Computer Science</a><span class="category-list-count">5</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/Algorithm/">Algorithm</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/Data-structure/">Data structure</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/%E9%9B%BB%E5%AD%90%E9%9B%BB%E8%B7%AF/">電子電路</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Daily-Log/">Daily Log</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/">Database</a><span class="category-list-count">46</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Database/PostgreSQL/">PostgreSQL</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/SQL-Server/">SQL Server</a><span class="category-list-count">38</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/">Framework</a><span class="category-list-count">27</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/AspNetCore-API/">AspNetCore API</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/AspNetCore-MVC/">AspNetCore MVC</a><span class="category-list-count">21</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/">Topic</a><span class="category-list-count">63</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2021-C-AspNetCore%E9%90%B5%E4%BA%BA%E8%B3%BD/">2021 C# AspNetCore鐵人賽</a><span class="category-list-count">30</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2021-SQL-Server%E9%90%B5%E4%BA%BA%E8%B3%BD/">2021 SQL Server鐵人賽</a><span class="category-list-count">30</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/LeetCode/">LeetCode</a><span class="category-list-count">3</span></li></ul></li></ul>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Code/">Code</a><span class="category-list-count">58</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Code/C/">C#</a><span class="category-list-count">54</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Code/Javascript/">Javascript</a><span class="category-list-count">5</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/">Computer Science</a><span class="category-list-count">5</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/Algorithm/">Algorithm</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/Data-structure/">Data structure</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/%E9%9B%BB%E5%AD%90%E9%9B%BB%E8%B7%AF/">電子電路</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Daily-Log/">Daily Log</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/">Database</a><span class="category-list-count">46</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Database/PostgreSQL/">PostgreSQL</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/SQL-Server/">SQL Server</a><span class="category-list-count">38</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/">Framework</a><span class="category-list-count">27</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/AspNetCore-API/">AspNetCore API</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/AspNetCore-MVC/">AspNetCore MVC</a><span class="category-list-count">21</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/">Topic</a><span class="category-list-count">69</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2021-C-AspNetCore%E9%90%B5%E4%BA%BA%E8%B3%BD/">2021 C# AspNetCore鐵人賽</a><span class="category-list-count">30</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2021-SQL-Server%E9%90%B5%E4%BA%BA%E8%B3%BD/">2021 SQL Server鐵人賽</a><span class="category-list-count">30</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2022-C-%E5%9F%B7%E8%A1%8C%E7%B7%92%E5%90%8C%E6%AD%A5%E7%95%B0%E6%AD%A5%E7%B7%A8%E7%A8%8B%E8%A8%98/">2022 C# 執行緒同步異步編程記</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/LeetCode/">LeetCode</a><span class="category-list-count">3</span></li></ul></li></ul>
     </div>
   </div>
 
@@ -711,7 +866,7 @@ Only one valid answer exists.
   <div class="widget-wrap">
     <h3 class="widget-title">Archiv</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/03/">三月 2022</a><span class="archive-list-count">11</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/02/">二月 2022</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/01/">一月 2022</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">十二月 2021</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">十月 2021</a><span class="archive-list-count">24</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">九月 2021</a><span class="archive-list-count">46</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">八月 2021</a><span class="archive-list-count">12</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/04/">四月 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/03/">三月 2022</a><span class="archive-list-count">17</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/02/">二月 2022</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/01/">一月 2022</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">十二月 2021</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">十月 2021</a><span class="archive-list-count">24</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">九月 2021</a><span class="archive-list-count">46</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">八月 2021</a><span class="archive-list-count">12</span></li></ul>
     </div>
   </div>
 
