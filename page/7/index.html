@@ -77,6 +77,189 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-C-MVC-Model與資料庫連結" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2021/10/02/C-MVC-Model%E8%88%87%E8%B3%87%E6%96%99%E5%BA%AB%E9%80%A3%E7%B5%90/" class="article-date">
+  <time class="dt-published" datetime="2021-10-02T04:00:51.000Z" itemprop="datePublished">2021-10-02</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Code/">Code</a>►<a class="article-category-link" href="/categories/Code/C/">C#</a>►<a class="article-category-link" href="/categories/Framework/">Framework</a>►<a class="article-category-link" href="/categories/Framework/AspNetCore-MVC/">AspNetCore MVC</a>►<a class="article-category-link" href="/categories/Topic/">Topic</a>►<a class="article-category-link" href="/categories/Topic/2021-C-AspNetCore%E9%90%B5%E4%BA%BA%E8%B3%BD/">2021 C# AspNetCore鐵人賽</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2021/10/02/C-MVC-Model%E8%88%87%E8%B3%87%E6%96%99%E5%BA%AB%E9%80%A3%E7%B5%90/">[Day7] C# MVC Model模型連結資料庫，使用Entity Framework - C#&amp;AspNetCore</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>在上回 <a href="/2021/10/01/C-MVC-Model%E6%A8%A1%E5%9E%8B%E9%A9%97%E8%AD%89/" title="[Day6] C# MVC Model模型驗證 - C#&amp;AspNetCore">[Day6] C# MVC Model模型驗證 - C#&amp;AspNetCore</a>  ，我們學會利用Model建立驗證機制。<br>而這回將會介紹如何把Model與真實的資料庫連結再一起。</p>
+<h3 id="Entity-Framework"><a href="#Entity-Framework" class="headerlink" title="Entity Framework"></a>Entity Framework</h3><p>Entity Framework (又稱ADO.NET Entity Framework) 是微軟以 ADO.NET 為基礎所發展出來的物件關聯對應 (O/R Mapping) 解決方案。<br>Entity Framework 利用了抽象化資料結構的方式，將每個資料庫物件都轉換成應用程式物件 (entity)，而資料欄位都轉換為屬性 (property)，關聯則轉換為結合屬性 (association)，讓資料庫的 E/R 模型完全的轉成物件模型，如此讓程式設計師能用最熟悉的程式語言來呼叫存取。</p>
+<p>簡言之，就是一個透過物件的方式去操作資料，而不透過原生SQL的作法。<br>(但我還是比較熟悉原生的SQL，因為換什麼語言寫都通，但在微軟架構下還是用他提供的會比較好)</p>
+<h3 id="安裝Entity-Framework"><a href="#安裝Entity-Framework" class="headerlink" title="安裝Entity Framework"></a>安裝Entity Framework</h3><p>安裝:</p>
+<ul>
+<li>Microsoft.EntityFrameworkCore</li>
+<li>Microsoft.EntityFrameworkCore.SqlServer</li>
+<li>Microsoft.EntityFrameworkCore.Design</li>
+<li>Microsoft.EntityFrameworkCore.Tools</li>
+</ul>
+<p>過程:<br>1.Dependencies&gt; Manage nuget packages</p>
+<img src="/2021/10/02/C-MVC-Model%E8%88%87%E8%B3%87%E6%96%99%E5%BA%AB%E9%80%A3%E7%B5%90/1.png" class="">
+<p>2.安裝Microsoft.EntityFrameworkCore</p>
+<img src="/2021/10/02/C-MVC-Model%E8%88%87%E8%B3%87%E6%96%99%E5%BA%AB%E9%80%A3%E7%B5%90/2.png" class="">
+<p>3.安裝Microsoft.EntityFrameworkCore.SqlServer</p>
+<img src="/2021/10/02/C-MVC-Model%E8%88%87%E8%B3%87%E6%96%99%E5%BA%AB%E9%80%A3%E7%B5%90/3.png" class="">
+<p>4.安裝Microsoft.EntityFrameworkCore.Design</p>
+<img src="/2021/10/02/C-MVC-Model%E8%88%87%E8%B3%87%E6%96%99%E5%BA%AB%E9%80%A3%E7%B5%90/4.png" class="">
+<p>5.安裝Microsoft.EntityFrameworkCore.Tools</p>
+<img src="/2021/10/02/C-MVC-Model%E8%88%87%E8%B3%87%E6%96%99%E5%BA%AB%E9%80%A3%E7%B5%90/5.png" class="">
+<h3 id="使用Entity-Framework"><a href="#使用Entity-Framework" class="headerlink" title="使用Entity Framework"></a>使用Entity Framework</h3><p>Entity Framework Core 有提供兩種開發方式</p>
+<ul>
+<li>DB First:我已經有現有資料庫了，只是用程式去操作他。</li>
+<li>Code First:我還沒有資料庫，想用程式碼去建立資料庫。</li>
+<li>Model First:先定義好模型在產生資料表的方式。</li>
+</ul>
+<p>以我在Laravel的架構下寫過的經驗，會覺得Code First會比較好，因為有更動歷程，也比較能知道異動。<br>而DB First則是把兩者分開來做，優點是很直接，缺點就是異動後很難知道改了哪。</p>
+<p>而這回主要以DB First為主。</p>
+<p>1.開啟package manager console</p>
+<img src="/2021/10/02/C-MVC-Model%E8%88%87%E8%B3%87%E6%96%99%E5%BA%AB%E9%80%A3%E7%B5%90/6.png" class="">
+<p>2.之後會出現命令列</p>
+<img src="/2021/10/02/C-MVC-Model%E8%88%87%E8%B3%87%E6%96%99%E5%BA%AB%E9%80%A3%E7%B5%90/7.png" class="">
+<p>3.之後把SQL Server打開，看目前資料庫，我們預計把Orders資料庫給整合進來</p>
+<img src="/2021/10/02/C-MVC-Model%E8%88%87%E8%B3%87%E6%96%99%E5%BA%AB%E9%80%A3%E7%B5%90/8.png" class="">
+<p>4.使用<code>Scaffold-DbContext</code>指令，來還原Orders資料庫的Models</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Scaffold-DbContext &quot;Server=.\SQLExpress;Database=Orders;Trusted_Connection=True;&quot; Microsoft.EntityFrameworkCore.SqlServer -OutputDir Models</span><br></pre></td></tr></table></figure>
+<p>請自行替換字串的內容:</p>
+<ul>
+<li>Database:資料庫名稱</li>
+</ul>
+<img src="/2021/10/02/C-MVC-Model%E8%88%87%E8%B3%87%E6%96%99%E5%BA%AB%E9%80%A3%E7%B5%90/9.png" class="">
+<p>之後Models資料夾就會自動產生Model了</p>
+<img src="/2021/10/02/C-MVC-Model%E8%88%87%E8%B3%87%E6%96%99%E5%BA%AB%E9%80%A3%E7%B5%90/10.png" class="">
+
+<p>再來至Startup.cs添加資料庫連線服務</p>
+<h5 id="Startup-cs"><a href="#Startup-cs" class="headerlink" title="Startup.cs"></a>Startup.cs</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">public void ConfigureServices(IServiceCollection services)</span><br><span class="line">  &#123;</span><br><span class="line">      </span><br><span class="line">      services.AddControllersWithViews();</span><br><span class="line">      // 資料庫配置</span><br><span class="line">      var connection = @&quot;Server=.\SQLExpress;Database=Orders;Trusted_Connection=True;ConnectRetryCount=0&quot;;</span><br><span class="line">      services.AddDbContext&lt;OrdersContext&gt;(options =&gt; options.UseSqlServer(connection));</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+<p>再來至控制器HomeController.cs增加方法</p>
+<h5 id="HomeController-cs"><a href="#HomeController-cs" class="headerlink" title="HomeController.cs"></a>HomeController.cs</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br></pre></td><td class="code"><pre><span class="line">using Microsoft.AspNetCore.Mvc;</span><br><span class="line">using Microsoft.Extensions.Logging;</span><br><span class="line">using System;</span><br><span class="line">using System.Collections.Generic;</span><br><span class="line">using System.Diagnostics;</span><br><span class="line">using System.Linq;</span><br><span class="line">using System.Threading.Tasks;</span><br><span class="line">using WebApplication1.Models;</span><br><span class="line"></span><br><span class="line">namespace WebApplication1.Controllers</span><br><span class="line">&#123;</span><br><span class="line">    public class HomeController : Controller</span><br><span class="line">    &#123;</span><br><span class="line">        private readonly ILogger&lt;HomeController&gt; _logger;</span><br><span class="line"></span><br><span class="line">        // 添加Context</span><br><span class="line">        private readonly OrdersContext _context;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        public HomeController(ILogger&lt;HomeController&gt; logger, OrdersContext context)</span><br><span class="line">        &#123;</span><br><span class="line">            _logger = logger;</span><br><span class="line">            // 初始化Context</span><br><span class="line">            _context = context;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        [HttpGet]</span><br><span class="line">        public IActionResult Create()</span><br><span class="line">        &#123;</span><br><span class="line">            return View();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        [HttpPost]</span><br><span class="line">        public IActionResult Create(UsersModel usersmodel)</span><br><span class="line">        &#123;</span><br><span class="line">            if (ModelState.IsValid)</span><br><span class="line">            &#123;</span><br><span class="line">                //如果連結資料庫在這進行儲存</span><br><span class="line"></span><br><span class="line">                //導回首頁</span><br><span class="line">                return RedirectToAction(nameof(Index));</span><br><span class="line">            &#125;</span><br><span class="line">            return View(usersmodel);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        public IActionResult Index()</span><br><span class="line">        &#123;</span><br><span class="line">            // 透過Context取得資料</span><br><span class="line">            var model = _context.Customers.Select(b =&gt; new Customer</span><br><span class="line">            &#123;</span><br><span class="line">                Name = b.Name,</span><br><span class="line">                Number = b.Number,</span><br><span class="line">                Tel = b.Tel</span><br><span class="line">            &#125;).ToList();</span><br><span class="line"></span><br><span class="line">            // 取第一列資料出來</span><br><span class="line">            Customer m = model[0];</span><br><span class="line"></span><br><span class="line">            return View(m);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        public IActionResult Privacy()</span><br><span class="line">        &#123;</span><br><span class="line">            return View();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]</span><br><span class="line">        public IActionResult Error()</span><br><span class="line">        &#123;</span><br><span class="line">            return View(new ErrorViewModel &#123; RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier &#125;);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>再來在View上修改</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">@model WebApplication1.Models.Customer;</span><br><span class="line">@&#123;</span><br><span class="line">    ViewData[&quot;Title&quot;] = &quot;Home Page&quot;;</span><br><span class="line">&#125;</span><br><span class="line">&lt;ul&gt;</span><br><span class="line">    &lt;li&gt;@Model.Number&lt;/li&gt;</span><br><span class="line">    &lt;li&gt;@Model.Name&lt;/li&gt;</span><br><span class="line">    &lt;li&gt;@Model.Tel&lt;/li&gt;</span><br><span class="line">&lt;/ul&gt;</span><br><span class="line">&lt;div class=&quot;text-center&quot;&gt;</span><br><span class="line">    &lt;h1 class=&quot;display-4&quot;&gt;Welcome&lt;/h1&gt;</span><br><span class="line">    &lt;p&gt;Learn about &lt;a href=&quot;https://docs.microsoft.com/aspnet/core&quot;&gt;building Web apps with ASP.NET Core&lt;/a&gt;.&lt;/p&gt;</span><br><span class="line">&lt;/div&gt;</span><br></pre></td></tr></table></figure>
+<p>接下來運行即可印出第一筆資料</p>
+<img src="/2021/10/02/C-MVC-Model%E8%88%87%E8%B3%87%E6%96%99%E5%BA%AB%E9%80%A3%E7%B5%90/11.png" class="">
+<img src="/2021/10/02/C-MVC-Model%E8%88%87%E8%B3%87%E6%96%99%E5%BA%AB%E9%80%A3%E7%B5%90/12.png" class="">
+
+<h3 id="總結"><a href="#總結" class="headerlink" title="總結"></a>總結</h3><p>而現在已經能成功連結資料庫了!<br>微軟MVC資料庫連結方式比較麻煩，因為要自行找套件，不像Laravel已經配好，直接打帳號密碼就能用。<br>而現在迫切問題在Controller只能傳送一個Model，要如何讓多個Model能夠透過Controller傳送到View上。<br>所以，下個篇主要介紹的就是Controller。</p>
+<p><strong>參考資料</strong><br><a target="_blank" rel="noopener" href="https://docs.microsoft.com/zh-tw/aspnet/core/data/ef-mvc/intro?view=aspnetcore-5.0">https://docs.microsoft.com/zh-tw/aspnet/core/data/ef-mvc/intro?view=aspnetcore-5.0</a><br><a target="_blank" rel="noopener" href="https://docs.microsoft.com/zh-tw/aspnet/core/tutorials/first-mvc-app/working-with-sql?view=aspnetcore-3.1&amp;tabs=visual-studio">https://docs.microsoft.com/zh-tw/aspnet/core/tutorials/first-mvc-app/working-with-sql?view=aspnetcore-3.1&amp;tabs=visual-studio</a><br><a target="_blank" rel="noopener" href="https://docs.microsoft.com/zh-tw/ef/core/cli/dotnet#dotnet-ef-dbcontext-scaffold">https://docs.microsoft.com/zh-tw/ef/core/cli/dotnet#dotnet-ef-dbcontext-scaffold</a><br><a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=2m_3SHGy-Rs">https://www.youtube.com/watch?v=2m_3SHGy-Rs</a><br><a target="_blank" rel="noopener" href="http://go.microsoft.com/fwlink/?LinkId=723263">http://go.microsoft.com/fwlink/?LinkId=723263</a><br><a target="_blank" rel="noopener" href="https://www.uuu.com.tw/Public/content/article/20/20200413.htm">https://www.uuu.com.tw/Public/content/article/20/20200413.htm</a><br><a target="_blank" rel="noopener" href="http://ikevin.tw/2019/08/04/asp-net-core-3-0-%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8-database-first/">http://ikevin.tw/2019/08/04/asp-net-core-3-0-%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8-database-first/</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://yuhsiang237.github.io/2021/10/02/C-MVC-Model%E8%88%87%E8%B3%87%E6%96%99%E5%BA%AB%E9%80%A3%E7%B5%90/" data-id="cl0g433ob000vtwgh1uf7ha2z" data-title="[Day7] C# MVC Model模型連結資料庫，使用Entity Framework - C#&amp;AspNetCore" class="article-share-link">Teilen</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-C-MVC-Model模型驗證" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2021/10/01/C-MVC-Model%E6%A8%A1%E5%9E%8B%E9%A9%97%E8%AD%89/" class="article-date">
+  <time class="dt-published" datetime="2021-10-01T04:00:51.000Z" itemprop="datePublished">2021-10-01</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Code/">Code</a>►<a class="article-category-link" href="/categories/Code/C/">C#</a>►<a class="article-category-link" href="/categories/Framework/">Framework</a>►<a class="article-category-link" href="/categories/Framework/AspNetCore-MVC/">AspNetCore MVC</a>►<a class="article-category-link" href="/categories/Topic/">Topic</a>►<a class="article-category-link" href="/categories/Topic/2021-C-AspNetCore%E9%90%B5%E4%BA%BA%E8%B3%BD/">2021 C# AspNetCore鐵人賽</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2021/10/01/C-MVC-Model%E6%A8%A1%E5%9E%8B%E9%A9%97%E8%AD%89/">[Day6] C# MVC Model模型驗證 - C#&amp;AspNetCore</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>在上回 <a href="/2021/09/30/C-MVC-Model%E6%A8%A1%E5%9E%8B%E4%BD%BF%E7%94%A8/" title="[Day5] C# MVC Model模型使用 - C#&amp;AspNetCore">[Day5] C# MVC Model模型使用 - C#&amp;AspNetCore</a>  ，我們建立了基本的Model，並且示範讓資料藉由Model資料呈現在網頁上。<br>在這篇主要談如何Model模型上進行驗證。</p>
+<h3 id="Model的驗證"><a href="#Model的驗證" class="headerlink" title="Model的驗證"></a>Model的驗證</h3><p>為了讓資料進到資料庫是符合我們要的格式，就必須在前面先擋過一層，而這層我們可以透過Model來達到。</p>
+<p><strong>常見的驗證屬性</strong></p>
+<ul>
+<li>[ValidateNever]： ValidateNeverAttribute 指出屬性或參數應該從驗證中排除。</li>
+<li>[CreditCard]：驗證屬性是否具有信用卡格式。 需要 JQuery 驗證的其他方法。</li>
+<li>[Compare]：驗證模型中的兩個屬性是否相符。</li>
+<li>[EmailAddress]：驗證屬性具有電子郵件格式。</li>
+<li>[Phone]：驗證屬性具有電話號碼格式。</li>
+<li>[Range]：驗證屬性值是否落在指定的範圍內。像是最大值(Max)、最小值(min)</li>
+<li>[RegularExpression]：驗證屬性值是否符合指定的正則運算式。</li>
+<li>[Required]：驗證欄位不是 null。 </li>
+<li>[StringLength]：驗證字串屬性值不超過指定的長度限制。</li>
+<li>[Url]：驗證屬性是否具有 URL 格式。</li>
+<li>[Remote]：在伺服器上呼叫動作方法，以驗證用戶端上的輸入。</li>
+<li>[Display]:顯示名稱為</li>
+<li>[DataType]:資料型別</li>
+</ul>
+<h3 id="添加驗證屬性範例實作"><a href="#添加驗證屬性範例實作" class="headerlink" title="添加驗證屬性範例實作"></a>添加驗證屬性範例實作</h3><p>我們先在UsersModel.cs增加屬性<br>需先添加<code>using System.ComponentModel.DataAnnotations</code>才可使用驗證屬性。</p>
+<h5 id="UsersModel-cs"><a href="#UsersModel-cs" class="headerlink" title="UsersModel.cs"></a>UsersModel.cs</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">using System;</span><br><span class="line">using System.Collections.Generic;</span><br><span class="line">using System.Linq;</span><br><span class="line">using System.Threading.Tasks;</span><br><span class="line">using System.ComponentModel.DataAnnotations;</span><br><span class="line"></span><br><span class="line">namespace WebApplication1.Models</span><br><span class="line">&#123;</span><br><span class="line">    public class UsersModel</span><br><span class="line">    &#123;</span><br><span class="line">        [Display(Name = &quot;編號&quot;)]</span><br><span class="line">        public int ID &#123; get; set; &#125;</span><br><span class="line"></span><br><span class="line">        [Required(ErrorMessage = &quot;姓名不可為空&quot;)]</span><br><span class="line">        [Display(Name = &quot;姓名&quot;)]</span><br><span class="line">        public string Name &#123; get; set; &#125;</span><br><span class="line"></span><br><span class="line">        [Display(Name = &quot;年齡&quot;)]</span><br><span class="line">        public int Age &#123; get; set; &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>接著在HomeController.cs裡面個添加一個HttpGet、HttpPost的Create方法<br>HttpGet是進頁面時會跑的方法<br>HttpPost是表單觸發發送後會跑的方法</p>
+<h5 id="HomeController-cs"><a href="#HomeController-cs" class="headerlink" title="HomeController.cs"></a>HomeController.cs</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">[HttpGet]</span><br><span class="line">public IActionResult Create()</span><br><span class="line">&#123;</span><br><span class="line">    return View();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">[HttpPost]</span><br><span class="line">public IActionResult Create(UsersModel usersmodel)</span><br><span class="line">&#123;</span><br><span class="line">    if (ModelState.IsValid)</span><br><span class="line">    &#123;</span><br><span class="line">        //如果連結資料庫在這進行儲存</span><br><span class="line"></span><br><span class="line">        //導回首頁</span><br><span class="line">        return RedirectToAction(nameof(Index));</span><br><span class="line">    &#125;</span><br><span class="line">    return View(usersmodel);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>接著新增一個View頁面，在前台畫面上製作一個form表單。</p>
+<h5 id="Create-cshtml"><a href="#Create-cshtml" class="headerlink" title="Create.cshtml"></a>Create.cshtml</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">@model WebApplication1.Models.UsersModel</span><br><span class="line">@&#123;</span><br><span class="line">    ViewData[&quot;Title&quot;] = &quot;Create Page&quot;;</span><br><span class="line">&#125;</span><br><span class="line">&lt;form asp-action=&quot;Create&quot;&gt;</span><br><span class="line">    &lt;div&gt;</span><br><span class="line">        &lt;label asp-for=&quot;Name&quot;&gt;&lt;/label&gt;</span><br><span class="line">        &lt;input asp-for=&quot;Name&quot; /&gt;</span><br><span class="line">        &lt;span asp-validation-for=&quot;Name&quot;&gt;&lt;/span&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">    &lt;div&gt;</span><br><span class="line">        &lt;label asp-for=&quot;Age&quot;&gt;&lt;/label&gt;</span><br><span class="line">        &lt;input asp-for=&quot;Age&quot; /&gt;</span><br><span class="line">        &lt;span asp-validation-for=&quot;Age&quot;&gt;&lt;/span&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">    &lt;div&gt;</span><br><span class="line">        &lt;input type=&quot;submit&quot; value=&quot;Save&quot; /&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">&lt;/form&gt;</span><br></pre></td></tr></table></figure>
+
+<p>注意，<code>asp-validation-for="Name"</code>表示後端回傳的錯誤訊息會傳送到這裡。</p>
+<p>然後至網址:<a target="_blank" rel="noopener" href="https://localhost:44378/Home/Create">https://localhost:44378/Home/Create</a> 查看後<br>名子不填儲存就會出現錯誤了</p>
+<img src="/2021/10/01/C-MVC-Model%E6%A8%A1%E5%9E%8B%E9%A9%97%E8%AD%89/1.gif" class="">
+<p>在程式碼上會發現跑到HttpPost的Create裡面</p>
+<img src="/2021/10/01/C-MVC-Model%E6%A8%A1%E5%9E%8B%E9%A9%97%E8%AD%89/2.gif" class="">
+
+<h3 id="自訂驗證"><a href="#自訂驗證" class="headerlink" title="自訂驗證"></a>自訂驗證</h3><p>系統預設的驗證肯定不夠，所以就來製作自己的驗證。</p>
+<p>我們在UsersModel.cs裡面增加一個CheckValidAge的class並且繼承ValidationAttribute<br>並覆寫裡面IsValid方法。</p>
+<h5 id="UsersModel-cs-1"><a href="#UsersModel-cs-1" class="headerlink" title="UsersModel.cs"></a>UsersModel.cs</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line">using System;</span><br><span class="line">using System.Collections.Generic;</span><br><span class="line">using System.Linq;</span><br><span class="line">using System.Threading.Tasks;</span><br><span class="line">using System.ComponentModel.DataAnnotations;</span><br><span class="line"></span><br><span class="line">namespace WebApplication1.Models</span><br><span class="line">&#123;</span><br><span class="line">    public class UsersModel</span><br><span class="line">    &#123;</span><br><span class="line">        [Display(Name = &quot;編號&quot;)]</span><br><span class="line">        public int ID &#123; get; set; &#125;</span><br><span class="line"></span><br><span class="line">        [Required(ErrorMessage = &quot;姓名不可為空&quot;)]</span><br><span class="line">        [Display(Name = &quot;姓名&quot;)]</span><br><span class="line">        public string Name &#123; get; set; &#125;</span><br><span class="line"></span><br><span class="line">        [CheckValidAge]</span><br><span class="line">        [Display(Name = &quot;年齡&quot;)]</span><br><span class="line">        public int Age &#123; get; set; &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public class CheckValidAge : ValidationAttribute</span><br><span class="line">    &#123;</span><br><span class="line"></span><br><span class="line">        public CheckValidAge()</span><br><span class="line">        &#123;</span><br><span class="line">            ErrorMessage = &quot;年齡不可超過50歲&quot;;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        public override bool IsValid(object value)</span><br><span class="line">        &#123;</span><br><span class="line">            if (value == null)</span><br><span class="line">            &#123;</span><br><span class="line">                return true;</span><br><span class="line">            &#125;</span><br><span class="line">            int age = (int)value;</span><br><span class="line">            if (age &gt; 50)</span><br><span class="line">            &#123;</span><br><span class="line">                return false;</span><br><span class="line">            &#125;</span><br><span class="line">            else</span><br><span class="line">            &#123;</span><br><span class="line">                return true;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>如此一來，送出如果&gt;50就會顯示出錯誤。</p>
+<img src="/2021/10/01/C-MVC-Model%E6%A8%A1%E5%9E%8B%E9%A9%97%E8%AD%89/3.gif" class="">
+
+
+<h3 id="總結"><a href="#總結" class="headerlink" title="總結"></a>總結</h3><p>雖然2021年的今天，大多數人都不使用這種form驗證，而是用API傳送。<br>因為頁面不用跳轉，用戶也能得到比較好的體驗。</p>
+<p>然而，這種傳統的送資料方式還是有存在必要，就是系統追求安全性、穩定性，因為API方式會有比較難管理的問題。</p>
+<p>此外，寫到這裡就開始有綁手綁腳的感覺<br>因為框架不那麼自由的讓你直接寫想寫的程式碼，而是照MVC架構<br>這就是一個好處，代表維護或後續開發的人就會照同條路走</p>
+<p><strong>參考資料</strong><br><a target="_blank" rel="noopener" href="https://ithelp.ithome.com.tw/articles/10240340">https://ithelp.ithome.com.tw/articles/10240340</a><br><a target="_blank" rel="noopener" href="https://docs.microsoft.com/zh-tw/aspnet/core/mvc/models/validation?view=aspnetcore-5.0">https://docs.microsoft.com/zh-tw/aspnet/core/mvc/models/validation?view=aspnetcore-5.0</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://yuhsiang237.github.io/2021/10/01/C-MVC-Model%E6%A8%A1%E5%9E%8B%E9%A9%97%E8%AD%89/" data-id="cl0g433o8000ttwgh3grp9voo" data-title="[Day6] C# MVC Model模型驗證 - C#&amp;AspNetCore" class="article-share-link">Teilen</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
     <article id="post-C-MVC-Model模型使用" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
     <a href="/2021/09/30/C-MVC-Model%E6%A8%A1%E5%9E%8B%E4%BD%BF%E7%94%A8/" class="article-date">
@@ -704,150 +887,6 @@
 
 
   
-    <article id="post-35-Search-Insert-Position" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2021/09/21/35-Search-Insert-Position/" class="article-date">
-  <time class="dt-published" datetime="2021-09-21T01:20:34.000Z" itemprop="datePublished">2021-09-21</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/Code/">Code</a>►<a class="article-category-link" href="/categories/Code/C/">C#</a>►<a class="article-category-link" href="/categories/Topic/">Topic</a>►<a class="article-category-link" href="/categories/Topic/LeetCode/">LeetCode</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2021/09/21/35-Search-Insert-Position/">LeetCode -  35. Search Insert Position</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <div class="content__u3I1 question-content__JfgR"><div><p>Given a sorted array of distinct integers and a target value, return the index if the target is found. If not, return the index where it would be if it were inserted in order.</p>
-<p>You must&nbsp;write an algorithm with&nbsp;<code>O(log n)</code> runtime complexity.</p>
-<p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
-<pre><strong>Input:</strong> nums = [1,3,5,6], target = 5
-<strong>Output:</strong> 2
-</pre><p><strong>Example 2:</strong></p>
-<pre><strong>Input:</strong> nums = [1,3,5,6], target = 2
-<strong>Output:</strong> 1
-</pre><p><strong>Example 3:</strong></p>
-<pre><strong>Input:</strong> nums = [1,3,5,6], target = 7
-<strong>Output:</strong> 4
-</pre><p><strong>Example 4:</strong></p>
-<pre><strong>Input:</strong> nums = [1,3,5,6], target = 0
-<strong>Output:</strong> 0
-</pre><p><strong>Example 5:</strong></p>
-<pre><strong>Input:</strong> nums = [1], target = 0
-<strong>Output:</strong> 0
-</pre>
-<p>&nbsp;</p>
-<p><strong>Constraints:</strong></p>
-
-<ul>
-    <li><code>1 &lt;= nums.length &lt;= 10<sup>4</sup></code></li>
-    <li><code>-10<sup>4</sup> &lt;= nums[i] &lt;= 10<sup>4</sup></code></li>
-    <li><code>nums</code> contains <strong>distinct</strong> values sorted in <strong>ascending</strong> order.</li>
-    <li><code>-10<sup>4</sup> &lt;= target &lt;= 10<sup>4</sup></code></li>
-</ul>
-</div></div>
-C# Sol:
-
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">public class Solution &#123;</span><br><span class="line">    public int SearchInsert(int[] nums, int target) &#123;</span><br><span class="line">        int index = 0;</span><br><span class="line">        Boolean isFind = false;</span><br><span class="line">        for(int i=0;i&lt;nums.Length;i++)&#123;</span><br><span class="line">            if(nums[i] == target)&#123;</span><br><span class="line">                isFind = true;</span><br><span class="line">                index = i;</span><br><span class="line">                break;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        if(!isFind)&#123;</span><br><span class="line">            for(int i=0;i&lt;nums.Length;i++)&#123;</span><br><span class="line">                if(nums[i] &gt; target)&#123;</span><br><span class="line">                    index = i;</span><br><span class="line">                    break;</span><br><span class="line">                &#125;else if(i == nums.Length -1 )&#123;</span><br><span class="line">                    index = i+1;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        return index;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>Runtime: 92 ms<br>Memory Usage: 24.9 MB
-    </p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://yuhsiang237.github.io/2021/09/21/35-Search-Insert-Position/" data-id="cl0g433nn0000twgh7bfx46qq" data-title="LeetCode -  35. Search Insert Position" class="article-share-link">Teilen</a>
-      
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/C/" rel="tag">C#</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/LeetCode/" rel="tag">LeetCode</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E8%A7%A3%E9%A1%8C/" rel="tag">解題</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-什麼是MVC" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2021/09/21/%E4%BB%80%E9%BA%BC%E6%98%AFMVC/" class="article-date">
-  <time class="dt-published" datetime="2021-09-20T19:57:08.000Z" itemprop="datePublished">2021-09-21</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/Code/">Code</a>►<a class="article-category-link" href="/categories/Code/C/">C#</a>►<a class="article-category-link" href="/categories/Topic/">Topic</a>►<a class="article-category-link" href="/categories/Topic/2021-C-AspNetCore%E9%90%B5%E4%BA%BA%E8%B3%BD/">2021 C# AspNetCore鐵人賽</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2021/09/21/%E4%BB%80%E9%BA%BC%E6%98%AFMVC/">[Day2] 什麼是MVC，有什麼好處 - C#&amp;AspNetCore</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p>在上回 <a href="/2021/09/20/C-MVC%E5%85%A5%E9%96%80/" title="[Day1] 學習C#的計畫與期望 - C#&amp;AspNetCore">[Day1] 學習C#的計畫與期望 - C#&amp;AspNetCore</a> 中介紹了自己的目的。<br>在這回中主要介紹MVC的核心概念。</p>
-<h3 id="MVC是什麼"><a href="#MVC是什麼" class="headerlink" title="MVC是什麼?"></a>MVC是什麼?</h3><p>MVC模式（Model–view–controller）是軟體工程中的一種軟體架構模式(software design pattern)，把軟體系統分為三個基本部分：模型（Model）、視圖（View）和控制器（Controller）。 </p>
-<img src="/2021/09/21/%E4%BB%80%E9%BA%BC%E6%98%AFMVC/mvc.png" class="">
-
-<h3 id="模型（Model）"><a href="#模型（Model）" class="headerlink" title="模型（Model）"></a>模型（Model）</h3><p>程式設計師編寫程式應有的功能（實現演算法等等）、資料庫專家進行資料管理和資料庫設計(可以實現具體的功能)。<br>這邊通常放資料存取的屬性、比較複雜的資料處理。<br>在這個單元裡面，我們通常會定義資料的結構、型態、存取func，必要時會將資料的驗證寫在這個單元中。</p>
-<h3 id="視圖（View）"><a href="#視圖（View）" class="headerlink" title="視圖（View）"></a>視圖（View）</h3><p>介面設計人員進行圖形介面設計。<br>簡單來說就是前台，處理HTML/CSS/JS。<br>將資料視覺化，並呈現給使用者。</p>
-<h3 id="控制器（Controller）"><a href="#控制器（Controller）" class="headerlink" title="控制器（Controller）"></a>控制器（Controller）</h3><p>負責轉發請求，對請求進行處理。<br>當使用者進到了前台的視圖（View），對畫面操作所觸發的事件就會跑到控制器。<br>在控制器裡負責拿到模型（Model）的資料後加上些業務邏輯後返視圖(View)。<br>負責處理主要商業邏輯處理，資料格式處理，大部分介於Model 與 View 之間，處理資料流的溝通。</p>
-<h3 id="我的疑問"><a href="#我的疑問" class="headerlink" title="我的疑問"></a>我的疑問</h3><p>Controller與Model很難劃清界限，過去在寫Laravel時就遇到類似問題。<br>因為在Controller常要對不同的請求，有不同資料回應。<br>而在Model裡對資料庫操作的存取函式就會滿足不了需求，變成要一直增加。<br>免不了在Controller操作Model甚至寫SQL，因為這樣比較直覺，不用再去想Model增加可能共用的函式。<br>如果撇除這問題，MVC架構已經算是不錯了，能夠有架構的避免義大利麵Code的問題。</p>
-<h3 id="實現MVC框架"><a href="#實現MVC框架" class="headerlink" title="實現MVC框架"></a>實現MVC框架</h3><p>如果選對有Design Pattern的框架在寫的過程比較不會那麼痛苦。因為比較能知道哪邊的東西放在哪邊。<br>如我上面的疑問，其實不是在Controller就是在Model。好找出問題來源，達成目標才是主要目的。</p>
-<p>Java:Spring MVC<br>C#:ASP.NET MVC<br>PHP:Laravel</p>
-<p>其實還有很多，我這只列出我曾經有碰過或未來可能會碰的。</p>
-<h3 id="MVC-優缺點"><a href="#MVC-優缺點" class="headerlink" title="MVC 優缺點"></a>MVC 優缺點</h3><p><strong>優點</strong></p>
-<ol>
-<li>好分工，團隊開發能各司其職</li>
-<li>可維護性高(因具備架構性好找錯誤源頭)</li>
-</ol>
-<p><strong>缺點</strong></p>
-<ol>
-<li>如果是一頁式簡單網站容易殺雞用牛刀</li>
-</ol>
-<p>如果實際開發下去，有寫過MVC跟沒寫過的人應該都會選MVC，因為坑少- -+。<br>此外，即使要開發前後分離架構，也可以MVC再搭配一套前端框架，作為未來需要特別畫面需求的輔助。</p>
-<h3 id="總結"><a href="#總結" class="headerlink" title="總結"></a>總結</h3><p>MVC能夠協助一個專案進行有效的分工，讓人比較能各司其職，如:視覺就是專注在View，而工程師專注在Model、Controller。<br>整體架構上也讓未來維護的人有個底，如果想看這段邏輯寫在哪那就從Controller開始，找不出原因在看Model。<br>相較於過去，這頁面需要A資料，就把資料查詢、邏輯到回應都寫在一個頁面上難以維護的慘況好很多了@@。</p>
-<p><strong>參考資料</strong><br><a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/MVC">https://zh.wikipedia.org/wiki/MVC</a><br><a target="_blank" rel="noopener" href="https://ithelp.ithome.com.tw/articles/10191216">https://ithelp.ithome.com.tw/articles/10191216</a><br><a target="_blank" rel="noopener" href="https://dotblogs.com.tw/dog0416/2016/05/20/131644">https://dotblogs.com.tw/dog0416/2016/05/20/131644</a><br><a target="_blank" rel="noopener" href="https://ithelp.ithome.com.tw/articles/10194428">https://ithelp.ithome.com.tw/articles/10194428</a></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://yuhsiang237.github.io/2021/09/21/%E4%BB%80%E9%BA%BC%E6%98%AFMVC/" data-id="cl0g433pi004utwgh2di21hrb" data-title="[Day2] 什麼是MVC，有什麼好處 - C#&amp;AspNetCore" class="article-share-link">Teilen</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
 
 
   <nav id="page-nav">
@@ -863,7 +902,7 @@ C# Sol:
   <div class="widget-wrap">
     <h3 class="widget-title">Kategorien</h3>
     <div class="widget">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Code/">Code</a><span class="category-list-count">59</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Code/C/">C#</a><span class="category-list-count">55</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Code/Javascript/">Javascript</a><span class="category-list-count">5</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/">Computer Science</a><span class="category-list-count">5</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/Algorithm/">Algorithm</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/Data-structure/">Data structure</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/%E9%9B%BB%E5%AD%90%E9%9B%BB%E8%B7%AF/">電子電路</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Daily-Log/">Daily Log</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/">Database</a><span class="category-list-count">46</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Database/PostgreSQL/">PostgreSQL</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/SQL-Server/">SQL Server</a><span class="category-list-count">38</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/">Framework</a><span class="category-list-count">27</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/AspNetCore-API/">AspNetCore API</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/AspNetCore-MVC/">AspNetCore MVC</a><span class="category-list-count">21</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/">Topic</a><span class="category-list-count">70</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2021-C-AspNetCore%E9%90%B5%E4%BA%BA%E8%B3%BD/">2021 C# AspNetCore鐵人賽</a><span class="category-list-count">30</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2021-SQL-Server%E9%90%B5%E4%BA%BA%E8%B3%BD/">2021 SQL Server鐵人賽</a><span class="category-list-count">30</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2022-C-%E5%9F%B7%E8%A1%8C%E7%B7%92%E5%90%8C%E6%AD%A5%E7%95%B0%E6%AD%A5%E7%B7%A8%E7%A8%8B%E8%A8%98/">2022 C# 執行緒同步異步編程記</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/LeetCode/">LeetCode</a><span class="category-list-count">3</span></li></ul></li></ul>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Code/">Code</a><span class="category-list-count">60</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Code/C/">C#</a><span class="category-list-count">56</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Code/Javascript/">Javascript</a><span class="category-list-count">5</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/">Computer Science</a><span class="category-list-count">5</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/Algorithm/">Algorithm</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/Data-structure/">Data structure</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/%E9%9B%BB%E5%AD%90%E9%9B%BB%E8%B7%AF/">電子電路</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Daily-Log/">Daily Log</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/">Database</a><span class="category-list-count">46</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Database/PostgreSQL/">PostgreSQL</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/SQL-Server/">SQL Server</a><span class="category-list-count">38</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/">Framework</a><span class="category-list-count">27</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/AspNetCore-API/">AspNetCore API</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/AspNetCore-MVC/">AspNetCore MVC</a><span class="category-list-count">21</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/">Topic</a><span class="category-list-count">70</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2021-C-AspNetCore%E9%90%B5%E4%BA%BA%E8%B3%BD/">2021 C# AspNetCore鐵人賽</a><span class="category-list-count">30</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2021-SQL-Server%E9%90%B5%E4%BA%BA%E8%B3%BD/">2021 SQL Server鐵人賽</a><span class="category-list-count">30</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2022-C-%E5%9F%B7%E8%A1%8C%E7%B7%92%E5%90%8C%E6%AD%A5%E7%95%B0%E6%AD%A5%E7%B7%A8%E7%A8%8B%E8%A8%98/">2022 C# 執行緒同步異步編程記</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/LeetCode/">LeetCode</a><span class="category-list-count">3</span></li></ul></li></ul>
     </div>
   </div>
 
@@ -873,7 +912,7 @@ C# Sol:
   <div class="widget-wrap">
     <h3 class="widget-title">Archiv</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/04/">四月 2022</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/03/">三月 2022</a><span class="archive-list-count">17</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/02/">二月 2022</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/01/">一月 2022</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">十二月 2021</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">十月 2021</a><span class="archive-list-count">24</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">九月 2021</a><span class="archive-list-count">46</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">八月 2021</a><span class="archive-list-count">12</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/04/">四月 2022</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/03/">三月 2022</a><span class="archive-list-count">17</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/02/">二月 2022</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/01/">一月 2022</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">十二月 2021</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">十月 2021</a><span class="archive-list-count">24</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">九月 2021</a><span class="archive-list-count">46</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">八月 2021</a><span class="archive-list-count">12</span></li></ul>
     </div>
   </div>
 
