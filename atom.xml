@@ -6,7 +6,7 @@
   <link href="https://yuhsiang237.github.io/atom.xml" rel="self"/>
   
   <link href="https://yuhsiang237.github.io/"/>
-  <updated>2022-04-22T08:39:18.190Z</updated>
+  <updated>2022-04-22T08:48:22.646Z</updated>
   <id>https://yuhsiang237.github.io/</id>
   
   <author>
@@ -15,6 +15,31 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>C# 文字組合的4種方式</title>
+    <link href="https://yuhsiang237.github.io/2022/04/22/C-%E4%B8%AD%E6%96%87%E5%AD%97%E7%B5%84%E5%90%88%E6%96%B9%E5%BC%8F/"/>
+    <id>https://yuhsiang237.github.io/2022/04/22/C-%E4%B8%AD%E6%96%87%E5%AD%97%E7%B5%84%E5%90%88%E6%96%B9%E5%BC%8F/</id>
+    <published>2022-04-22T08:40:22.000Z</published>
+    <updated>2022-04-22T08:48:22.646Z</updated>
+    
+    <content type="html"><![CDATA[<h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>在此紀錄C#中常見的組字串方式。</p><h3 id="實作"><a href="#實作" class="headerlink" title="實作"></a>實作</h3><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> System;</span><br><span class="line"></span><br><span class="line"><span class="keyword">namespace</span> <span class="title">StringSol</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">internal</span> <span class="keyword">class</span> <span class="title">Program</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">Main</span>(<span class="params"><span class="built_in">string</span>[] args</span>)</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">var</span> name = <span class="string">&quot;Yu Hsiang&quot;</span>;</span><br><span class="line">            <span class="built_in">string</span> str1 = <span class="string">&quot;你好&quot;</span> + name;</span><br><span class="line">            <span class="built_in">string</span> str2 = String.Concat(<span class="string">&quot;你好&quot;</span>, name);</span><br><span class="line">            <span class="built_in">string</span> str3 = String.Format(<span class="string">&quot;你好&#123;0&#125;&quot;</span>, name);</span><br><span class="line">            <span class="comment">// $是c# 6.0 的語言特性，功能類似string.format()</span></span><br><span class="line">            <span class="built_in">string</span> str4 = <span class="string">$&quot;你好<span class="subst">&#123;name&#125;</span>&quot;</span>;</span><br><span class="line"></span><br><span class="line">            Console.WriteLine(str1);</span><br><span class="line">            Console.WriteLine(str2);</span><br><span class="line">            Console.WriteLine(str3);</span><br><span class="line">            Console.WriteLine(str4);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>輸出結果:</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">你好Yu Hsiang</span><br><span class="line">你好Yu Hsiang</span><br><span class="line">你好Yu Hsiang</span><br><span class="line">你好Yu Hsiang</span><br></pre></td></tr></table></figure>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;h3 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h3&gt;&lt;p&gt;在此紀錄C#中常見的組字串方式。&lt;/p&gt;
+&lt;h3 id=&quot;實作&quot;&gt;&lt;a href=&quot;#實作&quot; class=&quot;headerlink&quot; titl</summary>
+      
+    
+    
+    
+    <category term="Code" scheme="https://yuhsiang237.github.io/categories/Code/"/>
+    
+    <category term="C#" scheme="https://yuhsiang237.github.io/categories/Code/C/"/>
+    
+    
+  </entry>
   
   <entry>
     <title>C# LINQ GroupBy用法</title>
@@ -501,31 +526,6 @@
     <category term="Database" scheme="https://yuhsiang237.github.io/categories/Database/"/>
     
     <category term="PostgreSQL" scheme="https://yuhsiang237.github.io/categories/Database/PostgreSQL/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>Javascript 雙問號、可選鏈用法</title>
-    <link href="https://yuhsiang237.github.io/2022/03/07/Javascript-%E9%9B%99%E5%95%8F%E8%99%9F%E7%94%A8%E6%B3%95/"/>
-    <id>https://yuhsiang237.github.io/2022/03/07/Javascript-%E9%9B%99%E5%95%8F%E8%99%9F%E7%94%A8%E6%B3%95/</id>
-    <published>2022-03-07T02:57:25.000Z</published>
-    <updated>2022-03-07T03:30:53.660Z</updated>
-    
-    <content type="html"><![CDATA[<p>在寫Javascript時會看到??的語法或?.的用法。<br>在這稍微做解釋:  </p><p><strong>?.可選鏈:</strong><br>作用:可以簡化寫法，因為Javascript如果強制叫出不存在的物件會出現錯誤，所以原本寫法都要寫很長去檢查物件屬性是否存在。</p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> user = &#123;<span class="attr">data</span>:&#123;<span class="attr">address</span>:<span class="string">&quot;my address&quot;</span>&#125;&#125;</span><br><span class="line"><span class="comment">// 原本寫法 output:my address</span></span><br><span class="line"><span class="keyword">const</span> userAddress = user.data &amp;&amp; user.data.address</span><br><span class="line"><span class="comment">// 替換如下 output:my address</span></span><br><span class="line"><span class="keyword">const</span> userAddress = user.data?.address</span><br></pre></td></tr></table></figure><p>可以減少巢狀物件取的屬性的程式碼。</p><p><strong>??:</strong><br>作用:左方為null或undefined則會直接回傳右方的值。</p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> detail = &#123;<span class="attr">data</span>:&#123;<span class="attr">address</span>:<span class="string">&quot;my address&quot;</span>&#125;&#125;</span><br><span class="line"><span class="comment">// 原本寫法 output:10</span></span><br><span class="line"><span class="keyword">const</span> detailAmount = (detail.data.amount &amp;&amp; detail.data.amount) ? detail.data.amount : <span class="number">10</span> ;</span><br><span class="line"><span class="comment">// 替換如下 output:10</span></span><br><span class="line"><span class="keyword">const</span> detailAmount = detail.data?.amount ?? <span class="number">10</span>;</span><br></pre></td></tr></table></figure><p>上面因為找不到amount所以接回傳10，有的話則回傳amount</p><h3 id="總結"><a href="#總結" class="headerlink" title="總結"></a>總結</h3><p>感覺未來的Javascript會充斥著 「??」、「?.」<br>到時候又配上Javascript函式寫法感覺閱讀性會複雜了。(雖然簡化語法，但學習門檻變高)<br>看自己手上的專案斟酌吧。</p>]]></content>
-    
-    
-      
-      
-    <summary type="html">&lt;p&gt;在寫Javascript時會看到??的語法或?.的用法。&lt;br&gt;在這稍微做解釋:  &lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;?.可選鏈:&lt;/strong&gt;&lt;br&gt;作用:可以簡化寫法，因為Javascript如果強制叫出不存在的物件會出現錯誤，所以原本寫法都要寫很長去檢查物件屬性是否</summary>
-      
-    
-    
-    
-    <category term="Code" scheme="https://yuhsiang237.github.io/categories/Code/"/>
-    
-    <category term="Javascript" scheme="https://yuhsiang237.github.io/categories/Code/Javascript/"/>
     
     
   </entry>
