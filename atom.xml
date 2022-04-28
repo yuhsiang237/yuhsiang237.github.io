@@ -6,7 +6,7 @@
   <link href="https://yuhsiang237.github.io/atom.xml" rel="self"/>
   
   <link href="https://yuhsiang237.github.io/"/>
-  <updated>2022-04-28T02:54:54.553Z</updated>
+  <updated>2022-04-28T07:33:54.655Z</updated>
   <id>https://yuhsiang237.github.io/</id>
   
   <author>
@@ -15,6 +15,32 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Server SQL 使用GUID當作PK範例</title>
+    <link href="https://yuhsiang237.github.io/2022/04/28/Server-SQL-%E4%BD%BF%E7%94%A8GUID%E7%95%B6%E4%BD%9CPK%E7%AF%84%E4%BE%8B/"/>
+    <id>https://yuhsiang237.github.io/2022/04/28/Server-SQL-%E4%BD%BF%E7%94%A8GUID%E7%95%B6%E4%BD%9CPK%E7%AF%84%E4%BE%8B/</id>
+    <published>2022-04-28T07:16:43.000Z</published>
+    <updated>2022-04-28T07:33:54.655Z</updated>
+    
+    <content type="html"><![CDATA[<p>使用GUID需要將型別設定為uniqueidentifier。預設值通常會為NEWID()，即從資料庫生成時自動產生GUID帶入。</p><p>1.建立Table</p><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> Users (</span><br><span class="line">    [GUID] uniqueidentifier <span class="keyword">NOT</span> <span class="keyword">NULL</span> <span class="keyword">DEFAULT</span> NEWID(),</span><br><span class="line">    [Name] NVARCHAR(<span class="number">50</span>) <span class="keyword">NOT</span> <span class="keyword">NULL</span>,</span><br><span class="line">    <span class="keyword">CONSTRAINT</span> [PK_Users] <span class="keyword">PRIMARY</span> KEY CLUSTERED ([GUID] <span class="keyword">ASC</span>)</span><br><span class="line">);</span><br></pre></td></tr></table></figure><p>2.再來新增資料</p><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> Users</span><br><span class="line">(</span><br><span class="line">    [Name]</span><br><span class="line">)</span><br><span class="line"><span class="keyword">VALUES</span></span><br><span class="line">    (<span class="string">&#x27;MC HOTDOG&#x27;</span>),</span><br><span class="line">    (<span class="string">&#x27;張震嶽&#x27;</span>)</span><br></pre></td></tr></table></figure><p>3.查詢</p><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> Users</span><br></pre></td></tr></table></figure><p>結果:</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">GUIDName</span><br><span class="line">FB5AFFC7-0802-47F7-AFB3-531BC83B6C26張震嶽</span><br><span class="line">F8122471-70AE-43C5-9C40-A65ED54FACD5MC HOTDOG</span><br></pre></td></tr></table></figure><h3 id="總結"><a href="#總結" class="headerlink" title="總結"></a>總結</h3><p>使用GUID優點:<br>1.不會讓資料庫造成依賴ex:產生唯一識別碼<br>2.不用擔心鍵值重複(機率極低)ex:不同時間產的多資料表合成一張資料表<br>3.不好被猜測ex:F8122471-70AE-43C5-9C40-A65ED54FACD5<br>缺點:<br>1.空間使用GUID 16Bytes比整數的4Bytes多。<br>2.效能(待釐清，似乎眾說紛紜)</p><h3 id="參考資料"><a href="#參考資料" class="headerlink" title="參考資料"></a>參考資料</h3><ul><li><a href="https://www.mssqltips.com/sqlservertip/6002/what-is-a-guid-in-sql-server/">https://www.mssqltips.com/sqlservertip/6002/what-is-a-guid-in-sql-server/</a></li><li><a href="https://blog.darkthread.net/blog/guid-as-pk-on-db/">https://blog.darkthread.net/blog/guid-as-pk-on-db/</a></li><li><a href="https://iter01.com/540198.html">https://iter01.com/540198.html</a></li><li><a href="https://stackoverflow.com/questions/11938044/what-are-the-best-practices-for-using-a-guid-as-a-primary-key-specifically-rega">https://stackoverflow.com/questions/11938044/what-are-the-best-practices-for-using-a-guid-as-a-primary-key-specifically-rega</a></li></ul>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;p&gt;使用GUID需要將型別設定為uniqueidentifier。預設值通常會為NEWID()，即從資料庫生成時自動產生GUID帶入。&lt;/p&gt;
+&lt;p&gt;1.建立Table&lt;/p&gt;
+&lt;figure class=&quot;highlight sql&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class</summary>
+      
+    
+    
+    
+    <category term="Database" scheme="https://yuhsiang237.github.io/categories/Database/"/>
+    
+    <category term="SQL Server" scheme="https://yuhsiang237.github.io/categories/Database/SQL-Server/"/>
+    
+    
+  </entry>
   
   <entry>
     <title>PostgreSQL INSERT INTO MULTIPLE</title>
@@ -497,30 +523,6 @@
     <summary type="html">&lt;p&gt;(撰寫中。)&lt;/p&gt;
 &lt;h3 id=&quot;參考資料&quot;&gt;&lt;a href=&quot;#參考資料&quot; class=&quot;headerlink&quot; title=&quot;參考資料&quot;&gt;&lt;/a&gt;參考資料&lt;/h3&gt;&lt;ul&gt;
 &lt;li&gt;&lt;a href=&quot;https://www.twblogs.net/a/5ee9f9b</summary>
-      
-    
-    
-    
-    <category term="Database" scheme="https://yuhsiang237.github.io/categories/Database/"/>
-    
-    <category term="PostgreSQL" scheme="https://yuhsiang237.github.io/categories/Database/PostgreSQL/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>PostgreSQL Select 取得昨天、近幾天資料</title>
-    <link href="https://yuhsiang237.github.io/2022/03/11/PostgreSQL-Select-%E5%8F%96%E5%BE%97%E6%98%A8%E5%A4%A9%E3%80%81%E8%BF%91%E5%B9%BE%E5%A4%A9%E8%B3%87%E6%96%99/"/>
-    <id>https://yuhsiang237.github.io/2022/03/11/PostgreSQL-Select-%E5%8F%96%E5%BE%97%E6%98%A8%E5%A4%A9%E3%80%81%E8%BF%91%E5%B9%BE%E5%A4%A9%E8%B3%87%E6%96%99/</id>
-    <published>2022-03-11T01:46:14.000Z</published>
-    <updated>2022-03-11T02:16:39.925Z</updated>
-    
-    <content type="html"><![CDATA[<h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>最近遇到在PostgreSQL取得近幾天資料的問題，於是在思考是否有比較直覺得寫法?<br>後來發現用Between或&gt;=都可以。</p><p>以下有一個table:</p><p><strong>tb_record</strong></p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">seq | record_date(character varying(8))</span><br><span class="line">---- -----</span><br><span class="line">1   | 20220101</span><br><span class="line">2   | 20220103</span><br><span class="line">3   | 20220305</span><br><span class="line">4   | 20220308</span><br><span class="line">5   | 20220310</span><br></pre></td></tr></table></figure><p>比如今天是，20220310則:</p><p>取得昨天到今天的資料</p><p>between寫法:</p><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> </span><br><span class="line">    <span class="operator">*</span> </span><br><span class="line"><span class="keyword">FROM</span> </span><br><span class="line">    TB_RECORD </span><br><span class="line"><span class="keyword">WHERE</span></span><br><span class="line">    RECORD_DATE <span class="keyword">BETWEEN</span> TO_CHAR(NOW() <span class="operator">-</span> <span class="type">INTERVAL</span> <span class="string">&#x27;1 DAY&#x27;</span>,<span class="string">&#x27;YYYYMMDD&#x27;</span>) <span class="keyword">AND</span> TO_CHAR(NOW(),<span class="string">&#x27;YYYYMMDD&#x27;</span>)</span><br></pre></td></tr></table></figure><p>大於等於寫法:</p><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> </span><br><span class="line">    <span class="operator">*</span> </span><br><span class="line"><span class="keyword">FROM</span> </span><br><span class="line">    TB_RECORD </span><br><span class="line"><span class="keyword">WHERE</span></span><br><span class="line">    RECORD_DATE <span class="operator">&gt;=</span> TO_CHAR(NOW() <span class="operator">-</span> <span class="type">INTERVAL</span> <span class="string">&#x27;1 DAY&#x27;</span>,<span class="string">&#x27;YYYYMMDD&#x27;</span>)</span><br></pre></td></tr></table></figure><p>結果:</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">5   | 20220310</span><br></pre></td></tr></table></figure><p>取得近五天資料</p><p>between寫法:</p><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> </span><br><span class="line">    <span class="operator">*</span> </span><br><span class="line"><span class="keyword">FROM</span> </span><br><span class="line">    TB_RECORD </span><br><span class="line"><span class="keyword">WHERE</span></span><br><span class="line">    RECORD_DATE <span class="keyword">BETWEEN</span> TO_CHAR(NOW() <span class="operator">-</span> <span class="type">INTERVAL</span> <span class="string">&#x27;5 DAY&#x27;</span>,<span class="string">&#x27;YYYYMMDD&#x27;</span>) <span class="keyword">AND</span> TO_CHAR(NOW(),<span class="string">&#x27;YYYYMMDD&#x27;</span>)</span><br></pre></td></tr></table></figure><p>大於等於寫法:</p><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> </span><br><span class="line">    <span class="operator">*</span> </span><br><span class="line"><span class="keyword">FROM</span> </span><br><span class="line">    TB_RECORD </span><br><span class="line"><span class="keyword">WHERE</span></span><br><span class="line">    RECORD_DATE <span class="operator">&gt;=</span> TO_CHAR(NOW() <span class="operator">-</span> <span class="type">INTERVAL</span> <span class="string">&#x27;5 DAY&#x27;</span>,<span class="string">&#x27;YYYYMMDD&#x27;</span>)</span><br><span class="line"></span><br></pre></td></tr></table></figure><p>結果:</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">3   | 20220305</span><br><span class="line">4   | 20220308</span><br><span class="line">5   | 20220310</span><br></pre></td></tr></table></figure><h3 id="總結"><a href="#總結" class="headerlink" title="總結"></a>總結</h3><p>其實就是使用NOW()函數與INTERVAL條件去組日期區間去篩選(O)。<br>並且搭配一些內部的轉型。<br>以上面結果就是都轉成YYYYMMDD的字串去比較。</p>]]></content>
-    
-    
-      
-      
-    <summary type="html">&lt;h3 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h3&gt;&lt;p&gt;最近遇到在PostgreSQL取得近幾天資料的問題，於是在思考是否有比較直覺得寫法?&lt;br&gt;後來發現用Between或&amp;gt;=都可以。&lt;/</summary>
       
     
     
