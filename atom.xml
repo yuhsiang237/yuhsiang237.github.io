@@ -6,7 +6,7 @@
   <link href="https://yuhsiang237.github.io/atom.xml" rel="self"/>
   
   <link href="https://yuhsiang237.github.io/"/>
-  <updated>2022-04-22T08:48:22.646Z</updated>
+  <updated>2022-04-28T02:54:54.553Z</updated>
   <id>https://yuhsiang237.github.io/</id>
   
   <author>
@@ -15,6 +15,32 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>PostgreSQL INSERT INTO MULTIPLE</title>
+    <link href="https://yuhsiang237.github.io/2022/04/28/PostgreSQL-INSERT-INTO-MULTIPLE/"/>
+    <id>https://yuhsiang237.github.io/2022/04/28/PostgreSQL-INSERT-INTO-MULTIPLE/</id>
+    <published>2022-04-28T02:26:17.000Z</published>
+    <updated>2022-04-28T02:54:54.553Z</updated>
+    
+    <content type="html"><![CDATA[<h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>在SQL有時需要手動建立測資，但又不想逐行insert into時可以使用。</p><p>語法:</p><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> table_name (column_list)</span><br><span class="line"><span class="keyword">VALUES</span></span><br><span class="line">    (value_list_1),</span><br><span class="line">    (value_list_2),</span><br><span class="line">    ...</span><br><span class="line">    (value_list_n);</span><br></pre></td></tr></table></figure><p>舉例:</p><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> <span class="keyword">USER</span></span><br><span class="line">(</span><br><span class="line">    NAME,</span><br><span class="line">    BIRTHDAY</span><br><span class="line">)</span><br><span class="line"><span class="keyword">VALUES</span></span><br><span class="line">    (<span class="string">&#x27;胖虎&#x27;</span>,<span class="string">&#x27;1993-1-1&#x27;</span>),</span><br><span class="line">    (<span class="string">&#x27;小夫&#x27;</span>,<span class="string">&#x27;1993-2-1&#x27;</span>)</span><br></pre></td></tr></table></figure>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;h3 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h3&gt;&lt;p&gt;在SQL有時需要手動建立測資，但又不想逐行insert into時可以使用。&lt;/p&gt;
+&lt;p&gt;語法:&lt;/p&gt;
+&lt;figure class=&quot;h</summary>
+      
+    
+    
+    
+    <category term="Database" scheme="https://yuhsiang237.github.io/categories/Database/"/>
+    
+    <category term="PostgreSQL" scheme="https://yuhsiang237.github.io/categories/Database/PostgreSQL/"/>
+    
+    
+  </entry>
   
   <entry>
     <title>C# 文字組合的4種方式</title>
@@ -495,30 +521,6 @@
       
       
     <summary type="html">&lt;h3 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h3&gt;&lt;p&gt;最近遇到在PostgreSQL取得近幾天資料的問題，於是在思考是否有比較直覺得寫法?&lt;br&gt;後來發現用Between或&amp;gt;=都可以。&lt;/</summary>
-      
-    
-    
-    
-    <category term="Database" scheme="https://yuhsiang237.github.io/categories/Database/"/>
-    
-    <category term="PostgreSQL" scheme="https://yuhsiang237.github.io/categories/Database/PostgreSQL/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>PostgreSQL Left Join Lateral 用法</title>
-    <link href="https://yuhsiang237.github.io/2022/03/10/PostgreSQL-Left-Join-Lateral-%E7%94%A8%E6%B3%95/"/>
-    <id>https://yuhsiang237.github.io/2022/03/10/PostgreSQL-Left-Join-Lateral-%E7%94%A8%E6%B3%95/</id>
-    <published>2022-03-10T08:50:57.000Z</published>
-    <updated>2022-03-11T02:41:03.715Z</updated>
-    
-    <content type="html"><![CDATA[<h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>最近碰到一個PostgreSQL搜尋與句的問題。<br>就是怎樣在PostgreSQL達到類似SQL Server的Outer Apply的寫法。<br>因為需要在原本一對一的表，再去LEFT JOIN一個一對多資料。<br>並且把一對多資料取得一個結果存進一對一的表，像是Boolean、數量。</p><p>目標:<br>一張是訂單主表，一張是訂單明細表<br>想以主表為主，取得有幾張明細表數量。<br>Table如下:</p><p><strong>Table ORDER</strong></p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">SEQ</span><br><span class="line">---- </span><br><span class="line">1</span><br><span class="line">2</span><br></pre></td></tr></table></figure><p><strong>Table ORDER_DETAIL</strong></p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">SEQ  | ORDER_SEQ | NAME </span><br><span class="line">---------------------------</span><br><span class="line">1    | 1         | 訂單明細1</span><br><span class="line">2    | 2         | 訂單明細2</span><br><span class="line">3    | 2         | 訂單明細3</span><br></pre></td></tr></table></figure><p><strong>使用 Lateral :</strong></p><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> </span><br><span class="line">    O.SEQ <span class="keyword">AS</span> ORDER_SEQ,</span><br><span class="line">    RS.ORDER_DETAIL_COUNT</span><br><span class="line"><span class="keyword">FROM</span> <span class="keyword">ORDER</span> <span class="keyword">AS</span> O</span><br><span class="line"><span class="keyword">LEFT</span> <span class="keyword">JOIN</span> <span class="keyword">LATERAL</span>(</span><br><span class="line">    <span class="keyword">SELECT</span> <span class="built_in">COUNT</span>(OD.SEQ) <span class="keyword">AS</span> ORDER_DETAIL_COUNT <span class="keyword">FROM</span>  ORDER_DETAIL <span class="keyword">AS</span> OD </span><br><span class="line">    <span class="keyword">WHERE</span>   OD.ORDER_SEQ <span class="operator">=</span> O.SEQ</span><br><span class="line">) <span class="keyword">AS</span> RS <span class="keyword">ON</span> <span class="literal">TRUE</span></span><br></pre></td></tr></table></figure><p><strong>結果</strong></p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">ORDER_SEQ | ORDER_DETAIL_COUNT</span><br><span class="line">------------------------------</span><br><span class="line">1         | 1</span><br><span class="line">2         | 2</span><br></pre></td></tr></table></figure><p><strong>不用 Lateral:</strong></p><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> </span><br><span class="line">    O.SEQ <span class="keyword">AS</span> ORDER_SEQ,</span><br><span class="line">    RS.ORDER_DETAIL_COUNT</span><br><span class="line"><span class="keyword">FROM</span> <span class="keyword">ORDER</span> <span class="keyword">AS</span> O</span><br><span class="line"><span class="keyword">LEFT</span> <span class="keyword">JOIN</span> ORDER_DETAIL <span class="keyword">AS</span> OD <span class="keyword">on</span> OD.ORDER_SEQ <span class="operator">=</span> O.SEQ</span><br><span class="line"><span class="keyword">GROUP</span> <span class="keyword">BY</span> O.SEQ</span><br></pre></td></tr></table></figure><p><strong>結果</strong></p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">ORDER_SEQ | ORDER_DETAIL_COUNT</span><br><span class="line">------------------------------</span><br><span class="line">1         | 1</span><br><span class="line">2         | 2</span><br></pre></td></tr></table></figure><h3 id="總結"><a href="#總結" class="headerlink" title="總結"></a>總結</h3><p>用LATERAL會比較直覺，就不用最後再去GROUP BY。<br>如果想繼承上面LEFT JOIN表的條件，那LATERAL優勢就會出來，會顯得簡單很多。</p><h3 id="參考資料"><a href="#參考資料" class="headerlink" title="參考資料"></a>參考資料</h3><ul><li><a href="https://www.cnblogs.com/ricklz/p/12122808.html">https://www.cnblogs.com/ricklz/p/12122808.html</a></li></ul>]]></content>
-    
-    
-      
-      
-    <summary type="html">&lt;h3 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h3&gt;&lt;p&gt;最近碰到一個PostgreSQL搜尋與句的問題。&lt;br&gt;就是怎樣在PostgreSQL達到類似SQL Server的Outer Apply的</summary>
       
     
     
