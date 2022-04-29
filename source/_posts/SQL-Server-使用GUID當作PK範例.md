@@ -1,5 +1,5 @@
 ---
-title: Server SQL 使用GUID當作PK範例
+title: SQL Server 使用GUID當作PK範例
 date: 2022-04-28 15:16:43
 categories:
   - [Database,SQL Server]
