@@ -56,6 +56,8 @@ categories:
 7.這時去SQL Server看就成功被更新了
 {% asset_img "22.png" %}
 
+下面是我做的完整專案:  
+https://github.com/yuhsiang237/SQL-Server-Version-Control
 
 ### 參考資料
 - https://blog.yowko.com/sql-server-version-control/
