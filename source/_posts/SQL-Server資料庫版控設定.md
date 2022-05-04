@@ -39,8 +39,23 @@ categories:
 12.如此一來就可以版控了也可以設計資料庫
 {% asset_img "12.png" %}
 完成!
-完整專案如下:
-https://github.com/yuhsiang237/SQL-Server-Version-Control
+
+### 模擬資料庫欄位變更
+1.再來我們模擬資料表變更，新增了一個Email欄位
+{% asset_img "13.png" %}
+2.對資料庫專案右鍵點"結構描述比較"
+{% asset_img "14.png" %}
+3.之後會跳出這視窗，右邊選擇你遠端的資料庫
+{% asset_img "15.png" %}
+4.在這我就選遠端的TodoDB
+{% asset_img "16.png" %}
+5.選好後點擊"比較"
+{% asset_img "17.png" %}
+6.點完後點擊更新，底下會顯示更新狀態，顯示已經順利完成
+{% asset_img "21.png" %}
+7.這時去SQL Server看就成功被更新了
+{% asset_img "22.png" %}
+
 
 ### 參考資料
 - https://blog.yowko.com/sql-server-version-control/
