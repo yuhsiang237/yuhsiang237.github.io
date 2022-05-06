@@ -77,6 +77,138 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-sql-server-in-not-in" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2021/09/16/sql-server-in-not-in/" class="article-date">
+  <time class="dt-published" datetime="2021-09-16T03:45:33.000Z" itemprop="datePublished">2021-09-16</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Database/">Database</a>►<a class="article-category-link" href="/categories/Database/SQL-Server/">SQL Server</a>►<a class="article-category-link" href="/categories/Topic/">Topic</a>►<a class="article-category-link" href="/categories/Topic/2021-SQL-Server%E9%90%B5%E4%BA%BA%E8%B3%BD/">2021 SQL Server鐵人賽</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2021/09/16/sql-server-in-not-in/">[Day14] SQL server in與not in - SQL Server資料庫入門</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>在這回中將探討SQL server的in與not in 用法。</p>
+<h3 id="IN-與-NOT-IN"><a href="#IN-與-NOT-IN" class="headerlink" title="IN 與 NOT IN"></a>IN 與 NOT IN</h3><p>1.可以使用在where中揀選多個值<br>2.其實就是多個or的簡化寫法</p>
+<p>有點像是以下的感覺:</p>
+<p>where 欄位值 in (‘A’,’B’,’C’)<br>欄位值==’A’ or 欄位值==’B’ or 欄位值==’C’</p>
+<p>where 欄位值 not in (‘A’,’B’,’C’)<br>欄位值!=’A’ or 欄位值!=’B’ or 欄位值!=’C’</p>
+<p>1.給予明確數值，篩選是否在這些值中。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">SELECT column_name(s)</span><br><span class="line">FROM table_name</span><br><span class="line">WHERE column_name IN (value1, value2, ...); </span><br></pre></td></tr></table></figure>
+<p>2.可以用在子查詢上，篩選是否在子查詢的數值中</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">SELECT column_name(s)</span><br><span class="line">FROM table_name</span><br><span class="line">WHERE column_name IN (SELECT STATEMENT); </span><br></pre></td></tr></table></figure>
+
+<h3 id="範例實作"><a href="#範例實作" class="headerlink" title="範例實作"></a>範例實作</h3><p>在此，提供一下目前資料表中的測試資料，作為核對。</p>
+<p><strong>customers 顧客</strong></p>
+<img src="/2021/09/16/sql-server-in-not-in/%E9%A1%A7%E5%AE%A2.png" class="">
+<p><strong>products 產品</strong></p>
+<img src="/2021/09/16/sql-server-in-not-in/%E7%94%A2%E5%93%81.png" class="">
+<p><strong>orders 出貨單</strong></p>
+<img src="/2021/09/16/sql-server-in-not-in/%E8%A8%82%E5%96%AE.png" class="">
+<p><strong>order_details 出貨單明細</strong></p>
+<img src="/2021/09/16/sql-server-in-not-in/%E6%98%8E%E7%B4%B0.png" class="">
+
+<h3 id="實驗"><a href="#實驗" class="headerlink" title="實驗"></a>實驗</h3><p>實作:想取得產品名稱為PS5和PS4的產品。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Select * from products where name in (&#x27;PS5&#x27;,&#x27;PS4&#x27;)</span><br></pre></td></tr></table></figure>
+<p>結果:</p>
+<img src="/2021/09/16/sql-server-in-not-in/1.png" class="">
+
+<p>實作:想取訂單明細中不包含PS4的訂單。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Select * from order_details </span><br><span class="line">where product_number not in (Select number from products where name = &#x27;PS4&#x27; )</span><br></pre></td></tr></table></figure>
+<p>結果:<br>後方的子查詢結果是[‘P002’]，之後因為條件下not in表示是不包含P002，not in (‘P002’)。<br>所以得到不含PS4的訂單明細。</p>
+<img src="/2021/09/16/sql-server-in-not-in/2.png" class="">
+
+<h3 id="結論"><a href="#結論" class="headerlink" title="結論"></a>結論</h3><p>其實就把in拆成多個or去理解就好。</p>
+<p><strong>參考資料</strong><br><a target="_blank" rel="noopener" href="https://www.w3schools.com/sql/sql_in.asp">https://www.w3schools.com/sql/sql_in.asp</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://yuhsiang237.github.io/2021/09/16/sql-server-in-not-in/" data-id="cl0g433p5003vtwghhl499qfj" data-title="[Day14] SQL server in與not in - SQL Server資料庫入門" class="article-share-link">Teilen</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-適當的調整自己心態，不再當個完美主義者" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2021/09/16/%E9%81%A9%E7%95%B6%E7%9A%84%E8%AA%BF%E6%95%B4%E8%87%AA%E5%B7%B1%E5%BF%83%E6%85%8B%EF%BC%8C%E4%B8%8D%E5%86%8D%E7%95%B6%E5%80%8B%E5%AE%8C%E7%BE%8E%E4%B8%BB%E7%BE%A9%E8%80%85/" class="article-date">
+  <time class="dt-published" datetime="2021-09-15T23:21:08.000Z" itemprop="datePublished">2021-09-16</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Daily-Log/">Daily Log</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2021/09/16/%E9%81%A9%E7%95%B6%E7%9A%84%E8%AA%BF%E6%95%B4%E8%87%AA%E5%B7%B1%E5%BF%83%E6%85%8B%EF%BC%8C%E4%B8%8D%E5%86%8D%E7%95%B6%E5%80%8B%E5%AE%8C%E7%BE%8E%E4%B8%BB%E7%BE%A9%E8%80%85/">適當的調整自己心態，不再當個完美主義者</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>為什麼這麼說呢?因為這社會本來就不是完美的。</p>
+<img src="/2021/09/16/%E9%81%A9%E7%95%B6%E7%9A%84%E8%AA%BF%E6%95%B4%E8%87%AA%E5%B7%B1%E5%BF%83%E6%85%8B%EF%BC%8C%E4%B8%8D%E5%86%8D%E7%95%B6%E5%80%8B%E5%AE%8C%E7%BE%8E%E4%B8%BB%E7%BE%A9%E8%80%85/11aac1e1ef.jpg" class="">
+
+<p>完美是個理想狀況。</p>
+<p>過往，我在做事總有個目標，就是一次做到最好。因為這樣可以省下未來很多修改的功夫。<br>但是現在往回看的話，會發現：「欸！這方法好像在現在不算好了，已經過時了。」</p>
+<p>在工作上，就如面試，總想拿出很猛的作品，所以一直追加，但後來反而累死了自己。（真實）<br>(按:就像饒舌歌手都想把自己弄成很屌那樣)</p>
+<p>所以，我想改變我的作法了，先規劃<strong>最低限度的東西</strong>。<br>完美的這目標先擺在一旁，有時間，那就追求；沒時間，那就沒時間（誤）。</p>
+<h3 id="這邊講個例子"><a href="#這邊講個例子" class="headerlink" title="這邊講個例子"></a>這邊講個例子</h3><p><strong>例子1</strong><br>某公司開發A產品，公司目標是賺到錢，所以最低限度就是A產品做出來，完成交易。可以完成需求、對方能接受就好。<br>再來才是雙方提供交流再把他們變得更好。為了更好而畫蛇添足，也不見得帶來好結果。<br>所以不要一股腦的死做，差異是比較出來的。</p>
+<p><strong>例子2</strong><br>某面試需要有作品集，但實際上不知道面試公司到底要的水平、程度。<br>就依照自己能力，先規劃出個能夠展示的作品吧!<br>比如，簡單的留言板、訂單，想追求完美那就再到複雜的電商。</p>
+<p><strong>例子3</strong><br>想做一個遊戲，那就先把你想訴求的點先做出mockup吧!<br>可玩性還是角色?在做個類似分鏡的結構，最後再找特定領域的人把優化。<br>如把畫面變好要UI、把效能變好要程式、把角色變好要原畫師。</p>
+<h3 id="總結"><a href="#總結" class="headerlink" title="總結"></a>總結</h3><p>足球不是一個人能踢的，山不是一日就能堆的，坑不是一次就能填的。</p>
+<ol>
+<li>循序漸進，不然就只會被壓力轟炸而無法繼續下去。</li>
+<li>講求比較實際的作法，嘗試再修正找到一條能通的路。</li>
+</ol>
+<p>最後補充，其實寫這種非技術文章可能對技術提升沒什麼用。<br>但是，想到有人可能會跟我過去一樣執迷不悟，就自己現身說法，希望能改善到看這文章的各位。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://yuhsiang237.github.io/2021/09/16/%E9%81%A9%E7%95%B6%E7%9A%84%E8%AA%BF%E6%95%B4%E8%87%AA%E5%B7%B1%E5%BF%83%E6%85%8B%EF%BC%8C%E4%B8%8D%E5%86%8D%E7%95%B6%E5%80%8B%E5%AE%8C%E7%BE%8E%E4%B8%BB%E7%BE%A9%E8%80%85/" data-id="cl0g433pr005stwghdr08co1w" data-title="適當的調整自己心態，不再當個完美主義者" class="article-share-link">Teilen</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
     <article id="post-sql-server-group-by-分組" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
     <a href="/2021/09/13/sql-server-group-by-%E5%88%86%E7%B5%84/" class="article-date">
@@ -860,160 +992,6 @@
 
 
   
-    <article id="post-SQL-server資料庫正規化" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2021/09/05/SQL-server%E8%B3%87%E6%96%99%E5%BA%AB%E6%AD%A3%E8%A6%8F%E5%8C%96/" class="article-date">
-  <time class="dt-published" datetime="2021-09-04T16:54:08.000Z" itemprop="datePublished">2021-09-05</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/Database/">Database</a>►<a class="article-category-link" href="/categories/Database/SQL-Server/">SQL Server</a>►<a class="article-category-link" href="/categories/Topic/">Topic</a>►<a class="article-category-link" href="/categories/Topic/2021-SQL-Server%E9%90%B5%E4%BA%BA%E8%B3%BD/">2021 SQL Server鐵人賽</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2021/09/05/SQL-server%E8%B3%87%E6%96%99%E5%BA%AB%E6%AD%A3%E8%A6%8F%E5%8C%96/">[Day5] 規劃資料表，透過資料庫正規化 - SQL Server資料庫入門</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>這回主要淺談一下資料庫正規化，並且規劃我們的訂單資料表。</p>
-<h3 id="資料庫正規化"><a href="#資料庫正規化" class="headerlink" title="資料庫正規化"></a>資料庫正規化</h3><p>正規化的目的:</p>
-<ol>
-<li>避免資料重複或相互矛盾的情形。</li>
-<li>使資料庫在使用時能更有效率、更容易維護。</li>
-</ol>
-<p>正規化:</p>
-<ol>
-<li><p>資料庫的正規化共可分為1NF (Normal Form)、2NF、3NF、BCNF (Boyce-Codd Normal Form)、4NF、5NF 等多個階段, 不過對於一般資料庫設計來說, <strong>通常只需要執行到BCNF即可</strong>, 而其他更高階的正規化只有在特殊的情況下才用得到。</p>
-</li>
-<li><p>在資料表正規化的過程(1NF 到BCNF) 中, 每個階段都是以<strong>欄位的相依性</strong>, 做為分割資料表的依據之一。</p>
-</li>
-</ol>
-<p>什麼是相依性?<br>欄位相依:就是在資料表中，乙欄位的值必須搭配甲欄位才有意義，則我們說『乙欄位相依於甲欄位』。</p>
-<h3 id="第一正規化規則-1NF"><a href="#第一正規化規則-1NF" class="headerlink" title="第一正規化規則(1NF):"></a>第一正規化規則(1NF):</h3><p>1.決定主鍵:資料表中有主鍵, 而其他所有的欄位都相依於主鍵。<br>2.一個欄位只能有單一值:每個欄位中都只有儲存單一值,例如: 姓名欄位中不能存放2 個人的姓名。<br>3.消除意義上重複的欄位:資料表中沒有意義相同的多個欄位, 例如: 姓名1、姓名2…等重複的欄位。</p>
-<p>如果不符合一階可能會造成:存取效率低、資料長度無法確定</p>
-<h3 id="第二正規化規則-2NF"><a href="#第二正規化規則-2NF" class="headerlink" title="第二正規化規則(2NF):"></a>第二正規化規則(2NF):</h3><p>1.符合1NF 的格式<br>2.去除『部分相依性』:各欄位與主鍵間沒有部分相依的關係。</p>
-<p><strong>部分相依:</strong> 只有在主鍵是由多個欄位組成時才會發生，部分相依的欄位只與主鍵中的部分欄位有相依性，而與另一部份的欄位沒有相依性。</p>
-<p>要除去資料表中的部分相依性, 只需將部份相依的欄位分割成另外的資料表即可。<br>因為完成第一階時容易會有資料重複問題，因此要執行第二階。</p>
-<h3 id="第三正規化規則-3NF"><a href="#第三正規化規則-3NF" class="headerlink" title="第三正規化規則(3NF):"></a>第三正規化規則(3NF):</h3><p>1.符合2NF 的格式。<br>2.去除『間接相依性』:各欄位與主鍵間沒有間接相依的關係。</p>
-<p><strong>間接(遞移)相依:</strong> 是指二個欄位並非直接相依，而是藉助其他欄位來達成資料相依的關係。例如A與B相依且B與C相依，則我們說A與C為間接相依。</p>
-<p>消除遞移相依：非主鍵屬性的欄位都只能和候選鍵相關，非主鍵屬性的欄位彼此間應該要是獨立無關的</p>
-<p>候選鍵：欄位組合讓資料能是唯一的，並且是最小唯一</p>
-<p>要除去資料表中的間接相依性, 其方法和除去部分相依性完全相同。例如:可再分割成N個資料表。</p>
-<h3 id="Boyce-Codd-正規化-BCNF"><a href="#Boyce-Codd-正規化-BCNF" class="headerlink" title="Boyce-Codd 正規化(BCNF)"></a>Boyce-Codd 正規化(BCNF)</h3><p>對於大部分資料庫來說, 通常只需要執行到第三階段的正規化即足夠了。如果資料表的主鍵是由多個欄位組成的, 則必須再執行Boyce-Codd 正規化</p>
-<p>1.符合2NF 的格式。<br>2.各欄位與主鍵沒有間接相依的關係。<br>3.主鍵中的各欄位不可以相依於其他非主鍵的欄位。</p>
-<h3 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h3><p>正規化的另類思考:<br>1.不必要的分割:正規化的工作有時候不必做的太徹底, 因為過多的資料表可能會降低系統執行的效能。<br>2.人工的分割:有時為了增加資料處理的效率, 我們可以將已經符合BCNF 的資料表再做分割。一個資料表擁有很多欄位, 而其中又有<br>很多欄位根本很少用到。那麼, 我們就可以將這些很少用到的欄位分離出來, 存放到另外一個資料表中。</p>
-<h3 id="正規化實作－訂單"><a href="#正規化實作－訂單" class="headerlink" title="正規化實作－訂單"></a>正規化實作－訂單</h3><img src="/2021/09/05/SQL-server%E8%B3%87%E6%96%99%E5%BA%AB%E6%AD%A3%E8%A6%8F%E5%8C%96/%E8%A8%82%E5%96%AE.png" class="" title="訂單範例">
-
-<p><strong>步驟1:正規化前</strong></p>
-<img src="/2021/09/05/SQL-server%E8%B3%87%E6%96%99%E5%BA%AB%E6%AD%A3%E8%A6%8F%E5%8C%96/UNDO.png" class="" title="正規化前">
-
-<p><strong>步驟2:1NF後</strong></p>
-<p>1.決定主鍵:資料表中有主鍵, 而其他所有的欄位都相依於主鍵。<br>2.一個欄位只能有單一值:每個欄位中都只有儲存單一值,例如: 姓名欄位中不能存放2 個人的姓名。<br>3.消除意義上重複的欄位:資料表中沒有意義相同的多個欄位, 例如: 姓名1、姓名2…等重複的欄位。</p>
-<p>把因欄位單一值的欄位獨立成另一個表、決定主鍵，因為沒有重複欄位所以不用消除。</p>
-<img src="/2021/09/05/SQL-server%E8%B3%87%E6%96%99%E5%BA%AB%E6%AD%A3%E8%A6%8F%E5%8C%96/1NF.png" class="" title="1NF">
-
-<p><strong>步驟3:經過2NF &amp; 3NF 後</strong></p>
-<p>2NF:<br>1.符合1NF 的格式<br>2.去除『部分相依性』:各欄位與主鍵間沒有部分相依的關係。<br>3NF:<br>1.符合2NF 的格式<br>2.去除『間接相依性』:各欄位與主鍵間沒有間接相依的關係。</p>
-<p>不斷比較各個欄位與該列表的主鍵關係，把表拆出。</p>
-<p>*出貨單號、出貨日期、運送地址、客戶簽名、總計，有部分相依性<br>客戶姓名、客戶電話，有部分相依性<br>所以各自拆成兩張表</p>
-<p>*明細流水號、出貨單號、數量、金額、備註，有部分相依性<br>產品、單價，有部分相依性<br>所以各自拆成兩張表</p>
-<p>出貨單表的總計容易因為出貨單明細的數量*金額而變動，因此可考慮刪掉，但有時實際上又會因廠商變動而實際上硬壓上一個金額，所以還是先留著。</p>
-<p>我在處理時覺得2跟3很難分開做，所以做完已經3階。</p>
-<img src="/2021/09/05/SQL-server%E8%B3%87%E6%96%99%E5%BA%AB%E6%AD%A3%E8%A6%8F%E5%8C%96/2NF&3NF.png" class="" title="2NF&amp;3NF">
-
-<p>然後關聯</p>
-<img src="/2021/09/05/SQL-server%E8%B3%87%E6%96%99%E5%BA%AB%E6%AD%A3%E8%A6%8F%E5%8C%96/2NF&3NF%E9%97%9C%E8%81%AF.png" class="" title="2NF&amp;3NF關聯">
-
-<p><strong>20210905修正</strong><br>為了避免未來產品單價變動，造成日後撈訂單時價格改變，因此在訂單明細增加單價</p>
-<img src="/2021/09/05/SQL-server%E8%B3%87%E6%96%99%E5%BA%AB%E6%AD%A3%E8%A6%8F%E5%8C%96/%E8%B3%87%E6%96%99%E8%A1%A8%E4%BF%AE%E6%AD%A3.png" class="" title="資料表修正">
-
-
-<h3 id="結語"><a href="#結語" class="headerlink" title="結語"></a>結語</h3><p>第一正規化做好後，第二正規化、第三正規要注意一點去做，讓結構拆開來，日後擴充會比較容易。<br>我自己在2~3階時有點對定義模糊，就是不斷把不相關跟主鍵去比，然後拆出來、拉關聯。(日後如果發覺錯誤會回來改正。)<br>此外補充一下，我覺得這種抽象的理論比實作重要，因為他沒辦法直接複製貼上，要透過動腦去分析，是累積功力的一個好方法。</p>
-<p>Q1:我有一點疑問在＂單價＂比如往後需要調用歷史資料，而商品的單價改動，會接連造成訂單對不上，所以是否該把明細流水號增加單價?<br>ANS:20210905補上，針對這種日後可能會調度欄位、有糾紛問題的數值，存當時寫入的值比較穩定。因為是”歷史資料”，通常會限制成不可改，只能把整筆訂單刪除。<br>後來看了:<a target="_blank" rel="noopener" href="https://ithelp.ithome.com.tw/m/questions/10197039?fbclid=IwAR1sdXPCl2JtFvhauc76aUcEuNIEtfcvH2TzodALPmC08HL8R-7mp74eLZc">https://ithelp.ithome.com.tw/m/questions/10197039?fbclid=IwAR1sdXPCl2JtFvhauc76aUcEuNIEtfcvH2TzodALPmC08HL8R-7mp74eLZc</a><br>這個問題是「需求」問題，看PM或SA想怎麼呈現<br>簡單的答案:沒必要<br>複雜的答案:要看資料欄位的「變化性」</p>
-<p><strong>參考資料</strong><br><a target="_blank" rel="noopener" href="http://140.118.9.79/UML-SASD/%E6%AD%A3%E8%A6%8F%E5%8C%96.pdf">http://140.118.9.79/UML-SASD/%E6%AD%A3%E8%A6%8F%E5%8C%96.pdf</a><br><a target="_blank" rel="noopener" href="http://9715109.blogspot.com/2010/10/12.html">http://9715109.blogspot.com/2010/10/12.html</a><br><a target="_blank" rel="noopener" href="https://ithelp.ithome.com.tw/articles/10229472">https://ithelp.ithome.com.tw/articles/10229472</a><br><a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=FgQ4QrwVNk0">https://www.youtube.com/watch?v=FgQ4QrwVNk0</a><br><a target="_blank" rel="noopener" href="http://spaces.isu.edu.tw/upload/19225/0/news/postfile_349.pdf">http://spaces.isu.edu.tw/upload/19225/0/news/postfile_349.pdf</a><br><a target="_blank" rel="noopener" href="https://www.ptt.cc/bbs/Soft_Job/M.1623612131.A.33C.html">https://www.ptt.cc/bbs/Soft_Job/M.1623612131.A.33C.html</a><br><a target="_blank" rel="noopener" href="https://ithelp.ithome.com.tw/m/questions/10197039?fbclid=IwAR1sdXPCl2JtFvhauc76aUcEuNIEtfcvH2TzodALPmC08HL8R-7mp74eLZc">https://ithelp.ithome.com.tw/m/questions/10197039?fbclid=IwAR1sdXPCl2JtFvhauc76aUcEuNIEtfcvH2TzodALPmC08HL8R-7mp74eLZc</a></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://yuhsiang237.github.io/2021/09/05/SQL-server%E8%B3%87%E6%96%99%E5%BA%AB%E6%AD%A3%E8%A6%8F%E5%8C%96/" data-id="cl0g433ov002ntwghd5m43geo" data-title="[Day5] 規劃資料表，透過資料庫正規化 - SQL Server資料庫入門" class="article-share-link">Teilen</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-SQL-server資料表規劃" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2021/09/04/SQL-server%E8%B3%87%E6%96%99%E8%A1%A8%E8%A6%8F%E5%8A%83/" class="article-date">
-  <time class="dt-published" datetime="2021-09-04T08:06:08.000Z" itemprop="datePublished">2021-09-04</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/Database/">Database</a>►<a class="article-category-link" href="/categories/Database/SQL-Server/">SQL Server</a>►<a class="article-category-link" href="/categories/Topic/">Topic</a>►<a class="article-category-link" href="/categories/Topic/2021-SQL-Server%E9%90%B5%E4%BA%BA%E8%B3%BD/">2021 SQL Server鐵人賽</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2021/09/04/SQL-server%E8%B3%87%E6%96%99%E8%A1%A8%E8%A6%8F%E5%8A%83/">[Day4] SQL Server資料庫建立 - SQL Server資料庫入門</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>這回我們利用SQL Server建立訂單的資料庫。<br>並給出一個例子，模擬PM或SA給你的訂單表格，要你把它轉成資料庫型態。</p>
-<h3 id="訂單表單"><a href="#訂單表單" class="headerlink" title="訂單表單"></a>訂單表單</h3><p>如下:(ps.這訂單來自參考資料的內容)</p>
-<img src="/2021/09/04/SQL-server%E8%B3%87%E6%96%99%E8%A1%A8%E8%A6%8F%E5%8A%83/%E8%A8%82%E5%96%AE.png" class="" title="訂單">
-
-<h3 id="建立資料庫"><a href="#建立資料庫" class="headerlink" title="建立資料庫"></a>建立資料庫</h3><p>Database&gt;New Database</p>
-<img src="/2021/09/04/SQL-server%E8%B3%87%E6%96%99%E8%A1%A8%E8%A6%8F%E5%8A%83/Screenshot%202021-09-04%20162949.png" class="" title="建立資料庫步驟1">
-<p>Database&gt;New Database<br>輸出資料庫名稱Orders</p>
-<img src="/2021/09/04/SQL-server%E8%B3%87%E6%96%99%E8%A1%A8%E8%A6%8F%E5%8A%83/Screenshot%202021-09-04%20163147.png" class="" title="建立資料庫步驟2">
-<p>可以見到左方出現了Orders資料庫</p>
-<img src="/2021/09/04/SQL-server%E8%B3%87%E6%96%99%E8%A1%A8%E8%A6%8F%E5%8A%83/Screenshot%202021-09-04%20163420.png" class="" title="建立資料庫步驟3">
-
-
-<h3 id="結語"><a href="#結語" class="headerlink" title="結語"></a>結語</h3><p>在這回中，我們建立了一個訂單資料庫。<br>在下回中，會把資料庫正規化拿出來談一下，並且設計這張訂單的資料表。</p>
-<p><strong>參考資料</strong><br><a target="_blank" rel="noopener" href="https://ithelp.ithome.com.tw/articles/10214308">https://ithelp.ithome.com.tw/articles/10214308</a><br><a target="_blank" rel="noopener" href="http://cc.cust.edu.tw/~ccchen/doc/db_04.pdf">http://cc.cust.edu.tw/~ccchen/doc/db_04.pdf</a><br><a target="_blank" rel="noopener" href="https://ithelp.ithome.com.tw/articles/10229472">https://ithelp.ithome.com.tw/articles/10229472</a><br><a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E6%95%B0%E6%8D%AE%E5%BA%93%E8%A7%84%E8%8C%83%E5%8C%96">https://zh.wikipedia.org/wiki/%E6%95%B0%E6%8D%AE%E5%BA%93%E8%A7%84%E8%8C%83%E5%8C%96</a><br><a target="_blank" rel="noopener" href="http://140.118.9.79/UML-SASD/%E6%AD%A3%E8%A6%8F%E5%8C%96.pdf">http://140.118.9.79/UML-SASD/%E6%AD%A3%E8%A6%8F%E5%8C%96.pdf</a></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://yuhsiang237.github.io/2021/09/04/SQL-server%E8%B3%87%E6%96%99%E8%A1%A8%E8%A6%8F%E5%8A%83/" data-id="cl0g433ox002stwghcv2ie3ji" data-title="[Day4] SQL Server資料庫建立 - SQL Server資料庫入門" class="article-share-link">Teilen</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
 
 
   <nav id="page-nav">
@@ -1029,7 +1007,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Kategorien</h3>
     <div class="widget">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Code/">Code</a><span class="category-list-count">62</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Code/C/">C#</a><span class="category-list-count">58</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Code/Javascript/">Javascript</a><span class="category-list-count">5</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/">Computer Science</a><span class="category-list-count">5</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/Algorithm/">Algorithm</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/Data-structure/">Data structure</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/%E9%9B%BB%E5%AD%90%E9%9B%BB%E8%B7%AF/">電子電路</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Daily-Log/">Daily Log</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/">Database</a><span class="category-list-count">50</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Database/PostgreSQL/">PostgreSQL</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/SQL-Server/">SQL Server</a><span class="category-list-count">41</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/">Framework</a><span class="category-list-count">27</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/AspNetCore-API/">AspNetCore API</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/AspNetCore-MVC/">AspNetCore MVC</a><span class="category-list-count">21</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/">Topic</a><span class="category-list-count">70</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2021-C-AspNetCore%E9%90%B5%E4%BA%BA%E8%B3%BD/">2021 C# AspNetCore鐵人賽</a><span class="category-list-count">30</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2021-SQL-Server%E9%90%B5%E4%BA%BA%E8%B3%BD/">2021 SQL Server鐵人賽</a><span class="category-list-count">30</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2022-C-%E5%9F%B7%E8%A1%8C%E7%B7%92%E5%90%8C%E6%AD%A5%E7%95%B0%E6%AD%A5%E7%B7%A8%E7%A8%8B%E8%A8%98/">2022 C# 執行緒同步異步編程記</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/LeetCode/">LeetCode</a><span class="category-list-count">3</span></li></ul></li></ul>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Code/">Code</a><span class="category-list-count">62</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Code/C/">C#</a><span class="category-list-count">58</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Code/Javascript/">Javascript</a><span class="category-list-count">5</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/">Computer Science</a><span class="category-list-count">5</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/Algorithm/">Algorithm</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/Data-structure/">Data structure</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/%E9%9B%BB%E5%AD%90%E9%9B%BB%E8%B7%AF/">電子電路</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Daily-Log/">Daily Log</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/">Database</a><span class="category-list-count">52</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Database/PostgreSQL/">PostgreSQL</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/SQL-Server/">SQL Server</a><span class="category-list-count">42</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/">Framework</a><span class="category-list-count">27</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/AspNetCore-API/">AspNetCore API</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/AspNetCore-MVC/">AspNetCore MVC</a><span class="category-list-count">21</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/">Topic</a><span class="category-list-count">70</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2021-C-AspNetCore%E9%90%B5%E4%BA%BA%E8%B3%BD/">2021 C# AspNetCore鐵人賽</a><span class="category-list-count">30</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2021-SQL-Server%E9%90%B5%E4%BA%BA%E8%B3%BD/">2021 SQL Server鐵人賽</a><span class="category-list-count">30</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2022-C-%E5%9F%B7%E8%A1%8C%E7%B7%92%E5%90%8C%E6%AD%A5%E7%95%B0%E6%AD%A5%E7%B7%A8%E7%A8%8B%E8%A8%98/">2022 C# 執行緒同步異步編程記</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/LeetCode/">LeetCode</a><span class="category-list-count">3</span></li></ul></li></ul>
     </div>
   </div>
 
@@ -1039,7 +1017,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Archiv</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/05/">五月 2022</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/04/">四月 2022</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/03/">三月 2022</a><span class="archive-list-count">17</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/02/">二月 2022</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/01/">一月 2022</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">十二月 2021</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">十月 2021</a><span class="archive-list-count">24</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">九月 2021</a><span class="archive-list-count">46</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">八月 2021</a><span class="archive-list-count">12</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/05/">五月 2022</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/04/">四月 2022</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/03/">三月 2022</a><span class="archive-list-count">17</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/02/">二月 2022</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/01/">一月 2022</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">十二月 2021</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">十月 2021</a><span class="archive-list-count">24</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">九月 2021</a><span class="archive-list-count">46</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">八月 2021</a><span class="archive-list-count">12</span></li></ul>
     </div>
   </div>
 

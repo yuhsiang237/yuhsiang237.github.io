@@ -77,6 +77,148 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-sql-server-資料庫管理帳號新增" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2021/09/17/sql-server-%E8%B3%87%E6%96%99%E5%BA%AB%E7%AE%A1%E7%90%86%E5%B8%B3%E8%99%9F%E6%96%B0%E5%A2%9E/" class="article-date">
+  <time class="dt-published" datetime="2021-09-17T04:40:37.000Z" itemprop="datePublished">2021-09-17</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Database/">Database</a>►<a class="article-category-link" href="/categories/Database/SQL-Server/">SQL Server</a>►<a class="article-category-link" href="/categories/Topic/">Topic</a>►<a class="article-category-link" href="/categories/Topic/2021-SQL-Server%E9%90%B5%E4%BA%BA%E8%B3%BD/">2021 SQL Server鐵人賽</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2021/09/17/sql-server-%E8%B3%87%E6%96%99%E5%BA%AB%E7%AE%A1%E7%90%86%E5%B8%B3%E8%99%9F%E6%96%B0%E5%A2%9E/">[Day24] SQL server 資料庫管理帳號新增 - SQL Server資料庫入門</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>當我們一開始安裝SQL server時，系統會幫我們預設一組帳號，即最高管理員帳號。<br>但當我們實際開發時，勢必不會使用這組帳號，因為太過危險了。<br>他能夠刪除資料庫、表，哪天被入侵、盜用時整個資料庫都會有危險。<br>所以，在此要介紹一下新增自訂權限的管理員。</p>
+<h3 id="新增自訂的資料庫管理員"><a href="#新增自訂的資料庫管理員" class="headerlink" title="新增自訂的資料庫管理員"></a>新增自訂的資料庫管理員</h3><p>1.新增登入</p>
+<img src="/2021/09/17/sql-server-%E8%B3%87%E6%96%99%E5%BA%AB%E7%AE%A1%E7%90%86%E5%B8%B3%E8%99%9F%E6%96%B0%E5%A2%9E/1.png" class="">
+<p>2.填入帳、密資料</p>
+<img src="/2021/09/17/sql-server-%E8%B3%87%E6%96%99%E5%BA%AB%E7%AE%A1%E7%90%86%E5%B8%B3%E8%99%9F%E6%96%B0%E5%A2%9E/1-1.png" class="">
+<p>3.可以在左方看到剛新增的管理員</p>
+<img src="/2021/09/17/sql-server-%E8%B3%87%E6%96%99%E5%BA%AB%E7%AE%A1%E7%90%86%E5%B8%B3%E8%99%9F%E6%96%B0%E5%A2%9E/2.png" class="">
+<p>4.屬性</p>
+<img src="/2021/09/17/sql-server-%E8%B3%87%E6%96%99%E5%BA%AB%E7%AE%A1%E7%90%86%E5%B8%B3%E8%99%9F%E6%96%B0%E5%A2%9E/3.png" class="">
+<p>5.使用混和模式登入</p>
+<img src="/2021/09/17/sql-server-%E8%B3%87%E6%96%99%E5%BA%AB%E7%AE%A1%E7%90%86%E5%B8%B3%E8%99%9F%E6%96%B0%E5%A2%9E/4.png" class="">
+<p>6.開啟SQL Server 2019 Configuration Manager，重啟SQL server。<br>注意，重新開機是沒效的，一定要用這種方法重新運作SQL server</p>
+<img src="/2021/09/17/sql-server-%E8%B3%87%E6%96%99%E5%BA%AB%E7%AE%A1%E7%90%86%E5%B8%B3%E8%99%9F%E6%96%B0%E5%A2%9E/5.png" class="">
+<p>7.登入帳號</p>
+<img src="/2021/09/17/sql-server-%E8%B3%87%E6%96%99%E5%BA%AB%E7%AE%A1%E7%90%86%E5%B8%B3%E8%99%9F%E6%96%B0%E5%A2%9E/6.png" class="">
+<p>8.成功登入</p>
+<img src="/2021/09/17/sql-server-%E8%B3%87%E6%96%99%E5%BA%AB%E7%AE%A1%E7%90%86%E5%B8%B3%E8%99%9F%E6%96%B0%E5%A2%9E/7.png" class="">
+<p>9.登入後選擇原本資料庫會發現沒有權限</p>
+<img src="/2021/09/17/sql-server-%E8%B3%87%E6%96%99%E5%BA%AB%E7%AE%A1%E7%90%86%E5%B8%B3%E8%99%9F%E6%96%B0%E5%A2%9E/9.png" class="">
+<p>10.回去編輯test01帳號，把Orders的db_owner勾起來即可。</p>
+<img src="/2021/09/17/sql-server-%E8%B3%87%E6%96%99%E5%BA%AB%E7%AE%A1%E7%90%86%E5%B8%B3%E8%99%9F%E6%96%B0%E5%A2%9E/10.png" class="">
+
+<h3 id="結論"><a href="#結論" class="headerlink" title="結論"></a>結論</h3><p>這樣一來就能限制某些帳號管理特定資料庫了。</p>
+<h3 id="參考資料"><a href="#參考資料" class="headerlink" title="參考資料"></a>參考資料</h3><p><a target="_blank" rel="noopener" href="https://ithelp.ithome.com.tw/articles/10214386">https://ithelp.ithome.com.tw/articles/10214386</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://yuhsiang237.github.io/2021/09/17/sql-server-%E8%B3%87%E6%96%99%E5%BA%AB%E7%AE%A1%E7%90%86%E5%B8%B3%E8%99%9F%E6%96%B0%E5%A2%9E/" data-id="cl0g433pb004etwgh1ai1hyzc" data-title="[Day24] SQL server 資料庫管理帳號新增 - SQL Server資料庫入門" class="article-share-link">Teilen</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-sql-server-資料庫備份使用sql" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2021/09/17/sql-server-%E8%B3%87%E6%96%99%E5%BA%AB%E5%82%99%E4%BB%BD%E4%BD%BF%E7%94%A8sql/" class="article-date">
+  <time class="dt-published" datetime="2021-09-17T02:36:37.000Z" itemprop="datePublished">2021-09-17</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Database/">Database</a>►<a class="article-category-link" href="/categories/Database/SQL-Server/">SQL Server</a>►<a class="article-category-link" href="/categories/Topic/">Topic</a>►<a class="article-category-link" href="/categories/Topic/2021-SQL-Server%E9%90%B5%E4%BA%BA%E8%B3%BD/">2021 SQL Server鐵人賽</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2021/09/17/sql-server-%E8%B3%87%E6%96%99%E5%BA%AB%E5%82%99%E4%BB%BD%E4%BD%BF%E7%94%A8sql/">[Day23] SQL server 資料庫備份與還原，使用sql - SQL Server資料庫入門</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>因為SQL server會有匯入舊版問題，像是把2019版的匯入到2008版的，所以要在探討另一個做法，即向下兼容的備份與還原。</p>
+<h3 id="備份"><a href="#備份" class="headerlink" title="備份"></a>備份</h3><p>1.選擇generate scripts</p>
+<img src="/2021/09/17/sql-server-%E8%B3%87%E6%96%99%E5%BA%AB%E5%82%99%E4%BB%BD%E4%BD%BF%E7%94%A8sql/1.png" class="">
+<p>2.會跳出框框，選擇進階、儲存成script</p>
+<img src="/2021/09/17/sql-server-%E8%B3%87%E6%96%99%E5%BA%AB%E5%82%99%E4%BB%BD%E4%BD%BF%E7%94%A8sql/2.png" class="">
+<p>3.可選擇想降級的SQL server版本</p>
+<img src="/2021/09/17/sql-server-%E8%B3%87%E6%96%99%E5%BA%AB%E5%82%99%E4%BB%BD%E4%BD%BF%E7%94%A8sql/3.png" class="">
+<p>4.可選擇只要匯出schema還是data</p>
+<img src="/2021/09/17/sql-server-%E8%B3%87%E6%96%99%E5%BA%AB%E5%82%99%E4%BB%BD%E4%BD%BF%E7%94%A8sql/4.png" class="">
+<p>5.點Next下一步</p>
+<img src="/2021/09/17/sql-server-%E8%B3%87%E6%96%99%E5%BA%AB%E5%82%99%E4%BB%BD%E4%BD%BF%E7%94%A8sql/5.png" class="">
+<p>6.也是點Next下一步</p>
+<img src="/2021/09/17/sql-server-%E8%B3%87%E6%96%99%E5%BA%AB%E5%82%99%E4%BB%BD%E4%BD%BF%E7%94%A8sql/6.png" class="">
+<p>7.等待生成完畢，點OK</p>
+<img src="/2021/09/17/sql-server-%E8%B3%87%E6%96%99%E5%BA%AB%E5%82%99%E4%BB%BD%E4%BD%BF%E7%94%A8sql/7.png" class="">
+<p>8.到資料夾就可以找到.sql檔案了</p>
+<img src="/2021/09/17/sql-server-%E8%B3%87%E6%96%99%E5%BA%AB%E5%82%99%E4%BB%BD%E4%BD%BF%E7%94%A8sql/8.png" class="">
+<h3 id="還原"><a href="#還原" class="headerlink" title="還原"></a>還原</h3><p>1.雙擊剛剛匯出的.sql</p>
+<img src="/2021/09/17/sql-server-%E8%B3%87%E6%96%99%E5%BA%AB%E5%82%99%E4%BB%BD%E4%BD%BF%E7%94%A8sql/8.png" class="">
+<p>2.執行他Execute</p>
+<img src="/2021/09/17/sql-server-%E8%B3%87%E6%96%99%E5%BA%AB%E5%82%99%E4%BB%BD%E4%BD%BF%E7%94%A8sql/9.png" class="">
+<p>3.這時會一直跑都跑不完，中止後發現錯誤，因為用.sql匯入要把原本資料庫給砍了。<br>不能有相同名稱的資料庫</p>
+<img src="/2021/09/17/sql-server-%E8%B3%87%E6%96%99%E5%BA%AB%E5%82%99%E4%BB%BD%E4%BD%BF%E7%94%A8sql/10.png" class="">
+<p>4.把現有資料庫給刪除</p>
+<img src="/2021/09/17/sql-server-%E8%B3%87%E6%96%99%E5%BA%AB%E5%82%99%E4%BB%BD%E4%BD%BF%E7%94%A8sql/11.png" class="">
+<p>5.勾選關閉資料庫連線後點擊OK</p>
+<img src="/2021/09/17/sql-server-%E8%B3%87%E6%96%99%E5%BA%AB%E5%82%99%E4%BB%BD%E4%BD%BF%E7%94%A8sql/12.png" class="">
+<p>6.此時，重新再跑一次，可以發現成功執行<br>刷新左方的資料庫，可以發現成功還原了。</p>
+<img src="/2021/09/17/sql-server-%E8%B3%87%E6%96%99%E5%BA%AB%E5%82%99%E4%BB%BD%E4%BD%BF%E7%94%A8sql/14.png" class="">
+
+<h3 id="使用-sql的優缺點"><a href="#使用-sql的優缺點" class="headerlink" title="使用.sql的優缺點"></a>使用.sql的優缺點</h3><p>優點:<br>1.可以選擇產出舊版 SQL Server 的 script<br>2.可以自行調整 script<br>可能會有問題的部分:<br>1.特殊字元或是 binary 無法匯入<br>參考:<a target="_blank" rel="noopener" href="https://social.technet.microsoft.com/Forums/zh-TW/1fc3c435-5b24-45bf-8cb9-1427e3392de2/293052753023383208032338420837sqlserver2001335722251043439930340?forum=sqlservermanagementzhcht">https://social.technet.microsoft.com/Forums/zh-TW/1fc3c435-5b24-45bf-8cb9-1427e3392de2/293052753023383208032338420837sqlserver2001335722251043439930340?forum=sqlservermanagementzhcht</a><br>(但我發現新版2019的都已經有自動幫你補上N了所以好像不太會有問題。)<br>補上:<br>在國際性資料庫中管理字元資料，最容易的方式是使用 Unicode nchar、nvarchar 和 nvarchar(max) 資料類型，而不是相對的非 Unicode char、varchar 和 text。</p>
+<p>2.如果想要建立相同的資料庫需要調整的內容較多。<br>(所以我上面做法是直接砍了。)</p>
+<h3 id="總結"><a href="#總結" class="headerlink" title="總結"></a>總結</h3><p>如果.bak不行才出此下策，通常是對方機器太舊才可能用這種方式。</p>
+<p><strong>參考資料</strong><br><a target="_blank" rel="noopener" href="https://blog.yowko.com/sql-server-backup-restore/">https://blog.yowko.com/sql-server-backup-restore/</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://yuhsiang237.github.io/2021/09/17/sql-server-%E8%B3%87%E6%96%99%E5%BA%AB%E5%82%99%E4%BB%BD%E4%BD%BF%E7%94%A8sql/" data-id="cl0g433pb004gtwghcwltcomb" data-title="[Day23] SQL server 資料庫備份與還原，使用sql - SQL Server資料庫入門" class="article-share-link">Teilen</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
     <article id="post-sql-server-資料庫備份" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
     <a href="/2021/09/17/sql-server-%E8%B3%87%E6%96%99%E5%BA%AB%E5%82%99%E4%BB%BD/" class="article-date">
@@ -683,138 +825,6 @@
 
 
   
-    <article id="post-sql-server-in-not-in" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2021/09/16/sql-server-in-not-in/" class="article-date">
-  <time class="dt-published" datetime="2021-09-16T03:45:33.000Z" itemprop="datePublished">2021-09-16</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/Database/">Database</a>►<a class="article-category-link" href="/categories/Database/SQL-Server/">SQL Server</a>►<a class="article-category-link" href="/categories/Topic/">Topic</a>►<a class="article-category-link" href="/categories/Topic/2021-SQL-Server%E9%90%B5%E4%BA%BA%E8%B3%BD/">2021 SQL Server鐵人賽</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2021/09/16/sql-server-in-not-in/">[Day14] SQL server in與not in - SQL Server資料庫入門</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p>在這回中將探討SQL server的in與not in 用法。</p>
-<h3 id="IN-與-NOT-IN"><a href="#IN-與-NOT-IN" class="headerlink" title="IN 與 NOT IN"></a>IN 與 NOT IN</h3><p>1.可以使用在where中揀選多個值<br>2.其實就是多個or的簡化寫法</p>
-<p>有點像是以下的感覺:</p>
-<p>where 欄位值 in (‘A’,’B’,’C’)<br>欄位值==’A’ or 欄位值==’B’ or 欄位值==’C’</p>
-<p>where 欄位值 not in (‘A’,’B’,’C’)<br>欄位值!=’A’ or 欄位值!=’B’ or 欄位值!=’C’</p>
-<p>1.給予明確數值，篩選是否在這些值中。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">SELECT column_name(s)</span><br><span class="line">FROM table_name</span><br><span class="line">WHERE column_name IN (value1, value2, ...); </span><br></pre></td></tr></table></figure>
-<p>2.可以用在子查詢上，篩選是否在子查詢的數值中</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">SELECT column_name(s)</span><br><span class="line">FROM table_name</span><br><span class="line">WHERE column_name IN (SELECT STATEMENT); </span><br></pre></td></tr></table></figure>
-
-<h3 id="範例實作"><a href="#範例實作" class="headerlink" title="範例實作"></a>範例實作</h3><p>在此，提供一下目前資料表中的測試資料，作為核對。</p>
-<p><strong>customers 顧客</strong></p>
-<img src="/2021/09/16/sql-server-in-not-in/%E9%A1%A7%E5%AE%A2.png" class="">
-<p><strong>products 產品</strong></p>
-<img src="/2021/09/16/sql-server-in-not-in/%E7%94%A2%E5%93%81.png" class="">
-<p><strong>orders 出貨單</strong></p>
-<img src="/2021/09/16/sql-server-in-not-in/%E8%A8%82%E5%96%AE.png" class="">
-<p><strong>order_details 出貨單明細</strong></p>
-<img src="/2021/09/16/sql-server-in-not-in/%E6%98%8E%E7%B4%B0.png" class="">
-
-<h3 id="實驗"><a href="#實驗" class="headerlink" title="實驗"></a>實驗</h3><p>實作:想取得產品名稱為PS5和PS4的產品。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Select * from products where name in (&#x27;PS5&#x27;,&#x27;PS4&#x27;)</span><br></pre></td></tr></table></figure>
-<p>結果:</p>
-<img src="/2021/09/16/sql-server-in-not-in/1.png" class="">
-
-<p>實作:想取訂單明細中不包含PS4的訂單。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Select * from order_details </span><br><span class="line">where product_number not in (Select number from products where name = &#x27;PS4&#x27; )</span><br></pre></td></tr></table></figure>
-<p>結果:<br>後方的子查詢結果是[‘P002’]，之後因為條件下not in表示是不包含P002，not in (‘P002’)。<br>所以得到不含PS4的訂單明細。</p>
-<img src="/2021/09/16/sql-server-in-not-in/2.png" class="">
-
-<h3 id="結論"><a href="#結論" class="headerlink" title="結論"></a>結論</h3><p>其實就把in拆成多個or去理解就好。</p>
-<p><strong>參考資料</strong><br><a target="_blank" rel="noopener" href="https://www.w3schools.com/sql/sql_in.asp">https://www.w3schools.com/sql/sql_in.asp</a></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://yuhsiang237.github.io/2021/09/16/sql-server-in-not-in/" data-id="cl0g433p5003vtwghhl499qfj" data-title="[Day14] SQL server in與not in - SQL Server資料庫入門" class="article-share-link">Teilen</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-適當的調整自己心態，不再當個完美主義者" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2021/09/16/%E9%81%A9%E7%95%B6%E7%9A%84%E8%AA%BF%E6%95%B4%E8%87%AA%E5%B7%B1%E5%BF%83%E6%85%8B%EF%BC%8C%E4%B8%8D%E5%86%8D%E7%95%B6%E5%80%8B%E5%AE%8C%E7%BE%8E%E4%B8%BB%E7%BE%A9%E8%80%85/" class="article-date">
-  <time class="dt-published" datetime="2021-09-15T23:21:08.000Z" itemprop="datePublished">2021-09-16</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/Daily-Log/">Daily Log</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2021/09/16/%E9%81%A9%E7%95%B6%E7%9A%84%E8%AA%BF%E6%95%B4%E8%87%AA%E5%B7%B1%E5%BF%83%E6%85%8B%EF%BC%8C%E4%B8%8D%E5%86%8D%E7%95%B6%E5%80%8B%E5%AE%8C%E7%BE%8E%E4%B8%BB%E7%BE%A9%E8%80%85/">適當的調整自己心態，不再當個完美主義者</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p>為什麼這麼說呢?因為這社會本來就不是完美的。</p>
-<img src="/2021/09/16/%E9%81%A9%E7%95%B6%E7%9A%84%E8%AA%BF%E6%95%B4%E8%87%AA%E5%B7%B1%E5%BF%83%E6%85%8B%EF%BC%8C%E4%B8%8D%E5%86%8D%E7%95%B6%E5%80%8B%E5%AE%8C%E7%BE%8E%E4%B8%BB%E7%BE%A9%E8%80%85/11aac1e1ef.jpg" class="">
-
-<p>完美是個理想狀況。</p>
-<p>過往，我在做事總有個目標，就是一次做到最好。因為這樣可以省下未來很多修改的功夫。<br>但是現在往回看的話，會發現：「欸！這方法好像在現在不算好了，已經過時了。」</p>
-<p>在工作上，就如面試，總想拿出很猛的作品，所以一直追加，但後來反而累死了自己。（真實）<br>(按:就像饒舌歌手都想把自己弄成很屌那樣)</p>
-<p>所以，我想改變我的作法了，先規劃<strong>最低限度的東西</strong>。<br>完美的這目標先擺在一旁，有時間，那就追求；沒時間，那就沒時間（誤）。</p>
-<h3 id="這邊講個例子"><a href="#這邊講個例子" class="headerlink" title="這邊講個例子"></a>這邊講個例子</h3><p><strong>例子1</strong><br>某公司開發A產品，公司目標是賺到錢，所以最低限度就是A產品做出來，完成交易。可以完成需求、對方能接受就好。<br>再來才是雙方提供交流再把他們變得更好。為了更好而畫蛇添足，也不見得帶來好結果。<br>所以不要一股腦的死做，差異是比較出來的。</p>
-<p><strong>例子2</strong><br>某面試需要有作品集，但實際上不知道面試公司到底要的水平、程度。<br>就依照自己能力，先規劃出個能夠展示的作品吧!<br>比如，簡單的留言板、訂單，想追求完美那就再到複雜的電商。</p>
-<p><strong>例子3</strong><br>想做一個遊戲，那就先把你想訴求的點先做出mockup吧!<br>可玩性還是角色?在做個類似分鏡的結構，最後再找特定領域的人把優化。<br>如把畫面變好要UI、把效能變好要程式、把角色變好要原畫師。</p>
-<h3 id="總結"><a href="#總結" class="headerlink" title="總結"></a>總結</h3><p>足球不是一個人能踢的，山不是一日就能堆的，坑不是一次就能填的。</p>
-<ol>
-<li>循序漸進，不然就只會被壓力轟炸而無法繼續下去。</li>
-<li>講求比較實際的作法，嘗試再修正找到一條能通的路。</li>
-</ol>
-<p>最後補充，其實寫這種非技術文章可能對技術提升沒什麼用。<br>但是，想到有人可能會跟我過去一樣執迷不悟，就自己現身說法，希望能改善到看這文章的各位。</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://yuhsiang237.github.io/2021/09/16/%E9%81%A9%E7%95%B6%E7%9A%84%E8%AA%BF%E6%95%B4%E8%87%AA%E5%B7%B1%E5%BF%83%E6%85%8B%EF%BC%8C%E4%B8%8D%E5%86%8D%E7%95%B6%E5%80%8B%E5%AE%8C%E7%BE%8E%E4%B8%BB%E7%BE%A9%E8%80%85/" data-id="cl0g433pr005stwghdr08co1w" data-title="適當的調整自己心態，不再當個完美主義者" class="article-share-link">Teilen</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
 
 
   <nav id="page-nav">
@@ -830,7 +840,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Kategorien</h3>
     <div class="widget">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Code/">Code</a><span class="category-list-count">62</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Code/C/">C#</a><span class="category-list-count">58</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Code/Javascript/">Javascript</a><span class="category-list-count">5</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/">Computer Science</a><span class="category-list-count">5</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/Algorithm/">Algorithm</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/Data-structure/">Data structure</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/%E9%9B%BB%E5%AD%90%E9%9B%BB%E8%B7%AF/">電子電路</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Daily-Log/">Daily Log</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/">Database</a><span class="category-list-count">50</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Database/PostgreSQL/">PostgreSQL</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/SQL-Server/">SQL Server</a><span class="category-list-count">41</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/">Framework</a><span class="category-list-count">27</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/AspNetCore-API/">AspNetCore API</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/AspNetCore-MVC/">AspNetCore MVC</a><span class="category-list-count">21</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/">Topic</a><span class="category-list-count">70</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2021-C-AspNetCore%E9%90%B5%E4%BA%BA%E8%B3%BD/">2021 C# AspNetCore鐵人賽</a><span class="category-list-count">30</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2021-SQL-Server%E9%90%B5%E4%BA%BA%E8%B3%BD/">2021 SQL Server鐵人賽</a><span class="category-list-count">30</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2022-C-%E5%9F%B7%E8%A1%8C%E7%B7%92%E5%90%8C%E6%AD%A5%E7%95%B0%E6%AD%A5%E7%B7%A8%E7%A8%8B%E8%A8%98/">2022 C# 執行緒同步異步編程記</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/LeetCode/">LeetCode</a><span class="category-list-count">3</span></li></ul></li></ul>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Code/">Code</a><span class="category-list-count">62</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Code/C/">C#</a><span class="category-list-count">58</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Code/Javascript/">Javascript</a><span class="category-list-count">5</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/">Computer Science</a><span class="category-list-count">5</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/Algorithm/">Algorithm</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/Data-structure/">Data structure</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/%E9%9B%BB%E5%AD%90%E9%9B%BB%E8%B7%AF/">電子電路</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Daily-Log/">Daily Log</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/">Database</a><span class="category-list-count">52</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Database/PostgreSQL/">PostgreSQL</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/SQL-Server/">SQL Server</a><span class="category-list-count">42</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/">Framework</a><span class="category-list-count">27</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/AspNetCore-API/">AspNetCore API</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/AspNetCore-MVC/">AspNetCore MVC</a><span class="category-list-count">21</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/">Topic</a><span class="category-list-count">70</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2021-C-AspNetCore%E9%90%B5%E4%BA%BA%E8%B3%BD/">2021 C# AspNetCore鐵人賽</a><span class="category-list-count">30</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2021-SQL-Server%E9%90%B5%E4%BA%BA%E8%B3%BD/">2021 SQL Server鐵人賽</a><span class="category-list-count">30</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2022-C-%E5%9F%B7%E8%A1%8C%E7%B7%92%E5%90%8C%E6%AD%A5%E7%95%B0%E6%AD%A5%E7%B7%A8%E7%A8%8B%E8%A8%98/">2022 C# 執行緒同步異步編程記</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/LeetCode/">LeetCode</a><span class="category-list-count">3</span></li></ul></li></ul>
     </div>
   </div>
 
@@ -840,7 +850,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Archiv</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/05/">五月 2022</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/04/">四月 2022</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/03/">三月 2022</a><span class="archive-list-count">17</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/02/">二月 2022</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/01/">一月 2022</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">十二月 2021</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">十月 2021</a><span class="archive-list-count">24</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">九月 2021</a><span class="archive-list-count">46</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">八月 2021</a><span class="archive-list-count">12</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/05/">五月 2022</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/04/">四月 2022</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/03/">三月 2022</a><span class="archive-list-count">17</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/02/">二月 2022</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/01/">一月 2022</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">十二月 2021</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">十月 2021</a><span class="archive-list-count">24</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">九月 2021</a><span class="archive-list-count">46</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">八月 2021</a><span class="archive-list-count">12</span></li></ul>
     </div>
   </div>
 

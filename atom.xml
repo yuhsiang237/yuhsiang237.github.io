@@ -6,7 +6,7 @@
   <link href="https://yuhsiang237.github.io/atom.xml" rel="self"/>
   
   <link href="https://yuhsiang237.github.io/"/>
-  <updated>2022-05-04T07:18:48.021Z</updated>
+  <updated>2022-05-06T02:53:38.334Z</updated>
   <id>https://yuhsiang237.github.io/</id>
   
   <author>
@@ -15,6 +15,55 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>SQL Server 建立複合鍵(composite primary key)</title>
+    <link href="https://yuhsiang237.github.io/2022/05/06/SQL-Server%E5%BB%BA%E7%AB%8B%E8%A4%87%E5%90%88%E9%8D%B5/"/>
+    <id>https://yuhsiang237.github.io/2022/05/06/SQL-Server%E5%BB%BA%E7%AB%8B%E8%A4%87%E5%90%88%E9%8D%B5/</id>
+    <published>2022-05-06T02:44:34.000Z</published>
+    <updated>2022-05-06T02:53:38.334Z</updated>
+    
+    <content type="html"><![CDATA[<p>在這篇簡易紀錄一下SQL複合鍵的做法。</p><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> Orders(</span><br><span class="line">OrderNumber NVARCHAR(<span class="number">50</span>),</span><br><span class="line">OrderType TINYINT,</span><br><span class="line">CreatedOn DATETIME,</span><br><span class="line">UpdatedOn DATETIME,</span><br><span class="line">IsValid BIT,</span><br><span class="line">Remarks NVARCHAR(<span class="number">100</span>) <span class="keyword">NULL</span></span><br><span class="line"><span class="keyword">PRIMARY</span> KEY (OrderNumber, OrderType)</span><br><span class="line">)</span><br></pre></td></tr></table></figure><p>就是在PRIMARY KEY加入兩個鍵值即可。<br>在此以OrderNumber、OrderType，表示同一訂單類型的編號不可重複。</p><p>如果是在SQL Server的介面設計上，就是點CTRL把需要設定的PK給匡列，之後再右鍵設定PK即可。</p>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;p&gt;在這篇簡易紀錄一下SQL複合鍵的做法。&lt;/p&gt;
+&lt;figure class=&quot;highlight sql&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line</summary>
+      
+    
+    
+    
+    <category term="Database" scheme="https://yuhsiang237.github.io/categories/Database/"/>
+    
+    <category term="SQL Server" scheme="https://yuhsiang237.github.io/categories/Database/SQL-Server/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>PostgreSQL get the start and end dates of prev month query</title>
+    <link href="https://yuhsiang237.github.io/2022/05/05/PostgreSQL-get-the-start-and-end-dates-of-prev-month-query/"/>
+    <id>https://yuhsiang237.github.io/2022/05/05/PostgreSQL-get-the-start-and-end-dates-of-prev-month-query/</id>
+    <published>2022-05-05T02:19:01.000Z</published>
+    <updated>2022-05-05T05:12:44.878Z</updated>
+    
+    <content type="html"><![CDATA[<p>WITH TEMP_TABLE AS<br>(<br>    SELECT ‘2022-03-01’::TIMESTAMP WITHOUT TIME ZONE AS MYDATE<br>    UNION ALL<br>    SELECT ‘2022-04-01’::TIMESTAMP WITHOUT TIME ZONE AS MYDATE<br>UNION ALL<br>    SELECT ‘2022-04-01’::TIMESTAMP WITHOUT TIME ZONE AS MYDATE<br>)</p>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;p&gt;WITH TEMP_TABLE AS&lt;br&gt;(&lt;br&gt;    SELECT ‘2022-03-01’::TIMESTAMP WITHOUT TIME ZONE AS MYDATE&lt;br&gt;    UNION ALL&lt;br&gt;    SELECT ‘2022-04-01’::TI</summary>
+      
+    
+    
+    
+    <category term="Database" scheme="https://yuhsiang237.github.io/categories/Database/"/>
+    
+    <category term="PostgreSQL" scheme="https://yuhsiang237.github.io/categories/Database/PostgreSQL/"/>
+    
+    
+  </entry>
   
   <entry>
     <title>SQL Server資料庫版控設定</title>
@@ -478,54 +527,6 @@
     <category term="Database" scheme="https://yuhsiang237.github.io/categories/Database/"/>
     
     <category term="SQL Server" scheme="https://yuhsiang237.github.io/categories/Database/SQL-Server/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>PostgreSQL 建立自動遞增PK Table</title>
-    <link href="https://yuhsiang237.github.io/2022/03/17/PostgreSQL-%E5%BB%BA%E7%AB%8B%E8%87%AA%E5%8B%95%E9%81%9E%E5%A2%9EPK-Table/"/>
-    <id>https://yuhsiang237.github.io/2022/03/17/PostgreSQL-%E5%BB%BA%E7%AB%8B%E8%87%AA%E5%8B%95%E9%81%9E%E5%A2%9EPK-Table/</id>
-    <published>2022-03-17T02:26:17.000Z</published>
-    <updated>2022-03-17T02:35:42.436Z</updated>
-    
-    <content type="html"><![CDATA[<h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>因為發現用PGADMIN建立Table速度太慢(超久的Loading)，因此最後就習慣用指令去建立Table了。<br>以下為在PostgreSQL建立一個遞增+1的SEQ欄位，且為Table的PK。</p><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> (</span><br><span class="line">    SEQ SERIAL <span class="keyword">PRIMARY</span> KEY,</span><br><span class="line">    NAME <span class="type">CHARACTER</span> <span class="type">VARYING</span>(<span class="number">100</span>) <span class="keyword">NULL</span>,</span><br><span class="line">    REMARK TEXT,</span><br><span class="line">    IS_VALID <span class="type">BOOLEAN</span> <span class="keyword">NULL</span>,</span><br><span class="line">    CREATED_ON <span class="type">TIMESTAMP</span> <span class="keyword">WITHOUT</span> <span class="type">TIME</span> ZONE <span class="keyword">NULL</span>,</span><br><span class="line">    UPDATED_ON <span class="type">TIMESTAMP</span> <span class="keyword">WITHOUT</span> <span class="type">TIME</span> ZONE <span class="keyword">NULL</span>,</span><br><span class="line">)</span><br></pre></td></tr></table></figure>]]></content>
-    
-    
-      
-      
-    <summary type="html">&lt;h3 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h3&gt;&lt;p&gt;因為發現用PGADMIN建立Table速度太慢(超久的Loading)，因此最後就習慣用指令去建立Table了。&lt;br&gt;以下為在Postgr</summary>
-      
-    
-    
-    
-    <category term="Database" scheme="https://yuhsiang237.github.io/categories/Database/"/>
-    
-    <category term="PostgreSQL" scheme="https://yuhsiang237.github.io/categories/Database/PostgreSQL/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>PostgreSQL 反條件式NOT</title>
-    <link href="https://yuhsiang237.github.io/2022/03/16/PostgreSQL-%E5%8F%8D%E6%A2%9D%E4%BB%B6%E5%BC%8FNOT/"/>
-    <id>https://yuhsiang237.github.io/2022/03/16/PostgreSQL-%E5%8F%8D%E6%A2%9D%E4%BB%B6%E5%BC%8FNOT/</id>
-    <published>2022-03-16T06:16:36.000Z</published>
-    <updated>2022-03-16T06:21:56.531Z</updated>
-    
-    <content type="html"><![CDATA[<h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>最近遇到要添加反例的案件，需要把整個條件反著寫。<br>但AND/OR反著寫就很違反閱讀習慣，於是找到了能用NOT這語句去概括整條件句，結果就可以變反。</p><p>如果有一表如下:</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">price_record</span><br><span class="line">id | price</span><br><span class="line">---+------</span><br><span class="line">1  | 100 </span><br><span class="line">2  | 200</span><br><span class="line">3  | 300</span><br></pre></td></tr></table></figure><p>IN:數值在這集合裡面。</p><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> PRICE_RECORD PR </span><br><span class="line"><span class="keyword">WHERE</span> <span class="keyword">NOT</span> </span><br><span class="line">    (</span><br><span class="line">        <span class="comment">-- 寫原本要反例的判斷邏輯</span></span><br><span class="line">        PR.PRICE <span class="keyword">IN</span> (<span class="string">&#x27;100&#x27;</span>,<span class="string">&#x27;200&#x27;</span>)</span><br><span class="line">    ) </span><br></pre></td></tr></table></figure><p>結果:</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">price_record</span><br><span class="line">id | price</span><br><span class="line">---+------</span><br><span class="line">3  | 300</span><br></pre></td></tr></table></figure>]]></content>
-    
-    
-      
-      
-    <summary type="html">&lt;h3 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h3&gt;&lt;p&gt;最近遇到要添加反例的案件，需要把整個條件反著寫。&lt;br&gt;但AND/OR反著寫就很違反閱讀習慣，於是找到了能用NOT這語句去概括整條件句，結果</summary>
-      
-    
-    
-    
-    <category term="Database" scheme="https://yuhsiang237.github.io/categories/Database/"/>
-    
-    <category term="PostgreSQL" scheme="https://yuhsiang237.github.io/categories/Database/PostgreSQL/"/>
     
     
   </entry>

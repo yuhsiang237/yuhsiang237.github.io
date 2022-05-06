@@ -77,6 +77,147 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-SQL-Server-NVARCHAR與VARCHAR差別比較" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2022/02/17/SQL-Server-NVARCHAR%E8%88%87VARCHAR%E5%B7%AE%E5%88%A5%E6%AF%94%E8%BC%83/" class="article-date">
+  <time class="dt-published" datetime="2022-02-17T02:34:02.000Z" itemprop="datePublished">2022-02-17</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Database/">Database</a>►<a class="article-category-link" href="/categories/Database/SQL-Server/">SQL Server</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2022/02/17/SQL-Server-NVARCHAR%E8%88%87VARCHAR%E5%B7%AE%E5%88%A5%E6%AF%94%E8%BC%83/">SQL Server NVARCHAR與VARCHAR差別比較</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>在開資料時在存字串常會有選擇上的問題，到底該存哪種型別?<br>而在此就稍微介紹NVARCHAR、VARCHAR的差異。<br>以SQL Server 2019資料庫為準。</p>
+<h3 id="NVARCHAR-n-max"><a href="#NVARCHAR-n-max" class="headerlink" title="NVARCHAR [ ( n | max ) ]"></a>NVARCHAR [ ( n | max ) ]</h3><p>n表示可變大小字串資料。 n 會定義字串大小 (單位為位元組配對)，且可以是 1 到 4,000 之間的值。max 表示儲存大小上限是 2^30-1 個字元 (2 GB)。 </p>
+<h3 id="VARCHAR-n-max"><a href="#VARCHAR-n-max" class="headerlink" title="VARCHAR [ ( n | max ) ]"></a>VARCHAR [ ( n | max ) ]</h3><p>使用 n 以位元組為單位來定義字串大小，該值可以介於 1 到 8,000，或使用 max 來表示資料行大小限制最多為 2^31-1 個位元組 (2 GB) 的儲存體。 </p>
+<table>
+<tr>
+<td></td>
+<td>NVARCHAR</td>
+<td>VARCHAR</td>
+</tr>
+<tr>
+<td>Unicode支援</td>
+<td>有</td>
+<td>無</td>
+</tr>
+<tr>
+<td>每個字元儲存容量</td>
+<td>英文字元2 Byte;非英文字元2 Byte</td>
+<td>英文字元1 Byte;非英文字元2 Byte</td>
+</tr>
+<tr>
+<td>儲存長度</td>
+<td>不定長，依照資料內容</td>
+<td>不定長，依照資料內容</td>
+</tr>
+<tr>
+<td>n的長度限制</td>
+<td>1~4000(表示可以用寫4000個中、英文字元)</td>
+<td>1~8000(表示可以用寫8000個英文字元)</td>
+</tr>
+<tr>
+<td>max</td>
+<td>2GB</td>
+<td>2GB</td>
+</tr>
+<tr>
+<td>結論</td>
+<td>要儲存英文以外的用NVARCHAR，可以避免亂碼問題，但儲存空間相較VARCHAR會多一些。</td>
+<td>只存英文VARCHAR沒問題，存其他可能會有亂碼問題。</td>
+</tr>
+</table>
+
+<h3 id="總結"><a href="#總結" class="headerlink" title="總結"></a>總結</h3><p>使用NVARCHAR來儲存字串會比較好，因為可避免字串因為中英混雜亂碼。</p>
+<h3 id="參考資料"><a href="#參考資料" class="headerlink" title="參考資料"></a>參考資料</h3><p><a target="_blank" rel="noopener" href="https://docs.microsoft.com/zh-tw/sql/t-sql/data-types/char-and-varchar-transact-sql?view=sql-server-ver15">https://docs.microsoft.com/zh-tw/sql/t-sql/data-types/char-and-varchar-transact-sql?view=sql-server-ver15</a><br><a target="_blank" rel="noopener" href="https://docs.microsoft.com/zh-tw/sql/t-sql/data-types/nchar-and-nvarchar-transact-sql?view=sql-server-ver15">https://docs.microsoft.com/zh-tw/sql/t-sql/data-types/nchar-and-nvarchar-transact-sql?view=sql-server-ver15</a><br><a target="_blank" rel="noopener" href="https://ithelp.ithome.com.tw/articles/10213922">https://ithelp.ithome.com.tw/articles/10213922</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://yuhsiang237.github.io/2022/02/17/SQL-Server-NVARCHAR%E8%88%87VARCHAR%E5%B7%AE%E5%88%A5%E6%AF%94%E8%BC%83/" data-id="cl0g433ot002dtwgh6prc0suf" data-title="SQL Server NVARCHAR與VARCHAR差別比較" class="article-share-link">Teilen</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-C-pdf處理使用itext7" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2022/02/11/C-pdf%E8%99%95%E7%90%86%E4%BD%BF%E7%94%A8itext7/" class="article-date">
+  <time class="dt-published" datetime="2022-02-11T09:58:22.000Z" itemprop="datePublished">2022-02-11</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Code/">Code</a>►<a class="article-category-link" href="/categories/Code/C/">C#</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2022/02/11/C-pdf%E8%99%95%E7%90%86%E4%BD%BF%E7%94%A8itext7/">C# 產生PDF使用IText7</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>在這篇文章中介紹如何用C#產生PDF檔案。<br>使用套件為IText7。</p>
+<p>IText7:<a target="_blank" rel="noopener" href="https://itextpdf.com/en/products/itext-7/itext-7-core">https://itextpdf.com/en/products/itext-7/itext-7-core</a><br>程式碼範例:<a target="_blank" rel="noopener" href="https://github.com/yuhsiang237/csharp-notes/tree/master/IText7Sample">https://github.com/yuhsiang237/csharp-notes/tree/master/IText7Sample</a></p>
+<p>先用Nuget安裝:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Install-Package itext7</span><br></pre></td></tr></table></figure>
+
+<p>如下，以下為產生一個PDF檔案，並加入標題。<br>其中標題為中英文混雜。</p>
+<p><strong>Program.cs</strong></p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> iText.Kernel.Font;</span><br><span class="line"><span class="keyword">using</span> iText.Kernel.Pdf;</span><br><span class="line"><span class="keyword">using</span> iText.Layout;</span><br><span class="line"><span class="keyword">using</span> iText.Layout.Element;</span><br><span class="line"><span class="keyword">using</span> iText.Layout.Properties;</span><br><span class="line"><span class="keyword">using</span> System;</span><br><span class="line"></span><br><span class="line"><span class="keyword">namespace</span> <span class="title">IText7Sample</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">class</span> <span class="title">Program</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">Main</span>(<span class="params"></span>)</span></span><br><span class="line">        &#123;</span><br><span class="line">            PdfFont sysFont = PdfFontFactory.CreateFont(Environment.CurrentDirectory + <span class="string">&quot;/src/fonts/NotoSansCJKtc-Regular.otf&quot;</span>, iText.IO.Font.PdfEncodings.IDENTITY_H);</span><br><span class="line"></span><br><span class="line">            <span class="comment">// Must have write permissions to the path folder</span></span><br><span class="line">            PdfWriter writer = <span class="keyword">new</span> PdfWriter(<span class="string">@&quot;demo.pdf&quot;</span>);</span><br><span class="line">            PdfDocument pdf = <span class="keyword">new</span> PdfDocument(writer);</span><br><span class="line">            Document document = <span class="keyword">new</span> Document(pdf);</span><br><span class="line">            Paragraph header = <span class="keyword">new</span> Paragraph(<span class="string">&quot;標題 HEADER&quot;</span>)</span><br><span class="line">               .SetFont(sysFont)</span><br><span class="line">               .SetTextAlignment(TextAlignment.CENTER)</span><br><span class="line">               .SetFontSize(<span class="number">20</span>);</span><br><span class="line"></span><br><span class="line">            document.Add(header);</span><br><span class="line">            document.Close();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="總結"><a href="#總結" class="headerlink" title="總結"></a>總結</h3><p>可以使用此套件來快速產生PDF，如果有中文需求可以像我上面那樣自己去補中文字型即可。</p>
+<h3 id="參考資料"><a href="#參考資料" class="headerlink" title="參考資料"></a>參考資料</h3><ul>
+<li><a target="_blank" rel="noopener" href="https://itextpdf.com/en/products/itext-7/itext-7-core">https://itextpdf.com/en/products/itext-7/itext-7-core</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/yuhsiang237/csharp-notes/tree/master/IText7Sample">https://github.com/yuhsiang237/csharp-notes/tree/master/IText7Sample</a></li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://yuhsiang237.github.io/2022/02/11/C-pdf%E8%99%95%E7%90%86%E4%BD%BF%E7%94%A8itext7/" data-id="cl0g433om001ntwghbt38eldh" data-title="C# 產生PDF使用IText7" class="article-share-link">Teilen</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
     <article id="post-C-擷取中英混雜字串" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
     <a href="/2022/02/11/C-%E6%93%B7%E5%8F%96%E4%B8%AD%E8%8B%B1%E6%B7%B7%E9%9B%9C%E5%AD%97%E4%B8%B2/" class="article-date">
@@ -493,129 +634,6 @@
 
 
   
-    <article id="post-SQL-Server-Stored-Procedure實作範例" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2022/01/10/SQL-Server-Stored-Procedure%E5%AF%A6%E4%BD%9C%E7%AF%84%E4%BE%8B/" class="article-date">
-  <time class="dt-published" datetime="2022-01-10T04:18:54.000Z" itemprop="datePublished">2022-01-10</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/Database/">Database</a>►<a class="article-category-link" href="/categories/Database/SQL-Server/">SQL Server</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2022/01/10/SQL-Server-Stored-Procedure%E5%AF%A6%E4%BD%9C%E7%AF%84%E4%BE%8B/">SQL Server Stored Procedure 介紹&amp;實作</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p>在這篇文章中簡易的介紹Stored Procedure。</p>
-<h3 id="Stored-Procedure-預存程序"><a href="#Stored-Procedure-預存程序" class="headerlink" title="Stored Procedure(預存程序)"></a>Stored Procedure(預存程序)</h3><p>A stored procedure is a prepared SQL code that you can save, so the code can be reused over and over again.</p>
-<p>So if you have an SQL query that you write over and over again, save it as a stored procedure, and then just call it to execute it.</p>
-<p>You can also pass parameters to a stored procedure, so that the stored procedure can act based on the parameter value(s) that is passed.</p>
-<p>簡單來說就是一種預存程序，寫在資料庫裡面，可以藉由外部傳入參數去呼叫數值，而得到結果。</p>
-<h3 id="優點"><a href="#優點" class="headerlink" title="優點"></a>優點</h3><p>1.能夠讓不同應用程式直接呼叫，核心邏輯不用分散。<br>(但目前有微服務架構能改用API了，因此除非是特別有必要，否則還是很少碰到)</p>
-<h3 id="缺點"><a href="#缺點" class="headerlink" title="缺點"></a>缺點</h3><p>1.撰寫因為沒辦法中斷點Debug所以除錯困難。</p>
-<h3 id="簡易寫一個Stored-Procedure"><a href="#簡易寫一個Stored-Procedure" class="headerlink" title="簡易寫一個Stored Procedure"></a>簡易寫一個Stored Procedure</h3><p>1.建立一段searchProduct的Stored Procedure。用來查詢特定Id的商品。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">CREATE PROCEDURE searchProduct </span><br><span class="line">    @productId int</span><br><span class="line">AS </span><br><span class="line">	SELECT * from Products </span><br><span class="line">	where Id = @productId</span><br></pre></td></tr></table></figure>
-
-<p>2.執行後可以在資料庫的「資料庫&gt;Programmability&gt;Stored Procedures」裡面找到</p>
-<img src="/2022/01/10/SQL-Server-Stored-Procedure%E5%AF%A6%E4%BD%9C%E7%AF%84%E4%BE%8B/1.png" class="">
-<p>3.執行</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">exec searchProduct 6</span><br></pre></td></tr></table></figure>
-<p>即可得到結果:</p>
-<img src="/2022/01/10/SQL-Server-Stored-Procedure%E5%AF%A6%E4%BD%9C%E7%AF%84%E4%BE%8B/2.png" class="">
-
-<p>4.這樣就完成了一段最簡單的Stored Procedure。<br>但在實作上主要維護時會很花時間，如果是千行T-SQL，無法使用中斷點會像是天書那樣。</p>
-<h3 id="總結"><a href="#總結" class="headerlink" title="總結"></a>總結</h3><p>以目前寫過系統來說都是在後端程式裡面寫，而Stored Procedure算是一個新的體驗。<br>除非，真的有必要需求，否則還是用API式輕量化，因為比較好DEBUG。</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://yuhsiang237.github.io/2022/01/10/SQL-Server-Stored-Procedure%E5%AF%A6%E4%BD%9C%E7%AF%84%E4%BE%8B/" data-id="cl0g433ov002ktwgh2v437gsl" data-title="SQL Server Stored Procedure 介紹&amp;實作" class="article-share-link">Teilen</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-SQL常見用法筆記" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2022/01/05/SQL%E5%B8%B8%E8%A6%8B%E7%94%A8%E6%B3%95%E7%AD%86%E8%A8%98/" class="article-date">
-  <time class="dt-published" datetime="2022-01-04T23:54:08.000Z" itemprop="datePublished">2022-01-05</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/Database/">Database</a>►<a class="article-category-link" href="/categories/Database/SQL-Server/">SQL Server</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2022/01/05/SQL%E5%B8%B8%E8%A6%8B%E7%94%A8%E6%B3%95%E7%AD%86%E8%A8%98/">SQL Server 常見SQL語法筆記</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>在這裡整理一些專案常用的SQL語法。</p>
-<h3 id="語法"><a href="#語法" class="headerlink" title="語法"></a>語法</h3><p>1.新增一筆資料</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">insert into Todos (Name) Values (&#x27;123&#x27;)</span><br></pre></td></tr></table></figure>
-<p>2.更新一筆資料</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">update Todos set Name = &#x27;4123&#x27;,IsComplete = 1 where Name = &#x27;123&#x27;</span><br></pre></td></tr></table></figure>
-<p>3.刪除一筆資料</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">delete from Todos where id = 17</span><br></pre></td></tr></table></figure>
-<p>4.查詢該表所有資料</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select * from Todos;</span><br></pre></td></tr></table></figure>
-<p>5.使用查詢結果新增資料</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">insert into Todos (Name) select Name from Todos where Name = &#x27;4123&#x27;</span><br></pre></td></tr></table></figure>
-<p>6.INNER JOIN 主表跟次要表都有相同的值才撈出</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">select * from ShipmentOrderDetails as a </span><br><span class="line">join Products as b on a.ProductId = b.Id</span><br></pre></td></tr></table></figure>
-<p>7.LEFT JOIN 主表值為主嘗試撈取次要表值，次要表有值就撈，沒值就NULL</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">select * from ShipmentOrderDetails as a </span><br><span class="line">left join Products as b on a.ProductId = b.Id</span><br></pre></td></tr></table></figure>
-<p>8.GROUP BY 取得以哪個欄位作為群，並且操作該群的集合資料</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">select OrderId,sum(ProductPrice * ProductUnit) sum from ShipmentOrderDetails </span><br><span class="line">group by OrderId</span><br></pre></td></tr></table></figure>
-<p>9.多對多資料處理(即使用left join/join的組合技)</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">select a.Id,a.Name,c.Id as ProductCategoryId,c.Name as ProductCategoryName from Products as a</span><br><span class="line">left join ProductProductCategoryRelationships as b on a.Id = b.ProductId</span><br><span class="line">left join ProductCategory as c on c.Id = b.ProductCategoryId</span><br></pre></td></tr></table></figure>
-<h3 id="總結"><a href="#總結" class="headerlink" title="總結"></a>總結</h3><p>這裡整理SQL常見用法。<br>因為在寫C#時其實內部會使用LINQ，所以就會對不常用的原生SQL生疏，因此在此整理在專案上常見的使用方法，有需要時就能節省再熟悉的時間。</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://yuhsiang237.github.io/2022/01/05/SQL%E5%B8%B8%E8%A6%8B%E7%94%A8%E6%B3%95%E7%AD%86%E8%A8%98/" data-id="cl0g433oz0034twgh3zwe7j5y" data-title="SQL Server 常見SQL語法筆記" class="article-share-link">Teilen</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
 
 
   <nav id="page-nav">
@@ -631,7 +649,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Kategorien</h3>
     <div class="widget">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Code/">Code</a><span class="category-list-count">62</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Code/C/">C#</a><span class="category-list-count">58</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Code/Javascript/">Javascript</a><span class="category-list-count">5</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/">Computer Science</a><span class="category-list-count">5</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/Algorithm/">Algorithm</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/Data-structure/">Data structure</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/%E9%9B%BB%E5%AD%90%E9%9B%BB%E8%B7%AF/">電子電路</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Daily-Log/">Daily Log</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/">Database</a><span class="category-list-count">50</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Database/PostgreSQL/">PostgreSQL</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/SQL-Server/">SQL Server</a><span class="category-list-count">41</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/">Framework</a><span class="category-list-count">27</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/AspNetCore-API/">AspNetCore API</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/AspNetCore-MVC/">AspNetCore MVC</a><span class="category-list-count">21</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/">Topic</a><span class="category-list-count">70</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2021-C-AspNetCore%E9%90%B5%E4%BA%BA%E8%B3%BD/">2021 C# AspNetCore鐵人賽</a><span class="category-list-count">30</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2021-SQL-Server%E9%90%B5%E4%BA%BA%E8%B3%BD/">2021 SQL Server鐵人賽</a><span class="category-list-count">30</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2022-C-%E5%9F%B7%E8%A1%8C%E7%B7%92%E5%90%8C%E6%AD%A5%E7%95%B0%E6%AD%A5%E7%B7%A8%E7%A8%8B%E8%A8%98/">2022 C# 執行緒同步異步編程記</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/LeetCode/">LeetCode</a><span class="category-list-count">3</span></li></ul></li></ul>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Code/">Code</a><span class="category-list-count">62</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Code/C/">C#</a><span class="category-list-count">58</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Code/Javascript/">Javascript</a><span class="category-list-count">5</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/">Computer Science</a><span class="category-list-count">5</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/Algorithm/">Algorithm</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/Data-structure/">Data structure</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/%E9%9B%BB%E5%AD%90%E9%9B%BB%E8%B7%AF/">電子電路</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Daily-Log/">Daily Log</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/">Database</a><span class="category-list-count">52</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Database/PostgreSQL/">PostgreSQL</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/SQL-Server/">SQL Server</a><span class="category-list-count">42</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/">Framework</a><span class="category-list-count">27</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/AspNetCore-API/">AspNetCore API</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/AspNetCore-MVC/">AspNetCore MVC</a><span class="category-list-count">21</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/">Topic</a><span class="category-list-count">70</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2021-C-AspNetCore%E9%90%B5%E4%BA%BA%E8%B3%BD/">2021 C# AspNetCore鐵人賽</a><span class="category-list-count">30</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2021-SQL-Server%E9%90%B5%E4%BA%BA%E8%B3%BD/">2021 SQL Server鐵人賽</a><span class="category-list-count">30</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2022-C-%E5%9F%B7%E8%A1%8C%E7%B7%92%E5%90%8C%E6%AD%A5%E7%95%B0%E6%AD%A5%E7%B7%A8%E7%A8%8B%E8%A8%98/">2022 C# 執行緒同步異步編程記</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/LeetCode/">LeetCode</a><span class="category-list-count">3</span></li></ul></li></ul>
     </div>
   </div>
 
@@ -641,7 +659,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Archiv</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/05/">五月 2022</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/04/">四月 2022</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/03/">三月 2022</a><span class="archive-list-count">17</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/02/">二月 2022</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/01/">一月 2022</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">十二月 2021</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">十月 2021</a><span class="archive-list-count">24</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">九月 2021</a><span class="archive-list-count">46</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">八月 2021</a><span class="archive-list-count">12</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/05/">五月 2022</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/04/">四月 2022</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/03/">三月 2022</a><span class="archive-list-count">17</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/02/">二月 2022</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/01/">一月 2022</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">十二月 2021</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">十月 2021</a><span class="archive-list-count">24</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">九月 2021</a><span class="archive-list-count">46</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">八月 2021</a><span class="archive-list-count">12</span></li></ul>
     </div>
   </div>
 

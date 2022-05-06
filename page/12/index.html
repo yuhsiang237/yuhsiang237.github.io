@@ -77,6 +77,160 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-SQL-server資料庫正規化" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2021/09/05/SQL-server%E8%B3%87%E6%96%99%E5%BA%AB%E6%AD%A3%E8%A6%8F%E5%8C%96/" class="article-date">
+  <time class="dt-published" datetime="2021-09-04T16:54:08.000Z" itemprop="datePublished">2021-09-05</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Database/">Database</a>►<a class="article-category-link" href="/categories/Database/SQL-Server/">SQL Server</a>►<a class="article-category-link" href="/categories/Topic/">Topic</a>►<a class="article-category-link" href="/categories/Topic/2021-SQL-Server%E9%90%B5%E4%BA%BA%E8%B3%BD/">2021 SQL Server鐵人賽</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2021/09/05/SQL-server%E8%B3%87%E6%96%99%E5%BA%AB%E6%AD%A3%E8%A6%8F%E5%8C%96/">[Day5] 規劃資料表，透過資料庫正規化 - SQL Server資料庫入門</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>這回主要淺談一下資料庫正規化，並且規劃我們的訂單資料表。</p>
+<h3 id="資料庫正規化"><a href="#資料庫正規化" class="headerlink" title="資料庫正規化"></a>資料庫正規化</h3><p>正規化的目的:</p>
+<ol>
+<li>避免資料重複或相互矛盾的情形。</li>
+<li>使資料庫在使用時能更有效率、更容易維護。</li>
+</ol>
+<p>正規化:</p>
+<ol>
+<li><p>資料庫的正規化共可分為1NF (Normal Form)、2NF、3NF、BCNF (Boyce-Codd Normal Form)、4NF、5NF 等多個階段, 不過對於一般資料庫設計來說, <strong>通常只需要執行到BCNF即可</strong>, 而其他更高階的正規化只有在特殊的情況下才用得到。</p>
+</li>
+<li><p>在資料表正規化的過程(1NF 到BCNF) 中, 每個階段都是以<strong>欄位的相依性</strong>, 做為分割資料表的依據之一。</p>
+</li>
+</ol>
+<p>什麼是相依性?<br>欄位相依:就是在資料表中，乙欄位的值必須搭配甲欄位才有意義，則我們說『乙欄位相依於甲欄位』。</p>
+<h3 id="第一正規化規則-1NF"><a href="#第一正規化規則-1NF" class="headerlink" title="第一正規化規則(1NF):"></a>第一正規化規則(1NF):</h3><p>1.決定主鍵:資料表中有主鍵, 而其他所有的欄位都相依於主鍵。<br>2.一個欄位只能有單一值:每個欄位中都只有儲存單一值,例如: 姓名欄位中不能存放2 個人的姓名。<br>3.消除意義上重複的欄位:資料表中沒有意義相同的多個欄位, 例如: 姓名1、姓名2…等重複的欄位。</p>
+<p>如果不符合一階可能會造成:存取效率低、資料長度無法確定</p>
+<h3 id="第二正規化規則-2NF"><a href="#第二正規化規則-2NF" class="headerlink" title="第二正規化規則(2NF):"></a>第二正規化規則(2NF):</h3><p>1.符合1NF 的格式<br>2.去除『部分相依性』:各欄位與主鍵間沒有部分相依的關係。</p>
+<p><strong>部分相依:</strong> 只有在主鍵是由多個欄位組成時才會發生，部分相依的欄位只與主鍵中的部分欄位有相依性，而與另一部份的欄位沒有相依性。</p>
+<p>要除去資料表中的部分相依性, 只需將部份相依的欄位分割成另外的資料表即可。<br>因為完成第一階時容易會有資料重複問題，因此要執行第二階。</p>
+<h3 id="第三正規化規則-3NF"><a href="#第三正規化規則-3NF" class="headerlink" title="第三正規化規則(3NF):"></a>第三正規化規則(3NF):</h3><p>1.符合2NF 的格式。<br>2.去除『間接相依性』:各欄位與主鍵間沒有間接相依的關係。</p>
+<p><strong>間接(遞移)相依:</strong> 是指二個欄位並非直接相依，而是藉助其他欄位來達成資料相依的關係。例如A與B相依且B與C相依，則我們說A與C為間接相依。</p>
+<p>消除遞移相依：非主鍵屬性的欄位都只能和候選鍵相關，非主鍵屬性的欄位彼此間應該要是獨立無關的</p>
+<p>候選鍵：欄位組合讓資料能是唯一的，並且是最小唯一</p>
+<p>要除去資料表中的間接相依性, 其方法和除去部分相依性完全相同。例如:可再分割成N個資料表。</p>
+<h3 id="Boyce-Codd-正規化-BCNF"><a href="#Boyce-Codd-正規化-BCNF" class="headerlink" title="Boyce-Codd 正規化(BCNF)"></a>Boyce-Codd 正規化(BCNF)</h3><p>對於大部分資料庫來說, 通常只需要執行到第三階段的正規化即足夠了。如果資料表的主鍵是由多個欄位組成的, 則必須再執行Boyce-Codd 正規化</p>
+<p>1.符合2NF 的格式。<br>2.各欄位與主鍵沒有間接相依的關係。<br>3.主鍵中的各欄位不可以相依於其他非主鍵的欄位。</p>
+<h3 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h3><p>正規化的另類思考:<br>1.不必要的分割:正規化的工作有時候不必做的太徹底, 因為過多的資料表可能會降低系統執行的效能。<br>2.人工的分割:有時為了增加資料處理的效率, 我們可以將已經符合BCNF 的資料表再做分割。一個資料表擁有很多欄位, 而其中又有<br>很多欄位根本很少用到。那麼, 我們就可以將這些很少用到的欄位分離出來, 存放到另外一個資料表中。</p>
+<h3 id="正規化實作－訂單"><a href="#正規化實作－訂單" class="headerlink" title="正規化實作－訂單"></a>正規化實作－訂單</h3><img src="/2021/09/05/SQL-server%E8%B3%87%E6%96%99%E5%BA%AB%E6%AD%A3%E8%A6%8F%E5%8C%96/%E8%A8%82%E5%96%AE.png" class="" title="訂單範例">
+
+<p><strong>步驟1:正規化前</strong></p>
+<img src="/2021/09/05/SQL-server%E8%B3%87%E6%96%99%E5%BA%AB%E6%AD%A3%E8%A6%8F%E5%8C%96/UNDO.png" class="" title="正規化前">
+
+<p><strong>步驟2:1NF後</strong></p>
+<p>1.決定主鍵:資料表中有主鍵, 而其他所有的欄位都相依於主鍵。<br>2.一個欄位只能有單一值:每個欄位中都只有儲存單一值,例如: 姓名欄位中不能存放2 個人的姓名。<br>3.消除意義上重複的欄位:資料表中沒有意義相同的多個欄位, 例如: 姓名1、姓名2…等重複的欄位。</p>
+<p>把因欄位單一值的欄位獨立成另一個表、決定主鍵，因為沒有重複欄位所以不用消除。</p>
+<img src="/2021/09/05/SQL-server%E8%B3%87%E6%96%99%E5%BA%AB%E6%AD%A3%E8%A6%8F%E5%8C%96/1NF.png" class="" title="1NF">
+
+<p><strong>步驟3:經過2NF &amp; 3NF 後</strong></p>
+<p>2NF:<br>1.符合1NF 的格式<br>2.去除『部分相依性』:各欄位與主鍵間沒有部分相依的關係。<br>3NF:<br>1.符合2NF 的格式<br>2.去除『間接相依性』:各欄位與主鍵間沒有間接相依的關係。</p>
+<p>不斷比較各個欄位與該列表的主鍵關係，把表拆出。</p>
+<p>*出貨單號、出貨日期、運送地址、客戶簽名、總計，有部分相依性<br>客戶姓名、客戶電話，有部分相依性<br>所以各自拆成兩張表</p>
+<p>*明細流水號、出貨單號、數量、金額、備註，有部分相依性<br>產品、單價，有部分相依性<br>所以各自拆成兩張表</p>
+<p>出貨單表的總計容易因為出貨單明細的數量*金額而變動，因此可考慮刪掉，但有時實際上又會因廠商變動而實際上硬壓上一個金額，所以還是先留著。</p>
+<p>我在處理時覺得2跟3很難分開做，所以做完已經3階。</p>
+<img src="/2021/09/05/SQL-server%E8%B3%87%E6%96%99%E5%BA%AB%E6%AD%A3%E8%A6%8F%E5%8C%96/2NF&3NF.png" class="" title="2NF&amp;3NF">
+
+<p>然後關聯</p>
+<img src="/2021/09/05/SQL-server%E8%B3%87%E6%96%99%E5%BA%AB%E6%AD%A3%E8%A6%8F%E5%8C%96/2NF&3NF%E9%97%9C%E8%81%AF.png" class="" title="2NF&amp;3NF關聯">
+
+<p><strong>20210905修正</strong><br>為了避免未來產品單價變動，造成日後撈訂單時價格改變，因此在訂單明細增加單價</p>
+<img src="/2021/09/05/SQL-server%E8%B3%87%E6%96%99%E5%BA%AB%E6%AD%A3%E8%A6%8F%E5%8C%96/%E8%B3%87%E6%96%99%E8%A1%A8%E4%BF%AE%E6%AD%A3.png" class="" title="資料表修正">
+
+
+<h3 id="結語"><a href="#結語" class="headerlink" title="結語"></a>結語</h3><p>第一正規化做好後，第二正規化、第三正規要注意一點去做，讓結構拆開來，日後擴充會比較容易。<br>我自己在2~3階時有點對定義模糊，就是不斷把不相關跟主鍵去比，然後拆出來、拉關聯。(日後如果發覺錯誤會回來改正。)<br>此外補充一下，我覺得這種抽象的理論比實作重要，因為他沒辦法直接複製貼上，要透過動腦去分析，是累積功力的一個好方法。</p>
+<p>Q1:我有一點疑問在＂單價＂比如往後需要調用歷史資料，而商品的單價改動，會接連造成訂單對不上，所以是否該把明細流水號增加單價?<br>ANS:20210905補上，針對這種日後可能會調度欄位、有糾紛問題的數值，存當時寫入的值比較穩定。因為是”歷史資料”，通常會限制成不可改，只能把整筆訂單刪除。<br>後來看了:<a target="_blank" rel="noopener" href="https://ithelp.ithome.com.tw/m/questions/10197039?fbclid=IwAR1sdXPCl2JtFvhauc76aUcEuNIEtfcvH2TzodALPmC08HL8R-7mp74eLZc">https://ithelp.ithome.com.tw/m/questions/10197039?fbclid=IwAR1sdXPCl2JtFvhauc76aUcEuNIEtfcvH2TzodALPmC08HL8R-7mp74eLZc</a><br>這個問題是「需求」問題，看PM或SA想怎麼呈現<br>簡單的答案:沒必要<br>複雜的答案:要看資料欄位的「變化性」</p>
+<p><strong>參考資料</strong><br><a target="_blank" rel="noopener" href="http://140.118.9.79/UML-SASD/%E6%AD%A3%E8%A6%8F%E5%8C%96.pdf">http://140.118.9.79/UML-SASD/%E6%AD%A3%E8%A6%8F%E5%8C%96.pdf</a><br><a target="_blank" rel="noopener" href="http://9715109.blogspot.com/2010/10/12.html">http://9715109.blogspot.com/2010/10/12.html</a><br><a target="_blank" rel="noopener" href="https://ithelp.ithome.com.tw/articles/10229472">https://ithelp.ithome.com.tw/articles/10229472</a><br><a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=FgQ4QrwVNk0">https://www.youtube.com/watch?v=FgQ4QrwVNk0</a><br><a target="_blank" rel="noopener" href="http://spaces.isu.edu.tw/upload/19225/0/news/postfile_349.pdf">http://spaces.isu.edu.tw/upload/19225/0/news/postfile_349.pdf</a><br><a target="_blank" rel="noopener" href="https://www.ptt.cc/bbs/Soft_Job/M.1623612131.A.33C.html">https://www.ptt.cc/bbs/Soft_Job/M.1623612131.A.33C.html</a><br><a target="_blank" rel="noopener" href="https://ithelp.ithome.com.tw/m/questions/10197039?fbclid=IwAR1sdXPCl2JtFvhauc76aUcEuNIEtfcvH2TzodALPmC08HL8R-7mp74eLZc">https://ithelp.ithome.com.tw/m/questions/10197039?fbclid=IwAR1sdXPCl2JtFvhauc76aUcEuNIEtfcvH2TzodALPmC08HL8R-7mp74eLZc</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://yuhsiang237.github.io/2021/09/05/SQL-server%E8%B3%87%E6%96%99%E5%BA%AB%E6%AD%A3%E8%A6%8F%E5%8C%96/" data-id="cl0g433ov002ntwghd5m43geo" data-title="[Day5] 規劃資料表，透過資料庫正規化 - SQL Server資料庫入門" class="article-share-link">Teilen</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-SQL-server資料表規劃" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2021/09/04/SQL-server%E8%B3%87%E6%96%99%E8%A1%A8%E8%A6%8F%E5%8A%83/" class="article-date">
+  <time class="dt-published" datetime="2021-09-04T08:06:08.000Z" itemprop="datePublished">2021-09-04</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Database/">Database</a>►<a class="article-category-link" href="/categories/Database/SQL-Server/">SQL Server</a>►<a class="article-category-link" href="/categories/Topic/">Topic</a>►<a class="article-category-link" href="/categories/Topic/2021-SQL-Server%E9%90%B5%E4%BA%BA%E8%B3%BD/">2021 SQL Server鐵人賽</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2021/09/04/SQL-server%E8%B3%87%E6%96%99%E8%A1%A8%E8%A6%8F%E5%8A%83/">[Day4] SQL Server資料庫建立 - SQL Server資料庫入門</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>這回我們利用SQL Server建立訂單的資料庫。<br>並給出一個例子，模擬PM或SA給你的訂單表格，要你把它轉成資料庫型態。</p>
+<h3 id="訂單表單"><a href="#訂單表單" class="headerlink" title="訂單表單"></a>訂單表單</h3><p>如下:(ps.這訂單來自參考資料的內容)</p>
+<img src="/2021/09/04/SQL-server%E8%B3%87%E6%96%99%E8%A1%A8%E8%A6%8F%E5%8A%83/%E8%A8%82%E5%96%AE.png" class="" title="訂單">
+
+<h3 id="建立資料庫"><a href="#建立資料庫" class="headerlink" title="建立資料庫"></a>建立資料庫</h3><p>Database&gt;New Database</p>
+<img src="/2021/09/04/SQL-server%E8%B3%87%E6%96%99%E8%A1%A8%E8%A6%8F%E5%8A%83/Screenshot%202021-09-04%20162949.png" class="" title="建立資料庫步驟1">
+<p>Database&gt;New Database<br>輸出資料庫名稱Orders</p>
+<img src="/2021/09/04/SQL-server%E8%B3%87%E6%96%99%E8%A1%A8%E8%A6%8F%E5%8A%83/Screenshot%202021-09-04%20163147.png" class="" title="建立資料庫步驟2">
+<p>可以見到左方出現了Orders資料庫</p>
+<img src="/2021/09/04/SQL-server%E8%B3%87%E6%96%99%E8%A1%A8%E8%A6%8F%E5%8A%83/Screenshot%202021-09-04%20163420.png" class="" title="建立資料庫步驟3">
+
+
+<h3 id="結語"><a href="#結語" class="headerlink" title="結語"></a>結語</h3><p>在這回中，我們建立了一個訂單資料庫。<br>在下回中，會把資料庫正規化拿出來談一下，並且設計這張訂單的資料表。</p>
+<p><strong>參考資料</strong><br><a target="_blank" rel="noopener" href="https://ithelp.ithome.com.tw/articles/10214308">https://ithelp.ithome.com.tw/articles/10214308</a><br><a target="_blank" rel="noopener" href="http://cc.cust.edu.tw/~ccchen/doc/db_04.pdf">http://cc.cust.edu.tw/~ccchen/doc/db_04.pdf</a><br><a target="_blank" rel="noopener" href="https://ithelp.ithome.com.tw/articles/10229472">https://ithelp.ithome.com.tw/articles/10229472</a><br><a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E6%95%B0%E6%8D%AE%E5%BA%93%E8%A7%84%E8%8C%83%E5%8C%96">https://zh.wikipedia.org/wiki/%E6%95%B0%E6%8D%AE%E5%BA%93%E8%A7%84%E8%8C%83%E5%8C%96</a><br><a target="_blank" rel="noopener" href="http://140.118.9.79/UML-SASD/%E6%AD%A3%E8%A6%8F%E5%8C%96.pdf">http://140.118.9.79/UML-SASD/%E6%AD%A3%E8%A6%8F%E5%8C%96.pdf</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://yuhsiang237.github.io/2021/09/04/SQL-server%E8%B3%87%E6%96%99%E8%A1%A8%E8%A6%8F%E5%8A%83/" data-id="cl0g433ox002stwghcv2ie3ji" data-title="[Day4] SQL Server資料庫建立 - SQL Server資料庫入門" class="article-share-link">Teilen</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
     <article id="post-sql-server資料型態" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
     <a href="/2021/09/03/sql-server%E8%B3%87%E6%96%99%E5%9E%8B%E6%85%8B/" class="article-date">
@@ -710,137 +864,6 @@ All other precision require 8 bytes.2<br></span></td>
 
 
   
-    <article id="post-javascript控制時間setTimeout、setInterval" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2021/08/29/javascript%E6%8E%A7%E5%88%B6%E6%99%82%E9%96%93setTimeout%E3%80%81setInterval/" class="article-date">
-  <time class="dt-published" datetime="2021-08-29T06:53:02.000Z" itemprop="datePublished">2021-08-29</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/Code/">Code</a>►<a class="article-category-link" href="/categories/Code/Javascript/">Javascript</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2021/08/29/javascript%E6%8E%A7%E5%88%B6%E6%99%82%E9%96%93setTimeout%E3%80%81setInterval/">javascript控制時間setTimeout、setInterval</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p>javascript在處理網頁上”連續執行”、”只執行一次”必見到的時間控制函式setTimeout、setInterval。</p>
-<h3 id="setTimeout"><a href="#setTimeout" class="headerlink" title="setTimeout"></a>setTimeout</h3><p>延遲某一段時間後才執行一次，每個setTimeout都可以得到一個timer ID。<br>單位:毫秒</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">var timeoutID = setTimeout(function[, delay, arg1, arg2, ...]);</span><br><span class="line">var timeoutID = setTimeout(function[, delay]);</span><br><span class="line">var timeoutID = setTimeout(code[, delay]);</span><br></pre></td></tr></table></figure>
-
-<p>用法:</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">const timeroutID = window.setTimeout((()=&gt;&#123;console.log(&#x27;Hello world&#x27;)&#125;),1000);</span><br></pre></td></tr></table></figure>
-
-<p>Q:如果要清除setTimeout呢?<br>利用clearTimeout</p>
-<p>用法:</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">const timeroutID = window.setTimeout((()=&gt;&#123;console.log(&#x27;Hello world&#x27;)&#125;),1000);</span><br><span class="line">window.clearTimeout(timeroutID);</span><br></pre></td></tr></table></figure>
-
-<h3 id="setInterval"><a href="#setInterval" class="headerlink" title="setInterval"></a>setInterval</h3><p>延遲時間後，不斷循環某段程式碼，每個setInterval都可以得到一個interval ID。<br>單位:毫秒</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">var intervalID = setInterval(func, [delay, arg1, arg2, ...]);</span><br><span class="line">var intervalID = setInterval(function[, delay]);</span><br><span class="line">var intervalID = setInterval(code, [delay]);</span><br></pre></td></tr></table></figure>
-<p>用法:</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">const intervalID = window.setInterval((()=&gt;&#123;console.log(&#x27;Hello world&#x27;)&#125;),1000);</span><br></pre></td></tr></table></figure>
-
-<p>Q:如果要清除setInterval呢?<br>利用clearInterval</p>
-<p>用法:</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">const intervalID = window.setInterval((()=&gt;&#123;console.log(&#x27;Hello world&#x27;)&#125;),1000);</span><br><span class="line">window.clearInterval(intervalID);</span><br></pre></td></tr></table></figure>
-
-<h3 id="小結"><a href="#小結" class="headerlink" title="小結"></a>小結</h3><p>「雖然 JavaScript 有著非同步事件的特色，但仍是依循單一執行緒的規則運作。 換句話說，當我們在主要執行緒內工作的時間太久，就勢必會延遲 Queue Callback 的執行。」－－引用參考資料內文</p>
-<p>所以，要計算非常精準的時間，setTimeout、setInterval，都一定會有誤差，可以用server端的正確時間去修正誤差，讓他至少在一個合理的範圍內。</p>
-<p>此外，仍有IIFE(Immediately Invoked Function Expression)、scope問題，待補。</p>
-<p>參考資料:<br><a target="_blank" rel="noopener" href="https://kuro.tw/posts/2019/02/23/%E8%AB%87%E8%AB%87-JavaScript-%E7%9A%84-setTimeout-%E8%88%87-setInterval/">https://kuro.tw/posts/2019/02/23/%E8%AB%87%E8%AB%87-JavaScript-%E7%9A%84-setTimeout-%E8%88%87-setInterval/</a><br><a target="_blank" rel="noopener" href="https://developer.mozilla.org/en-US/docs/Web/API/WindowOrWorkerGlobalScope/setInterval">https://developer.mozilla.org/en-US/docs/Web/API/WindowOrWorkerGlobalScope/setInterval</a></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://yuhsiang237.github.io/2021/08/29/javascript%E6%8E%A7%E5%88%B6%E6%99%82%E9%96%93setTimeout%E3%80%81setInterval/" data-id="cl0g433p1003ctwgh92cfgyaw" data-title="javascript控制時間setTimeout、setInterval" class="article-share-link">Teilen</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-C-陣列常見操作" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2021/08/29/C-%E9%99%A3%E5%88%97%E5%B8%B8%E8%A6%8B%E6%93%8D%E4%BD%9C/" class="article-date">
-  <time class="dt-published" datetime="2021-08-29T06:00:02.000Z" itemprop="datePublished">2021-08-29</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/Code/">Code</a>►<a class="article-category-link" href="/categories/Code/C/">C#</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2021/08/29/C-%E9%99%A3%E5%88%97%E5%B8%B8%E8%A6%8B%E6%93%8D%E4%BD%9C/">C#陣列常見操作</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p>因為每種程式語言都有它特殊的宣告方式，因此就花時間整理一下，往後需要使用時就能快速的熟悉回來。</p>
-<h3 id="陣列宣告"><a href="#陣列宣告" class="headerlink" title="陣列宣告"></a>陣列宣告</h3><p>1.一維陣列</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">int [] array = new int[5];</span><br><span class="line">Console.WriteLine(array[0]); // 輸出:0  陣列的元素會初始化為整數的元素類型預設值 0 。</span><br></pre></td></tr></table></figure>
-<p>2.二維陣列</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">int [,] array = new int[4,2];</span><br><span class="line">Console.WriteLine(array[1,1]); // // 輸出:0  陣列的元素會初始化為整數的元素類型預設值 0 。</span><br></pre></td></tr></table></figure>
-<h3 id="陣列初始化"><a href="#陣列初始化" class="headerlink" title="陣列初始化"></a>陣列初始化</h3><p>1.一維陣列</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">int [] array = new int[]&#123;1,2,3,4,5&#125;;</span><br><span class="line">Console.WriteLine(array[0]); // 輸出:1 </span><br></pre></td></tr></table></figure>
-<p>2.二維陣列</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">int [,] array = new int[4,2]&#123;&#123;1,2&#125;,&#123;3,4&#125;,&#123;7,5&#125;,&#123;4,8&#125;&#125;; // 在宣告時如果有初始值後面就必須要填滿那些範圍的元素</span><br><span class="line">Console.WriteLine(array[2,1]); // 輸出5 </span><br></pre></td></tr></table></figure>
-<p>3.不規則陣列<br>感覺很少用到</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">int[][] array = new int[3][]; // 宣告時必須int[][] 而不是 int[,]</span><br><span class="line">array[0] = new int[]&#123;1,3&#125;;</span><br><span class="line">array[1] = new int[]&#123;5,3,3&#125;;</span><br><span class="line">array[2] = new int[]&#123;1,31,5&#125;;</span><br><span class="line">Console.Write(array[2][1]);//輸出 31</span><br></pre></td></tr></table></figure>
-<p>4.隱含型別陣列<br>用var開頭，裡面的元素符合同一個型態即可</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">var array = new [] &#123;&quot;hi!&quot;,null,&quot;world&quot;&#125;;</span><br><span class="line">Console.Write(array[2]);//輸出 world</span><br></pre></td></tr></table></figure>
-
-<h3 id="遍歷陣列方式"><a href="#遍歷陣列方式" class="headerlink" title="遍歷陣列方式"></a>遍歷陣列方式</h3><p>1.使用for，如果處理多維較為方便，且比較直覺</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">int [] array = new int[]&#123;1,2,3,4,5&#125;;</span><br><span class="line">for(int i=0;i&lt;array.Length;i++)&#123;</span><br><span class="line">	Console.Write(array[i]); </span><br><span class="line">&#125;  // 輸出:12345</span><br></pre></td></tr></table></figure>
-<p>2.foreach，如果是單維想簡潔些可以用</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">int [] array = new int[]&#123;1,2,3,4,5&#125;;</span><br><span class="line">foreach(int num in array)&#123;</span><br><span class="line">    Console.Write(num);</span><br><span class="line">&#125; // 輸出:12345</span><br></pre></td></tr></table></figure>
-
-<h3 id="把陣列傳入函式"><a href="#把陣列傳入函式" class="headerlink" title="把陣列傳入函式"></a>把陣列傳入函式</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">using System;			</span><br><span class="line">public class Program</span><br><span class="line">&#123;</span><br><span class="line">	public static void printArray(int [] arr)&#123;</span><br><span class="line">		for(int i=0;i&lt;arr.Length;i++)&#123;</span><br><span class="line">			Console.Write(arr[i]);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	public static void Main()</span><br><span class="line">	&#123;</span><br><span class="line">		int [] array = new int[]&#123;1,2,3,4,5&#125;;</span><br><span class="line">		printArray(array); // 輸出12345</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h3 id="結語"><a href="#結語" class="headerlink" title="結語"></a>結語</h3><p>C#強型別的語言在宣告陣列確實比較麻煩。但相對的，這種寫法比較好”除錯”。<br>如果平時寫弱型態的如javascript，那要多記一下寫法。<br>而既然使用了”new 運算子”就是傳址了，要稍微小心寫法。</p>
-<p><strong>參考資料</strong><br><a target="_blank" rel="noopener" href="https://docs.microsoft.com/zh-tw/dotnet/csharp/programming-guide/arrays/">https://docs.microsoft.com/zh-tw/dotnet/csharp/programming-guide/arrays/</a></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://yuhsiang237.github.io/2021/08/29/C-%E9%99%A3%E5%88%97%E5%B8%B8%E8%A6%8B%E6%93%8D%E4%BD%9C/" data-id="cl0g433oq0020twgh43aaevst" data-title="C#陣列常見操作" class="article-share-link">Teilen</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
 
 
   <nav id="page-nav">
@@ -856,7 +879,7 @@ All other precision require 8 bytes.2<br></span></td>
   <div class="widget-wrap">
     <h3 class="widget-title">Kategorien</h3>
     <div class="widget">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Code/">Code</a><span class="category-list-count">62</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Code/C/">C#</a><span class="category-list-count">58</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Code/Javascript/">Javascript</a><span class="category-list-count">5</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/">Computer Science</a><span class="category-list-count">5</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/Algorithm/">Algorithm</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/Data-structure/">Data structure</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/%E9%9B%BB%E5%AD%90%E9%9B%BB%E8%B7%AF/">電子電路</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Daily-Log/">Daily Log</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/">Database</a><span class="category-list-count">50</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Database/PostgreSQL/">PostgreSQL</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/SQL-Server/">SQL Server</a><span class="category-list-count">41</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/">Framework</a><span class="category-list-count">27</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/AspNetCore-API/">AspNetCore API</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/AspNetCore-MVC/">AspNetCore MVC</a><span class="category-list-count">21</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/">Topic</a><span class="category-list-count">70</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2021-C-AspNetCore%E9%90%B5%E4%BA%BA%E8%B3%BD/">2021 C# AspNetCore鐵人賽</a><span class="category-list-count">30</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2021-SQL-Server%E9%90%B5%E4%BA%BA%E8%B3%BD/">2021 SQL Server鐵人賽</a><span class="category-list-count">30</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2022-C-%E5%9F%B7%E8%A1%8C%E7%B7%92%E5%90%8C%E6%AD%A5%E7%95%B0%E6%AD%A5%E7%B7%A8%E7%A8%8B%E8%A8%98/">2022 C# 執行緒同步異步編程記</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/LeetCode/">LeetCode</a><span class="category-list-count">3</span></li></ul></li></ul>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Code/">Code</a><span class="category-list-count">62</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Code/C/">C#</a><span class="category-list-count">58</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Code/Javascript/">Javascript</a><span class="category-list-count">5</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/">Computer Science</a><span class="category-list-count">5</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/Algorithm/">Algorithm</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/Data-structure/">Data structure</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/%E9%9B%BB%E5%AD%90%E9%9B%BB%E8%B7%AF/">電子電路</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Daily-Log/">Daily Log</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/">Database</a><span class="category-list-count">52</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Database/PostgreSQL/">PostgreSQL</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/SQL-Server/">SQL Server</a><span class="category-list-count">42</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/">Framework</a><span class="category-list-count">27</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/AspNetCore-API/">AspNetCore API</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/AspNetCore-MVC/">AspNetCore MVC</a><span class="category-list-count">21</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/">Topic</a><span class="category-list-count">70</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2021-C-AspNetCore%E9%90%B5%E4%BA%BA%E8%B3%BD/">2021 C# AspNetCore鐵人賽</a><span class="category-list-count">30</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2021-SQL-Server%E9%90%B5%E4%BA%BA%E8%B3%BD/">2021 SQL Server鐵人賽</a><span class="category-list-count">30</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2022-C-%E5%9F%B7%E8%A1%8C%E7%B7%92%E5%90%8C%E6%AD%A5%E7%95%B0%E6%AD%A5%E7%B7%A8%E7%A8%8B%E8%A8%98/">2022 C# 執行緒同步異步編程記</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/LeetCode/">LeetCode</a><span class="category-list-count">3</span></li></ul></li></ul>
     </div>
   </div>
 
@@ -866,7 +889,7 @@ All other precision require 8 bytes.2<br></span></td>
   <div class="widget-wrap">
     <h3 class="widget-title">Archiv</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/05/">五月 2022</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/04/">四月 2022</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/03/">三月 2022</a><span class="archive-list-count">17</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/02/">二月 2022</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/01/">一月 2022</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">十二月 2021</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">十月 2021</a><span class="archive-list-count">24</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">九月 2021</a><span class="archive-list-count">46</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">八月 2021</a><span class="archive-list-count">12</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/05/">五月 2022</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/04/">四月 2022</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/03/">三月 2022</a><span class="archive-list-count">17</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/02/">二月 2022</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/01/">一月 2022</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">十二月 2021</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">十月 2021</a><span class="archive-list-count">24</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">九月 2021</a><span class="archive-list-count">46</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">八月 2021</a><span class="archive-list-count">12</span></li></ul>
     </div>
   </div>
 
