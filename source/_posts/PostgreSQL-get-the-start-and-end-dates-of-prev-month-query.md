@@ -1,0 +1,15 @@
+---
+title: PostgreSQL get the start and end dates of prev month query
+date: 2022-05-05 10:19:01
+categories:
+  - [Database,PostgreSQL]
+---
+
+WITH TEMP_TABLE AS
+(
+    SELECT '2022-03-01'::TIMESTAMP WITHOUT TIME ZONE AS MYDATE
+    UNION ALL
+    SELECT '2022-04-01'::TIMESTAMP WITHOUT TIME ZONE AS MYDATE    
+UNION ALL
+    SELECT '2022-04-01'::TIMESTAMP WITHOUT TIME ZONE AS MYDATE
+)
