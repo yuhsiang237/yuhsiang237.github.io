@@ -41,7 +41,7 @@ It's like Now() is 2022-05-09, and function DATE_TRUNC('MONTH',NOW()) will conve
 Example:
 NOW() = 2022-05-09
 ```
-2022-04-01 >= x 
+x >= 2022-04-01 
 x < 2022-05-01
 ```
 So,the result is 2022-04-01~2022-04-30.
