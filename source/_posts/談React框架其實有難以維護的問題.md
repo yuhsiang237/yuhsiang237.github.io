@@ -7,7 +7,7 @@ categories:
 這篇聊一下我所認識的React在過往的實作上會遇到的隱藏問題。
 這篇極為主觀，是我的個人觀感。
 
-#### 1.React如果不用Typescript寫，那麼後人維護時會很崩潰。因為如
+#### 1.React如果不用Typescript寫，那麼後人維護時會很崩潰
 ```javascript
 const getOrderReceiptData({order}) => order?.detail?.receipt?.data
 ```
