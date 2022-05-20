@@ -43,9 +43,7 @@ namespace ListGroupBy
                 Console.WriteLine($"{group.Key} ,  count: {group.Count()}");
                 //Iterate through each number of a group
                 foreach (var number in group)
-                {
                     Console.WriteLine($"  number : {number}");
-                }
             }
         }
     }
