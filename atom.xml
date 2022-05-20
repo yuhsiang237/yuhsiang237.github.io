@@ -6,7 +6,7 @@
   <link href="https://yuhsiang237.github.io/atom.xml" rel="self"/>
   
   <link href="https://yuhsiang237.github.io/"/>
-  <updated>2022-05-20T08:45:23.705Z</updated>
+  <updated>2022-05-20T09:03:41.946Z</updated>
   <id>https://yuhsiang237.github.io/</id>
   
   <author>
@@ -15,6 +15,30 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>C# 資料分群</title>
+    <link href="https://yuhsiang237.github.io/2022/05/20/C-%E9%99%A3%E5%88%97%E5%88%86%E7%BE%A4/"/>
+    <id>https://yuhsiang237.github.io/2022/05/20/C-%E9%99%A3%E5%88%97%E5%88%86%E7%BE%A4/</id>
+    <published>2022-05-20T08:48:57.000Z</published>
+    <updated>2022-05-20T09:03:41.946Z</updated>
+    
+    <content type="html"><![CDATA[<p>在這邊主要介紹List的分群，如有以下的五筆資料<br>[“00001”,”00002”,”00003”,”00004”,”00005”]<br>這時想要以2來群分，變成下方結果<br>[[“00001”,”00002”],[“00003”,”00004”],[“00005”]]</p><p>程式碼:</p><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> System;</span><br><span class="line"><span class="keyword">using</span> System.Linq;</span><br><span class="line"><span class="keyword">using</span> System.Collections.Generic;</span><br><span class="line"><span class="keyword">using</span> System.Text.Json;</span><br><span class="line"></span><br><span class="line"><span class="keyword">namespace</span> <span class="title">ListGroupBy</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">internal</span> <span class="keyword">class</span> <span class="title">Program</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">Main</span>(<span class="params"><span class="built_in">string</span>[] args</span>)</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">var</span> numbers = <span class="keyword">new</span> List&lt;<span class="built_in">string</span>&gt;</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="string">&quot;00001&quot;</span>,<span class="string">&quot;00002&quot;</span>,<span class="string">&quot;00003&quot;</span>,<span class="string">&quot;00004&quot;</span>,<span class="string">&quot;00005&quot;</span></span><br><span class="line">            &#125;;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">var</span> numberGroup = numbers</span><br><span class="line">                .Select((number, index) =&gt; <span class="keyword">new</span> &#123; number, index &#125;)</span><br><span class="line">                .GroupBy(g =&gt; g.index / <span class="number">2</span>, i =&gt; i.number)</span><br><span class="line">                .ToList();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;p&gt;在這邊主要介紹List的分群，如有以下的五筆資料&lt;br&gt;[“00001”,”00002”,”00003”,”00004”,”00005”]&lt;br&gt;這時想要以2來群分，變成下方結果&lt;br&gt;[[“00001”,”00002”],[“00003”,”00004”],[“00005</summary>
+      
+    
+    
+    
+    <category term="Code" scheme="https://yuhsiang237.github.io/categories/Code/"/>
+    
+    <category term="C#" scheme="https://yuhsiang237.github.io/categories/Code/C/"/>
+    
+    
+  </entry>
   
   <entry>
     <title>SQL Server 叢集索引vs非叢集索引</title>
@@ -491,34 +515,6 @@
       
       
     <summary type="html">&lt;h3 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h3&gt;&lt;p&gt;在上回 &lt;a href=&quot;/2022/03/19/%E4%BB%80%E9%BA%BC%E6%98%AF%E5%90%8C%E6%AD%A5</summary>
-      
-    
-    
-    
-    <category term="Code" scheme="https://yuhsiang237.github.io/categories/Code/"/>
-    
-    <category term="C#" scheme="https://yuhsiang237.github.io/categories/Code/C/"/>
-    
-    <category term="Topic" scheme="https://yuhsiang237.github.io/categories/Topic/"/>
-    
-    <category term="2022 C# 執行緒同步異步編程記" scheme="https://yuhsiang237.github.io/categories/Topic/2022-C-%E5%9F%B7%E8%A1%8C%E7%B7%92%E5%90%8C%E6%AD%A5%E7%95%B0%E6%AD%A5%E7%B7%A8%E7%A8%8B%E8%A8%98/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>[Day2]什麼是同步與異步 - C# 執行緒同步異步編程記</title>
-    <link href="https://yuhsiang237.github.io/2022/03/19/%E4%BB%80%E9%BA%BC%E6%98%AF%E5%90%8C%E6%AD%A5%E8%88%87%E7%95%B0%E6%AD%A5-C-%E5%9F%B7%E8%A1%8C%E7%B7%92%E5%90%8C%E6%AD%A5%E7%95%B0%E6%AD%A5%E7%B7%A8%E7%A8%8B%E8%A8%98/"/>
-    <id>https://yuhsiang237.github.io/2022/03/19/%E4%BB%80%E9%BA%BC%E6%98%AF%E5%90%8C%E6%AD%A5%E8%88%87%E7%95%B0%E6%AD%A5-C-%E5%9F%B7%E8%A1%8C%E7%B7%92%E5%90%8C%E6%AD%A5%E7%95%B0%E6%AD%A5%E7%B7%A8%E7%A8%8B%E8%A8%98/</id>
-    <published>2022-03-19T06:51:24.000Z</published>
-    <updated>2022-04-06T02:24:50.035Z</updated>
-    
-    <content type="html"><![CDATA[<h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>在上回 <a href="/2022/03/19/%E7%82%BA%E4%BA%86%E6%9F%90%E5%80%8B%E5%A4%A2%E6%83%B3%E8%80%8C%E9%96%8B%E5%A7%8B-C-%E5%90%8C%E6%AD%A5%E7%95%B0%E6%AD%A5%E7%B7%A8%E7%A8%8B/" title="[Day1]為了某個夢想而開始 - C# 執行緒同步異步編程記">[Day1]為了某個夢想而開始 - C# 執行緒同步異步編程記</a> ，列出了學習方向，而今回就朝學習目標邁進。</p><h3 id="什麼是同步與異步"><a href="#什麼是同步與異步" class="headerlink" title="什麼是同步與異步"></a>什麼是同步與異步</h3><p>在此將同步、非同步做一個表格比較:</p><table><tr><td style="width:20%"></td><td style="width:40%">異步</td><td style="width:40%">同步</td></tr><tr><td>描述</td><td>又稱非同步(Asynchronous、async)，調用在發出之後，這個調用就直接返回了，所以沒有返回結果。當一個異步過程調用發出後，調用者不會立刻得到結果。而是在調用發出後，被調用者通過狀態、通知或通過回調函數，讓調用者能響應結果。</td><td>又稱同步(Synchronous、sync)，同步還可以理解為：發出一個調用時，在沒有得到結果之前，該調用就不返回。</td></tr><tr><td>使用場景</td><td>同時，一次做多件事情</td><td>同時，一次做一件事情</td></tr><td>圖例</td><td><img src="/2022/03/19/%E4%BB%80%E9%BA%BC%E6%98%AF%E5%90%8C%E6%AD%A5%E8%88%87%E7%95%B0%E6%AD%A5-C-%E5%9F%B7%E8%A1%8C%E7%B7%92%E5%90%8C%E6%AD%A5%E7%95%B0%E6%AD%A5%E7%B7%A8%E7%A8%8B%E8%A8%98/1.png" class=""></td><td><img src="/2022/03/19/%E4%BB%80%E9%BA%BC%E6%98%AF%E5%90%8C%E6%AD%A5%E8%88%87%E7%95%B0%E6%AD%A5-C-%E5%9F%B7%E8%A1%8C%E7%B7%92%E5%90%8C%E6%AD%A5%E7%95%B0%E6%AD%A5%E7%B7%A8%E7%A8%8B%E8%A8%98/2.png" class=""></td></tr><tr><td>例子</td><td>非同步串行通信、AJAX</td><td>-</td></tr><tr><td>C#中常見的關鍵詞</td><td>async、await、Task、Thread </td><td>-</td></tr></table><h3 id="總結"><a href="#總結" class="headerlink" title="總結"></a>總結</h3><p>在這篇中可以得知，如果想加快某些代碼執行的速度，而其彼此又不相干，就能將其以非同步方法實作。<br>且非同步方法調用後立即返回，因此不會有結果，而是用通知、回調方式去獲得結果。<br>而在C#中Thread與Task都能做到異步，下回則主要介紹Thread與Task的差異囉。</p><h3 id="參考資料"><a href="#參考資料" class="headerlink" title="參考資料"></a>參考資料</h3><ul><li><a href="https://zh.wikipedia.org/wiki/%E9%9D%9E%E5%90%8C%E6%AD%A5">https://zh.wikipedia.org/wiki/%E9%9D%9E%E5%90%8C%E6%AD%A5</a></li><li><a href="https://zh.wikipedia.org/wiki/%E5%90%8C%E6%AD%A5">https://zh.wikipedia.org/wiki/%E5%90%8C%E6%AD%A5</a></li><li><a href="https://docs.microsoft.com/zh-tw/dotnet/csharp/programming-guide/concepts/async/">https://docs.microsoft.com/zh-tw/dotnet/csharp/programming-guide/concepts/async/</a></li></ul>]]></content>
-    
-    
-      
-      
-    <summary type="html">&lt;h3 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h3&gt;&lt;p&gt;在上回 &lt;a href=&quot;/2022/03/19/%E7%82%BA%E4%BA%86%E6%9F%90%E5%80%8B%E5%A4%A2</summary>
       
     
     
