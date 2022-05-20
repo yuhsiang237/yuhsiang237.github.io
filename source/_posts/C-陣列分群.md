@@ -36,8 +36,30 @@ namespace ListGroupBy
                 .Select((number, index) => new { number, index })
                 .GroupBy(g => g.index / 2, i => i.number)
                 .ToList();
+
+            //It will iterate through each groups
+            foreach (var group in numberGroup)
+            {
+                Console.WriteLine($"{group.Key} ,  count: {group.Count()}");
+                //Iterate through each number of a group
+                foreach (var number in group)
+                {
+                    Console.WriteLine($"  number : {number}");
+                }
+            }
         }
     }
 }
+```
 
+output:
+```
+0 ,  count: 2
+  number : 00001
+  number : 00002
+1 ,  count: 2
+  number : 00003
+  number : 00004
+2 ,  count: 1
+  number : 00005
 ```
