@@ -77,6 +77,183 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-sql-server資料庫關聯" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2021/09/07/sql-server%E8%B3%87%E6%96%99%E5%BA%AB%E9%97%9C%E8%81%AF/" class="article-date">
+  <time class="dt-published" datetime="2021-09-07T15:07:26.000Z" itemprop="datePublished">2021-09-07</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Database/">Database</a>►<a class="article-category-link" href="/categories/Database/SQL-Server/">SQL Server</a>►<a class="article-category-link" href="/categories/Topic/">Topic</a>►<a class="article-category-link" href="/categories/Topic/2021-SQL-Server%E9%90%B5%E4%BA%BA%E8%B3%BD/">2021 SQL Server鐵人賽</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2021/09/07/sql-server%E8%B3%87%E6%96%99%E5%BA%AB%E9%97%9C%E8%81%AF/">[Day7] SQL server資料庫關聯 - SQL Server資料庫入門</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>在上回中 <a href="/2021/09/06/SQL-server%E8%B3%87%E6%96%99%E8%A1%A8%E5%BB%BA%E7%AB%8B/" title="[Day6] SQL server資料表建立 - SQL Server資料庫入門">[Day6] SQL server資料表建立 - SQL Server資料庫入門</a> 我們建立了正規化後的資料表進資料庫。<br>在這回中我們要知道資料庫中的關聯關係，並且拉好SQL server中表的主鍵、外來鍵關聯。</p>
+<h3 id="一對一（One-to-One）"><a href="#一對一（One-to-One）" class="headerlink" title="一對一（One to One）:"></a>一對一（One to One）:</h3><p>有A、B兩個table裡面各自存在一筆記錄，可以使用其主鍵，對應至另一個table的一筆記錄。<br>如下圖，students_public裡的sid 107000001 在students_private只會出現1筆；students_private裡的sid 107000001在students_public也只會出現1筆。</p>
+<img src="/2021/09/07/sql-server%E8%B3%87%E6%96%99%E5%BA%AB%E9%97%9C%E8%81%AF/%E4%B8%80%E5%B0%8D%E4%B8%80%E7%AF%84%E4%BE%8B.png" class="" title="一對一範例">
+
+<h3 id="一對多（One-to-Many）"><a href="#一對多（One-to-Many）" class="headerlink" title="一對多（One to Many）:"></a>一對多（One to Many）:</h3><p>如depdepartments的一筆id可以對應到students多筆的dept_id。<br>所以depdepartments對students是一對多。<br>相對的，students多筆的dept_id可以對應到depdepartments的一筆id。<br>所以students對depdepartments是多對一。</p>
+<img src="/2021/09/07/sql-server%E8%B3%87%E6%96%99%E5%BA%AB%E9%97%9C%E8%81%AF/%E4%B8%80%E5%B0%8D%E5%A4%9A%E7%AF%84%E4%BE%8B.png" class="" title="一對多範例">
+
+<h3 id="多對多（Many-to-Many）"><a href="#多對多（Many-to-Many）" class="headerlink" title="多對多（Many to Many）:"></a>多對多（Many to Many）:</h3><p>一個 A 是否會有多個 B？<br>一個 B 是否會有多個 A？<br>兩者皆是，就是多對多</p>
+<p>以下面例子，<br>一個文章是否有多個標籤?ANS:是<br>一個標籤是否有多個文章?ANS:是</p>
+<p>這邊稍微解講一下，多對多可能會呈現以下的圖表情況。<br>posts透過一張中介的表(intermediary table)對應到tags<br>tags透過一張中介的表(intermediary table)對應到posts<br>則post與tags為多對多。</p>
+<p>(PS.基本上在2NF、3NF時就會不自覺得做出這種表。)</p>
+<p>可以參考 <a href="/2021/09/05/SQL-server%E8%B3%87%E6%96%99%E5%BA%AB%E6%AD%A3%E8%A6%8F%E5%8C%96/" title="[Day5] 規劃資料表，透過資料庫正規化 - SQL Server資料庫入門">[Day5] 規劃資料表，透過資料庫正規化 - SQL Server資料庫入門</a> </p>
+<img src="/2021/09/07/sql-server%E8%B3%87%E6%96%99%E5%BA%AB%E9%97%9C%E8%81%AF/%E5%A4%9A%E5%B0%8D%E5%A4%9A%E7%AF%84%E4%BE%8B.png" class="" title="多對多範例">
+
+
+<p>ps.圖片來源參考自參考資料。</p>
+<h3 id="拉資料表關聯"><a href="#拉資料表關聯" class="headerlink" title="拉資料表關聯"></a>拉資料表關聯</h3><p>1.建立資料表視圖</p>
+<img src="/2021/09/07/sql-server%E8%B3%87%E6%96%99%E5%BA%AB%E9%97%9C%E8%81%AF/all1.PNG" class="">
+<p>2.選取要呈現的表</p>
+<img src="/2021/09/07/sql-server%E8%B3%87%E6%96%99%E5%BA%AB%E9%97%9C%E8%81%AF/all2.PNG" class="">
+<p>3.顯示我們剛剛建立的4張表</p>
+<img src="/2021/09/07/sql-server%E8%B3%87%E6%96%99%E5%BA%AB%E9%97%9C%E8%81%AF/all3.PNG" class="">
+<p>4.拉關聯<br>對order_details來說，product_number是外來鍵，而主鍵則是指向products的number。<br>從products的number拖曳到order_details的product_number即可完成關聯，會跳出視窗點確認後點確定即可。</p>
+<img src="/2021/09/07/sql-server%E8%B3%87%E6%96%99%E5%BA%AB%E9%97%9C%E8%81%AF/%E6%8B%89%E9%97%9C%E8%81%AF1.png" class="">
+<p>5.把剩下的也拉完<br>對orders來說，customer_number是外來鍵，而主鍵則是指向customers的number。<br>對order_details來說，order_number是外來鍵，而主鍵則是指向orders的number。<br>如此一來就完成手動關聯了。</p>
+<img src="/2021/09/07/sql-server%E8%B3%87%E6%96%99%E5%BA%AB%E9%97%9C%E8%81%AF/%E6%8B%89%E9%97%9C%E8%81%AF%E5%AE%8C%E6%88%90.png" class="">
+<p>6.分析一下資料庫中的表的關聯性</p>
+<p>customers、orders<br>一個顧客有多個訂單?是<br>一個訂單是否有多個顧客?否<br>所以customers對orders是一對多</p>
+<p>orders、order_details<br>一個訂單是否有多個訂單明細?是<br>一個明細是否有多個訂單?否<br>所以orders對order_details是一對多</p>
+<p>orders與products，中間媒介order_details<br>一個訂單是否有多個產品?是<br>一個產品是否有多個訂單?是<br>所以orders對products是多對多</p>
+<h3 id="結語"><a href="#結語" class="headerlink" title="結語"></a>結語</h3><p>在一對一、一對多，我們可以很直覺的知道。<br>而多對多時可能需要想:<br>一個 A 是否會有多個 B？<br>一個 B 是否會有多個 A？<br>如果回答都是”是”那就是多對多，少一個就是一對多或多對一。</p>
+<p>此外，我覺得在規劃時好像不太需要知道一對一、一對多、多對多，只是如果知道在拆表上可能會更快。<br>因為在2NF、3NF時會不自覺完成，只要知道主鍵、外來鍵即可。</p>
+<p>在下回預計會將資料填入資料庫中。</p>
+<p><strong>參考資料:</strong><br><a target="_blank" rel="noopener" href="https://medium.com/pierceshih/%E7%AD%86%E8%A8%98-%E8%B3%87%E6%96%99%E9%97%9C%E8%81%AF%E7%9A%84%E4%B8%89%E7%A8%AE%E9%97%9C%E4%BF%82-245152c093da">https://medium.com/pierceshih/%E7%AD%86%E8%A8%98-%E8%B3%87%E6%96%99%E9%97%9C%E8%81%AF%E7%9A%84%E4%B8%89%E7%A8%AE%E9%97%9C%E4%BF%82-245152c093da</a><br><a target="_blank" rel="noopener" href="https://notes.andywu.tw/2018/%E8%B3%87%E6%96%99%E5%BA%AB-%E9%97%9C%E8%81%AF%E4%BB%8B%E7%B4%B9-%E4%B8%80%E5%B0%8D%E4%B8%80%E3%80%81%E4%B8%80%E5%B0%8D%E5%A4%9A%E3%80%81%E5%A4%9A%E5%B0%8D%E5%A4%9A/">https://notes.andywu.tw/2018/%E8%B3%87%E6%96%99%E5%BA%AB-%E9%97%9C%E8%81%AF%E4%BB%8B%E7%B4%B9-%E4%B8%80%E5%B0%8D%E4%B8%80%E3%80%81%E4%B8%80%E5%B0%8D%E5%A4%9A%E3%80%81%E5%A4%9A%E5%B0%8D%E5%A4%9A/</a><br><a target="_blank" rel="noopener" href="https://ithelp.ithome.com.tw/articles/10214381">https://ithelp.ithome.com.tw/articles/10214381</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://yuhsiang237.github.io/2021/09/07/sql-server%E8%B3%87%E6%96%99%E5%BA%AB%E9%97%9C%E8%81%AF/" data-id="cl0g433pf004ntwgh9q807ock" data-title="[Day7] SQL server資料庫關聯 - SQL Server資料庫入門" class="article-share-link">Teilen</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-SQL-server資料表建立" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2021/09/06/SQL-server%E8%B3%87%E6%96%99%E8%A1%A8%E5%BB%BA%E7%AB%8B/" class="article-date">
+  <time class="dt-published" datetime="2021-09-05T16:00:17.000Z" itemprop="datePublished">2021-09-06</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Database/">Database</a>►<a class="article-category-link" href="/categories/Database/SQL-Server/">SQL Server</a>►<a class="article-category-link" href="/categories/Topic/">Topic</a>►<a class="article-category-link" href="/categories/Topic/2021-SQL-Server%E9%90%B5%E4%BA%BA%E8%B3%BD/">2021 SQL Server鐵人賽</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2021/09/06/SQL-server%E8%B3%87%E6%96%99%E8%A1%A8%E5%BB%BA%E7%AB%8B/">[Day6] SQL server資料表建立 - SQL Server資料庫入門</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>在上回 <a href="/2021/09/05/SQL-server%E8%B3%87%E6%96%99%E5%BA%AB%E6%AD%A3%E8%A6%8F%E5%8C%96/" title="[Day5] 規劃資料表，透過資料庫正規化 - SQL Server資料庫入門">[Day5] 規劃資料表，透過資料庫正規化 - SQL Server資料庫入門</a> 中，我們經由資料庫正規化1NF-&gt;2NF-&gt;3NF將訂單表單正規化，再來我們就要使用SSMS(Microsoft SQL Server Management Studio)協助我們在資料庫中建立資料表。</p>
+<p><strong>在這篇中，主要涵蓋內容為:</strong><br>1.如何在SQL server中建立資料表<br>2.如何設定自動遞增<br>3.欄位型別選擇</p>
+<p><strong>訂單示意圖:</strong></p>
+<img src="/2021/09/06/SQL-server%E8%B3%87%E6%96%99%E8%A1%A8%E5%BB%BA%E7%AB%8B/%E8%A8%82%E5%96%AE.png" class="" title="訂單">
+
+<p><strong>3NF正規化後:</strong></p>
+<img src="/2021/09/06/SQL-server%E8%B3%87%E6%96%99%E8%A1%A8%E5%BB%BA%E7%AB%8B/%E8%B3%87%E6%96%99%E8%A1%A8%E4%BF%AE%E6%AD%A3.png" class="" title="資料表">
+
+
+
+
+<h3 id="建立資料表orders"><a href="#建立資料表orders" class="headerlink" title="建立資料表orders"></a>建立資料表orders</h3><p>1.對table點右鍵&gt;new table</p>
+<img src="/2021/09/06/SQL-server%E8%B3%87%E6%96%99%E8%A1%A8%E5%BB%BA%E7%AB%8B/%E5%BB%BA%E7%AB%8B%E8%B3%87%E6%96%99%E8%A1%A81.png" class="" title="建立資料表1">
+<p>2.接著會出現設計的框框</p>
+<img src="/2021/09/06/SQL-server%E8%B3%87%E6%96%99%E8%A1%A8%E5%BB%BA%E7%AB%8B/%E5%BB%BA%E7%AB%8B%E8%B3%87%E6%96%99%E8%A1%A82.png" class="" title="建立資料表2">
+<p>3.填入欄位與型別<br>在此，補充一點，金額使用decimal，不要使用float，因為以下原因:<br>因為float表示近似數值，存在精度損失，存有小數的值可能會造成誤差，因此使用decimal。<br>decimal(p,s) 需要分別指定小數的最大位數（p）和小數位的數量（s）。<br>p (precision) ：指定小數的最大位數，小數點的左側和右側的數字的總數量不能超過p，p的取值範圍是從1到38，默認值爲18。<br>s (scale)：指定在小數點右側的小數位數，p-s是小數點左邊的最大位數。s必須是從0到p的值，只有在指定了精度的情況下才能指定s，s的默認值是0，因此，0 &lt;= s &lt;= p。 </p>
+<img src="/2021/09/06/SQL-server%E8%B3%87%E6%96%99%E8%A1%A8%E5%BB%BA%E7%AB%8B/decimal.png" class="" title="decimal">
+
+<p>延伸閱讀: <a href="/2021/09/03/sql-server%E8%B3%87%E6%96%99%E5%9E%8B%E6%85%8B/" title="[Day3] SQL Server資料型態 - SQL Server資料庫入門">[Day3] SQL Server資料型態 - SQL Server資料庫入門</a> 可以多加參考。</p>
+<img src="/2021/09/06/SQL-server%E8%B3%87%E6%96%99%E8%A1%A8%E5%BB%BA%E7%AB%8B/%E5%BB%BA%E7%AB%8B%E8%B3%87%E6%96%99%E8%A1%A83.png" class="" title="建立資料表3">
+<p>4.設定主鍵(PK)</p>
+<img src="/2021/09/06/SQL-server%E8%B3%87%E6%96%99%E8%A1%A8%E5%BB%BA%E7%AB%8B/%E5%BB%BA%E7%AB%8B%E8%B3%87%E6%96%99%E8%A1%A84.png" class="" title="建立資料表4">
+<p>5.儲存Ctrl+S，並命名為orders</p>
+<img src="/2021/09/06/SQL-server%E8%B3%87%E6%96%99%E8%A1%A8%E5%BB%BA%E7%AB%8B/%E5%BB%BA%E7%AB%8B%E8%B3%87%E6%96%99%E8%A1%A85.png" class="" title="建立資料表5">
+<p>6.重新整理，左方會出現orders資料表，代表成功建立</p>
+<img src="/2021/09/06/SQL-server%E8%B3%87%E6%96%99%E8%A1%A8%E5%BB%BA%E7%AB%8B/%E5%BB%BA%E7%AB%8B%E8%B3%87%E6%96%99%E8%A1%A86.png" class="" title="建立資料表6">
+
+
+<h3 id="建立資料表customers"><a href="#建立資料表customers" class="headerlink" title="建立資料表customers"></a>建立資料表customers</h3><p>基本上可以照前面做法建立即可。</p>
+<img src="/2021/09/06/SQL-server%E8%B3%87%E6%96%99%E8%A1%A8%E5%BB%BA%E7%AB%8B/customerstable.PNG" class="" title="customers">
+
+<h3 id="建立資料表products"><a href="#建立資料表products" class="headerlink" title="建立資料表products"></a>建立資料表products</h3><p>基本上可以照前面做法建立即可。</p>
+<img src="/2021/09/06/SQL-server%E8%B3%87%E6%96%99%E8%A1%A8%E5%BB%BA%E7%AB%8B/producttable.PNG" class="" title="customers">
+
+<h3 id="建立資料表order-details"><a href="#建立資料表order-details" class="headerlink" title="建立資料表order_details"></a>建立資料表order_details</h3><p>1.建構表<br>這邊我把amount數量設為整數。</p>
+<img src="/2021/09/06/SQL-server%E8%B3%87%E6%96%99%E8%A1%A8%E5%BB%BA%E7%AB%8B/orderdetailstable1.PNG" class="" title="customers">
+<p>2.這邊注意，要把id設定為主鍵，之後設定「自動遞增」，作法是identify設定成YES</p>
+<img src="/2021/09/06/SQL-server%E8%B3%87%E6%96%99%E8%A1%A8%E5%BB%BA%E7%AB%8B/orderdetailstable2.PNG" class="" title="customers">
+<p>3.刷新出現order_details</p>
+<img src="/2021/09/06/SQL-server%E8%B3%87%E6%96%99%E8%A1%A8%E5%BB%BA%E7%AB%8B/orderdetailstable3.PNG" class="" title="customers">
+
+
+
+<h3 id="資料表視圖，總覽資料表"><a href="#資料表視圖，總覽資料表" class="headerlink" title="資料表視圖，總覽資料表"></a>資料表視圖，總覽資料表</h3><p>1.建立資料表視圖</p>
+<img src="/2021/09/06/SQL-server%E8%B3%87%E6%96%99%E8%A1%A8%E5%BB%BA%E7%AB%8B/all1.PNG" class="">
+<p>2.選取要呈現的表</p>
+<img src="/2021/09/06/SQL-server%E8%B3%87%E6%96%99%E8%A1%A8%E5%BB%BA%E7%AB%8B/all2.PNG" class="">
+<p>3.顯示我們剛剛建立的4張表</p>
+<img src="/2021/09/06/SQL-server%E8%B3%87%E6%96%99%E8%A1%A8%E5%BB%BA%E7%AB%8B/all3.PNG" class="">
+
+<p>在跟我們在先前規劃的對照</p>
+<img src="/2021/09/06/SQL-server%E8%B3%87%E6%96%99%E8%A1%A8%E5%BB%BA%E7%AB%8B/%E8%B3%87%E6%96%99%E8%A1%A8%E4%BF%AE%E6%AD%A3.png" class="" title="資料表">
+
+<h3 id="總結"><a href="#總結" class="headerlink" title="總結"></a>總結</h3><p>如果在先前正規化好的話，那建表時真的會很輕鬆XD，就只要考慮型別即可。</p>
+<p>欄位命名規則上，我使用「全小寫，搭配底線」的規則(參考Laravel&amp;MySQL)，如果專案有統一就用專案內的，重點是整份是一樣規則就好。ps.此外，我發現用google翻譯翻出來的英文都怪怪的，有些是形容詞、名詞等等，可能要找天弄清楚。</p>
+<p>欄位型態上，可參考先前寫的 <a href="/2021/09/03/sql-server%E8%B3%87%E6%96%99%E5%9E%8B%E6%85%8B/" title="[Day3] SQL Server資料型態 - SQL Server資料庫入門">[Day3] SQL Server資料型態 - SQL Server資料庫入門</a> 。<br>在這回中發現了float與decimal的差別，因此在存有小數的金額請使用decimal，避免造成誤差、不準確。</p>
+<p>特殊規則上，如某些欄位是流水號id需要「自動遞增」，作法是identify設定成YES。</p>
+<p>在下回，我們將開始關聯這些表。</p>
+<p><strong>參考資料:</strong><br><a target="_blank" rel="noopener" href="https://ithelp.ithome.com.tw/articles/10214381">https://ithelp.ithome.com.tw/articles/10214381</a><br><a target="_blank" rel="noopener" href="https://ithelp.ithome.com.tw/articles/10214308">https://ithelp.ithome.com.tw/articles/10214308</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://yuhsiang237.github.io/2021/09/06/SQL-server%E8%B3%87%E6%96%99%E8%A1%A8%E5%BB%BA%E7%AB%8B/" data-id="cl0g433ow002ptwgh75n868me" data-title="[Day6] SQL server資料表建立 - SQL Server資料庫入門" class="article-share-link">Teilen</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
     <article id="post-SQL-server資料庫正規化" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
     <a href="/2021/09/05/SQL-server%E8%B3%87%E6%96%99%E5%BA%AB%E6%AD%A3%E8%A6%8F%E5%8C%96/" class="article-date">
@@ -759,116 +936,11 @@ All other precision require 8 bytes.2<br></span></td>
 
 
   
-    <article id="post-Queue與Stack操作" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2021/08/30/Queue%E8%88%87Stack%E6%93%8D%E4%BD%9C/" class="article-date">
-  <time class="dt-published" datetime="2021-08-30T12:11:10.000Z" itemprop="datePublished">2021-08-30</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/Code/">Code</a>►<a class="article-category-link" href="/categories/Code/C/">C#</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2021/08/30/Queue%E8%88%87Stack%E6%93%8D%E4%BD%9C/">C# Queue與Stack操作</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>為了熟悉C#處理資料的方式，所以找了兩種比較常見的資料結構來練習。<br>分別是Queue(佇列)、Stack(堆疊)。</p>
-<h3 id="Queue"><a href="#Queue" class="headerlink" title="Queue"></a>Queue</h3><p>先進先出</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">using System;</span><br><span class="line">using System.Collections;</span><br><span class="line"></span><br><span class="line">public class Program</span><br><span class="line">&#123;</span><br><span class="line">	public static void Main()</span><br><span class="line">	&#123;</span><br><span class="line">		Queue q = new Queue();</span><br><span class="line">		q.Enqueue(&quot;hello&quot;); // 向 Queue 的末尾新增一個物件。</span><br><span class="line">		q.Enqueue(32);</span><br><span class="line">		q.Enqueue(5);</span><br><span class="line">		q.Enqueue(&#x27;N&#x27;);</span><br><span class="line">		</span><br><span class="line">		Console.WriteLine(&quot;印出Queue的內容:&quot;);</span><br><span class="line">		foreach(var item in q)&#123;</span><br><span class="line">			Console.WriteLine(item);</span><br><span class="line">		&#125;</span><br><span class="line">		</span><br><span class="line">		Console.WriteLine(&quot;取出一個資料:&quot;);</span><br><span class="line">		var result = q.Dequeue(); // 從 Queue 的前端取出一個資料</span><br><span class="line">		Console.WriteLine(result);</span><br><span class="line">        </span><br><span class="line">		Console.WriteLine(&quot;轉成陣列印出:&quot;);</span><br><span class="line">		var array = q.ToArray();</span><br><span class="line">		foreach(var item in array)&#123;</span><br><span class="line">			Console.WriteLine(item);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>輸出:</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">印出Queue的內容:</span><br><span class="line">hello</span><br><span class="line">32</span><br><span class="line">5</span><br><span class="line">N</span><br><span class="line">取出一個資料:</span><br><span class="line">hello</span><br><span class="line">轉成陣列印出:</span><br><span class="line">32</span><br><span class="line">5</span><br><span class="line">N</span><br></pre></td></tr></table></figure>
-
-<h3 id="Stack"><a href="#Stack" class="headerlink" title="Stack"></a>Stack</h3><p>先進後出</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">using System;</span><br><span class="line">using System.Collections;</span><br><span class="line"></span><br><span class="line">public class Program</span><br><span class="line">&#123;</span><br><span class="line">	public static void Main()</span><br><span class="line">	&#123;</span><br><span class="line">		Stack s = new Stack();</span><br><span class="line">		s.Push(&quot;hello&quot;); // 向 Stack 的頂部新增一個物件。</span><br><span class="line">		s.Push(32);</span><br><span class="line">		s.Push(5);</span><br><span class="line">		s.Push(&#x27;N&#x27;);</span><br><span class="line">		</span><br><span class="line">		Console.WriteLine(&quot;印出Stack的內容:&quot;);</span><br><span class="line">		foreach(var item in s)&#123;</span><br><span class="line">			Console.WriteLine(item);</span><br><span class="line">		&#125;</span><br><span class="line">		</span><br><span class="line">		Console.WriteLine(&quot;取出一個資料:&quot;);</span><br><span class="line">		var result = s.Pop(); // 移除並返回在 Stack 的頂部的物件。</span><br><span class="line">		Console.WriteLine(result);</span><br><span class="line">		</span><br><span class="line">		Console.WriteLine(&quot;Peek觀察頂部物件但不移除:&quot;);</span><br><span class="line">		result = s.Peek(); // Peek觀察頂部物件但不移除</span><br><span class="line">		Console.WriteLine(result);</span><br><span class="line">		</span><br><span class="line">		Console.WriteLine(&quot;轉成陣列印出:&quot;);</span><br><span class="line">		var array = s.ToArray();</span><br><span class="line">		foreach(var item in array)&#123;</span><br><span class="line">			Console.WriteLine(item);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>輸出:</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">印出Stack的內容:</span><br><span class="line">N</span><br><span class="line">5</span><br><span class="line">32</span><br><span class="line">hello</span><br><span class="line">取出一個資料:</span><br><span class="line">N</span><br><span class="line">Peek觀察頂部物件但不移除:</span><br><span class="line">5</span><br><span class="line">轉成陣列印出:</span><br><span class="line">5</span><br><span class="line">32</span><br><span class="line">hello</span><br></pre></td></tr></table></figure>
-
-<h3 id="結語"><a href="#結語" class="headerlink" title="結語"></a>結語</h3><p>C#除了已經內置了基礎的佇列(Queue)、堆疊(Stack)，還內建了一些簡易的語法。<br>如Contains，可以對整個資料結構去檢查是否存在某個特定元素。亦有toArray()可以快速的把資料結構轉為陣列型態。</p>
-<p><strong>參考資料</strong><br><a target="_blank" rel="noopener" href="https://www.itread01.com/content/1550138429.html?fbclid=IwAR3ty4HR0DlmSWRMl19IFBgESeXM2aH5GsJxxcKHMGdzY6WIJm90brUzsvI">https://www.itread01.com/content/1550138429.html?fbclid=IwAR3ty4HR0DlmSWRMl19IFBgESeXM2aH5GsJxxcKHMGdzY6WIJm90brUzsvI</a></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://yuhsiang237.github.io/2021/08/30/Queue%E8%88%87Stack%E6%93%8D%E4%BD%9C/" data-id="cl0g433os002atwghf4ixawk8" data-title="C# Queue與Stack操作" class="article-share-link">Teilen</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-javascript-event-loop機制" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2021/08/30/javascript-event-loop%E6%A9%9F%E5%88%B6/" class="article-date">
-  <time class="dt-published" datetime="2021-08-29T19:40:36.000Z" itemprop="datePublished">2021-08-30</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/Code/">Code</a>►<a class="article-category-link" href="/categories/Code/Javascript/">Javascript</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2021/08/30/javascript-event-loop%E6%A9%9F%E5%88%B6/">javascript event loop機制(未完)</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>javascript是單一執行序，所以一次只能執行一件事。我們網頁上的操作也都會影響這機制，造成效能不好(時間延誤)。<br>而這其實很難用文字去解釋，我們可以看這支影片。<br><a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=8aGhZQkoFbQ">https://www.youtube.com/watch?v=8aGhZQkoFbQ</a></p>
-<img src="/2021/08/30/javascript-event-loop%E6%A9%9F%E5%88%B6/1.PNG" class="" title="Js event loop">
-
-<h3 id="小結"><a href="#小結" class="headerlink" title="小結"></a>小結</h3><p>1.盡量不要在 callback 當中執行負擔過重的函數，避免佔據 call stack<br>2.理解 microtask 與一般 task queue 執行順序不同。<br>－－引用自參考資料</p>
-<p>雖然理解底層跟實際面操作其實並不會有什麼大改變，因為還是得寫。<br>但至少可以透過這些底層觀念，讓我們思考有些程式碼其實有更好的寫法，就能減少這種效能問題。<br><del>(雖然使用者本身就只會覺得是網路lag而已)</del></p>
-<p>其實還有microtask未補，待下次補完。</p>
-<p><strong>參考資料</strong><br><a target="_blank" rel="noopener" href="https://ithelp.ithome.com.tw/articles/10214017">https://ithelp.ithome.com.tw/articles/10214017</a><br><a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=8aGhZQkoFbQ">https://www.youtube.com/watch?v=8aGhZQkoFbQ</a></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://yuhsiang237.github.io/2021/08/30/javascript-event-loop%E6%A9%9F%E5%88%B6/" data-id="cl0g433p0003atwgh7lqq6suq" data-title="javascript event loop機制(未完)" class="article-share-link">Teilen</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
 
 
   <nav id="page-nav">
     
-    <a class="extend prev" rel="prev" href="/page/11/">&laquo; zurück</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/10/">10</a><a class="page-number" href="/page/11/">11</a><span class="page-number current">12</span><a class="page-number" href="/page/13/">13</a><a class="extend next" rel="next" href="/page/13/">weiter &raquo;</a>
+    <a class="extend prev" rel="prev" href="/page/11/">&laquo; zurück</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/10/">10</a><a class="page-number" href="/page/11/">11</a><span class="page-number current">12</span><a class="page-number" href="/page/13/">13</a><a class="page-number" href="/page/14/">14</a><a class="extend next" rel="next" href="/page/13/">weiter &raquo;</a>
   </nav>
 
 </section>
@@ -879,7 +951,7 @@ All other precision require 8 bytes.2<br></span></td>
   <div class="widget-wrap">
     <h3 class="widget-title">Kategorien</h3>
     <div class="widget">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Code/">Code</a><span class="category-list-count">62</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Code/C/">C#</a><span class="category-list-count">58</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Code/Javascript/">Javascript</a><span class="category-list-count">5</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/">Computer Science</a><span class="category-list-count">5</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/Algorithm/">Algorithm</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/Data-structure/">Data structure</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/%E9%9B%BB%E5%AD%90%E9%9B%BB%E8%B7%AF/">電子電路</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Daily-Log/">Daily Log</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/">Database</a><span class="category-list-count">52</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Database/PostgreSQL/">PostgreSQL</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/SQL-Server/">SQL Server</a><span class="category-list-count">42</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/">Framework</a><span class="category-list-count">27</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/AspNetCore-API/">AspNetCore API</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/AspNetCore-MVC/">AspNetCore MVC</a><span class="category-list-count">21</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/">Topic</a><span class="category-list-count">70</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2021-C-AspNetCore%E9%90%B5%E4%BA%BA%E8%B3%BD/">2021 C# AspNetCore鐵人賽</a><span class="category-list-count">30</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2021-SQL-Server%E9%90%B5%E4%BA%BA%E8%B3%BD/">2021 SQL Server鐵人賽</a><span class="category-list-count">30</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2022-C-%E5%9F%B7%E8%A1%8C%E7%B7%92%E5%90%8C%E6%AD%A5%E7%95%B0%E6%AD%A5%E7%B7%A8%E7%A8%8B%E8%A8%98/">2022 C# 執行緒同步異步編程記</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/LeetCode/">LeetCode</a><span class="category-list-count">3</span></li></ul></li></ul>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Code/">Code</a><span class="category-list-count">63</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Code/C/">C#</a><span class="category-list-count">58</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Code/Javascript/">Javascript</a><span class="category-list-count">6</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/">Computer Science</a><span class="category-list-count">5</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/Algorithm/">Algorithm</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/Data-structure/">Data structure</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/%E9%9B%BB%E5%AD%90%E9%9B%BB%E8%B7%AF/">電子電路</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Daily-Log/">Daily Log</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/">Database</a><span class="category-list-count">53</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Database/PostgreSQL/">PostgreSQL</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/SQL-Server/">SQL Server</a><span class="category-list-count">43</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/">Framework</a><span class="category-list-count">27</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/AspNetCore-API/">AspNetCore API</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/AspNetCore-MVC/">AspNetCore MVC</a><span class="category-list-count">21</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/">Topic</a><span class="category-list-count">70</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2021-C-AspNetCore%E9%90%B5%E4%BA%BA%E8%B3%BD/">2021 C# AspNetCore鐵人賽</a><span class="category-list-count">30</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2021-SQL-Server%E9%90%B5%E4%BA%BA%E8%B3%BD/">2021 SQL Server鐵人賽</a><span class="category-list-count">30</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2022-C-%E5%9F%B7%E8%A1%8C%E7%B7%92%E5%90%8C%E6%AD%A5%E7%95%B0%E6%AD%A5%E7%B7%A8%E7%A8%8B%E8%A8%98/">2022 C# 執行緒同步異步編程記</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/LeetCode/">LeetCode</a><span class="category-list-count">3</span></li></ul></li></ul>
     </div>
   </div>
 
@@ -889,7 +961,7 @@ All other precision require 8 bytes.2<br></span></td>
   <div class="widget-wrap">
     <h3 class="widget-title">Archiv</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/05/">五月 2022</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/04/">四月 2022</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/03/">三月 2022</a><span class="archive-list-count">17</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/02/">二月 2022</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/01/">一月 2022</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">十二月 2021</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">十月 2021</a><span class="archive-list-count">24</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">九月 2021</a><span class="archive-list-count">46</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">八月 2021</a><span class="archive-list-count">12</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/05/">五月 2022</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/04/">四月 2022</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/03/">三月 2022</a><span class="archive-list-count">17</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/02/">二月 2022</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/01/">一月 2022</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">十二月 2021</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">十月 2021</a><span class="archive-list-count">24</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">九月 2021</a><span class="archive-list-count">46</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">八月 2021</a><span class="archive-list-count">12</span></li></ul>
     </div>
   </div>
 

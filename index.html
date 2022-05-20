@@ -77,6 +77,189 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-SQL-Server-叢集索引vs非叢集索引" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2022/05/19/SQL-Server-%E5%8F%A2%E9%9B%86%E7%B4%A2%E5%BC%95vs%E9%9D%9E%E5%8F%A2%E9%9B%86%E7%B4%A2%E5%BC%95/" class="article-date">
+  <time class="dt-published" datetime="2022-05-19T02:10:35.000Z" itemprop="datePublished">2022-05-19</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Database/">Database</a>►<a class="article-category-link" href="/categories/Database/SQL-Server/">SQL Server</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2022/05/19/SQL-Server-%E5%8F%A2%E9%9B%86%E7%B4%A2%E5%BC%95vs%E9%9D%9E%E5%8F%A2%E9%9B%86%E7%B4%A2%E5%BC%95/">SQL Server 叢集索引vs非叢集索引</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>為了能讓資料庫提升資料搜查效率，我們能透過建立索引去調整搜尋。</p>
+<h3 id="索引"><a href="#索引" class="headerlink" title="索引"></a>索引</h3><p>索引是一種與資料表或檢視有關的磁碟內存結構，它會加快從該資料表或檢視中擷取資料列的速度。 索引中包含從資料表或檢視中一或多個資料行建出的索引鍵。 這些索引鍵儲存在結構 (B 型樹狀結構) 中，讓 SQL Server 可以快速有效地尋找與索引鍵值相關的一個或多個資料列。</p>
+<h3 id="叢集vs非叢集"><a href="#叢集vs非叢集" class="headerlink" title="叢集vs非叢集"></a>叢集vs非叢集</h3><table>
+<tr>
+<td style="width:16%">
+比較
+</td>
+<td  style="width:42%">
+叢集索引<br/>
+Clustered Index
+</td>
+<td  style="width:42%">
+非叢集索引<br/>
+NonClustered Index
+</td>
+</tr>
+<tr>
+<td>
+解釋
+</td>
+
+<td>
+1.叢集索引將資料表或檢視中的資料列依其索引鍵值排序與儲存。 這些就是索引定義中包含的資料行。 因為資料列本身只能以一種順序排序，所以每個資料表只能有一個叢集索引。  
+<br/>
+2.只有當資料表包含叢集索引時，資料表中的資料列才會以排序順序儲存。 當資料表有叢集索引時，資料表又稱為叢集資料表。 如果資料表沒有任何叢集索引，它的資料列就儲存在未排序的結構中，這個結構稱為堆積。
+</td>
+<td>
+1.非叢集索引有一個與資料列完全分開的結構。 非叢集索引包含非叢集索引鍵值，而每個索引鍵值項目都有一個指標，指向包含索引鍵值的資料列。<br/>
+2.從非叢集索引中的索引列指向資料列的指標被稱為資料列定位器。 資料列定位器的結構須視資料頁儲存在堆積或叢集資料表而定。 若是堆積，資料列定位器是指向資料列的指標。 若是叢集資料表，資料列定位器就是叢集索引鍵。<br/>
+3.您可以將非索引鍵之資料行新增至非叢集索引的分葉層級中，以規避現有索引鍵的限制，並執行完全涵蓋的索引查詢。 如需詳細資訊，請參閱 使用內含資料行建立索引。 如需索引鍵限制的詳細資訊，請參閱SQL Server的容量規格上限。<br/>
+</td>
+</tr>
+<tr>
+<td>
+注意
+</td>
+<td>
+1.一個資料表只能有一個「叢集索引」，因為實體資料列的排列順序不可能有多種。 <br/>
+2.如果在SQL Server主索引鍵(PK)會預設為叢集索引，如果要更改為其他叢集索引就必須先取消PK的叢集索引。<br/>
+3.不可用於（image/text/xml/max 型態，如 varchar(max)）型態<br/>
+4.每個索引最多可以包括 16 個欄位<br/>
+</td>
+<td>
+1.一個資料表可以有多個非叢集索引。<br/>
+2.每個索引最多可以包括 16 個欄位<br/>
+</td>
+</tr>
+<tr>
+<td>
+常用於
+</td>
+<td>
+1.常被引用為外來鍵的欄位<br/>
+2.最常被搜尋的日期欄位<br/>
+3.常被用來 ORDER BY 或是 GROUP BY 的欄位<br/>
+</td>
+<td>
+1.為了改善叢集索引未涵蓋但經常使用之查詢的效能
+</td>
+</tr>
+</table>
+
+<h3 id="參考資料"><a href="#參考資料" class="headerlink" title="參考資料"></a>參考資料</h3><ul>
+<li><a target="_blank" rel="noopener" href="https://docs.microsoft.com/zh-tw/sql/relational-databases/indexes/clustered-and-nonclustered-indexes-described?view=sql-server-ver15">https://docs.microsoft.com/zh-tw/sql/relational-databases/indexes/clustered-and-nonclustered-indexes-described?view=sql-server-ver15</a></li>
+<li><a target="_blank" rel="noopener" href="http://vito-note.blogspot.com/2013/05/blog-post_5510.html">http://vito-note.blogspot.com/2013/05/blog-post_5510.html</a></li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://yuhsiang237.github.io/2022/05/19/SQL-Server-%E5%8F%A2%E9%9B%86%E7%B4%A2%E5%BC%95vs%E9%9D%9E%E5%8F%A2%E9%9B%86%E7%B4%A2%E5%BC%95/" data-id="cl3cdudzw0000ksgh8p897xqy" data-title="SQL Server 叢集索引vs非叢集索引" class="article-share-link">Teilen</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-談React框架其實有難以維護的問題" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2022/05/13/%E8%AB%87React%E6%A1%86%E6%9E%B6%E5%85%B6%E5%AF%A6%E6%9C%89%E9%9B%A3%E4%BB%A5%E7%B6%AD%E8%AD%B7%E7%9A%84%E5%95%8F%E9%A1%8C/" class="article-date">
+  <time class="dt-published" datetime="2022-05-13T10:34:03.000Z" itemprop="datePublished">2022-05-13</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Code/">Code</a>►<a class="article-category-link" href="/categories/Code/Javascript/">Javascript</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2022/05/13/%E8%AB%87React%E6%A1%86%E6%9E%B6%E5%85%B6%E5%AF%A6%E6%9C%89%E9%9B%A3%E4%BB%A5%E7%B6%AD%E8%AD%B7%E7%9A%84%E5%95%8F%E9%A1%8C/">談React框架難以維護的問題</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>這篇聊一下過去在寫React實作上遇到的問題，以及本篇重點為什麼難以維護。<br>以下:</p>
+<ol>
+<li>React如果選擇純Javascript，專案越大越難維護</li>
+<li>維護的前人是高手，接手的人是新手</li>
+<li>過度抽象的邏輯</li>
+<li>JSX不好了解全局</li>
+<li>每個都元件，但不寫文件</li>
+<li>過度封裝的巢狀元件</li>
+<li>無固定寫法，套件選擇難以控制</li>
+</ol>
+<h4 id="1-React如果選擇純Javascript，專案越大越難維護"><a href="#1-React如果選擇純Javascript，專案越大越難維護" class="headerlink" title="1.React如果選擇純Javascript，專案越大越難維護"></a>1.React如果選擇純Javascript，專案越大越難維護</h4><p>因為javascript本身就有很多雷坑<br>1.await、async<br>2.javascript reference的問題<br>3.函式參數型態不明確，比如不知道傳進來的參數是陣列、物件、物件屬性的內容又是什麼。因為大多數React專案都是直接原生Javascript，造成容易犯原生的錯。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> getOrderReceiptData(&#123;order&#125;) =&gt; order?.detail?.receipt?.data</span><br></pre></td></tr></table></figure>
+<p><strong>解決方法</strong><br>請使用Typescript、ESLint可以避免。</p>
+<h4 id="2-維護的前人是高手，接手的人是新手"><a href="#2-維護的前人是高手，接手的人是新手" class="headerlink" title="2. 維護的前人是高手，接手的人是新手"></a>2. 維護的前人是高手，接手的人是新手</h4><p>因為React很自由，所以可能前人會ES6、React Hook、React Class、各種bind用法，並把它發揮的非常透徹。<br>這時接手的人必須每遇到一個就去查用法，直到補完所有用法才知道在寫什麼。</p>
+<p><strong>解決方法</strong><br>限制Code統一寫法。且至少要兩人，不然好懂難懂只有寫的人知道。</p>
+<h4 id="3-過度抽象的邏輯"><a href="#3-過度抽象的邏輯" class="headerlink" title="3. 過度抽象的邏輯"></a>3. 過度抽象的邏輯</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> getData(&#123;pid,od,o&#125;) =&gt; &#123; </span><br><span class="line">    <span class="comment">//略 以下作一些複雜的pid、od、o的資料處理</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>添加一些自己覺得合理但其實超難讀的簡寫參數。<br>然後getData因為最後要取得data所以就抽象叫做getData，但不寫註解，讓人要盤完內容才能知道做什麼。一個還好，當A call B、B call C時，就會很可怕。</p>
+<p><strong>解決方法</strong><br>解決方法:Typescript、ESLint。</p>
+<h4 id="4-JSX不好了解全局"><a href="#4-JSX不好了解全局" class="headerlink" title="4. JSX不好了解全局"></a>4. JSX不好了解全局</h4><p>因為需使用原生寫法造成三元運算子大量使用。<br>難以看懂原本畫面、動態變更後結果。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">&lt;div&gt;</span><br><span class="line">&#123;</span><br><span class="line">    <span class="xml"><span class="tag">&lt;<span class="name">div</span>&gt;</span></span></span><br><span class="line"><span class="xml">    A</span></span><br><span class="line"><span class="xml">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span>?</span><br><span class="line">    <span class="xml"><span class="tag">&lt;<span class="name">span</span>&gt;</span></span></span><br><span class="line"><span class="xml">        <span class="tag">&lt;<span class="name">div</span>&gt;</span></span></span><br><span class="line"><span class="xml">        A</span></span><br><span class="line"><span class="xml">        <span class="tag">&lt;/<span class="name">div</span>&gt;</span>?</span></span><br><span class="line"><span class="xml">        <span class="tag">&lt;<span class="name">span</span>&gt;</span></span></span><br><span class="line"><span class="xml">        B</span></span><br><span class="line"><span class="xml">        <span class="tag">&lt;/<span class="name">span</span>&gt;</span>:</span></span><br><span class="line"><span class="xml">        <span class="tag">&lt;<span class="name">div</span>&gt;</span></span></span><br><span class="line"><span class="xml">        C</span></span><br><span class="line"><span class="xml">        <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span></span><br><span class="line"><span class="xml">    <span class="tag">&lt;/<span class="name">span</span>&gt;</span></span>:</span><br><span class="line">    <span class="xml"><span class="tag">&lt;<span class="name">div</span>&gt;</span></span></span><br><span class="line"><span class="xml">    C</span></span><br><span class="line"><span class="xml">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span></span><br><span class="line">&#125;</span><br><span class="line">&lt;/div&gt;</span><br></pre></td></tr></table></figure>
+<p><strong>解決方法</strong><br>無解</p>
+<h4 id="5-每個都元件，但不寫文件"><a href="#5-每個都元件，但不寫文件" class="headerlink" title="5. 每個都元件，但不寫文件"></a>5. 每個都元件，但不寫文件</h4><p>封裝的套件又沒說明文件時。<br>一個套件外面傳入N個參數，前往實作看到1000行js，很可怕。<br>要改一個小東西，要重寫也無法，因為全部吃那一套。<br>寫React真的別閉門造車，特別是不寫說明文件的人，請去用開源套件謝謝…。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">&lt;CustomTable</span><br><span class="line">    data=&#123;data&#125;</span><br><span class="line">    key=&#123;id&#125;</span><br><span class="line">    isDeleted=&#123;checkedList&#125;</span><br><span class="line">    ...</span><br><span class="line">/&gt;</span><br><span class="line"><span class="xml"><span class="tag">&lt;<span class="name">Dn</span></span></span></span><br><span class="line"><span class="tag"><span class="xml">    <span class="attr">isDeleted</span>=<span class="string">&#123;checkedList&#125;</span></span></span></span><br><span class="line"><span class="tag"><span class="xml">/&gt;</span></span></span><br><span class="line"><span class="xml"><span class="tag">&lt;<span class="name">RSpan</span></span></span></span><br><span class="line"><span class="tag"><span class="xml">    <span class="attr">data</span>=<span class="string">&#123;data&#125;</span></span></span></span><br><span class="line"><span class="tag"><span class="xml">/&gt;</span></span></span><br></pre></td></tr></table></figure>
+
+<p><strong>解決方法</strong><br>寫說明文件、範例檔案</p>
+<h4 id="6-過度封裝的巢狀元件"><a href="#6-過度封裝的巢狀元件" class="headerlink" title="6. 過度封裝的巢狀元件"></a>6. 過度封裝的巢狀元件</h4><p>當你一直前往發現套件裡面還有更多套件，像是俄羅斯娃娃，而這些俄羅斯娃娃又拆的很散。<br><strong>解決方法</strong><br>無解，現行前端的通病。</p>
+<h4 id="7-無固定寫法，套件選擇難以控制"><a href="#7-無固定寫法，套件選擇難以控制" class="headerlink" title="7. 無固定寫法，套件選擇難以控制"></a>7. 無固定寫法，套件選擇難以控制</h4><p>React官方沒有固定範例寫法，只提供基本library，就是基礎ES6 JS去寫，所以每個人寫出的code都不一樣，如果又是新手剛學所寫的，一開始架構沒規劃好，後面就是建立一個歪掉的建築。<br>在套件依賴上也很多選擇，造成版本依賴性問題。<br>所以React…維護的專案會很可怕。<br>相比Vue，Vue官方做的很好，完整的範例可以參考，大家寫法也99%一致。</p>
+<p><strong>解決方法</strong><br>無解。</p>
+<h3 id="結論"><a href="#結論" class="headerlink" title="結論"></a>結論</h3><p>其實很多人鼓吹JQuery淘汰，都改去寫React是有問題的，因為React容易要改一個東西要讀前人的一串技術債，改法絕對沒JQuery輕鬆而且會改到很崩潰。<br>不是元件化了?那前提是元件化是合理的…當發現一些不合理參數傳進去、設計奇怪的元件、客製化又封裝…，如果你是接手的，JQuery還痛快些。</p>
+<p>綜合上述，寫React會遇到上述的這些機率超高，所以難以維護，塊陶…。</p>
+<p>那Vue呢?<br>Vue有官方完整應用範例，像人在看的HTML Template不像React的jsx，畫面好上手、包好的語法糖，後面接手的人都不會太有壓力。即使Vue是用js寫不是Typescript，因為他不用像React過度抽象化，很多官方語法糖都包好了。</p>
+<p>然後如果是大專案，Typescript是必須的，否則你的js會在多人改來改去下炸鍋。</p>
+<p>以上是個人體驗後的結論。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://yuhsiang237.github.io/2022/05/13/%E8%AB%87React%E6%A1%86%E6%9E%B6%E5%85%B6%E5%AF%A6%E6%9C%89%E9%9B%A3%E4%BB%A5%E7%B6%AD%E8%AD%B7%E7%9A%84%E5%95%8F%E9%A1%8C/" data-id="cl3cdudzz0001ksgh65h1ahss" data-title="談React框架難以維護的問題" class="article-share-link">Teilen</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
     <article id="post-SQL-Server建立複合鍵" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
     <a href="/2022/05/06/SQL-Server%E5%BB%BA%E7%AB%8B%E8%A4%87%E5%90%88%E9%8D%B5/" class="article-date">
@@ -520,133 +703,11 @@
 
 
   
-    <article id="post-SQL-Server-PARTITION-BY-分割語法" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2022/04/22/SQL-Server-PARTITION-BY-%E5%88%86%E5%89%B2%E8%AA%9E%E6%B3%95/" class="article-date">
-  <time class="dt-published" datetime="2022-04-22T07:34:24.000Z" itemprop="datePublished">2022-04-22</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/Database/">Database</a>►<a class="article-category-link" href="/categories/Database/SQL-Server/">SQL Server</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2022/04/22/SQL-Server-PARTITION-BY-%E5%88%86%E5%89%B2%E8%AA%9E%E6%B3%95/">SQL Server PARTITION BY 分割分組語法</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>最近處理到一些複雜需求，使用到了PARTITION BY。<br>於是記錄一下PARTITION BY的用法。<br>主要是能在分組時取得第一筆資料、與分組有關的操作。  </p>
-<h3 id="PARTITION-BY"><a href="#PARTITION-BY" class="headerlink" title="PARTITION BY"></a>PARTITION BY</h3><p>Divides the query result set into partitions. The window function is applied to each partition separately and computation restarts for each partition.</p>
-<p>PARTITION BY 可將查詢結果集分成幾個資料分割。</p>
-<p>語法:</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">OVER</span> ( [ <span class="keyword">PARTITION</span> <span class="keyword">BY</span> value_expression ] [ order_by_clause ] )  </span><br></pre></td></tr></table></figure>
-
-<h3 id="實作"><a href="#實作" class="headerlink" title="實作"></a>實作</h3><p>目標:要取得每個以UserId分組的第一筆資料</p>
-<p><strong>資料表:[DBO].[TODOS]</strong></p>
-<img src="/2022/04/22/SQL-Server-PARTITION-BY-%E5%88%86%E5%89%B2%E8%AA%9E%E6%B3%95/1.PNG" class="">
-
-<p>首先先使用PARTITION製造出分割出群組編號</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> </span><br><span class="line">	<span class="built_in">ROW_NUMBER</span>() <span class="keyword">OVER</span>(<span class="keyword">PARTITION</span> <span class="keyword">BY</span> USERID <span class="keyword">ORDER</span> <span class="keyword">BY</span> ID) ROW_ID,</span><br><span class="line">	<span class="operator">*</span></span><br><span class="line"><span class="keyword">FROM</span> </span><br><span class="line">	[DBO].[TODOS]</span><br></pre></td></tr></table></figure>
-<p>可以見到ROW_ID出現在列表中，即代表這是這個UserId組的第幾筆資料。<br>依序為:<br>UserId為1的第1筆資料<br>UserId為3的第1筆資料<br>UserId為3的第2筆資料<br>UserId為3的第3筆資料<br>UserId為4的第1筆資料<br>UserId為5的第1筆資料  </p>
-<img src="/2022/04/22/SQL-Server-PARTITION-BY-%E5%88%86%E5%89%B2%E8%AA%9E%E6%B3%95/2.PNG" class="">
-
-<p>再來只要把這結果集外部包一個搜尋，使用條件就能拿到第一筆資料，如下設定:<br>ROW_ID為1代表取得每個分組的第一筆資料。</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> (</span><br><span class="line">	<span class="keyword">SELECT</span> </span><br><span class="line">		<span class="built_in">ROW_NUMBER</span>() <span class="keyword">OVER</span>(<span class="keyword">PARTITION</span> <span class="keyword">BY</span> USERID <span class="keyword">ORDER</span> <span class="keyword">BY</span> ID) ROW_ID,</span><br><span class="line">		<span class="operator">*</span></span><br><span class="line">	<span class="keyword">FROM</span> </span><br><span class="line">		[DBO].[TODOS]</span><br><span class="line">) TEMP</span><br><span class="line"><span class="keyword">WHERE</span> TEMP.ROW_ID <span class="operator">=</span> <span class="number">1</span></span><br></pre></td></tr></table></figure>
-<p>最終成功拿到每個UserId分組的第一筆資料</p>
-<img src="/2022/04/22/SQL-Server-PARTITION-BY-%E5%88%86%E5%89%B2%E8%AA%9E%E6%B3%95/3.PNG" class="">
-
-<h3 id="參考資料"><a href="#參考資料" class="headerlink" title="參考資料"></a>參考資料</h3><ul>
-<li><a target="_blank" rel="noopener" href="https://docs.microsoft.com/en-us/sql/t-sql/queries/select-over-clause-transact-sql?view=sql-server-ver15">https://docs.microsoft.com/en-us/sql/t-sql/queries/select-over-clause-transact-sql?view=sql-server-ver15</a></li>
-<li><a target="_blank" rel="noopener" href="https://docs.microsoft.com/zh-tw/sql/t-sql/queries/select-over-clause-transact-sql?view=sql-server-ver15">https://docs.microsoft.com/zh-tw/sql/t-sql/queries/select-over-clause-transact-sql?view=sql-server-ver15</a></li>
-<li><a target="_blank" rel="noopener" href="https://ithelp.ithome.com.tw/articles/10225653">https://ithelp.ithome.com.tw/articles/10225653</a></li>
-</ul>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://yuhsiang237.github.io/2022/04/22/SQL-Server-PARTITION-BY-%E5%88%86%E5%89%B2%E8%AA%9E%E6%B3%95/" data-id="cl2a4afen0000ewgh4k1120p3" data-title="SQL Server PARTITION BY 分割分組語法" class="article-share-link">Teilen</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-C-LINQ-JOIN-函式效果" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2022/04/12/C-LINQ-JOIN-%E5%87%BD%E5%BC%8F%E6%95%88%E6%9E%9C/" class="article-date">
-  <time class="dt-published" datetime="2022-04-12T06:27:25.000Z" itemprop="datePublished">2022-04-12</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/Code/">Code</a>►<a class="article-category-link" href="/categories/Code/C/">C#</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2022/04/12/C-LINQ-JOIN-%E5%87%BD%E5%BC%8F%E6%95%88%E6%9E%9C/">C# LINQ JOIN 函式效果</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>因為平時都是寫lambda寫法的LINQ，而在近期看到函式方式的寫法，所以紀錄一下作法。</p>
-<h3 id="JOIN函式定義"><a href="#JOIN函式定義" class="headerlink" title="JOIN函式定義"></a>JOIN函式定義</h3><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> System.Collections.Generic.<span class="function">IEnumerable&lt;TResult&gt; </span></span><br><span class="line"><span class="function"><span class="title">Join</span>&lt;<span class="title">TOuter</span>,<span class="title">TInner</span>,<span class="title">TKey</span>,<span class="title">TResult</span>&gt; (<span class="params"></span></span></span><br><span class="line"><span class="params"><span class="function">    <span class="keyword">this</span> System.Collections.Generic.IEnumerable&lt;TOuter&gt; outer,</span></span></span><br><span class="line"><span class="params"><span class="function">    System.Collections.Generic.IEnumerable&lt;TInner&gt; inner, </span></span></span><br><span class="line"><span class="params"><span class="function">    Func&lt;TOuter,TKey&gt; outerKeySelector, </span></span></span><br><span class="line"><span class="params"><span class="function">    Func&lt;TInner,TKey&gt; innerKeySelector,</span></span></span><br><span class="line"><span class="params"><span class="function">    Func&lt;TOuter,TInner,TResult&gt; resultSelector, </span></span></span><br><span class="line"><span class="params"><span class="function">    System.Collections.Generic.IEqualityComparer&lt;TKey&gt;? comparer</span>)</span>;</span><br></pre></td></tr></table></figure>
-<p>參數部分:</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">outer</span><br><span class="line">IEnumerable&lt;TOuter&gt;</span><br><span class="line">要聯結的第一個序列。</span><br><span class="line"></span><br><span class="line">inner</span><br><span class="line">IEnumerable&lt;TInner&gt;</span><br><span class="line">要加入第一個序列的序列。</span><br><span class="line"></span><br><span class="line">outerKeySelector</span><br><span class="line">Func&lt;TOuter,TKey&gt;</span><br><span class="line">用來從第一個序列各個項目擷取聯結索引鍵的函式。</span><br><span class="line"></span><br><span class="line">innerKeySelector</span><br><span class="line">Func&lt;TInner,TKey&gt;</span><br><span class="line">用來從第二個序列各個項目擷取聯結索引鍵的函式。</span><br><span class="line"></span><br><span class="line">resultSelector</span><br><span class="line">Func&lt;TOuter,TInner,TResult&gt;</span><br><span class="line">用來從兩個相符項目建立結果項目的函式。</span><br><span class="line"></span><br><span class="line">comparer</span><br><span class="line">IEqualityComparer&lt;TKey&gt;</span><br><span class="line">用來雜湊及比較索引鍵的 IEqualityComparer&lt;T&gt;。</span><br></pre></td></tr></table></figure>
-<h3 id="實作"><a href="#實作" class="headerlink" title="實作"></a>實作</h3><p>簡單來講就是拿主表資料去JOIN另一張關聯表，而x、y則是塞進去的key值。<br>在這裡以User為主表，UserDetail為關聯表。<br>原本4筆資料的User，經過與UserDetail JOIN關聯，於是剩下兩筆資料。  </p>
-<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> System;</span><br><span class="line"><span class="keyword">using</span> System.Collections;</span><br><span class="line"><span class="keyword">using</span> System.Collections.Generic;</span><br><span class="line"><span class="keyword">using</span> System.Linq;</span><br><span class="line"></span><br><span class="line"><span class="keyword">namespace</span> <span class="title">JoinSample</span></span><br><span class="line">&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">class</span> <span class="title">User</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">public</span> <span class="built_in">int</span> Id &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line">        <span class="keyword">public</span> <span class="built_in">string</span> Name &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">class</span> <span class="title">UserDetail</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">public</span> <span class="built_in">int</span> UserId &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line">        <span class="keyword">public</span> <span class="built_in">string</span> PhoneNumber &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">class</span> <span class="title">UserData</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">public</span> <span class="built_in">int</span> Id &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">public</span> <span class="built_in">string</span> UserName &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line">        <span class="keyword">public</span> <span class="built_in">string</span> PhoneNumber &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">internal</span> <span class="keyword">class</span> <span class="title">Program</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">Main</span>(<span class="params"><span class="built_in">string</span>[] args</span>)</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">var</span> users = <span class="keyword">new</span> List&lt;User&gt;</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">new</span> User</span><br><span class="line">                &#123;</span><br><span class="line">                    Id =<span class="number">1</span>,Name=<span class="string">&quot;大雄&quot;</span>,</span><br><span class="line">                &#125;,</span><br><span class="line">                <span class="keyword">new</span> User</span><br><span class="line">                &#123;</span><br><span class="line">                    Id =<span class="number">2</span>,Name=<span class="string">&quot;多拉A夢&quot;</span>,</span><br><span class="line">                &#125;,</span><br><span class="line">                <span class="keyword">new</span> User</span><br><span class="line">                &#123;</span><br><span class="line">                    Id =<span class="number">3</span>,Name=<span class="string">&quot;胖虎&quot;</span>,</span><br><span class="line">                &#125;,</span><br><span class="line">                <span class="keyword">new</span> User</span><br><span class="line">                &#123;</span><br><span class="line">                    Id =<span class="number">4</span>,Name=<span class="string">&quot;小夫&quot;</span>,</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">var</span> userDetails = <span class="keyword">new</span> List&lt;UserDetail&gt; &#123;</span><br><span class="line">                <span class="keyword">new</span> UserDetail&#123; UserId=<span class="number">1</span>,PhoneNumber=<span class="string">&quot;0911111111&quot;</span>&#125;,</span><br><span class="line">                <span class="keyword">new</span> UserDetail&#123; UserId=<span class="number">2</span>,PhoneNumber=<span class="string">&quot;0922222222&quot;</span>&#125;</span><br><span class="line">            &#125;;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">var</span> userData = users.Join(</span><br><span class="line">                userDetails,</span><br><span class="line">                x =&gt; x.Id,</span><br><span class="line">                y =&gt; y.UserId,</span><br><span class="line">                (x, y) =&gt; <span class="keyword">new</span> UserData</span><br><span class="line">                &#123;</span><br><span class="line">                    Id = x.Id,</span><br><span class="line">                    PhoneNumber = y.PhoneNumber,</span><br><span class="line">                    UserName = x.Name</span><br><span class="line">                &#125;);</span><br><span class="line"></span><br><span class="line">            <span class="keyword">foreach</span> (<span class="keyword">var</span> item <span class="keyword">in</span> userData)</span><br><span class="line">            &#123;</span><br><span class="line">                Console.WriteLine(item.Id);</span><br><span class="line">                Console.WriteLine(item.UserName);</span><br><span class="line">                Console.WriteLine(item.PhoneNumber);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<p>output:</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">1</span><br><span class="line">大雄</span><br><span class="line">0911111111</span><br><span class="line">2</span><br><span class="line">多拉A夢</span><br><span class="line">0922222222</span><br></pre></td></tr></table></figure>
-
-<h3 id="參考資料"><a href="#參考資料" class="headerlink" title="參考資料"></a>參考資料</h3><ul>
-<li><a target="_blank" rel="noopener" href="https://docs.microsoft.com/zh-tw/dotnet/api/system.linq.enumerable.join?view=net-6.0">https://docs.microsoft.com/zh-tw/dotnet/api/system.linq.enumerable.join?view=net-6.0</a></li>
-</ul>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://yuhsiang237.github.io/2022/04/12/C-LINQ-JOIN-%E5%87%BD%E5%BC%8F%E6%95%88%E6%9E%9C/" data-id="cl1vropk600001sgh3c4tc5ad" data-title="C# LINQ JOIN 函式效果" class="article-share-link">Teilen</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
 
 
   <nav id="page-nav">
     
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/13/">13</a><a class="extend next" rel="next" href="/page/2/">weiter &raquo;</a>
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/14/">14</a><a class="extend next" rel="next" href="/page/2/">weiter &raquo;</a>
   </nav>
 
 </section>
@@ -657,7 +718,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Kategorien</h3>
     <div class="widget">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Code/">Code</a><span class="category-list-count">62</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Code/C/">C#</a><span class="category-list-count">58</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Code/Javascript/">Javascript</a><span class="category-list-count">5</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/">Computer Science</a><span class="category-list-count">5</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/Algorithm/">Algorithm</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/Data-structure/">Data structure</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/%E9%9B%BB%E5%AD%90%E9%9B%BB%E8%B7%AF/">電子電路</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Daily-Log/">Daily Log</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/">Database</a><span class="category-list-count">52</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Database/PostgreSQL/">PostgreSQL</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/SQL-Server/">SQL Server</a><span class="category-list-count">42</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/">Framework</a><span class="category-list-count">27</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/AspNetCore-API/">AspNetCore API</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/AspNetCore-MVC/">AspNetCore MVC</a><span class="category-list-count">21</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/">Topic</a><span class="category-list-count">70</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2021-C-AspNetCore%E9%90%B5%E4%BA%BA%E8%B3%BD/">2021 C# AspNetCore鐵人賽</a><span class="category-list-count">30</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2021-SQL-Server%E9%90%B5%E4%BA%BA%E8%B3%BD/">2021 SQL Server鐵人賽</a><span class="category-list-count">30</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2022-C-%E5%9F%B7%E8%A1%8C%E7%B7%92%E5%90%8C%E6%AD%A5%E7%95%B0%E6%AD%A5%E7%B7%A8%E7%A8%8B%E8%A8%98/">2022 C# 執行緒同步異步編程記</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/LeetCode/">LeetCode</a><span class="category-list-count">3</span></li></ul></li></ul>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Code/">Code</a><span class="category-list-count">63</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Code/C/">C#</a><span class="category-list-count">58</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Code/Javascript/">Javascript</a><span class="category-list-count">6</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/">Computer Science</a><span class="category-list-count">5</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/Algorithm/">Algorithm</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/Data-structure/">Data structure</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/%E9%9B%BB%E5%AD%90%E9%9B%BB%E8%B7%AF/">電子電路</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Daily-Log/">Daily Log</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/">Database</a><span class="category-list-count">53</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Database/PostgreSQL/">PostgreSQL</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/SQL-Server/">SQL Server</a><span class="category-list-count">43</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/">Framework</a><span class="category-list-count">27</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/AspNetCore-API/">AspNetCore API</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/AspNetCore-MVC/">AspNetCore MVC</a><span class="category-list-count">21</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/">Topic</a><span class="category-list-count">70</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2021-C-AspNetCore%E9%90%B5%E4%BA%BA%E8%B3%BD/">2021 C# AspNetCore鐵人賽</a><span class="category-list-count">30</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2021-SQL-Server%E9%90%B5%E4%BA%BA%E8%B3%BD/">2021 SQL Server鐵人賽</a><span class="category-list-count">30</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2022-C-%E5%9F%B7%E8%A1%8C%E7%B7%92%E5%90%8C%E6%AD%A5%E7%95%B0%E6%AD%A5%E7%B7%A8%E7%A8%8B%E8%A8%98/">2022 C# 執行緒同步異步編程記</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/LeetCode/">LeetCode</a><span class="category-list-count">3</span></li></ul></li></ul>
     </div>
   </div>
 
@@ -667,7 +728,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Archiv</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/05/">五月 2022</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/04/">四月 2022</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/03/">三月 2022</a><span class="archive-list-count">17</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/02/">二月 2022</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/01/">一月 2022</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">十二月 2021</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">十月 2021</a><span class="archive-list-count">24</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">九月 2021</a><span class="archive-list-count">46</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">八月 2021</a><span class="archive-list-count">12</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/05/">五月 2022</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/04/">四月 2022</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/03/">三月 2022</a><span class="archive-list-count">17</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/02/">二月 2022</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/01/">一月 2022</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">十二月 2021</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">十月 2021</a><span class="archive-list-count">24</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">九月 2021</a><span class="archive-list-count">46</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">八月 2021</a><span class="archive-list-count">12</span></li></ul>
     </div>
   </div>
 
