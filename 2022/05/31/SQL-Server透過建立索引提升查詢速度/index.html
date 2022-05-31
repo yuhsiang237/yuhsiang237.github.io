@@ -14,7 +14,7 @@
 <meta property="og:description" content="因為最近遇到資料庫量大的瓶頸，因此稍微紀錄一下調效能的作法建立「索引」。之前有提到過: SQL Server 叢集索引vs非叢集索引 可以先看這邊。 而這回主要透過建立索引去改善查詢效能，如下實作: 實作1.首先先建立一張表 123456789101112USE [TodoDB]CREATE TABLE [Todos](	[Id] [int] IDENTITY(1,1) NOT NULL,	[Na">
 <meta property="og:locale" content="zh_TW">
 <meta property="article:published_time" content="2022-05-31T05:25:37.000Z">
-<meta property="article:modified_time" content="2022-05-31T05:52:28.339Z">
+<meta property="article:modified_time" content="2022-05-31T05:56:09.111Z">
 <meta property="article:author" content="Yu Hsiang">
 <meta name="twitter:card" content="summary">
   
@@ -116,6 +116,7 @@
 <p>這時如過資料量筆數大<br>進行查詢剛好排序了Priority ASC、Id ASC速度就會提升。</p>
 <h3 id="參考資料"><a href="#參考資料" class="headerlink" title="參考資料"></a>參考資料</h3><ul>
 <li><a target="_blank" rel="noopener" href="https://docs.microsoft.com/en-us/sql/relational-databases/indexes/create-nonclustered-indexes?view=sql-server-ver16">https://docs.microsoft.com/en-us/sql/relational-databases/indexes/create-nonclustered-indexes?view=sql-server-ver16</a></li>
+<li><a target="_blank" rel="noopener" href="https://dotblogs.com.tw/EganBlog/2017/04/11/013049">https://dotblogs.com.tw/EganBlog/2017/04/11/013049</a></li>
 </ul>
 
       
