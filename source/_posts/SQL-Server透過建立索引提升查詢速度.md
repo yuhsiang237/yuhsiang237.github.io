@@ -61,3 +61,4 @@ GO
 
 ### 參考資料
 - https://docs.microsoft.com/en-us/sql/relational-databases/indexes/create-nonclustered-indexes?view=sql-server-ver16
+- https://dotblogs.com.tw/EganBlog/2017/04/11/013049
