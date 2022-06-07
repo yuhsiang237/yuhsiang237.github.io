@@ -86,4 +86,4 @@ namespace refactor01
 ```
 
 ### In conclusion
-Finally, we finish the refactor and just make it easy to maintain and read.
+Finally, we did it that finished the refactoring and just made it easy to maintain and read.
