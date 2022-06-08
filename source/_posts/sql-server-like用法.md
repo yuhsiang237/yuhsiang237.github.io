@@ -2,7 +2,7 @@
 title: '[Day15] SQL server like用法 - SQL Server資料庫入門'
 date: 2021-09-16 12:22:56
 categories:
-  - [Topic,2021 SQL Server鐵人賽]
+  - [Topic,2021 SQL Server Challenge]
   - [Database,SQL Server]
 ---
 在這回中將探討SQL server中like的使用方式。

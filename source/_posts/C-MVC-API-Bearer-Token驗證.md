@@ -2,7 +2,7 @@
 title: '[Day24] C# MVC API JWT Token驗證 (上) JWT基礎知識 - C#&AspNetCore'
 date: 2021-10-27 21:57:47
 categories:  
-  - [Topic,2021 C# AspNetCore鐵人賽]
+  - [Topic,2021 C# AspNetCore Challenge]
   - [Code,C#]
   - [Framework,AspNetCore API]
 ---

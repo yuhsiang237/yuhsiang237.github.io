@@ -2,7 +2,7 @@
 title: '[Day23] SQL server 資料庫備份與還原，使用sql - SQL Server資料庫入門'
 date: 2021-09-17 10:36:37
 categories:
-  - [Topic,2021 SQL Server鐵人賽]
+  - [Topic,2021 SQL Server Challenge]
   - [Database,SQL Server]
 ---
 因為SQL server會有匯入舊版問題，像是把2019版的匯入到2008版的，所以要在探討另一個做法，即向下兼容的備份與還原。

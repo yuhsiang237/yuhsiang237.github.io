@@ -2,7 +2,7 @@
 title:  '[Day2] 什麼是MVC，有什麼好處 - C#&AspNetCore'
 date: 2021-09-21 03:57:08
 categories:
-  - [Topic,2021 C# AspNetCore鐵人賽]
+  - [Topic,2021 C# AspNetCore Challenge]
   - [Code,C#]
 ---
 

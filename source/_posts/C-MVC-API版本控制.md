@@ -2,7 +2,7 @@
 title: '[Day22] C# MVC API版本控制 - C#&AspNetCore'
 date: 2021-10-19 19:59:32
 categories:  
-  - [Topic,2021 C# AspNetCore鐵人賽]
+  - [Topic,2021 C# AspNetCore Challenge]
   - [Code,C#]
   - [Framework,AspNetCore API]
 ---

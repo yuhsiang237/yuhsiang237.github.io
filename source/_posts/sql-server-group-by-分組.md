@@ -2,7 +2,7 @@
 title: '[Day13] SQL server Group By 資料分組與聚合函數COUNT(), MAX(), MIN(), SUM(), AVG() - SQL Server資料庫入門'
 date: 2021-09-13 04:31:26
 categories:
-  - [Topic,2021 SQL Server鐵人賽]
+  - [Topic,2021 SQL Server Challenge]
   - [Database,SQL Server]
 ---
 在這回中，將要探討SQL server中的Group By用法，並搭配聚合函數使用。

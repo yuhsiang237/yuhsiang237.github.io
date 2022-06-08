@@ -2,7 +2,7 @@
 title: '[Day10] C# MVC 檢視元件View Compoment使用- C#&AspNetCore'
 date: 2021-10-05 12:06:42
 categories:  
-  - [Topic,2021 C# AspNetCore鐵人賽]
+  - [Topic,2021 C# AspNetCore Challenge]
   - [Code,C#]
   - [Framework,AspNetCore MVC]
 ---

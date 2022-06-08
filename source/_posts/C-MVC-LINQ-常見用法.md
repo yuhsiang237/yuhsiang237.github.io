@@ -2,7 +2,7 @@
 title:  '[Day15] C# MVC LINQ常見用法 - C#&AspNetCore'
 date: 2021-10-11 10:17:57
 categories:  
-  - [Topic,2021 C# AspNetCore鐵人賽]
+  - [Topic,2021 C# AspNetCore Challenge]
   - [Code,C#]
   - [Framework,AspNetCore MVC]
 ---

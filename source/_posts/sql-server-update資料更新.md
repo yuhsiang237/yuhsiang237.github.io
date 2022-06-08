@@ -2,7 +2,7 @@
 title: '[Day20] SQL server update 資料更新 - SQL Server資料庫入門'
 date: 2021-09-17 09:05:56
 categories:
-  - [Topic,2021 SQL Server鐵人賽]
+  - [Topic,2021 SQL Server Challenge]
   - [Database,SQL Server]
 ---
 在這回簡易示範SQL server資料更新。

@@ -2,7 +2,7 @@
 title: '[Day13] C# MVC 驗證與授權，新刪修查按鈕權限 - C#&AspNetCore'
 date: 2021-10-8 12:00:51
 categories:  
-  - [Topic,2021 C# AspNetCore鐵人賽]
+  - [Topic,2021 C# AspNetCore Challenge]
   - [Code,C#]
   - [Framework,AspNetCore MVC]
 ---

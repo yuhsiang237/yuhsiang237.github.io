@@ -2,7 +2,7 @@
 title:  '[Day25] SQL server 日期函數 - SQL Server資料庫入門'
 date: 2021-09-17 16:28:08
 categories:
-  - [Topic,2021 SQL Server鐵人賽]
+  - [Topic,2021 SQL Server Challenge]
   - [Database,SQL Server]
 ---
 這回介紹日期函數的使用。

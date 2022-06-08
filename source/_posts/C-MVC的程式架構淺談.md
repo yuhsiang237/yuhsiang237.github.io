@@ -2,7 +2,7 @@
 title:  '[Day4] C# MVC的程式架構淺談 - C#&AspNetCore'
 date: 2021-09-29 07:05:32
 categories:  
-  - [Topic,2021 C# AspNetCore鐵人賽]
+  - [Topic,2021 C# AspNetCore Challenge]
   - [Code,C#]
   - [Framework,AspNetCore MVC]
 ---

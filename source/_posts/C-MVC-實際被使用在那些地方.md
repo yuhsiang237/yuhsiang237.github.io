@@ -2,7 +2,7 @@
 title: '[Day29] C# MVC 被使用在哪些地方 - C#&AspNetCore'
 date: 2021-12-28 00:24:17
 categories:  
-  - [Topic,2021 C# AspNetCore鐵人賽]
+  - [Topic,2021 C# AspNetCore Challenge]
   - [Code,C#]
   - [Framework,AspNetCore MVC]
 ---

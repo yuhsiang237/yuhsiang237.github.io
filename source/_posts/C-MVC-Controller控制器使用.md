@@ -2,7 +2,7 @@
 title: '[Day8] C# MVC Controller控制器使用 - C#&AspNetCore'
 date: 2021-10-3 12:00:51
 categories:  
-  - [Topic,2021 C# AspNetCore鐵人賽]
+  - [Topic,2021 C# AspNetCore Challenge]
   - [Code,C#]
   - [Framework,AspNetCore MVC]
 ---

@@ -2,7 +2,7 @@
 title: '[Day30] C# MVC 實際撰寫後之我的想法 - C#&AspNetCore'
 date: 2021-12-28 20:23:52
 categories:  
-  - [Topic,2021 C# AspNetCore鐵人賽]
+  - [Topic,2021 C# AspNetCore Challenge]
   - [Code,C#]
   - [Framework,AspNetCore MVC]
 ---

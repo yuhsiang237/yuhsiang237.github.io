@@ -2,7 +2,7 @@
 title: '[Day27] C# MVC 回傳獨立頁面或整體頁面 - C#&AspNetCore'
 date: 2021-12-27 20:20:46
 categories:  
-  - [Topic,2021 C# AspNetCore鐵人賽]
+  - [Topic,2021 C# AspNetCore Challenge]
   - [Code,C#]
   - [Framework,AspNetCore MVC]
 ---

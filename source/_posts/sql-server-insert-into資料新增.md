@@ -2,7 +2,7 @@
 title: '[Day19] SQL server insert into 資料新增 - SQL Server資料庫入門'
 date: 2021-09-17 08:38:56
 categories:
-  - [Topic,2021 SQL Server鐵人賽]
+  - [Topic,2021 SQL Server Challenge]
   - [Database,SQL Server]
 ---
 在前面已經把大量的常見查詢語法做過一次實踐了。

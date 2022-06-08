@@ -2,11 +2,11 @@
 title: '[Day7]C#建立不會停止的背景Task'
 date: 2022-04-08 09:43:59
 categories:
-  - [Topic,2022 C# 執行緒同步異步編程記]
+  - [Topic,2022 C# SyncAndAsync]
   - [Code,C#] 
 ---
 ### 前言
-在上回 {% post_link 'Task運行處理-Run、Start、RunSynchronously-C-執行緒同步異步編程記' '[Day6]Task運行處理(Run、Start、RunSynchronously)
+在上回 {% post_link 'Task運行處理-Run、Start、RunSynchronously-C-SyncAndAsync' '[Day6]Task運行處理(Run、Start、RunSynchronously)
 ' %} ，我們學習了Task的各種啟動方式。
 而今回主要來撰寫不會停止的背景Task。
 

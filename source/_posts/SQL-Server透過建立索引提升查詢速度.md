@@ -3,7 +3,7 @@ title: SQL Server透過建立索引提升查詢速度
 date: 2022-05-31 13:25:37
 categories:
   - [Database,SQL Server]
-  - [Topic,巨量資料]
+  - [Topic,Big Data]
 ---
 因為最近遇到資料庫量大的瓶頸，因此稍微紀錄一下調效能的作法建立「索引」。
 之前有提到過: {% post_link 'SQL-Server-叢集索引vs非叢集索引' 'SQL Server 叢集索引vs非叢集索引'%} 可以先看這邊。

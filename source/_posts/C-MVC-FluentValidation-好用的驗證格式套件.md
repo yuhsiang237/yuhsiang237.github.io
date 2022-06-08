@@ -2,7 +2,7 @@
 title: '[Day28] C# MVC FluentValidation 好用的驗證格式套件 - C#&AspNetCore'
 date: 2021-12-27 23:19:59
 categories:  
-  - [Topic,2021 C# AspNetCore鐵人賽]
+  - [Topic,2021 C# AspNetCore Challenge]
   - [Code,C#]
   - [Framework,AspNetCore MVC]
 ---

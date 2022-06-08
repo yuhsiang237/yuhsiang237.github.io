@@ -2,7 +2,7 @@
 title: '[Day11] C# MVC傳遞參數的方式 - C#&AspNetCore'
 date: 2021-10-06 12:06:42
 categories:  
-  - [Topic,2021 C# AspNetCore鐵人賽]
+  - [Topic,2021 C# AspNetCore Challenge]
   - [Code,C#]
   - [Framework,AspNetCore MVC]
 ---

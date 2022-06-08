@@ -1,12 +1,12 @@
 ---
-title: '[Day5]Task等待處理(Wait、WaitAll、WaitAny、WaitAsync、WhenAll、WhenAny) - C# 執行緒同步異步編程記'
+title: '[Day5]Task等待處理(Wait、WaitAll、WaitAny、WaitAsync、WhenAll、WhenAny) - C# SyncAndAsync'
 date: 2022-03-20 16:26:53
 categories:
-  - [Topic,2022 C# 執行緒同步異步編程記]
+  - [Topic,2022 C# SyncAndAsync]
   - [Code,C#] 
 ---
 ### 前言
-在上回 {% post_link '使用Task撰寫第一個非同步程式-C-執行緒同步異步編程記' '[Day4]使用Task撰寫第一個非同步程式 - C# 執行緒同步異步編程記' %} ，我們使用了Task來撰寫第一隻非同步的程式。
+在上回 {% post_link '使用Task撰寫第一個非同步程式-C-SyncAndAsync' '[Day4]使用Task撰寫第一個非同步程式 - C# SyncAndAsync' %} ，我們使用了Task來撰寫第一隻非同步的程式。
 而在這回將會著重在等待方面。
 
 Task提供以下語法能夠等待:Wait、WaitAll、WaitAny、WaitAsync、WhenAll、WhenAny。

@@ -2,11 +2,11 @@
 title: '[Day6]Task運行處理(Run、Start、RunSynchronously)'
 date: 2022-03-20 16:27:53
 categories:
-  - [Topic,2022 C# 執行緒同步異步編程記]
+  - [Topic,2022 C# SyncAndAsync]
   - [Code,C#] 
 ---
 ### 前言
-在上回 {% post_link 'Task等待處理-Wait、WaitAll、WaitAny、WaitAsync、WhenAll、WhenAny-C-執行緒同步異步編程記' '[Day5]Task等待處理(Wait、WaitAll、WaitAny、WaitAsync、WhenAll、WhenAny) - C# 執行緒同步異步編程記' %} ，我們使用了Task來測試等待的效果，而這回主要探討的是執行運行。
+在上回 {% post_link 'Task等待處理-Wait、WaitAll、WaitAny、WaitAsync、WhenAll、WhenAny-C-SyncAndAsync' '[Day5]Task等待處理(Wait、WaitAll、WaitAny、WaitAsync、WhenAll、WhenAny) - C# SyncAndAsync' %} ，我們使用了Task來測試等待的效果，而這回主要探討的是執行運行。
 
 - Task.Run:將指定在 ThreadPool 執行工作排入佇列，並傳回該工作的工作或 Task<TResult> 控制代碼。
 - Task.Start:啟動 Task，並排定它在目前的 TaskScheduler 執行。

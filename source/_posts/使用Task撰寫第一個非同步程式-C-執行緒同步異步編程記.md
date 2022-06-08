@@ -1,12 +1,12 @@
 ---
-title: '[Day4]使用Task撰寫第一個非同步程式 - C# 執行緒同步異步編程記'
+title: '[Day4]使用Task撰寫第一個非同步程式 - C# SyncAndAsync'
 date: 2022-03-19 16:26:53
 categories:
-  - [Topic,2022 C# 執行緒同步異步編程記]
+  - [Topic,2022 C# SyncAndAsync]
   - [Code,C#] 
 ---
 ### 前言
-在上回 {% post_link 'C-中Task與Thread比較-C-執行緒同步異步編程記' '[Day3]C#中Task與Thread比較 - C# 執行緒同步異步編程記' %} ，比較了Task、Thread，而這回主要會以Task撰寫第一個非同步程式。
+在上回 {% post_link 'C-中Task與Thread比較-C-SyncAndAsync' '[Day3]C#中Task與Thread比較 - C# SyncAndAsync' %} ，比較了Task、Thread，而這回主要會以Task撰寫第一個非同步程式。
 
 
 ### 什麼是Task

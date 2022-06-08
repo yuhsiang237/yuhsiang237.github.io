@@ -2,7 +2,7 @@
 title:  '[Day5] 規劃資料表，透過資料庫正規化 - SQL Server資料庫入門'
 date: 2021-09-05 00:54:08
 categories:
-  - [Topic,2021 SQL Server鐵人賽]
+  - [Topic,2021 SQL Server Challenge]
   - [Database,SQL Server]
 ---
 ### 前言

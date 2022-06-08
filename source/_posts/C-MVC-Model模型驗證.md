@@ -2,7 +2,7 @@
 title: '[Day6] C# MVC Model模型驗證 - C#&AspNetCore'
 date: 2021-10-1 12:00:51
 categories:  
-  - [Topic,2021 C# AspNetCore鐵人賽]
+  - [Topic,2021 C# AspNetCore Challenge]
   - [Code,C#]
   - [Framework,AspNetCore MVC]
 ---

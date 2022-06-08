@@ -2,7 +2,7 @@
 title: '[Day18] SQL server ANY與ALL用法 - SQL Server資料庫入門'
 date: 2021-09-16 21:00:25
 categories:
-  - [Topic,2021 SQL Server鐵人賽]
+  - [Topic,2021 SQL Server Challenge]
   - [Database,SQL Server]
 ---
 在這回中要介紹我很少很少很少用到的any與all用法。

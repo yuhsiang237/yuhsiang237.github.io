@@ -2,7 +2,7 @@
 title: '[Day18] C# MVC專案中撰寫API - C#&AspNetCore'
 date: 2021-10-15 10:16:48
 categories:  
-  - [Topic,2021 C# AspNetCore鐵人賽]
+  - [Topic,2021 C# AspNetCore Challenge]
   - [Code,C#]
   - [Framework,AspNetCore MVC]
 ---

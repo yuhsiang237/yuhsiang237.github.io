@@ -2,7 +2,7 @@
 title: '[Day24] SQL server 資料庫管理帳號新增 - SQL Server資料庫入門'
 date: 2021-09-17 12:40:37
 categories:
-  - [Topic,2021 SQL Server鐵人賽]
+  - [Topic,2021 SQL Server Challenge]
   - [Database,SQL Server]
 ---
 當我們一開始安裝SQL server時，系統會幫我們預設一組帳號，即最高管理員帳號。

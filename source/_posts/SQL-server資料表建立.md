@@ -2,7 +2,7 @@
 title:  '[Day6] SQL server資料表建立 - SQL Server資料庫入門'
 date: 2021-09-06 00:00:17
 categories:
-  - [Topic,2021 SQL Server鐵人賽]
+  - [Topic,2021 SQL Server Challenge]
   - [Database,SQL Server]
 ---
 

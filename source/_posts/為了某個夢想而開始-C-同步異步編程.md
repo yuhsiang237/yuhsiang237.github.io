@@ -1,8 +1,8 @@
 ---
-title: '[Day1]為了某個夢想而開始 - C# 執行緒同步異步編程記'
+title: '[Day1]為了某個夢想而開始 - C# SyncAndAsync'
 date: 2022-03-19 14:31:21
 categories:
-  - [Topic,2022 C# 執行緒同步異步編程記]
+  - [Topic,2022 C# SyncAndAsync]
   - [Code,C#] 
 ---
 ### 前言

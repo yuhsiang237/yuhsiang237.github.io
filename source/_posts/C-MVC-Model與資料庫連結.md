@@ -2,7 +2,7 @@
 title: '[Day7] C# MVC Model模型連結資料庫，使用Entity Framework - C#&AspNetCore'
 date: 2021-10-2 12:00:51
 categories:  
-  - [Topic,2021 C# AspNetCore鐵人賽]
+  - [Topic,2021 C# AspNetCore Challenge]
   - [Code,C#]
   - [Framework,AspNetCore MVC]
 ---

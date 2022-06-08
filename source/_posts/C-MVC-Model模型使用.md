@@ -2,7 +2,7 @@
 title: '[Day5] C# MVC Model模型使用 - C#&AspNetCore'
 date: 2021-09-30 12:00:51
 categories:  
-  - [Topic,2021 C# AspNetCore鐵人賽]
+  - [Topic,2021 C# AspNetCore Challenge]
   - [Code,C#]
   - [Framework,AspNetCore MVC]
 ---

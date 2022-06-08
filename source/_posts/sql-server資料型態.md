@@ -2,7 +2,7 @@
 title: '[Day3] SQL Server資料型態 - SQL Server資料庫入門'
 date: 2021-09-03 18:33:36
 categories:
-  - [Topic,2021 SQL Server鐵人賽]
+  - [Topic,2021 SQL Server Challenge]
   - [Database,SQL Server]
 ---
 為了能夠讓每種資料有比較好的儲存方式，所以這回來看一下SQL server內建哪些資料型態。

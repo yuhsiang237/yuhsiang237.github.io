@@ -2,7 +2,7 @@
 title: '[Day22] SQL server 資料庫備份與還原，使用bak - SQL Server資料庫入門'
 date: 2021-09-17 9:43:48
 categories:
-  - [Topic,2021 SQL Server鐵人賽]
+  - [Topic,2021 SQL Server Challenge]
   - [Database,SQL Server]
 ---
 在這回主要介紹資料庫的備份方法。

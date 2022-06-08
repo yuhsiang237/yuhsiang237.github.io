@@ -2,7 +2,7 @@
 title: '[Day1] SQL Server 安裝 - SQL Server資料庫入門'
 date: 2021-09-01 23:49:25
 categories:
-  - [Topic,2021 SQL Server鐵人賽]
+  - [Topic,2021 SQL Server Challenge]
   - [Database,SQL Server]
 ---
 ### 前言
@@ -28,7 +28,7 @@ https://docs.microsoft.com/en-us/sql/ssms/download-sql-server-management-studio-
 
 目標:是練過一輪基礎SQL語法、SQL進階用法、釐清資料表設計的方式。
 
-基本上會跟這篇鐵人賽參考資料雷同，但是會加一些自己不同的見解XD。
+基本上會跟這篇 Challenge參考資料雷同，但是會加一些自己不同的見解XD。
 https://ithelp.ithome.com.tw/articles/10219497
 
 然後，也會藉由這些主題，逐漸擴充實戰經驗累積的資料。

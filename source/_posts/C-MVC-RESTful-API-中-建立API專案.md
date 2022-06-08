@@ -2,7 +2,7 @@
 title: '[Day20] C# MVC RESTful API (中) 建立API專案 - C#&AspNetCore'
 date: 2021-10-17 10:16:48
 categories:  
-  - [Topic,2021 C# AspNetCore鐵人賽]
+  - [Topic,2021 C# AspNetCore Challenge]
   - [Code,C#]
   - [Framework,AspNetCore API]
 ---

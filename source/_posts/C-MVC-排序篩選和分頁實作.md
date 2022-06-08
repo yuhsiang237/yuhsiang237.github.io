@@ -2,7 +2,7 @@
 title: '[Day17] C# MVC 排序、篩選和分頁實作 - C#&AspNetCore'
 date: 2021-10-14 10:16:48
 categories:  
-  - [Topic,2021 C# AspNetCore鐵人賽]
+  - [Topic,2021 C# AspNetCore Challenge]
   - [Code,C#]
   - [Framework,AspNetCore MVC]
 ---

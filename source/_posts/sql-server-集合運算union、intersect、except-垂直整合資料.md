@@ -2,7 +2,7 @@
 title: '[Day12] 集合運算union、intersect、except 垂直整合 - SQL Server資料庫入門'
 date: 2021-09-12 13:48:48
 categories:
-  - [Topic,2021 SQL Server鐵人賽]
+  - [Topic,2021 SQL Server Challenge]
   - [Database,SQL Server]
 ---
 在先前我們有使用過的多表查詢都是水平整合的概念，如JOIN {% post_link 'sql-server-合併查詢join' '[Day10] SQL server Select合併查詢JOIN用法 - SQL Server資料庫入門'%} 。

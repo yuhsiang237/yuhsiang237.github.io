@@ -2,7 +2,7 @@
 title: '[Day9] C# MVC View使用 - C#&AspNetCore'
 date: 2021-10-4 12:00:51
 categories:  
-  - [Topic,2021 C# AspNetCore鐵人賽]
+  - [Topic,2021 C# AspNetCore Challenge]
   - [Code,C#]
   - [Framework,AspNetCore MVC]
 ---

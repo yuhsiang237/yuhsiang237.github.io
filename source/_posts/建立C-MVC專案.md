@@ -2,7 +2,7 @@
 title:  '[Day3] 建立C# MVC專案 - C#&AspNetCore'
 date: 2021-09-28 17:03:14
 categories:  
-  - [Topic,2021 C# AspNetCore鐵人賽]
+  - [Topic,2021 C# AspNetCore Challenge]
   - [Code,C#]
 ---
 

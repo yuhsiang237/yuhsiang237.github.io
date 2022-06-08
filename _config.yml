@@ -3,12 +3,12 @@
 ## Source: https://github.com/hexojs/hexo/
 
 # Site
-title: UM程式研究日誌
-subtitle: '你好，這邊記錄了我的經歷!'
-description: '這邊記錄了我的經歷'
+title: UM's Coding Note
+subtitle: 'I record my coding experience in at this place🤙'
+description: 'I record my coding experience in at this place'
 keywords:
 author: Yu Hsiang 
-language: zh_tw
+language: en
 timezone: ''
 
 # URL

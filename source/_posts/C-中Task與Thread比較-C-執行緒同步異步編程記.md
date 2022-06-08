@@ -1,12 +1,12 @@
 ---
-title: '[Day3]C#中Task與Thread比較 - C# 執行緒同步異步編程記'
+title: '[Day3]C#中Task與Thread比較 - C# SyncAndAsync'
 date: 2022-03-19 15:47:05
 categories:
-  - [Topic,2022 C# 執行緒同步異步編程記]
+  - [Topic,2022 C# SyncAndAsync]
   - [Code,C#] 
 ---
 ### 前言
-在上回 {% post_link '什麼是同步與異步-C-執行緒同步異步編程記' '[Day2]什麼是同步與異步 - C# 執行緒同步異步編程記' %} ，列出了同步異步差異，而今回就朝異步的Task、Thread邁進。
+在上回 {% post_link '什麼是同步與異步-C-SyncAndAsync' '[Day2]什麼是同步與異步 - C# SyncAndAsync' %} ，列出了同步異步差異，而今回就朝異步的Task、Thread邁進。
 
 ### 什麼是Task與Thread
 在此將Task、Thread做一個表格比較:
