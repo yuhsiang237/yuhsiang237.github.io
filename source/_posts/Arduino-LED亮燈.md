@@ -2,7 +2,7 @@
 title: Arduino限流LED實驗
 date: 2021-10-28 17:04:44
 categories:
-  - [Computer Science,電子電路]
+  - [Computer Science,Electronic Circuit]
 ---
 
 ### 前言
