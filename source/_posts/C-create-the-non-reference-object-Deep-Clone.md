@@ -43,7 +43,7 @@ namespace NonReferenceObj
 
         static void Main()
         {
-            Order order = new Order
+            var order = new Order
             {
                 Seq = 1,
                 No = "20220608",
