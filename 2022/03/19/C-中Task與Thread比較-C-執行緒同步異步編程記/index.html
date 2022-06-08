@@ -4,21 +4,21 @@
   <meta charset="utf-8">
   
   
-  <title>[Day3]C#中Task與Thread比較 - C# 執行緒同步異步編程記 | UM程式研究日誌</title>
+  <title>[Day3]C#中Task與Thread比較 - C# SyncAndAsync | UM&#39;s Coding Note</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="前言在上回 [Day2]什麼是同步與異步 - C# 執行緒同步異步編程記 ，列出了同步異步差異，而今回就朝異步的Task、Thread邁進。 什麼是Task與Thread在此將Task、Thread做一個表格比較:    Task Thread   描述 Task類別代表不會傳回值，而且通常會以非同步方式執行的單一作業。 Task物件是工作架構非同步模式的其中一個核心元件，第一次是在 .NET F">
+  <meta name="description" content="前言在上回 Post not found: 什麼是同步與異步-C-SyncAndAsync [Day2]什麼是同步與異步 - C# SyncAndAsync ，列出了同步異步差異，而今回就朝異步的Task、Thread邁進。 什麼是Task與Thread在此將Task、Thread做一個表格比較:    Task Thread   描述 Task類別代表不會傳回值，而且通常會以非同步方式執行的單一">
 <meta property="og:type" content="article">
-<meta property="og:title" content="[Day3]C#中Task與Thread比較 - C# 執行緒同步異步編程記">
+<meta property="og:title" content="[Day3]C#中Task與Thread比較 - C# SyncAndAsync">
 <meta property="og:url" content="https://yuhsiang237.github.io/2022/03/19/C-%E4%B8%ADTask%E8%88%87Thread%E6%AF%94%E8%BC%83-C-%E5%9F%B7%E8%A1%8C%E7%B7%92%E5%90%8C%E6%AD%A5%E7%95%B0%E6%AD%A5%E7%B7%A8%E7%A8%8B%E8%A8%98/index.html">
-<meta property="og:site_name" content="UM程式研究日誌">
-<meta property="og:description" content="前言在上回 [Day2]什麼是同步與異步 - C# 執行緒同步異步編程記 ，列出了同步異步差異，而今回就朝異步的Task、Thread邁進。 什麼是Task與Thread在此將Task、Thread做一個表格比較:    Task Thread   描述 Task類別代表不會傳回值，而且通常會以非同步方式執行的單一作業。 Task物件是工作架構非同步模式的其中一個核心元件，第一次是在 .NET F">
-<meta property="og:locale" content="zh_TW">
+<meta property="og:site_name" content="UM&#39;s Coding Note">
+<meta property="og:description" content="前言在上回 Post not found: 什麼是同步與異步-C-SyncAndAsync [Day2]什麼是同步與異步 - C# SyncAndAsync ，列出了同步異步差異，而今回就朝異步的Task、Thread邁進。 什麼是Task與Thread在此將Task、Thread做一個表格比較:    Task Thread   描述 Task類別代表不會傳回值，而且通常會以非同步方式執行的單一">
+<meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2022-03-19T07:47:05.000Z">
-<meta property="article:modified_time" content="2022-04-06T02:24:50.018Z">
+<meta property="article:modified_time" content="2022-06-08T02:55:06.768Z">
 <meta property="article:author" content="Yu Hsiang">
 <meta name="twitter:card" content="summary">
   
-    <link rel="alternate" href="/atom.xml" title="UM程式研究日誌" type="application/atom+xml">
+    <link rel="alternate" href="/atom.xml" title="UM's Coding Note" type="application/atom+xml">
   
   
     <link rel="shortcut icon" href="/favicon.png">
@@ -46,11 +46,11 @@
   <div id="header-outer" class="outer">
     <div id="header-title" class="inner">
       <h1 id="logo-wrap">
-        <a href="/" id="logo">UM程式研究日誌</a>
+        <a href="/" id="logo">UM&#39;s Coding Note</a>
       </h1>
       
         <h2 id="subtitle-wrap">
-          <a href="/" id="subtitle">你好，這邊記錄了我的經歷!</a>
+          <a href="/" id="subtitle">I record my coding experience in at this place🤙</a>
         </h2>
       
     </div>
@@ -67,10 +67,10 @@
         
           <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
         
-        <a id="nav-search-btn" class="nav-icon" title="Suche"></a>
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
       </nav>
       <div id="search-form-wrap">
-        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Suche"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://yuhsiang237.github.io"></form>
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://yuhsiang237.github.io"></form>
       </div>
     </div>
   </div>
@@ -84,7 +84,7 @@
 </a>
     
   <div class="article-category">
-    <a class="article-category-link" href="/categories/Code/">Code</a>►<a class="article-category-link" href="/categories/Code/C/">C#</a>►<a class="article-category-link" href="/categories/Topic/">Topic</a>►<a class="article-category-link" href="/categories/Topic/2022-C-%E5%9F%B7%E8%A1%8C%E7%B7%92%E5%90%8C%E6%AD%A5%E7%95%B0%E6%AD%A5%E7%B7%A8%E7%A8%8B%E8%A8%98/">2022 C# 執行緒同步異步編程記</a>
+    <a class="article-category-link" href="/categories/Code/">Code</a>►<a class="article-category-link" href="/categories/Code/C/">C#</a>►<a class="article-category-link" href="/categories/Topic/">Topic</a>►<a class="article-category-link" href="/categories/Topic/2022-C-SyncAndAsync/">2022 C# SyncAndAsync</a>
   </div>
 
   </div>
@@ -95,7 +95,7 @@
         
   
     <h1 class="p-name article-title" itemprop="headline name">
-      [Day3]C#中Task與Thread比較 - C# 執行緒同步異步編程記
+      [Day3]C#中Task與Thread比較 - C# SyncAndAsync
     </h1>
   
 
@@ -103,7 +103,7 @@
     
     <div class="e-content article-entry" itemprop="articleBody">
       
-        <h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>在上回 <a href="/2022/03/19/%E4%BB%80%E9%BA%BC%E6%98%AF%E5%90%8C%E6%AD%A5%E8%88%87%E7%95%B0%E6%AD%A5-C-%E5%9F%B7%E8%A1%8C%E7%B7%92%E5%90%8C%E6%AD%A5%E7%95%B0%E6%AD%A5%E7%B7%A8%E7%A8%8B%E8%A8%98/" title="[Day2]什麼是同步與異步 - C# 執行緒同步異步編程記">[Day2]什麼是同步與異步 - C# 執行緒同步異步編程記</a> ，列出了同步異步差異，而今回就朝異步的Task、Thread邁進。</p>
+        <h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>在上回 <a href="#">Post not found: 什麼是同步與異步-C-SyncAndAsync [Day2]什麼是同步與異步 - C# SyncAndAsync</a> ，列出了同步異步差異，而今回就朝異步的Task、Thread邁進。</p>
 <h3 id="什麼是Task與Thread"><a href="#什麼是Task與Thread" class="headerlink" title="什麼是Task與Thread"></a>什麼是Task與Thread</h3><p>在此將Task、Thread做一個表格比較:</p>
 <table>
 <tr>
@@ -156,7 +156,7 @@ Thread是C#中最早的多執行緒模型，後來才推出Task。
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://yuhsiang237.github.io/2022/03/19/C-%E4%B8%ADTask%E8%88%87Thread%E6%AF%94%E8%BC%83-C-%E5%9F%B7%E8%A1%8C%E7%B7%92%E5%90%8C%E6%AD%A5%E7%95%B0%E6%AD%A5%E7%B7%A8%E7%A8%8B%E8%A8%98/" data-id="cl1mymsn000017sgh7b7ad9r5" data-title="[Day3]C#中Task與Thread比較 - C# 執行緒同步異步編程記" class="article-share-link">Teilen</a>
+      <a data-url="https://yuhsiang237.github.io/2022/03/19/C-%E4%B8%ADTask%E8%88%87Thread%E6%AF%94%E8%BC%83-C-%E5%9F%B7%E8%A1%8C%E7%B7%92%E5%90%8C%E6%AD%A5%E7%95%B0%E6%AD%A5%E7%B7%A8%E7%A8%8B%E8%A8%98/" data-id="cl1mymsn000017sgh7b7ad9r5" data-title="[Day3]C#中Task與Thread比較 - C# SyncAndAsync" class="article-share-link">Share</a>
       
       
       
@@ -167,18 +167,18 @@ Thread是C#中最早的多執行緒模型，後來才推出Task。
 <nav id="article-nav">
   
     <a href="/2022/03/19/%E4%BD%BF%E7%94%A8Task%E6%92%B0%E5%AF%AB%E7%AC%AC%E4%B8%80%E5%80%8B%E9%9D%9E%E5%90%8C%E6%AD%A5%E7%A8%8B%E5%BC%8F-C-%E5%9F%B7%E8%A1%8C%E7%B7%92%E5%90%8C%E6%AD%A5%E7%95%B0%E6%AD%A5%E7%B7%A8%E7%A8%8B%E8%A8%98/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Neuer</strong>
+      <strong class="article-nav-caption">Newer</strong>
       <div class="article-nav-title">
         
-          [Day4]使用Task撰寫第一個非同步程式 - C# 執行緒同步異步編程記
+          [Day4]使用Task撰寫第一個非同步程式 - C# SyncAndAsync
         
       </div>
     </a>
   
   
     <a href="/2022/03/19/%E4%BB%80%E9%BA%BC%E6%98%AF%E5%90%8C%E6%AD%A5%E8%88%87%E7%95%B0%E6%AD%A5-C-%E5%9F%B7%E8%A1%8C%E7%B7%92%E5%90%8C%E6%AD%A5%E7%95%B0%E6%AD%A5%E7%B7%A8%E7%A8%8B%E8%A8%98/" id="article-nav-older" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Älter</strong>
-      <div class="article-nav-title">[Day2]什麼是同步與異步 - C# 執行緒同步異步編程記</div>
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">[Day2]什麼是同步與異步 - C# SyncAndAsync</div>
     </a>
   
 </nav>
@@ -193,9 +193,9 @@ Thread是C#中最早的多執行緒模型，後來才推出Task。
   
     
   <div class="widget-wrap">
-    <h3 class="widget-title">Kategorien</h3>
+    <h3 class="widget-title">Categories</h3>
     <div class="widget">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Code/">Code</a><span class="category-list-count">67</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Code/C/">C#</a><span class="category-list-count">62</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Code/Javascript/">Javascript</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Code/Refactoring/">Refactoring</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/">Computer Science</a><span class="category-list-count">5</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/Algorithm/">Algorithm</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/Data-structure/">Data structure</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/Electronic-Circuit/">Electronic Circuit</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Daily-Log/">Daily Log</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/">Database</a><span class="category-list-count">54</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Database/PostgreSQL/">PostgreSQL</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/SQL-Server/">SQL Server</a><span class="category-list-count">44</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/">Framework</a><span class="category-list-count">27</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/AspNetCore-API/">AspNetCore API</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/AspNetCore-MVC/">AspNetCore MVC</a><span class="category-list-count">21</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/">Topic</a><span class="category-list-count">72</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2021-C-AspNetCore%E9%90%B5%E4%BA%BA%E8%B3%BD/">2021 C# AspNetCore鐵人賽</a><span class="category-list-count">30</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2021-SQL-Server%E9%90%B5%E4%BA%BA%E8%B3%BD/">2021 SQL Server鐵人賽</a><span class="category-list-count">30</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2022-C-%E5%9F%B7%E8%A1%8C%E7%B7%92%E5%90%8C%E6%AD%A5%E7%95%B0%E6%AD%A5%E7%B7%A8%E7%A8%8B%E8%A8%98/">2022 C# 執行緒同步異步編程記</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/LeetCode/">LeetCode</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/%E5%B7%A8%E9%87%8F%E8%B3%87%E6%96%99/">巨量資料</a><span class="category-list-count">2</span></li></ul></li></ul>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Code/">Code</a><span class="category-list-count">67</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Code/C/">C#</a><span class="category-list-count">62</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Code/Javascript/">Javascript</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Code/Refactoring/">Refactoring</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/">Computer Science</a><span class="category-list-count">5</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/Algorithm/">Algorithm</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/Data-structure/">Data structure</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/Electronic-Circuit/">Electronic Circuit</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Daily-Log/">Daily Log</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/">Database</a><span class="category-list-count">54</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Database/PostgreSQL/">PostgreSQL</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/SQL-Server/">SQL Server</a><span class="category-list-count">44</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/">Framework</a><span class="category-list-count">27</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/AspNetCore-API/">AspNetCore API</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/AspNetCore-MVC/">AspNetCore MVC</a><span class="category-list-count">21</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/">Topic</a><span class="category-list-count">72</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2021-C-AspNetCore-Challenge/">2021 C# AspNetCore Challenge</a><span class="category-list-count">30</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2021-SQL-Server-Challenge/">2021 SQL Server Challenge</a><span class="category-list-count">30</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2022-C-SyncAndAsync/">2022 C# SyncAndAsync</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/Big-Data/">Big Data</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/LeetCode/">LeetCode</a><span class="category-list-count">3</span></li></ul></li></ul>
     </div>
   </div>
 
@@ -203,9 +203,9 @@ Thread是C#中最早的多執行緒模型，後來才推出Task。
   
     
   <div class="widget-wrap">
-    <h3 class="widget-title">Archiv</h3>
+    <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/06/">六月 2022</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/05/">五月 2022</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/04/">四月 2022</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/03/">三月 2022</a><span class="archive-list-count">17</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/02/">二月 2022</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/01/">一月 2022</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">十二月 2021</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">十月 2021</a><span class="archive-list-count">24</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">九月 2021</a><span class="archive-list-count">46</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">八月 2021</a><span class="archive-list-count">12</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/06/">June 2022</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/05/">May 2022</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/04/">April 2022</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/03/">March 2022</a><span class="archive-list-count">17</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/02/">February 2022</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/01/">January 2022</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">December 2021</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">October 2021</a><span class="archive-list-count">24</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">September 2021</a><span class="archive-list-count">46</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">August 2021</a><span class="archive-list-count">12</span></li></ul>
     </div>
   </div>
 
