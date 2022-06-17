@@ -93,10 +93,8 @@ public partial class Solution {
     /// <param name="gridValue">value of grid</param>
     /// <returns>bool</returns>
     private bool IsIsland(int gridValue)
-    {
-        return gridValue == (int)AreaEnum.Island;
-    }
-    
+        => gridValue == (int)AreaEnum.Island;
+
     /// <summary>
     /// Mark the traversal to avoid infinite loops
     /// </summary>
