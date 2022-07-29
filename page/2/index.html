@@ -77,6 +77,195 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-SQL-Server建立複合鍵" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2022/05/06/SQL-Server%E5%BB%BA%E7%AB%8B%E8%A4%87%E5%90%88%E9%8D%B5/" class="article-date">
+  <time class="dt-published" datetime="2022-05-06T02:44:34.000Z" itemprop="datePublished">2022-05-06</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Database/">Database</a>►<a class="article-category-link" href="/categories/Database/SQL-Server/">SQL Server</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2022/05/06/SQL-Server%E5%BB%BA%E7%AB%8B%E8%A4%87%E5%90%88%E9%8D%B5/">SQL Server 建立複合鍵(composite primary key)</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>在這篇簡易紀錄一下SQL複合鍵的做法。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> Orders(</span><br><span class="line">	OrderNumber NVARCHAR(<span class="number">50</span>),</span><br><span class="line">	OrderType TINYINT,</span><br><span class="line">	CreatedOn DATETIME,</span><br><span class="line">	UpdatedOn DATETIME,</span><br><span class="line">	IsValid BIT,</span><br><span class="line">	Remarks NVARCHAR(<span class="number">100</span>) <span class="keyword">NULL</span></span><br><span class="line">	<span class="keyword">PRIMARY</span> KEY (OrderNumber, OrderType)</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+<p>就是在PRIMARY KEY加入兩個鍵值即可。<br>在此以OrderNumber、OrderType，表示同一訂單類型的編號不可重複。</p>
+<p>如果是在SQL Server的介面設計上，就是點CTRL把需要設定的PK給匡列，之後再右鍵設定PK即可。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://yuhsiang237.github.io/2022/05/06/SQL-Server%E5%BB%BA%E7%AB%8B%E8%A4%87%E5%90%88%E9%8D%B5/" data-id="cl2tufjed0000e8gh2oao2jag" data-title="SQL Server 建立複合鍵(composite primary key)" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-PostgreSQL-get-the-start-and-end-dates-of-prev-month-query" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2022/05/05/PostgreSQL-get-the-start-and-end-dates-of-prev-month-query/" class="article-date">
+  <time class="dt-published" datetime="2022-05-05T02:19:01.000Z" itemprop="datePublished">2022-05-05</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Database/">Database</a>►<a class="article-category-link" href="/categories/Database/PostgreSQL/">PostgreSQL</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2022/05/05/PostgreSQL-get-the-start-and-end-dates-of-prev-month-query/">PostgreSQL get the start and end dates of prev month query</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>My table has below data, and I want to get the previous data of month,and today is 2022-05-04. </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">2022-03-01</span><br><span class="line">2022-04-01</span><br><span class="line">2022-04-01</span><br><span class="line">2022-05-03</span><br></pre></td></tr></table></figure>
+
+<p>This is the answer:</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">WITH</span> TEMP_TABLE <span class="keyword">AS</span></span><br><span class="line">(</span><br><span class="line">    <span class="keyword">SELECT</span> <span class="string">&#x27;2022-03-01&#x27;</span>::<span class="type">TIMESTAMP</span> <span class="keyword">WITHOUT</span> <span class="type">TIME</span> ZONE <span class="keyword">AS</span> MYDATE</span><br><span class="line">    <span class="keyword">UNION</span> <span class="keyword">ALL</span></span><br><span class="line">    <span class="keyword">SELECT</span> <span class="string">&#x27;2022-04-01&#x27;</span>::<span class="type">TIMESTAMP</span> <span class="keyword">WITHOUT</span> <span class="type">TIME</span> ZONE <span class="keyword">AS</span> MYDATE    </span><br><span class="line">    <span class="keyword">UNION</span> <span class="keyword">ALL</span></span><br><span class="line">    <span class="keyword">SELECT</span> <span class="string">&#x27;2022-04-02&#x27;</span>::<span class="type">TIMESTAMP</span> <span class="keyword">WITHOUT</span> <span class="type">TIME</span> ZONE <span class="keyword">AS</span> MYDATE</span><br><span class="line">    <span class="keyword">UNION</span> <span class="keyword">ALL</span></span><br><span class="line">    <span class="keyword">SELECT</span> <span class="string">&#x27;2022-05-03&#x27;</span>::<span class="type">TIMESTAMP</span> <span class="keyword">WITHOUT</span> <span class="type">TIME</span> ZONE <span class="keyword">AS</span> MYDATE</span><br><span class="line">)</span><br><span class="line"><span class="keyword">SELECT</span></span><br><span class="line">  <span class="operator">*</span></span><br><span class="line"><span class="keyword">FROM</span> </span><br><span class="line">  TEMP_TABLE TT</span><br><span class="line"><span class="keyword">WHERE</span></span><br><span class="line">  TT.MYDATE <span class="operator">&gt;=</span> DATE_TRUNC(<span class="string">&#x27;MONTH&#x27;</span>,NOW()) <span class="operator">-</span> INTERVEL <span class="string">&#x27;1 MONTH&#x27;</span></span><br><span class="line">  <span class="keyword">AND</span> TT.MYDATE <span class="operator">&lt;</span> DATE_TRUNC(<span class="string">&#x27;MONTH&#x27;</span>,NOW())</span><br></pre></td></tr></table></figure>
+<p><strong>explain</strong><br>The function DATE_TRUNC will help us convert datetime to first date of month.<br>It’s like Now() is 2022-05-09, and function DATE_TRUNC(‘MONTH’,NOW()) will convert datetime to 2022-05-01.I use the DATE_TRUNC create a duration.</p>
+<p>Example:<br>NOW() = 2022-05-09</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">x &gt;= 2022-04-01 </span><br><span class="line">x &lt; 2022-05-01</span><br></pre></td></tr></table></figure>
+<p>So,the result is 2022-04-01~2022-04-30.</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://yuhsiang237.github.io/2022/05/05/PostgreSQL-get-the-start-and-end-dates-of-prev-month-query/" data-id="cl2tufjeh0001e8gh3otzfddp" data-title="PostgreSQL get the start and end dates of prev month query" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-SQL-Server資料庫版控設定" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2022/05/04/SQL-Server%E8%B3%87%E6%96%99%E5%BA%AB%E7%89%88%E6%8E%A7%E8%A8%AD%E5%AE%9A/" class="article-date">
+  <time class="dt-published" datetime="2022-05-04T05:11:48.000Z" itemprop="datePublished">2022-05-04</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Database/">Database</a>►<a class="article-category-link" href="/categories/Database/SQL-Server/">SQL Server</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2022/05/04/SQL-Server%E8%B3%87%E6%96%99%E5%BA%AB%E7%89%88%E6%8E%A7%E8%A8%AD%E5%AE%9A/">SQL Server資料庫版控設定</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>在寫程式時我們都會有版本控制，以避免重大失誤無法回版，而在程式上作法很簡單就是使用git。<br>但資料庫要怎版控呢?如果遇到有人直接把資料庫欄位異動了，卻沒通知其他人，程式就會變得難以除錯，所以在這回要介紹如何在資料庫加入版本控制功能。<br>在這篇範例會以SQL Server搭配Visual Studio去達成版控。</p>
+<p>主要以微軟官方提供的:SQL Server Data Tools 來實作。</p>
+<h3 id="實作"><a href="#實作" class="headerlink" title="實作"></a>實作</h3><p>1.因為要模擬真實情景，先以Visual Studio建立任一個沒版控的專案，在此先以ASP NET CORE MVC為範例。</p>
+<img src="/2022/05/04/SQL-Server%E8%B3%87%E6%96%99%E5%BA%AB%E7%89%88%E6%8E%A7%E8%A8%AD%E5%AE%9A/1.png" class="">
+
+<p>2.對解決方案點右鍵，為這專案用的資料庫加入”資料庫版控專案”</p>
+<img src="/2022/05/04/SQL-Server%E8%B3%87%E6%96%99%E5%BA%AB%E7%89%88%E6%8E%A7%E8%A8%AD%E5%AE%9A/2.png" class="">
+<p>3.選擇 SQL Server 資料庫專案，如果找不到這個專案記得去這裡裝:<a target="_blank" rel="noopener" href="https://docs.microsoft.com/zh-tw/sql/ssdt/download-sql-server-data-tools-ssdt?view=sql-server-ver15">https://docs.microsoft.com/zh-tw/sql/ssdt/download-sql-server-data-tools-ssdt?view=sql-server-ver15</a><br>就可以出現這範例專案了。</p>
+<img src="/2022/05/04/SQL-Server%E8%B3%87%E6%96%99%E5%BA%AB%E7%89%88%E6%8E%A7%E8%A8%AD%E5%AE%9A/3.png" class="">
+<p>4.我取名叫MyDatabase</p>
+<img src="/2022/05/04/SQL-Server%E8%B3%87%E6%96%99%E5%BA%AB%E7%89%88%E6%8E%A7%E8%A8%AD%E5%AE%9A/4.png" class="">
+<p>5.這時就有一個MyDatabase的資料庫管理專案放進來了</p>
+<img src="/2022/05/04/SQL-Server%E8%B3%87%E6%96%99%E5%BA%AB%E7%89%88%E6%8E%A7%E8%A8%AD%E5%AE%9A/5.png" class="">
+<p>6.再來我們現有的資料庫叫做TodoDB，預計把這DB加入版控</p>
+<img src="/2022/05/04/SQL-Server%E8%B3%87%E6%96%99%E5%BA%AB%E7%89%88%E6%8E%A7%E8%A8%AD%E5%AE%9A/6.png" class="">
+<p>7.選擇匯入&gt;資料庫</p>
+<img src="/2022/05/04/SQL-Server%E8%B3%87%E6%96%99%E5%BA%AB%E7%89%88%E6%8E%A7%E8%A8%AD%E5%AE%9A/7.png" class="">
+<p>8.再來就連DB選擇指定資料庫</p>
+<img src="/2022/05/04/SQL-Server%E8%B3%87%E6%96%99%E5%BA%AB%E7%89%88%E6%8E%A7%E8%A8%AD%E5%AE%9A/8.png" class="">
+<p>9.在此我就選擇資料庫連線、選擇指定資料庫</p>
+<img src="/2022/05/04/SQL-Server%E8%B3%87%E6%96%99%E5%BA%AB%E7%89%88%E6%8E%A7%E8%A8%AD%E5%AE%9A/9.png" class="">
+<p>10.再來點選啟動</p>
+<img src="/2022/05/04/SQL-Server%E8%B3%87%E6%96%99%E5%BA%AB%E7%89%88%E6%8E%A7%E8%A8%AD%E5%AE%9A/10.png" class="">
+<p>11.這樣就匯入完成</p>
+<img src="/2022/05/04/SQL-Server%E8%B3%87%E6%96%99%E5%BA%AB%E7%89%88%E6%8E%A7%E8%A8%AD%E5%AE%9A/11.png" class="">
+<p>12.如此一來就可以版控了也可以設計資料庫</p>
+<img src="/2022/05/04/SQL-Server%E8%B3%87%E6%96%99%E5%BA%AB%E7%89%88%E6%8E%A7%E8%A8%AD%E5%AE%9A/12.png" class="">
+<p>完成!</p>
+<h3 id="模擬資料庫欄位變更"><a href="#模擬資料庫欄位變更" class="headerlink" title="模擬資料庫欄位變更"></a>模擬資料庫欄位變更</h3><p>1.再來我們模擬資料表變更，新增了一個Email欄位</p>
+<img src="/2022/05/04/SQL-Server%E8%B3%87%E6%96%99%E5%BA%AB%E7%89%88%E6%8E%A7%E8%A8%AD%E5%AE%9A/13.png" class="">
+<p>2.對資料庫專案右鍵點”結構描述比較”</p>
+<img src="/2022/05/04/SQL-Server%E8%B3%87%E6%96%99%E5%BA%AB%E7%89%88%E6%8E%A7%E8%A8%AD%E5%AE%9A/14.png" class="">
+<p>3.之後會跳出這視窗，右邊選擇你遠端的資料庫</p>
+<img src="/2022/05/04/SQL-Server%E8%B3%87%E6%96%99%E5%BA%AB%E7%89%88%E6%8E%A7%E8%A8%AD%E5%AE%9A/15.png" class="">
+<p>4.在這我就選遠端的TodoDB</p>
+<img src="/2022/05/04/SQL-Server%E8%B3%87%E6%96%99%E5%BA%AB%E7%89%88%E6%8E%A7%E8%A8%AD%E5%AE%9A/16.png" class="">
+<p>5.選好後點擊”比較”</p>
+<img src="/2022/05/04/SQL-Server%E8%B3%87%E6%96%99%E5%BA%AB%E7%89%88%E6%8E%A7%E8%A8%AD%E5%AE%9A/17.png" class="">
+<p>6.點完後點擊更新，底下會顯示更新狀態，顯示已經順利完成</p>
+<img src="/2022/05/04/SQL-Server%E8%B3%87%E6%96%99%E5%BA%AB%E7%89%88%E6%8E%A7%E8%A8%AD%E5%AE%9A/21.png" class="">
+<p>7.這時去SQL Server看就成功被更新了</p>
+<img src="/2022/05/04/SQL-Server%E8%B3%87%E6%96%99%E5%BA%AB%E7%89%88%E6%8E%A7%E8%A8%AD%E5%AE%9A/22.png" class="">
+
+<p>下面是我做的完整專案:<br><a target="_blank" rel="noopener" href="https://github.com/yuhsiang237/SQL-Server-Version-Control">https://github.com/yuhsiang237/SQL-Server-Version-Control</a></p>
+<h3 id="參考資料"><a href="#參考資料" class="headerlink" title="參考資料"></a>參考資料</h3><ul>
+<li><a target="_blank" rel="noopener" href="https://blog.yowko.com/sql-server-version-control/">https://blog.yowko.com/sql-server-version-control/</a></li>
+<li><a target="_blank" rel="noopener" href="https://visualstudio.microsoft.com/zh-hant/vs/features/ssdt/">https://visualstudio.microsoft.com/zh-hant/vs/features/ssdt/</a></li>
+<li><a target="_blank" rel="noopener" href="https://docs.microsoft.com/zh-tw/sql/ssdt/sql-server-data-tools?view=sql-server-ver15">https://docs.microsoft.com/zh-tw/sql/ssdt/sql-server-data-tools?view=sql-server-ver15</a></li>
+<li><a target="_blank" rel="noopener" href="https://docs.microsoft.com/en-us/previous-versions/sql/sql-server-data-tools/hh864423(v=vs.103)">https://docs.microsoft.com/en-us/previous-versions/sql/sql-server-data-tools/hh864423(v=vs.103)</a></li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://yuhsiang237.github.io/2022/05/04/SQL-Server%E8%B3%87%E6%96%99%E5%BA%AB%E7%89%88%E6%8E%A7%E8%A8%AD%E5%AE%9A/" data-id="cl2r6os5k0001xwghg4gcah2y" data-title="SQL Server資料庫版控設定" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
     <article id="post-2022上半年改變了什麼" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
     <a href="/2022/05/01/2022%E4%B8%8A%E5%8D%8A%E5%B9%B4%E6%94%B9%E8%AE%8A%E4%BA%86%E4%BB%80%E9%BA%BC/" class="article-date">
@@ -453,152 +642,6 @@
 
 
   
-    <article id="post-Sql-Server-查詢資料分頁使用offset-fetch-next" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2022/04/08/Sql-Server-%E6%9F%A5%E8%A9%A2%E8%B3%87%E6%96%99%E5%88%86%E9%A0%81%E4%BD%BF%E7%94%A8offset-fetch-next/" class="article-date">
-  <time class="dt-published" datetime="2022-04-08T02:20:26.000Z" itemprop="datePublished">2022-04-08</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2022/04/08/Sql-Server-%E6%9F%A5%E8%A9%A2%E8%B3%87%E6%96%99%E5%88%86%E9%A0%81%E4%BD%BF%E7%94%A8offset-fetch-next/">Sql Server 查詢資料分頁使用offset fetch next</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p>撰寫中…</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span></span><br><span class="line"><span class="keyword">FROM</span> [TodoDB].[dbo].[Todos]</span><br><span class="line"><span class="keyword">ORDER</span> <span class="keyword">BY</span> [ID] <span class="keyword">DESC</span></span><br><span class="line"><span class="keyword">OFFSET</span> <span class="number">0</span> <span class="keyword">ROWS</span> </span><br><span class="line"><span class="keyword">FETCH</span> NEXT <span class="number">10</span> <span class="keyword">ROWS</span> <span class="keyword">ONLY</span></span><br></pre></td></tr></table></figure>
-<h3 id="參考資料"><a href="#參考資料" class="headerlink" title="參考資料"></a>參考資料</h3><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/hou973561160/article/details/84313681">https://blog.csdn.net/hou973561160/article/details/84313681</a></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://yuhsiang237.github.io/2022/04/08/Sql-Server-%E6%9F%A5%E8%A9%A2%E8%B3%87%E6%96%99%E5%88%86%E9%A0%81%E4%BD%BF%E7%94%A8offset-fetch-next/" data-id="cl1psx9i40000lsghc9jcfs2r" data-title="Sql Server 查詢資料分頁使用offset fetch next" class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-建立不會停止的背景Task" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2022/04/08/%E5%BB%BA%E7%AB%8B%E4%B8%8D%E6%9C%83%E5%81%9C%E6%AD%A2%E7%9A%84%E8%83%8C%E6%99%AFTask/" class="article-date">
-  <time class="dt-published" datetime="2022-04-08T01:43:59.000Z" itemprop="datePublished">2022-04-08</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/Code/">Code</a>►<a class="article-category-link" href="/categories/Code/C/">C#</a>►<a class="article-category-link" href="/categories/Topic/">Topic</a>►<a class="article-category-link" href="/categories/Topic/2022-C-SyncAndAsync/">2022 C# SyncAndAsync</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2022/04/08/%E5%BB%BA%E7%AB%8B%E4%B8%8D%E6%9C%83%E5%81%9C%E6%AD%A2%E7%9A%84%E8%83%8C%E6%99%AFTask/">[Day7]C#建立不會停止的背景Task</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>在上回 <a href="#">Post not found: Task運行處理-Run、Start、RunSynchronously-C-SyncAndAsync [Day6]Task運行處理(Run、Start、RunSynchronously)</a> ，我們學習了Task的各種啟動方式。<br>而今回主要來撰寫不會停止的背景Task。</p>
-<h3 id="實作"><a href="#實作" class="headerlink" title="實作"></a>實作</h3><p>不終止的非同步事件 ex:多個while(true)常駐。</p>
-<p>主要使用以下的模板去製作常駐程式:</p>
-<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> endlessTask = Task.Run(<span class="keyword">async</span> () =&gt;</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">while</span> (<span class="literal">true</span>)</span><br><span class="line">        &#123;</span><br><span class="line">          <span class="comment">// Todo</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;);</span><br></pre></td></tr></table></figure>
-<p>簡單來說就是開一個異步的Task讓他跑即可。</p>
-<p>在以下的範例中endlessTask1、endlessTask2會不停的印出資料。</p>
-<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> System;</span><br><span class="line"><span class="keyword">using</span> System.Threading.Tasks;</span><br><span class="line"></span><br><span class="line"><span class="keyword">namespace</span> <span class="title">EndlessTaskAsync</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">class</span> <span class="title">Program</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> 主程式</span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;returns&gt;</span><span class="doctag">&lt;/returns&gt;</span></span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">async</span> Task <span class="title">Main</span>(<span class="params"></span>)</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">var</span> endlessTask1 = EndlessTask(<span class="number">1</span>);</span><br><span class="line">            <span class="keyword">var</span> endlessTask2 = EndlessTask(<span class="number">2</span>);</span><br><span class="line"></span><br><span class="line">            <span class="keyword">await</span> PreventToStop();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> 製作無止盡的 while task</span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;number&quot;&gt;</span>編號<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;returns&gt;</span><span class="doctag">&lt;/returns&gt;</span></span></span><br><span class="line">        <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> Task <span class="title">EndlessTask</span>(<span class="params"><span class="built_in">int</span> number</span>)</span></span><br><span class="line">        &#123;</span><br><span class="line">            Console.WriteLine(<span class="string">&quot;Start EndlessTask&quot;</span> + number);</span><br><span class="line">            <span class="keyword">var</span> endlessTask = Task.Run(<span class="keyword">async</span> () =&gt;</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">while</span> (<span class="literal">true</span>)</span><br><span class="line">                &#123;</span><br><span class="line">                    Console.WriteLine(<span class="string">&quot;EndlessTask&quot;</span> + number);</span><br><span class="line">                    <span class="keyword">await</span> Task.Delay(<span class="number">100</span>);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;);</span><br><span class="line">            <span class="keyword">return</span> Task.CompletedTask;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> 避免視窗關閉，使用ReadKey();</span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;returns&gt;</span><span class="doctag">&lt;/returns&gt;</span></span></span><br><span class="line">        <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> Task <span class="title">PreventToStop</span>(<span class="params"></span>)</span></span><br><span class="line">        &#123;</span><br><span class="line">            Console.ReadKey();</span><br><span class="line">            <span class="keyword">return</span> Task.CompletedTask;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>運行結果:</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">EndlessTask1</span><br><span class="line">EndlessTask2</span><br><span class="line">EndlessTask1</span><br><span class="line">EndlessTask2</span><br><span class="line">EndlessTask1</span><br><span class="line">EndlessTask2</span><br><span class="line">EndlessTask1</span><br><span class="line">EndlessTask2</span><br><span class="line">EndlessTask1</span><br><span class="line">EndlessTask2</span><br><span class="line">EndlessTask1</span><br><span class="line">EndlessTask2</span><br><span class="line">EndlessTask1</span><br><span class="line">EndlessTask2</span><br><span class="line">EndlessTask1</span><br><span class="line">EndlessTask2</span><br><span class="line">EndlessTask1</span><br><span class="line">EndlessTask2</span><br></pre></td></tr></table></figure>
-<p>直到關掉程式都會一直印。</p>
-<h3 id="總結"><a href="#總結" class="headerlink" title="總結"></a>總結</h3><p>在這回中練習了背景常駐的Task，通常會在監聽某個請求while中使用。<br>如果是以目前處理過的code，就是在socket處理上會大量使用。</p>
-<p>專案存庫:<br><a target="_blank" rel="noopener" href="https://github.com/yuhsiang237/EndlessTaskAsync">https://github.com/yuhsiang237/EndlessTaskAsync</a></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://yuhsiang237.github.io/2022/04/08/%E5%BB%BA%E7%AB%8B%E4%B8%8D%E6%9C%83%E5%81%9C%E6%AD%A2%E7%9A%84%E8%83%8C%E6%99%AFTask/" data-id="cl1ps02fo00003cgh0e2fg2x9" data-title="[Day7]C#建立不會停止的背景Task" class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-C-Tuple實名、匿名用法" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2022/04/06/C-Tuple%E5%AF%A6%E5%90%8D%E3%80%81%E5%8C%BF%E5%90%8D%E7%94%A8%E6%B3%95/" class="article-date">
-  <time class="dt-published" datetime="2022-04-06T02:25:27.000Z" itemprop="datePublished">2022-04-06</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/Code/">Code</a>►<a class="article-category-link" href="/categories/Code/C/">C#</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2022/04/06/C-Tuple%E5%AF%A6%E5%90%8D%E3%80%81%E5%8C%BF%E5%90%8D%E7%94%A8%E6%B3%95/">C# Tuple實名、匿名用法</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p>最近在寫資料時需要回傳多筆數，但在資料單純、沒特別的邏輯的情況下不想再建立一個Model回傳，這時就可以使用Tuple返回元組類型。</p>
-<p>以下為匿名、實名的兩種Tuple寫法。</p>
-<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> System;</span><br><span class="line"></span><br><span class="line"><span class="keyword">namespace</span> <span class="title">TupleSample</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">internal</span> <span class="keyword">class</span> <span class="title">Program</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">Main</span>(<span class="params"><span class="built_in">string</span>[] args</span>)</span></span><br><span class="line">        &#123;</span><br><span class="line">            Console.WriteLine(String.Concat(GetUser1().Id, GetUser1().Name));</span><br><span class="line">            Console.WriteLine(String.Concat(GetUser2().Item1, GetUser2().Item2));</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">static</span> (<span class="built_in">int</span> Id, <span class="built_in">string</span> Name) GetUser1()</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">return</span> (<span class="number">5</span>, <span class="string">&quot;王小明&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">static</span> Tuple&lt;<span class="built_in">int</span>, <span class="built_in">string</span>&gt; <span class="title">GetUser2</span>(<span class="params"></span>)</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">return</span> Tuple.Create(<span class="number">5</span>, <span class="string">&quot;王小明&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p><strong>output</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">5王小明</span><br><span class="line">5王小明</span><br></pre></td></tr></table></figure>
-
-<h3 id="總結"><a href="#總結" class="headerlink" title="總結"></a>總結</h3><p>當返回值較為單純時可以使用，如2~3個返回值。</p>
-<h3 id="參考資料"><a href="#參考資料" class="headerlink" title="參考資料"></a>參考資料</h3><p><a target="_blank" rel="noopener" href="https://docs.microsoft.com/zh-tw/dotnet/csharp/language-reference/builtin-types/value-tuples">https://docs.microsoft.com/zh-tw/dotnet/csharp/language-reference/builtin-types/value-tuples</a></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://yuhsiang237.github.io/2022/04/06/C-Tuple%E5%AF%A6%E5%90%8D%E3%80%81%E5%8C%BF%E5%90%8D%E7%94%A8%E6%B3%95/" data-id="cl1mymsmy00007sghh1pu11av" data-title="C# Tuple實名、匿名用法" class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
 
 
   <nav id="page-nav">
@@ -614,7 +657,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Categories</h3>
     <div class="widget">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Code/">Code</a><span class="category-list-count">67</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Code/C/">C#</a><span class="category-list-count">62</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Code/Javascript/">Javascript</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Code/Refactoring/">Refactoring</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/">Computer Science</a><span class="category-list-count">5</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/Algorithm/">Algorithm</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/Data-structure/">Data structure</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/Electronic-Circuit/">Electronic Circuit</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Daily-Log/">Daily Log</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/">Database</a><span class="category-list-count">54</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Database/PostgreSQL/">PostgreSQL</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/SQL-Server/">SQL Server</a><span class="category-list-count">44</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/">Framework</a><span class="category-list-count">27</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/AspNetCore-API/">AspNetCore API</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/AspNetCore-MVC/">AspNetCore MVC</a><span class="category-list-count">21</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/">Topic</a><span class="category-list-count">72</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2021-C-AspNetCore-Challenge/">2021 C# AspNetCore Challenge</a><span class="category-list-count">30</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2021-SQL-Server-Challenge/">2021 SQL Server Challenge</a><span class="category-list-count">30</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2022-C-SyncAndAsync/">2022 C# SyncAndAsync</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/Big-Data/">Big Data</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/LeetCode/">LeetCode</a><span class="category-list-count">3</span></li></ul></li></ul>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Code/">Code</a><span class="category-list-count">68</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Code/C/">C#</a><span class="category-list-count">63</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Code/Javascript/">Javascript</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Code/Refactoring/">Refactoring</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/">Computer Science</a><span class="category-list-count">5</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/Algorithm/">Algorithm</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/Data-structure/">Data structure</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/Electronic-Circuit/">Electronic Circuit</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Daily-Log/">Daily Log</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/">Database</a><span class="category-list-count">54</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Database/PostgreSQL/">PostgreSQL</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/SQL-Server/">SQL Server</a><span class="category-list-count">44</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/">Framework</a><span class="category-list-count">27</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/AspNetCore-API/">AspNetCore API</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/AspNetCore-MVC/">AspNetCore MVC</a><span class="category-list-count">21</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/">Topic</a><span class="category-list-count">73</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2021-C-AspNetCore-Challenge/">2021 C# AspNetCore Challenge</a><span class="category-list-count">30</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2021-SQL-Server-Challenge/">2021 SQL Server Challenge</a><span class="category-list-count">30</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2022-C-SyncAndAsync/">2022 C# SyncAndAsync</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/Big-Data/">Big Data</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/LeetCode/">LeetCode</a><span class="category-list-count">4</span></li></ul></li></ul>
     </div>
   </div>
 
@@ -624,7 +667,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/06/">June 2022</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/05/">May 2022</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/04/">April 2022</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/03/">March 2022</a><span class="archive-list-count">17</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/02/">February 2022</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/01/">January 2022</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">December 2021</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">October 2021</a><span class="archive-list-count">24</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">September 2021</a><span class="archive-list-count">46</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">August 2021</a><span class="archive-list-count">12</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/07/">July 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/06/">June 2022</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/05/">May 2022</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/04/">April 2022</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/03/">March 2022</a><span class="archive-list-count">17</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/02/">February 2022</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/01/">January 2022</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">December 2021</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">October 2021</a><span class="archive-list-count">24</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">September 2021</a><span class="archive-list-count">46</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">August 2021</a><span class="archive-list-count">12</span></li></ul>
     </div>
   </div>
 
