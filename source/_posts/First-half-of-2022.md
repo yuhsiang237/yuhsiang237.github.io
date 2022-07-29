@@ -1,12 +1,12 @@
 ---
-title: First half of 2022
+title: The first half of 2022
 date: 2022-07-29 14:20:36
 categories:
   - [Daily Log]
 ---
-In the first half of 2022, I worked my job from Kaohsiang to Taipei, and then started a financial-related work that is about service of loans, and everyday I use the code languages of C# and Typescript to code.
+In the first half of 2022, I worked from Kaohsiang to Taipei, and then started a financial-related job, which is loan service, and I write code in C# and Typescript to code everyday.
 
-However, in my rest time, I was ready for Toeic and learned English online cuz I thought it's a challenge for me and if I overcome it, I could do more thing such as join a game team, business or even play the video game in full English that makes me get more interesting stuff in my life, but my listen of English still needs to improve.
+However, in my rest time, I prepared for Toeic and learned English online cuz I thought it's a challenge for me and if I got it over, I could do more thing such as joining a game team, doing business or even playing the video game in full English that made me getting more interesting stuff in my life, but my listen of English still needed to improve.
 
 In terms of living expenses, I just gained some money and improved my life. I thought the money was not very important, but actually I still needed it to live. I work just to improve my life quality and family environment.
 
