@@ -33,6 +33,10 @@ Then you can use the two commands and adjust your commits.
 ### The git-operation gif
 {% asset_img "rebase.gif" %}
 
-
-
-
+The steps following:
+```
+1. Use the command "git rebase -i <SHA>"
+2. Use pick and squash to adjust your commits
+3. Update the combined-commit message
+4. Finish
+```
