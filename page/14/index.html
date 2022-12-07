@@ -77,6 +77,62 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-Queue與Stack操作" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2021/08/30/Queue%E8%88%87Stack%E6%93%8D%E4%BD%9C/" class="article-date">
+  <time class="dt-published" datetime="2021-08-30T12:11:10.000Z" itemprop="datePublished">2021-08-30</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Code/">Code</a>►<a class="article-category-link" href="/categories/Code/C/">C#</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2021/08/30/Queue%E8%88%87Stack%E6%93%8D%E4%BD%9C/">C# Queue與Stack操作</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>為了熟悉C#處理資料的方式，所以找了兩種比較常見的資料結構來練習。<br>分別是Queue(佇列)、Stack(堆疊)。</p>
+<h3 id="Queue"><a href="#Queue" class="headerlink" title="Queue"></a>Queue</h3><p>先進先出</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">using System;</span><br><span class="line">using System.Collections;</span><br><span class="line"></span><br><span class="line">public class Program</span><br><span class="line">&#123;</span><br><span class="line">	public static void Main()</span><br><span class="line">	&#123;</span><br><span class="line">		Queue q = new Queue();</span><br><span class="line">		q.Enqueue(&quot;hello&quot;); // 向 Queue 的末尾新增一個物件。</span><br><span class="line">		q.Enqueue(32);</span><br><span class="line">		q.Enqueue(5);</span><br><span class="line">		q.Enqueue(&#x27;N&#x27;);</span><br><span class="line">		</span><br><span class="line">		Console.WriteLine(&quot;印出Queue的內容:&quot;);</span><br><span class="line">		foreach(var item in q)&#123;</span><br><span class="line">			Console.WriteLine(item);</span><br><span class="line">		&#125;</span><br><span class="line">		</span><br><span class="line">		Console.WriteLine(&quot;取出一個資料:&quot;);</span><br><span class="line">		var result = q.Dequeue(); // 從 Queue 的前端取出一個資料</span><br><span class="line">		Console.WriteLine(result);</span><br><span class="line">        </span><br><span class="line">		Console.WriteLine(&quot;轉成陣列印出:&quot;);</span><br><span class="line">		var array = q.ToArray();</span><br><span class="line">		foreach(var item in array)&#123;</span><br><span class="line">			Console.WriteLine(item);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>輸出:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">印出Queue的內容:</span><br><span class="line">hello</span><br><span class="line">32</span><br><span class="line">5</span><br><span class="line">N</span><br><span class="line">取出一個資料:</span><br><span class="line">hello</span><br><span class="line">轉成陣列印出:</span><br><span class="line">32</span><br><span class="line">5</span><br><span class="line">N</span><br></pre></td></tr></table></figure>
+
+<h3 id="Stack"><a href="#Stack" class="headerlink" title="Stack"></a>Stack</h3><p>先進後出</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">using System;</span><br><span class="line">using System.Collections;</span><br><span class="line"></span><br><span class="line">public class Program</span><br><span class="line">&#123;</span><br><span class="line">	public static void Main()</span><br><span class="line">	&#123;</span><br><span class="line">		Stack s = new Stack();</span><br><span class="line">		s.Push(&quot;hello&quot;); // 向 Stack 的頂部新增一個物件。</span><br><span class="line">		s.Push(32);</span><br><span class="line">		s.Push(5);</span><br><span class="line">		s.Push(&#x27;N&#x27;);</span><br><span class="line">		</span><br><span class="line">		Console.WriteLine(&quot;印出Stack的內容:&quot;);</span><br><span class="line">		foreach(var item in s)&#123;</span><br><span class="line">			Console.WriteLine(item);</span><br><span class="line">		&#125;</span><br><span class="line">		</span><br><span class="line">		Console.WriteLine(&quot;取出一個資料:&quot;);</span><br><span class="line">		var result = s.Pop(); // 移除並返回在 Stack 的頂部的物件。</span><br><span class="line">		Console.WriteLine(result);</span><br><span class="line">		</span><br><span class="line">		Console.WriteLine(&quot;Peek觀察頂部物件但不移除:&quot;);</span><br><span class="line">		result = s.Peek(); // Peek觀察頂部物件但不移除</span><br><span class="line">		Console.WriteLine(result);</span><br><span class="line">		</span><br><span class="line">		Console.WriteLine(&quot;轉成陣列印出:&quot;);</span><br><span class="line">		var array = s.ToArray();</span><br><span class="line">		foreach(var item in array)&#123;</span><br><span class="line">			Console.WriteLine(item);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>輸出:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">印出Stack的內容:</span><br><span class="line">N</span><br><span class="line">5</span><br><span class="line">32</span><br><span class="line">hello</span><br><span class="line">取出一個資料:</span><br><span class="line">N</span><br><span class="line">Peek觀察頂部物件但不移除:</span><br><span class="line">5</span><br><span class="line">轉成陣列印出:</span><br><span class="line">5</span><br><span class="line">32</span><br><span class="line">hello</span><br></pre></td></tr></table></figure>
+
+<h3 id="結語"><a href="#結語" class="headerlink" title="結語"></a>結語</h3><p>C#除了已經內置了基礎的佇列(Queue)、堆疊(Stack)，還內建了一些簡易的語法。<br>如Contains，可以對整個資料結構去檢查是否存在某個特定元素。亦有toArray()可以快速的把資料結構轉為陣列型態。</p>
+<p><strong>參考資料</strong><br><a target="_blank" rel="noopener" href="https://www.itread01.com/content/1550138429.html?fbclid=IwAR3ty4HR0DlmSWRMl19IFBgESeXM2aH5GsJxxcKHMGdzY6WIJm90brUzsvI">https://www.itread01.com/content/1550138429.html?fbclid=IwAR3ty4HR0DlmSWRMl19IFBgESeXM2aH5GsJxxcKHMGdzY6WIJm90brUzsvI</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://yuhsiang237.github.io/2021/08/30/Queue%E8%88%87Stack%E6%93%8D%E4%BD%9C/" data-id="cl0g433os002atwghf4ixawk8" data-title="C# Queue與Stack操作" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
     <article id="post-javascript-event-loop機制" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
     <a href="/2021/08/30/javascript-event-loop%E6%A9%9F%E5%88%B6/" class="article-date">
@@ -635,62 +691,11 @@ Only one valid answer exists.
 
 
   
-    <article id="post-change" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2021/08/23/change/" class="article-date">
-  <time class="dt-published" datetime="2021-08-23T12:23:09.000Z" itemprop="datePublished">2021-08-23</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/Daily-Log/">Daily Log</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2021/08/23/change/">決定未來走的方向</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p>決定未來走的方向了。</p>
-<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>目前有正職2年軟體工程師經驗，之後SOHO接了大學同學案子以及維護到現在，但疫情原因加上案源不穩下，覺得勢必要重回職場。工作到現在這段期間也學到不少事，覺得該給自己訂下一條路了－－<strong>Web Developer</strong> 這條路，並以後端為主去延伸。</p>
-<h2 id="這是個好決定嗎"><a href="#這是個好決定嗎" class="headerlink" title="這是個好決定嗎?"></a>這是個好決定嗎?</h2><p>以目前來講，前端、後端部分已有產出的經驗，所以目標開始走向後端、架構為重的開發。我不能說是最好的決定，但在摸熟了前端的大致內容，覺得在快速的變遷下還是有必要走到後端。以往後端都是偏向用laravel(因為當時微軟還沒開始開源)，而現在走微軟.net core，將會是以C#為主要開發語言，以現在來說有相對完整的學習地圖，而C#也是我2015年接觸過的語言，前公司亦是用C#，所以要精進也比較容易些。</p>
-<p>然後，下面是在工作期間曾經處理過、實際參與過的，API串接、切版、業務邏輯、設計規劃討論，前端的畫面、業務邏輯，期間使用RESTful API，後端經驗就是API、BUG修正等等。</p>
-<p><strong>目前完成且有實際上線的作品：</strong></p>
-<p>1.ERP形象頁<br><a target="_blank" rel="noopener" href="https://www.linkchain.tw/erp/">https://www.linkchain.tw/erp/</a><br>2.豬場e把抓<br><a target="_blank" rel="noopener" href="https://pigepm.coa.gov.tw/">https://pigepm.coa.gov.tw/</a><br>3.農業易遊網<br><a target="_blank" rel="noopener" href="https://ezgo.coa.gov.tw/">https://ezgo.coa.gov.tw/</a><br>4.田邊好幫手<br><a target="_blank" rel="noopener" href="https://m.coa.gov.tw/">https://m.coa.gov.tw/</a><br>5.農產品生產追溯<br><a target="_blank" rel="noopener" href="https://qrc.afa.gov.tw/">https://qrc.afa.gov.tw/</a></p>
-<h2 id="結論"><a href="#結論" class="headerlink" title="結論"></a>結論</h2><p>以目前來說，就是製作一個涵蓋前、後端加上自己經驗的作品，然後一個月後再去面試。不知道結果會如何，不過是目前比較踏實的路了。現在25歲，還來得及，怕的是遲遲做不下結論。</p>
-<img src="/2021/08/23/change/img.png" class="" title="鋼之鍊金術師的一句話">
-<p>最後，引用鋼之鍊金術師的一段話：<strong>「人沒有犧牲就什麼都得不到，為了得到什麼東西，就需要付出同等的代價。」</strong><br>我已經決定了，就走下去。</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://yuhsiang237.github.io/2021/08/23/change/" data-id="cl0g433oz0030twgh7m9mdu5d" data-title="決定未來走的方向" class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
 
 
   <nav id="page-nav">
     
-    <a class="extend prev" rel="prev" href="/page/13/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/12/">12</a><a class="page-number" href="/page/13/">13</a><span class="page-number current">14</span>
+    <a class="extend prev" rel="prev" href="/page/13/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/12/">12</a><a class="page-number" href="/page/13/">13</a><span class="page-number current">14</span><a class="page-number" href="/page/15/">15</a><a class="extend next" rel="next" href="/page/15/">Next &raquo;</a>
   </nav>
 
 </section>
@@ -701,7 +706,7 @@ Only one valid answer exists.
   <div class="widget-wrap">
     <h3 class="widget-title">Categories</h3>
     <div class="widget">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Code/">Code</a><span class="category-list-count">69</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Code/C/">C#</a><span class="category-list-count">63</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Code/Javascript/">Javascript</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Code/Refactoring/">Refactoring</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/">Computer Science</a><span class="category-list-count">5</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/Algorithm/">Algorithm</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/Data-structure/">Data structure</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/Electronic-Circuit/">Electronic Circuit</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Daily-Log/">Daily Log</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/">Database</a><span class="category-list-count">54</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Database/PostgreSQL/">PostgreSQL</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/SQL-Server/">SQL Server</a><span class="category-list-count">44</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/">Framework</a><span class="category-list-count">27</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/AspNetCore-API/">AspNetCore API</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/AspNetCore-MVC/">AspNetCore MVC</a><span class="category-list-count">21</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/">Topic</a><span class="category-list-count">73</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2021-C-AspNetCore-Challenge/">2021 C# AspNetCore Challenge</a><span class="category-list-count">30</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2021-SQL-Server-Challenge/">2021 SQL Server Challenge</a><span class="category-list-count">30</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2022-C-SyncAndAsync/">2022 C# SyncAndAsync</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/Big-Data/">Big Data</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/LeetCode/">LeetCode</a><span class="category-list-count">4</span></li></ul></li></ul>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Code/">Code</a><span class="category-list-count">70</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Code/C/">C#</a><span class="category-list-count">64</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Code/Javascript/">Javascript</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Code/Refactoring/">Refactoring</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/">Computer Science</a><span class="category-list-count">5</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/Algorithm/">Algorithm</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/Data-structure/">Data structure</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/Electronic-Circuit/">Electronic Circuit</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Daily-Log/">Daily Log</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/">Database</a><span class="category-list-count">54</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Database/PostgreSQL/">PostgreSQL</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/SQL-Server/">SQL Server</a><span class="category-list-count">44</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/">Framework</a><span class="category-list-count">27</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/AspNetCore-API/">AspNetCore API</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/AspNetCore-MVC/">AspNetCore MVC</a><span class="category-list-count">21</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/">Topic</a><span class="category-list-count">73</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2021-C-AspNetCore-Challenge/">2021 C# AspNetCore Challenge</a><span class="category-list-count">30</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2021-SQL-Server-Challenge/">2021 SQL Server Challenge</a><span class="category-list-count">30</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2022-C-SyncAndAsync/">2022 C# SyncAndAsync</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/Big-Data/">Big Data</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/LeetCode/">LeetCode</a><span class="category-list-count">4</span></li></ul></li></ul>
     </div>
   </div>
 
@@ -711,7 +716,7 @@ Only one valid answer exists.
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/09/">September 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/07/">July 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/06/">June 2022</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/05/">May 2022</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/04/">April 2022</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/03/">March 2022</a><span class="archive-list-count">17</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/02/">February 2022</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/01/">January 2022</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">December 2021</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">October 2021</a><span class="archive-list-count">24</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">September 2021</a><span class="archive-list-count">46</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">August 2021</a><span class="archive-list-count">12</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/12/">December 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/09/">September 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/07/">July 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/06/">June 2022</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/05/">May 2022</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/04/">April 2022</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/03/">March 2022</a><span class="archive-list-count">17</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/02/">February 2022</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/01/">January 2022</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">December 2021</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">October 2021</a><span class="archive-list-count">24</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">September 2021</a><span class="archive-list-count">46</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">August 2021</a><span class="archive-list-count">12</span></li></ul>
     </div>
   </div>
 
