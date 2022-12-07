@@ -6,7 +6,7 @@
   <link href="https://yuhsiang237.github.io/atom.xml" rel="self"/>
   
   <link href="https://yuhsiang237.github.io/"/>
-  <updated>2022-12-07T06:49:39.699Z</updated>
+  <updated>2022-12-07T06:58:23.184Z</updated>
   <id>https://yuhsiang237.github.io/</id>
   
   <author>
@@ -15,6 +15,31 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>C#中使用雙問號??取值用法</title>
+    <link href="https://yuhsiang237.github.io/2022/12/07/C-%E4%B8%AD%E4%BD%BF%E7%94%A8%E9%9B%99%E5%95%8F%E8%99%9F-%E5%8F%96%E5%80%BC%E7%94%A8%E6%B3%95/"/>
+    <id>https://yuhsiang237.github.io/2022/12/07/C-%E4%B8%AD%E4%BD%BF%E7%94%A8%E9%9B%99%E5%95%8F%E8%99%9F-%E5%8F%96%E5%80%BC%E7%94%A8%E6%B3%95/</id>
+    <published>2022-12-07T06:55:29.000Z</published>
+    <updated>2022-12-07T06:58:23.184Z</updated>
+    
+    <content type="html"><![CDATA[<p>在C#中可以運用??來判斷前者是否為null，若為null則將後面值遞補上去。<br>如下，因Amount為空，所以會套用後面的default。<br>而default就是decimal的預設值0。<br>因此，在最後會得到amount結果為0。</p><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">namespace</span> <span class="title">Application</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">class</span> <span class="title">OrderDetail</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> amount</span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">        <span class="keyword">public</span> <span class="built_in">decimal</span>? Amount;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">internal</span> <span class="keyword">class</span> <span class="title">Program</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">Main</span>(<span class="params"><span class="built_in">string</span>[] args</span>)</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">var</span> orderDetail = <span class="keyword">new</span> OrderDetail();</span><br><span class="line">            <span class="keyword">var</span> amount = orderDetail.Amount ?? <span class="literal">default</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;p&gt;在C#中可以運用??來判斷前者是否為null，若為null則將後面值遞補上去。&lt;br&gt;如下，因Amount為空，所以會套用後面的default。&lt;br&gt;而default就是decimal的預設值0。&lt;br&gt;因此，在最後會得到amount結果為0。&lt;/p&gt;
+&lt;figure c</summary>
+      
+    
+    
+    
+    <category term="Code" scheme="https://yuhsiang237.github.io/categories/Code/"/>
+    
+    <category term="C#" scheme="https://yuhsiang237.github.io/categories/Code/C/"/>
+    
+    
+  </entry>
   
   <entry>
     <title>在C#中何時使用問號?去拿資料</title>
@@ -489,31 +514,6 @@
       
     <summary type="html">&lt;h3 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h3&gt;&lt;p&gt;在此紀錄C#中常見的組字串方式。&lt;/p&gt;
 &lt;h3 id=&quot;實作&quot;&gt;&lt;a href=&quot;#實作&quot; class=&quot;headerlink&quot; titl</summary>
-      
-    
-    
-    
-    <category term="Code" scheme="https://yuhsiang237.github.io/categories/Code/"/>
-    
-    <category term="C#" scheme="https://yuhsiang237.github.io/categories/Code/C/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>C# LINQ GroupBy用法</title>
-    <link href="https://yuhsiang237.github.io/2022/04/22/C-LINQ-GroupBy%E7%94%A8%E6%B3%95/"/>
-    <id>https://yuhsiang237.github.io/2022/04/22/C-LINQ-GroupBy%E7%94%A8%E6%B3%95/</id>
-    <published>2022-04-22T08:32:44.000Z</published>
-    <updated>2022-04-22T08:39:18.190Z</updated>
-    
-    <content type="html"><![CDATA[<h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>最近很常使用GroupBy去處理資料，因此稍作整理。<br>GroupBy主要用來分組，以”群”、”組”有關的都可以使用他。</p><h3 id="實作"><a href="#實作" class="headerlink" title="實作"></a>實作</h3><p>目標:使用GroupBy將每個班級的人數列出。</p><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> System;</span><br><span class="line"><span class="keyword">using</span> System.Collections.Generic;</span><br><span class="line"><span class="keyword">using</span> System.Linq;</span><br><span class="line"></span><br><span class="line"><span class="keyword">namespace</span> <span class="title">linq_groupby</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">internal</span> <span class="keyword">class</span> <span class="title">Program</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">class</span> <span class="title">Student</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">            <span class="comment"><span class="doctag">///</span> 編號</span></span><br><span class="line">            <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">            <span class="keyword">public</span> <span class="built_in">int</span> Id &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line"></span><br><span class="line">            <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">            <span class="comment"><span class="doctag">///</span> 姓名</span></span><br><span class="line">            <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">            <span class="keyword">public</span> <span class="built_in">string</span> Name &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line"></span><br><span class="line">            <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">            <span class="comment"><span class="doctag">///</span> 教室</span></span><br><span class="line">            <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">            <span class="keyword">public</span> <span class="built_in">char</span> Classroom &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">Main</span>(<span class="params"><span class="built_in">string</span>[] args</span>)</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">var</span> students = <span class="keyword">new</span> List&lt;Student&gt;</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">new</span> Student &#123;Id = <span class="number">1</span>, Name = <span class="string">&quot;大雄&quot;</span>,Classroom = <span class="string">&#x27;A&#x27;</span>&#125;,</span><br><span class="line">                <span class="keyword">new</span> Student &#123;Id = <span class="number">2</span>, Name = <span class="string">&quot;多拉A夢&quot;</span>,Classroom = <span class="string">&#x27;B&#x27;</span>&#125;,</span><br><span class="line">                <span class="keyword">new</span> Student &#123;Id = <span class="number">3</span>, Name = <span class="string">&quot;胖虎&quot;</span>,Classroom = <span class="string">&#x27;A&#x27;</span>&#125;,</span><br><span class="line">            &#125;;</span><br><span class="line">            <span class="keyword">var</span> classRoomGroup = students</span><br><span class="line">                .GroupBy(x =&gt; x.Classroom)</span><br><span class="line">                .Select(x =&gt; <span class="keyword">new</span></span><br><span class="line">                &#123;</span><br><span class="line">                    ClassRoom = x.Key,</span><br><span class="line">                    StudentCount = x.Count(),</span><br><span class="line">                &#125;).ToList();</span><br><span class="line"></span><br><span class="line">            <span class="keyword">foreach</span> (<span class="keyword">var</span> item <span class="keyword">in</span> classRoomGroup)</span><br><span class="line">            &#123;</span><br><span class="line">                Console.WriteLine(<span class="string">$&quot;Classroom:<span class="subst">&#123;item.ClassRoom&#125;</span> - StudentCount:<span class="subst">&#123;item.StudentCount&#125;</span>&quot;</span>);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure><p>輸出結果:  </p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Classroom:A - StudentCount:2</span><br><span class="line">Classroom:B - StudentCount:1</span><br></pre></td></tr></table></figure><p>A班級2人，B班級1人。  </p><h3 id="總結"><a href="#總結" class="headerlink" title="總結"></a>總結</h3><p>使用LINQ GroupBy能夠節省建立資料結構如字典、HashSet等，直接去做分組統計。</p>]]></content>
-    
-    
-      
-      
-    <summary type="html">&lt;h3 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h3&gt;&lt;p&gt;最近很常使用GroupBy去處理資料，因此稍作整理。&lt;br&gt;GroupBy主要用來分組，以”群”、”組”有關的都可以使用他。&lt;/p&gt;
-&lt;h3</summary>
       
     
     
