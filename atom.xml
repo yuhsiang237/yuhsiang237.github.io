@@ -6,7 +6,7 @@
   <link href="https://yuhsiang237.github.io/atom.xml" rel="self"/>
   
   <link href="https://yuhsiang237.github.io/"/>
-  <updated>2022-12-07T06:58:23.184Z</updated>
+  <updated>2023-01-30T07:58:58.056Z</updated>
   <id>https://yuhsiang237.github.io/</id>
   
   <author>
@@ -15,6 +15,32 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>簡易後端處理商業邏輯的方式-系統架構篇</title>
+    <link href="https://yuhsiang237.github.io/2023/01/30/%E7%B0%A1%E6%98%93%E5%BE%8C%E7%AB%AF%E8%99%95%E7%90%86%E5%95%86%E6%A5%AD%E9%82%8F%E8%BC%AF%E7%9A%84%E6%96%B9%E5%BC%8F-%E7%B3%BB%E7%B5%B1%E6%9E%B6%E6%A7%8B%E7%AF%87/"/>
+    <id>https://yuhsiang237.github.io/2023/01/30/%E7%B0%A1%E6%98%93%E5%BE%8C%E7%AB%AF%E8%99%95%E7%90%86%E5%95%86%E6%A5%AD%E9%82%8F%E8%BC%AF%E7%9A%84%E6%96%B9%E5%BC%8F-%E7%B3%BB%E7%B5%B1%E6%9E%B6%E6%A7%8B%E7%AF%87/</id>
+    <published>2023-01-30T07:19:31.000Z</published>
+    <updated>2023-01-30T07:58:58.056Z</updated>
+    
+    <content type="html"><![CDATA[<p>在常見的API設計中，透過接收參數到後端服務中，再透過一連串資料操作的邏輯再寫入資料庫或做額外的操作。  </p><p>這時情況會像是下面這樣:</p><img src="/2023/01/30/%E7%B0%A1%E6%98%93%E5%BE%8C%E7%AB%AF%E8%99%95%E7%90%86%E5%95%86%E6%A5%AD%E9%82%8F%E8%BC%AF%E7%9A%84%E6%96%B9%E5%BC%8F-%E7%B3%BB%E7%B5%B1%E6%9E%B6%E6%A7%8B%E7%AF%87/1.png" class=""><p>因為有過多的操作，且這些操作可能在其他的API也會遇到<br>此時，就可以把他們抽出來成:<strong>處理程序(Handler)</strong></p><p>透過Handler，把相同的服務可以用的Method或Function整理在一起。</p><p><strong>舉個例子:</strong><br>有支API叫做建立訂單(CreateOrder)<br>他可能的商業邏輯操作如:建立訂單、修正庫存…等等。<br>那我們就可以把它抽出來叫做OrderHandler，把複雜的商業邏輯封裝在裡面。  </p><p>這時如果要使用到建立訂單時就能透過這Handler去幫我們處理。</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">OrderHandler.CreateOrder()</span><br></pre></td></tr></table></figure><p>比如API叫做:</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/Order/CreateOrder</span><br></pre></td></tr></table></figure><p>那他的Controller裡面就可以這樣寫</p><p>OrderController裡的Action(CreateOrder)就能呼叫OrderHandler.CreateOrder()去協助建立訂單的操作。</p><p>這樣做的好處是能集中管理服務的功能，比較不會遇到全都散在Controller的情況。此外，其他Controller要使用到相同的功能，只要呼叫該Handler，而不用整段複製過去。</p>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;p&gt;在常見的API設計中，透過接收參數到後端服務中，再透過一連串資料操作的邏輯再寫入資料庫或做額外的操作。  &lt;/p&gt;
+&lt;p&gt;這時情況會像是下面這樣:&lt;/p&gt;
+&lt;img src=&quot;/2023/01/30/%E7%B0%A1%E6%98%93%E5%BE%8C%E7%AB%AF%</summary>
+      
+    
+    
+    
+    <category term="Topic" scheme="https://yuhsiang237.github.io/categories/Topic/"/>
+    
+    <category term="SystemStructure" scheme="https://yuhsiang237.github.io/categories/Topic/SystemStructure/"/>
+    
+    
+  </entry>
   
   <entry>
     <title>C#中使用雙問號??取值用法</title>
@@ -496,31 +522,6 @@
     <category term="Database" scheme="https://yuhsiang237.github.io/categories/Database/"/>
     
     <category term="PostgreSQL" scheme="https://yuhsiang237.github.io/categories/Database/PostgreSQL/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>C# 文字組合的4種方式</title>
-    <link href="https://yuhsiang237.github.io/2022/04/22/C-%E4%B8%AD%E6%96%87%E5%AD%97%E7%B5%84%E5%90%88%E6%96%B9%E5%BC%8F/"/>
-    <id>https://yuhsiang237.github.io/2022/04/22/C-%E4%B8%AD%E6%96%87%E5%AD%97%E7%B5%84%E5%90%88%E6%96%B9%E5%BC%8F/</id>
-    <published>2022-04-22T08:40:22.000Z</published>
-    <updated>2022-04-22T08:48:22.646Z</updated>
-    
-    <content type="html"><![CDATA[<h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>在此紀錄C#中常見的組字串方式。</p><h3 id="實作"><a href="#實作" class="headerlink" title="實作"></a>實作</h3><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> System;</span><br><span class="line"></span><br><span class="line"><span class="keyword">namespace</span> <span class="title">StringSol</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">internal</span> <span class="keyword">class</span> <span class="title">Program</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">Main</span>(<span class="params"><span class="built_in">string</span>[] args</span>)</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">var</span> name = <span class="string">&quot;Yu Hsiang&quot;</span>;</span><br><span class="line">            <span class="built_in">string</span> str1 = <span class="string">&quot;你好&quot;</span> + name;</span><br><span class="line">            <span class="built_in">string</span> str2 = String.Concat(<span class="string">&quot;你好&quot;</span>, name);</span><br><span class="line">            <span class="built_in">string</span> str3 = String.Format(<span class="string">&quot;你好&#123;0&#125;&quot;</span>, name);</span><br><span class="line">            <span class="comment">// $是c# 6.0 的語言特性，功能類似string.format()</span></span><br><span class="line">            <span class="built_in">string</span> str4 = <span class="string">$&quot;你好<span class="subst">&#123;name&#125;</span>&quot;</span>;</span><br><span class="line"></span><br><span class="line">            Console.WriteLine(str1);</span><br><span class="line">            Console.WriteLine(str2);</span><br><span class="line">            Console.WriteLine(str3);</span><br><span class="line">            Console.WriteLine(str4);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>輸出結果:</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">你好Yu Hsiang</span><br><span class="line">你好Yu Hsiang</span><br><span class="line">你好Yu Hsiang</span><br><span class="line">你好Yu Hsiang</span><br></pre></td></tr></table></figure>]]></content>
-    
-    
-      
-      
-    <summary type="html">&lt;h3 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h3&gt;&lt;p&gt;在此紀錄C#中常見的組字串方式。&lt;/p&gt;
-&lt;h3 id=&quot;實作&quot;&gt;&lt;a href=&quot;#實作&quot; class=&quot;headerlink&quot; titl</summary>
-      
-    
-    
-    
-    <category term="Code" scheme="https://yuhsiang237.github.io/categories/Code/"/>
-    
-    <category term="C#" scheme="https://yuhsiang237.github.io/categories/Code/C/"/>
     
     
   </entry>
