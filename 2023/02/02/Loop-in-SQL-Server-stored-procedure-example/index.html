@@ -6,15 +6,15 @@
   
   <title>Generate the test data in SQL Server by stored procedure example | UM&#39;s Coding Note</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="In the case, I want to create a simple script about creating the test data of 100000 records in SQL Server store procedure. Today, I have a table, Orders, and I want to generate the test data to it. 1">
+  <meta name="description" content="In the case, I want to create a simple script about creating the test data of 100000 records in SQL Server stored procedure. Today, I have a table, Orders, and I want to generate the test data to it.">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Generate the test data in SQL Server by stored procedure example">
 <meta property="og:url" content="https://yuhsiang237.github.io/2023/02/02/Loop-in-SQL-Server-stored-procedure-example/index.html">
 <meta property="og:site_name" content="UM&#39;s Coding Note">
-<meta property="og:description" content="In the case, I want to create a simple script about creating the test data of 100000 records in SQL Server store procedure. Today, I have a table, Orders, and I want to generate the test data to it. 1">
+<meta property="og:description" content="In the case, I want to create a simple script about creating the test data of 100000 records in SQL Server stored procedure. Today, I have a table, Orders, and I want to generate the test data to it.">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2023-02-02T06:34:44.000Z">
-<meta property="article:modified_time" content="2023-02-02T07:32:30.405Z">
+<meta property="article:modified_time" content="2023-02-02T09:07:16.499Z">
 <meta property="article:author" content="Yu Hsiang">
 <meta name="twitter:card" content="summary">
   
@@ -103,7 +103,7 @@
     
     <div class="e-content article-entry" itemprop="articleBody">
       
-        <p>In the case, I want to create a simple script about creating the test data of 100000 records in SQL Server store procedure.</p>
+        <p>In the case, I want to create a simple script about creating the test data of 100000 records in SQL Server stored procedure.</p>
 <p>Today, I have a table, Orders, and I want to generate the test data to it.</p>
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">USE [OrderDB]</span><br><span class="line">GO</span><br><span class="line"><span class="comment">/****** Object:  Table [dbo].[Orders]    Script Date: 2/2/2023 3:14:07 PM ******/</span></span><br><span class="line"><span class="keyword">SET</span> ANSI_NULLS <span class="keyword">ON</span></span><br><span class="line">GO</span><br><span class="line"><span class="keyword">SET</span> QUOTED_IDENTIFIER <span class="keyword">ON</span></span><br><span class="line">GO</span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> [dbo].[Orders](</span><br><span class="line">	[Id] [<span class="type">int</span>] <span class="keyword">IDENTITY</span>(<span class="number">1</span>,<span class="number">1</span>) <span class="keyword">NOT</span> <span class="keyword">NULL</span>,</span><br><span class="line">	[CreatedOn] [datetime] <span class="keyword">NULL</span>,</span><br><span class="line">	[UpdatedOn] [datetime] <span class="keyword">NULL</span>,</span><br><span class="line">	[IsValid] [bit] <span class="keyword">NULL</span>,</span><br><span class="line">	[OrderDate] [datetime] <span class="keyword">NULL</span>,</span><br><span class="line">	[OrderNumber] [<span class="type">varchar</span>](<span class="number">50</span>) <span class="keyword">NULL</span>,</span><br><span class="line"> <span class="keyword">CONSTRAINT</span> [PK_Orders] <span class="keyword">PRIMARY</span> KEY CLUSTERED </span><br><span class="line">(</span><br><span class="line">	[Id] <span class="keyword">ASC</span></span><br><span class="line">)<span class="keyword">WITH</span> (PAD_INDEX <span class="operator">=</span> OFF, STATISTICS_NORECOMPUTE <span class="operator">=</span> OFF, IGNORE_DUP_KEY <span class="operator">=</span> OFF, ALLOW_ROW_LOCKS <span class="operator">=</span> <span class="keyword">ON</span>, ALLOW_PAGE_LOCKS <span class="operator">=</span> <span class="keyword">ON</span>, OPTIMIZE_FOR_SEQUENTIAL_KEY <span class="operator">=</span> OFF) <span class="keyword">ON</span> [<span class="keyword">PRIMARY</span>]</span><br><span class="line">) <span class="keyword">ON</span> [<span class="keyword">PRIMARY</span>]</span><br><span class="line">GO</span><br></pre></td></tr></table></figure>
 <p>Then I write a simple stored procedure.<br>You can control the data count you want to generate.</p>
