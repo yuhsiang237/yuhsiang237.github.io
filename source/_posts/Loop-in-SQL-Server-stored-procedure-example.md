@@ -4,7 +4,7 @@ date: 2023-02-02 14:34:44
 categories:
   - [Database,SQL Server]
 ---
-In the case, I want to create a simple script about creating the test data of 100000 records in SQL Server store procedure.
+In the case, I want to create a simple script about creating the test data of 100000 records in SQL Server stored procedure.
 
 Today, I have a table, Orders, and I want to generate the test data to it.
 ``` sql
