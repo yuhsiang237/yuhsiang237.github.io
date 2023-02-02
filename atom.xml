@@ -6,7 +6,7 @@
   <link href="https://yuhsiang237.github.io/atom.xml" rel="self"/>
   
   <link href="https://yuhsiang237.github.io/"/>
-  <updated>2023-02-02T08:40:19.775Z</updated>
+  <updated>2023-02-02T08:43:35.022Z</updated>
   <id>https://yuhsiang237.github.io/</id>
   
   <author>
@@ -17,11 +17,11 @@
   <generator uri="https://hexo.io/">Hexo</generator>
   
   <entry>
-    <title>Improve sql speed by adding index in SQL Server</title>
+    <title>Improve SQL speed by adding index in SQL Server</title>
     <link href="https://yuhsiang237.github.io/2023/02/02/Improve-sql-speed-by-adding-index-in-Sql-Server/"/>
     <id>https://yuhsiang237.github.io/2023/02/02/Improve-sql-speed-by-adding-index-in-Sql-Server/</id>
     <published>2023-02-02T08:00:42.000Z</published>
-    <updated>2023-02-02T08:40:19.775Z</updated>
+    <updated>2023-02-02T08:43:35.022Z</updated>
     
     <content type="html"><![CDATA[<p>In the case, I have a simple sql about select, which order by date, <code>OrderDate</code>. At the same time, there are <strong>5,000,000 records</strong> in the table, Orders. Due to the large amount of data, the SQL speed becomes very slow, about 6 seconds.</p><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> TOP <span class="number">1000</span> [Id]</span><br><span class="line">      ,[CreatedOn]</span><br><span class="line">      ,[UpdatedOn]</span><br><span class="line">      ,[IsValid]</span><br><span class="line">      ,[OrderDate]</span><br><span class="line">      ,[OrderNumber]</span><br><span class="line"><span class="keyword">FROM</span> [OrderDB].[dbo].[Orders]</span><br><span class="line"><span class="keyword">ORDER</span> <span class="keyword">BY</span> [OrderDate] <span class="keyword">DESC</span></span><br></pre></td></tr></table></figure><p>After running the sql script, the speed of the result was very slow, about 6 seconds.  </p><img src="/2023/02/02/Improve-sql-speed-by-adding-index-in-Sql-Server/ScriptSpeed.png" class=""><p>So to imporve this problem, I add the index,  <code>NONCLUSTERED INDEX</code>.</p><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">USE OrderDB;  </span><br><span class="line">GO  </span><br><span class="line"><span class="keyword">CREATE</span> NONCLUSTERED INDEX [IX_Orders_OrderDate]  </span><br><span class="line">    <span class="keyword">ON</span> Orders ([OrderDate]);   </span><br><span class="line">GO </span><br></pre></td></tr></table></figure><p>After running the script, I found the speed has been improved by index, about 0 seconds, and there’re still <strong>5,000,000 records</strong> in the table.</p><img src="/2023/02/02/Improve-sql-speed-by-adding-index-in-Sql-Server/ScriptSpeedImporve.png" class="">]]></content>
     
