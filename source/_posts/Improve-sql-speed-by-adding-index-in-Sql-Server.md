@@ -1,5 +1,5 @@
 ---
-title: Improve sql speed by adding index in SQL Server
+title: Improve SQL speed by adding index in SQL Server
 date: 2023-02-02 16:00:42
 categories:
   - [Database,SQL Server]
