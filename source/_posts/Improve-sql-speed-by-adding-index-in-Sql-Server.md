@@ -4,7 +4,7 @@ date: 2023-02-02 16:00:42
 categories:
   - [Database,SQL Server]
 ---
-In the case, I have a simple sql about select, which order by date, <code>OrderDate</code>. At the same time, there are **5,000,000 records** in the table, Orders. Due to the large amount of data, the SQL speed becomes very slow, about 6 seconds.
+In the case, I have a simple sql about select, which sorts by date, <code>OrderDate</code>. At the same time, there are **5,000,000 records** in the table, Orders. Due to the large amount of data, the SQL speed becomes very slow, about 6 seconds.
 
 ```sql
 SELECT TOP 1000 [Id]
