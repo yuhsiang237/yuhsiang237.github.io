@@ -6,17 +6,17 @@
   
   <title>Improve SQL speed by adding index in SQL Server | UM&#39;s Coding Note</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="In the case, I have a simple sql about select, which order by date, OrderDate. At the same time, there are 5,000,000 records in the table, Orders. Due to the large amount of data, the SQL speed become">
+  <meta name="description" content="In the case, I have a simple sql about select, which sorts by date, OrderDate. At the same time, there are 5,000,000 records in the table, Orders. Due to the large amount of data, the SQL speed become">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Improve SQL speed by adding index in SQL Server">
 <meta property="og:url" content="https://yuhsiang237.github.io/2023/02/02/Improve-sql-speed-by-adding-index-in-Sql-Server/index.html">
 <meta property="og:site_name" content="UM&#39;s Coding Note">
-<meta property="og:description" content="In the case, I have a simple sql about select, which order by date, OrderDate. At the same time, there are 5,000,000 records in the table, Orders. Due to the large amount of data, the SQL speed become">
+<meta property="og:description" content="In the case, I have a simple sql about select, which sorts by date, OrderDate. At the same time, there are 5,000,000 records in the table, Orders. Due to the large amount of data, the SQL speed become">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://yuhsiang237.github.io/2023/02/02/Improve-sql-speed-by-adding-index-in-Sql-Server/ScriptSpeed.png">
 <meta property="og:image" content="https://yuhsiang237.github.io/2023/02/02/Improve-sql-speed-by-adding-index-in-Sql-Server/ScriptSpeedImporve.png">
 <meta property="article:published_time" content="2023-02-02T08:00:42.000Z">
-<meta property="article:modified_time" content="2023-02-02T08:43:35.022Z">
+<meta property="article:modified_time" content="2023-02-02T08:56:50.178Z">
 <meta property="article:author" content="Yu Hsiang">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://yuhsiang237.github.io/2023/02/02/Improve-sql-speed-by-adding-index-in-Sql-Server/ScriptSpeed.png">
@@ -106,7 +106,7 @@
     
     <div class="e-content article-entry" itemprop="articleBody">
       
-        <p>In the case, I have a simple sql about select, which order by date, <code>OrderDate</code>. At the same time, there are <strong>5,000,000 records</strong> in the table, Orders. Due to the large amount of data, the SQL speed becomes very slow, about 6 seconds.</p>
+        <p>In the case, I have a simple sql about select, which sorts by date, <code>OrderDate</code>. At the same time, there are <strong>5,000,000 records</strong> in the table, Orders. Due to the large amount of data, the SQL speed becomes very slow, about 6 seconds.</p>
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> TOP <span class="number">1000</span> [Id]</span><br><span class="line">      ,[CreatedOn]</span><br><span class="line">      ,[UpdatedOn]</span><br><span class="line">      ,[IsValid]</span><br><span class="line">      ,[OrderDate]</span><br><span class="line">      ,[OrderNumber]</span><br><span class="line"><span class="keyword">FROM</span> [OrderDB].[dbo].[Orders]</span><br><span class="line"><span class="keyword">ORDER</span> <span class="keyword">BY</span> [OrderDate] <span class="keyword">DESC</span></span><br></pre></td></tr></table></figure>
 <p>After running the sql script, the speed of the result was very slow, about 6 seconds.  </p>
 <img src="/2023/02/02/Improve-sql-speed-by-adding-index-in-Sql-Server/ScriptSpeed.png" class="">
