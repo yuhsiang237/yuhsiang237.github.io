@@ -4,7 +4,7 @@ date: 2023-02-03 15:21:45
 categories:
   - [Database,SQL Server]
 ---
-If you use queries in SQL, you could involve complex statements that could cause some maintenance or read problems. You can still do them, but you can choose a new way, <code>CTE</code>.
+If you use queries in SQL, you could involve complex statements that could cause some maintenance or reading problems. You can still do them, but you can choose a new way, <code>CTE</code>.
 
 
 **What is CTE?**  
