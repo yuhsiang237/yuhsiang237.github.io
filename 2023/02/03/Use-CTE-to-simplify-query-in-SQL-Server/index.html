@@ -4,17 +4,17 @@
   <meta charset="utf-8">
   
   
-  <title>C# 遞迴 | UM&#39;s Coding Note</title>
+  <title>Simplify queries in SQL Server using CTE | UM&#39;s Coding Note</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="遞迴定義 遞迴（Recursion），是指在函式中使用函式自身的方法。 遞迴函式必須有終止條件，才能被計算。  實際演練累加，計算1+2+3…+n的遞迴。 C#程式碼 123456789101112131415161718using System;					public class Program&amp;#123;	public static int accumulate(int n)&amp;#123;		i">
+  <meta name="description" content="If you use queries in SQL, you could involve complex statements that could cause some maintenance or read problems. You can still do them, but you can choose a new way, CTE. What is CTE?The common tab">
 <meta property="og:type" content="article">
-<meta property="og:title" content="C# 遞迴">
-<meta property="og:url" content="https://yuhsiang237.github.io/2021/08/29/%E9%81%9E%E8%BF%B4/index.html">
+<meta property="og:title" content="Simplify queries in SQL Server using CTE">
+<meta property="og:url" content="https://yuhsiang237.github.io/2023/02/03/Use-CTE-to-simplify-query-in-SQL-Server/index.html">
 <meta property="og:site_name" content="UM&#39;s Coding Note">
-<meta property="og:description" content="遞迴定義 遞迴（Recursion），是指在函式中使用函式自身的方法。 遞迴函式必須有終止條件，才能被計算。  實際演練累加，計算1+2+3…+n的遞迴。 C#程式碼 123456789101112131415161718using System;					public class Program&amp;#123;	public static int accumulate(int n)&amp;#123;		i">
+<meta property="og:description" content="If you use queries in SQL, you could involve complex statements that could cause some maintenance or read problems. You can still do them, but you can choose a new way, CTE. What is CTE?The common tab">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2021-08-28T16:38:37.000Z">
-<meta property="article:modified_time" content="2022-03-07T02:53:17.550Z">
+<meta property="article:published_time" content="2023-02-03T07:21:45.000Z">
+<meta property="article:modified_time" content="2023-02-03T08:32:36.086Z">
 <meta property="article:author" content="Yu Hsiang">
 <meta name="twitter:card" content="summary">
   
@@ -77,14 +77,14 @@
 </header>
 
       <div class="outer">
-        <section id="main"><article id="post-遞迴" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+        <section id="main"><article id="post-Use-CTE-to-simplify-query-in-SQL-Server" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
-    <a href="/2021/08/29/%E9%81%9E%E8%BF%B4/" class="article-date">
-  <time class="dt-published" datetime="2021-08-28T16:38:37.000Z" itemprop="datePublished">2021-08-29</time>
+    <a href="/2023/02/03/Use-CTE-to-simplify-query-in-SQL-Server/" class="article-date">
+  <time class="dt-published" datetime="2023-02-03T07:21:45.000Z" itemprop="datePublished">2023-02-03</time>
 </a>
     
   <div class="article-category">
-    <a class="article-category-link" href="/categories/Code/">Code</a>►<a class="article-category-link" href="/categories/Code/C/">C#</a>
+    <a class="article-category-link" href="/categories/Database/">Database</a>►<a class="article-category-link" href="/categories/Database/SQL-Server/">SQL Server</a>
   </div>
 
   </div>
@@ -95,7 +95,7 @@
         
   
     <h1 class="p-name article-title" itemprop="headline name">
-      C# 遞迴
+      Simplify queries in SQL Server using CTE
     </h1>
   
 
@@ -103,21 +103,28 @@
     
     <div class="e-content article-entry" itemprop="articleBody">
       
-        <h3 id="遞迴定義"><a href="#遞迴定義" class="headerlink" title="遞迴定義"></a>遞迴定義</h3><ol>
-<li>遞迴（Recursion），是指在函式中使用函式自身的方法。</li>
-<li>遞迴函式必須有終止條件，才能被計算。</li>
-</ol>
-<h3 id="實際演練"><a href="#實際演練" class="headerlink" title="實際演練"></a>實際演練</h3><p>累加，計算1+2+3…+n的遞迴。</p>
-<p><strong>C#程式碼</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">using System;</span><br><span class="line">					</span><br><span class="line">public class Program</span><br><span class="line">&#123;</span><br><span class="line">	public static int accumulate(int n)&#123;</span><br><span class="line">		if(n==1)&#123;</span><br><span class="line">			return 1;</span><br><span class="line">		&#125;else if(n &gt;=2 )&#123;</span><br><span class="line">			return n + accumulate(n-1);</span><br><span class="line">		&#125;</span><br><span class="line">		return 0;</span><br><span class="line">	&#125;</span><br><span class="line">		</span><br><span class="line">	public static void Main()</span><br><span class="line">	&#123;</span><br><span class="line">		Console.WriteLine(&quot;1+2+3..+10=&quot; + accumulate(10)); // 1+2+3..+10=55</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+        <p>If you use queries in SQL, you could involve complex statements that could cause some maintenance or read problems. You can still do them, but you can choose a new way, <code>CTE</code>.</p>
+<p><strong>What is CTE?</strong><br>The common table expression (CTE) is a powerful construct in SQL that helps simplify a query.</p>
+<p>With CTE, you can split the query into different temporary tables and use them.</p>
+<h3 id="Example"><a href="#Example" class="headerlink" title="Example"></a>Example</h3><p>If I want to create a report about the total amount of the user’s order, I could use CTE to simplify it.</p>
+<p><strong>[dbo].[Orders]</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">OrderNumber	UserId	Amount</span><br><span class="line">2023020300000001	1	500</span><br><span class="line">2023020300000002	3	100</span><br><span class="line">2023020300000003	1	300</span><br><span class="line">2023020300000004	2	400</span><br><span class="line">2023020300000005	1	100</span><br></pre></td></tr></table></figure>
 
-<h3 id="結語"><a href="#結語" class="headerlink" title="結語"></a>結語</h3><p>觀察前後項，然後對改變的數字去推出一個數學的關係。以目前這題算直覺，但扯到二元樹遍歷時就要燒些惱了。<br>而這題為什麼最後要寫的return 0; 那是因為C#語法不允許函式沒有回傳值，所以隨意傳個0。</p>
-<p><strong>參考資料</strong><br><a target="_blank" rel="noopener" href="https://www.csie.ntu.edu.tw/~b98902112/cpp_and_algo/cpp02/recursion.html">https://www.csie.ntu.edu.tw/~b98902112/cpp_and_algo/cpp02/recursion.html</a></p>
+<p><strong>[dbo].[Users]</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Id	Name	Age</span><br><span class="line">1	CK	30</span><br><span class="line">2	RR	29</span><br><span class="line">3	NC	25</span><br></pre></td></tr></table></figure>
+
+<p>Then I use the CTE to create a temp table and join them.</p>
+<p>Result:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Id	Name	Age	OrderTotalAmount</span><br><span class="line">1	CK	30	900</span><br><span class="line">2	RR	29	400</span><br><span class="line">3	NC	25	100</span><br></pre></td></tr></table></figure>
+<p>SQL:</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">USE OrderDB</span><br><span class="line">GO</span><br><span class="line"><span class="keyword">WITH</span> Order_User_Total_CTE (UserId, OrderTotalAmount)</span><br><span class="line"><span class="keyword">AS</span></span><br><span class="line"><span class="comment">-- Define the User Order Total CTE query.</span></span><br><span class="line">(</span><br><span class="line">    <span class="keyword">SELECT</span> UserId, <span class="built_in">SUM</span>(Amount) <span class="keyword">AS</span> OrderTotalAmount</span><br><span class="line">    <span class="keyword">FROM</span> Orders</span><br><span class="line">    <span class="keyword">GROUP</span> <span class="keyword">BY</span> UserId</span><br><span class="line">)</span><br><span class="line"><span class="comment">-- Query</span></span><br><span class="line"><span class="keyword">SELECT</span> </span><br><span class="line">	U.<span class="operator">*</span>, </span><br><span class="line">	OUTC.OrderTotalAmount</span><br><span class="line"><span class="keyword">FROM</span> Users U</span><br><span class="line"><span class="keyword">LEFT</span> <span class="keyword">JOIN</span> Order_User_Total_CTE OUTC <span class="keyword">ON</span> U.Id <span class="operator">=</span> OUTC.UserId</span><br><span class="line">GO</span><br></pre></td></tr></table></figure>
+
+<p>Now, if I need to create complex reports, summaries or stored procedures , I will use CTE to help me.</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://yuhsiang237.github.io/2021/08/29/%E9%81%9E%E8%BF%B4/" data-id="cl0g433pq005qtwgh2oxm0d7u" data-title="C# 遞迴" class="article-share-link">Share</a>
+      <a data-url="https://yuhsiang237.github.io/2023/02/03/Use-CTE-to-simplify-query-in-SQL-Server/" data-id="cldo7o6zu0000pwgh8ykz84s5" data-title="Simplify queries in SQL Server using CTE" class="article-share-link">Share</a>
       
       
       
@@ -127,19 +134,10 @@
     
 <nav id="article-nav">
   
-    <a href="/2021/08/29/C-%E9%99%A3%E5%88%97%E5%B8%B8%E8%A6%8B%E6%93%8D%E4%BD%9C/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Newer</strong>
-      <div class="article-nav-title">
-        
-          C#陣列常見操作
-        
-      </div>
-    </a>
   
-  
-    <a href="/2021/08/28/sql-basic/" id="article-nav-older" class="article-nav-link-wrap">
+    <a href="/2023/02/02/Improve-sql-speed-by-adding-index-in-Sql-Server/" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">SQL基礎操作語法(select、insert、update、delete)</div>
+      <div class="article-nav-title">Improve SQL speed by adding index in SQL Server</div>
     </a>
   
 </nav>
