@@ -5,7 +5,7 @@ categories:
   - [Code,C#]
 ---
 In the case, I want to remove the duplicate objects of the list.
-I use the object key, <code>UserId</code> and <code>Number</code>, to distinguish them in the list.
+I use the object key, <code>UserId</code> and <code>Type</code>, to distinguish them in the list.
 After I distinct the objects, the count of the list becomes 2.
 The numbers of the list are 2023021403 and 2023021401.
 
