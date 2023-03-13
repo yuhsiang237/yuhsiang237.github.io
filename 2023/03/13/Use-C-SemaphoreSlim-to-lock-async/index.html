@@ -14,7 +14,7 @@
 <meta property="og:description" content="When writing an async function or method, I encountered a problem with accessing data one-by-one, such as starting 100000 async APIs, which could lead to bugs.  Below is an problem example. I expect t">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2023-03-13T09:18:49.000Z">
-<meta property="article:modified_time" content="2023-03-13T09:43:30.538Z">
+<meta property="article:modified_time" content="2023-03-13T09:48:13.724Z">
 <meta property="article:author" content="Yu Hsiang">
 <meta name="twitter:card" content="summary">
   
@@ -111,7 +111,7 @@
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Sum:99995</span><br></pre></td></tr></table></figure>
 
 
-<p>To fix this problem, I added the SemaphoreSlim to code, and the result is correct  “Sum:100000”.<br>It helps us lock and limit the asynchronous function’s data to one-by-one. </p>
+<p>To fix this problem, I added the SemaphoreSlim to code, and the result always is correct  “Sum:100000”.<br>It helps us lock and limit the asynchronous function’s data to one-by-one. </p>
 <p>What is Semaphoreslim:<br><a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/dotnet/api/system.threading.semaphoreslim?view=net-7.0">https://learn.microsoft.com/en-us/dotnet/api/system.threading.semaphoreslim?view=net-7.0</a></p>
 <p>Represents a lightweight alternative to Semaphore that limits the number of threads that can access a resource or pool of resources concurrently.</p>
 <p><strong>Example2:</strong></p>

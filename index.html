@@ -111,7 +111,7 @@
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Sum:99995</span><br></pre></td></tr></table></figure>
 
 
-<p>To fix this problem, I added the SemaphoreSlim to code, and the result is correct  “Sum:100000”.<br>It helps us lock and limit the asynchronous function’s data to one-by-one. </p>
+<p>To fix this problem, I added the SemaphoreSlim to code, and the result always is correct  “Sum:100000”.<br>It helps us lock and limit the asynchronous function’s data to one-by-one. </p>
 <p>What is Semaphoreslim:<br><a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/dotnet/api/system.threading.semaphoreslim?view=net-7.0">https://learn.microsoft.com/en-us/dotnet/api/system.threading.semaphoreslim?view=net-7.0</a></p>
 <p>Represents a lightweight alternative to Semaphore that limits the number of threads that can access a resource or pool of resources concurrently.</p>
 <p><strong>Example2:</strong></p>
