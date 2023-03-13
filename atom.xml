@@ -6,7 +6,7 @@
   <link href="https://yuhsiang237.github.io/atom.xml" rel="self"/>
   
   <link href="https://yuhsiang237.github.io/"/>
-  <updated>2023-02-14T08:45:37.107Z</updated>
+  <updated>2023-03-13T09:43:30.538Z</updated>
   <id>https://yuhsiang237.github.io/</id>
   
   <author>
@@ -15,6 +15,34 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Use C# SemaphoreSlim to lock async functions</title>
+    <link href="https://yuhsiang237.github.io/2023/03/13/Use-C-SemaphoreSlim-to-lock-async/"/>
+    <id>https://yuhsiang237.github.io/2023/03/13/Use-C-SemaphoreSlim-to-lock-async/</id>
+    <published>2023-03-13T09:18:49.000Z</published>
+    <updated>2023-03-13T09:43:30.538Z</updated>
+    
+    <content type="html"><![CDATA[<p>When writing an async function or method, I encountered a problem with accessing data one-by-one, such as starting 100000 async APIs, which could lead to bugs. </p><p>Below is an problem example. I expect the result to be “Sum:100000”, but the actual result is “Sum:99995” or other abnormal results.</p><p><strong>Example 1:</strong></p><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">namespace</span> <span class="title">SemaphoreSlimExample</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">Program</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="built_in">int</span> _sum;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span>  <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">Main</span>(<span class="params"><span class="built_in">string</span>[] args</span>)</span></span><br><span class="line">    &#123;</span><br><span class="line">        Task.WaitAll(Enumerable</span><br><span class="line">            .Range(<span class="number">0</span>, <span class="number">100000</span>)</span><br><span class="line">            .Select(x =&gt; Add(<span class="number">1</span>))</span><br><span class="line">            .ToArray());</span><br><span class="line">        Console.WriteLine(<span class="string">$&quot;Sum:<span class="subst">&#123;_sum&#125;</span>&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">async</span> Task <span class="title">Add</span>(<span class="params"><span class="built_in">int</span> num</span>)</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">await</span> Task.Run(() =&gt;</span><br><span class="line">        &#123;</span><br><span class="line">            _sum += num;</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure><p><strong>Result:</strong></p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Sum:99995</span><br></pre></td></tr></table></figure><p>To fix this problem, I added the SemaphoreSlim to code, and the result is correct  “Sum:100000”.<br>It helps us lock and limit the asynchronous function’s data to one-by-one. </p><p>What is Semaphoreslim:<br><a href="https://learn.microsoft.com/en-us/dotnet/api/system.threading.semaphoreslim?view=net-7.0">https://learn.microsoft.com/en-us/dotnet/api/system.threading.semaphoreslim?view=net-7.0</a></p><p>Represents a lightweight alternative to Semaphore that limits the number of threads that can access a resource or pool of resources concurrently.</p><p><strong>Example2:</strong></p><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">namespace</span> <span class="title">SemaphoreSlimExample</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">Program</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="built_in">int</span> _sum;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">readonly</span> SemaphoreSlim locker = <span class="keyword">new</span> SemaphoreSlim(<span class="number">1</span>, <span class="number">1</span>);</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">Main</span>(<span class="params"><span class="built_in">string</span>[] args</span>)</span></span><br><span class="line">    &#123;</span><br><span class="line">        Task.WaitAll(Enumerable</span><br><span class="line">            .Range(<span class="number">0</span>, <span class="number">100000</span>)</span><br><span class="line">            .Select(x =&gt; Add(<span class="number">1</span>))</span><br><span class="line">            .ToArray());</span><br><span class="line">        Console.WriteLine(<span class="string">$&quot;Sum:<span class="subst">&#123;_sum&#125;</span>&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">async</span> Task <span class="title">Add</span>(<span class="params"><span class="built_in">int</span> num</span>)</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">await</span> locker.WaitAsync();</span><br><span class="line"></span><br><span class="line">        <span class="keyword">await</span> Task.Run(() =&gt;</span><br><span class="line">        &#123;</span><br><span class="line">            _sum += num;</span><br><span class="line">        &#125;);</span><br><span class="line"></span><br><span class="line">        locker.Release();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure><p><strong>Result:</strong></p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Sum:100000</span><br></pre></td></tr></table></figure>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;p&gt;When writing an async function or method, I encountered a problem with accessing data one-by-one, such as starting 100000 async APIs, whi</summary>
+      
+    
+    
+    
+    <category term="Code" scheme="https://yuhsiang237.github.io/categories/Code/"/>
+    
+    <category term="C#" scheme="https://yuhsiang237.github.io/categories/Code/C/"/>
+    
+    <category term="Topic" scheme="https://yuhsiang237.github.io/categories/Topic/"/>
+    
+    <category term="2022 C# SyncAndAsync" scheme="https://yuhsiang237.github.io/categories/Topic/2022-C-SyncAndAsync/"/>
+    
+    
+  </entry>
   
   <entry>
     <title>C# Distinct objects</title>
@@ -494,31 +522,6 @@
     <category term="Database" scheme="https://yuhsiang237.github.io/categories/Database/"/>
     
     <category term="SQL Server" scheme="https://yuhsiang237.github.io/categories/Database/SQL-Server/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>PostgreSQL get the start and end dates of prev month query</title>
-    <link href="https://yuhsiang237.github.io/2022/05/05/PostgreSQL-get-the-start-and-end-dates-of-prev-month-query/"/>
-    <id>https://yuhsiang237.github.io/2022/05/05/PostgreSQL-get-the-start-and-end-dates-of-prev-month-query/</id>
-    <published>2022-05-05T02:19:01.000Z</published>
-    <updated>2022-05-09T08:39:00.588Z</updated>
-    
-    <content type="html"><![CDATA[<p>My table has below data, and I want to get the previous data of month,and today is 2022-05-04. </p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">2022-03-01</span><br><span class="line">2022-04-01</span><br><span class="line">2022-04-01</span><br><span class="line">2022-05-03</span><br></pre></td></tr></table></figure><p>This is the answer:</p><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">WITH</span> TEMP_TABLE <span class="keyword">AS</span></span><br><span class="line">(</span><br><span class="line">    <span class="keyword">SELECT</span> <span class="string">&#x27;2022-03-01&#x27;</span>::<span class="type">TIMESTAMP</span> <span class="keyword">WITHOUT</span> <span class="type">TIME</span> ZONE <span class="keyword">AS</span> MYDATE</span><br><span class="line">    <span class="keyword">UNION</span> <span class="keyword">ALL</span></span><br><span class="line">    <span class="keyword">SELECT</span> <span class="string">&#x27;2022-04-01&#x27;</span>::<span class="type">TIMESTAMP</span> <span class="keyword">WITHOUT</span> <span class="type">TIME</span> ZONE <span class="keyword">AS</span> MYDATE    </span><br><span class="line">    <span class="keyword">UNION</span> <span class="keyword">ALL</span></span><br><span class="line">    <span class="keyword">SELECT</span> <span class="string">&#x27;2022-04-02&#x27;</span>::<span class="type">TIMESTAMP</span> <span class="keyword">WITHOUT</span> <span class="type">TIME</span> ZONE <span class="keyword">AS</span> MYDATE</span><br><span class="line">    <span class="keyword">UNION</span> <span class="keyword">ALL</span></span><br><span class="line">    <span class="keyword">SELECT</span> <span class="string">&#x27;2022-05-03&#x27;</span>::<span class="type">TIMESTAMP</span> <span class="keyword">WITHOUT</span> <span class="type">TIME</span> ZONE <span class="keyword">AS</span> MYDATE</span><br><span class="line">)</span><br><span class="line"><span class="keyword">SELECT</span></span><br><span class="line">  <span class="operator">*</span></span><br><span class="line"><span class="keyword">FROM</span> </span><br><span class="line">  TEMP_TABLE TT</span><br><span class="line"><span class="keyword">WHERE</span></span><br><span class="line">  TT.MYDATE <span class="operator">&gt;=</span> DATE_TRUNC(<span class="string">&#x27;MONTH&#x27;</span>,NOW()) <span class="operator">-</span> INTERVEL <span class="string">&#x27;1 MONTH&#x27;</span></span><br><span class="line">  <span class="keyword">AND</span> TT.MYDATE <span class="operator">&lt;</span> DATE_TRUNC(<span class="string">&#x27;MONTH&#x27;</span>,NOW())</span><br></pre></td></tr></table></figure><p><strong>explain</strong><br>The function DATE_TRUNC will help us convert datetime to first date of month.<br>It’s like Now() is 2022-05-09, and function DATE_TRUNC(‘MONTH’,NOW()) will convert datetime to 2022-05-01.I use the DATE_TRUNC create a duration.</p><p>Example:<br>NOW() = 2022-05-09</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">x &gt;= 2022-04-01 </span><br><span class="line">x &lt; 2022-05-01</span><br></pre></td></tr></table></figure><p>So,the result is 2022-04-01~2022-04-30.</p>]]></content>
-    
-    
-      
-      
-    <summary type="html">&lt;p&gt;My table has below data, and I want to get the previous data of month,and today is 2022-05-04. &lt;/p&gt;
-&lt;figure class=&quot;highlight plaintext&quot;&gt;&lt;</summary>
-      
-    
-    
-    
-    <category term="Database" scheme="https://yuhsiang237.github.io/categories/Database/"/>
-    
-    <category term="PostgreSQL" scheme="https://yuhsiang237.github.io/categories/Database/PostgreSQL/"/>
     
     
   </entry>
