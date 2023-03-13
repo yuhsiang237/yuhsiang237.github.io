@@ -42,7 +42,7 @@ Sum:99995
 ```
 
 
-To fix this problem, I added the SemaphoreSlim to code, and the result is correct  "Sum:100000".
+To fix this problem, I added the SemaphoreSlim to code, and the result always is correct  "Sum:100000".
 It helps us lock and limit the asynchronous function's data to one-by-one. 
 
 What is Semaphoreslim:
