@@ -7,7 +7,7 @@ categories:
 ---
 When writing an async function or method, I encountered a problem with accessing data one-by-one, such as starting 100000 async APIs, which could lead to bugs. 
 
-Below is an problem example. I expect the result to be "Sum:100000", but the actual result is "Sum:99995" or other abnormal results.
+Below is a problem example. I expect the result to be "Sum:100000", but the actual result is "Sum:99995" or other abnormal results.
 
 **Example 1:**
 ```csharp
