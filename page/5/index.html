@@ -77,6 +77,50 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-PostgreSQL-建立自動遞增PK-Table" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2022/03/17/PostgreSQL-%E5%BB%BA%E7%AB%8B%E8%87%AA%E5%8B%95%E9%81%9E%E5%A2%9EPK-Table/" class="article-date">
+  <time class="dt-published" datetime="2022-03-17T02:26:17.000Z" itemprop="datePublished">2022-03-17</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Database/">Database</a>►<a class="article-category-link" href="/categories/Database/PostgreSQL/">PostgreSQL</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2022/03/17/PostgreSQL-%E5%BB%BA%E7%AB%8B%E8%87%AA%E5%8B%95%E9%81%9E%E5%A2%9EPK-Table/">PostgreSQL 建立自動遞增PK Table</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>因為發現用PGADMIN建立Table速度太慢(超久的Loading)，因此最後就習慣用指令去建立Table了。<br>以下為在PostgreSQL建立一個遞增+1的SEQ欄位，且為Table的PK。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> (</span><br><span class="line">    SEQ SERIAL <span class="keyword">PRIMARY</span> KEY,</span><br><span class="line">    NAME <span class="type">CHARACTER</span> <span class="type">VARYING</span>(<span class="number">100</span>) <span class="keyword">NULL</span>,</span><br><span class="line">    REMARK TEXT,</span><br><span class="line">    IS_VALID <span class="type">BOOLEAN</span> <span class="keyword">NULL</span>,</span><br><span class="line">    CREATED_ON <span class="type">TIMESTAMP</span> <span class="keyword">WITHOUT</span> <span class="type">TIME</span> ZONE <span class="keyword">NULL</span>,</span><br><span class="line">    UPDATED_ON <span class="type">TIMESTAMP</span> <span class="keyword">WITHOUT</span> <span class="type">TIME</span> ZONE <span class="keyword">NULL</span>,</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://yuhsiang237.github.io/2022/03/17/PostgreSQL-%E5%BB%BA%E7%AB%8B%E8%87%AA%E5%8B%95%E9%81%9E%E5%A2%9EPK-Table/" data-id="cl0udopu90000bggh05632ckz" data-title="PostgreSQL 建立自動遞增PK Table" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
     <article id="post-PostgreSQL-反條件式NOT" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
     <a href="/2022/03/16/PostgreSQL-%E5%8F%8D%E6%A2%9D%E4%BB%B6%E5%BC%8FNOT/" class="article-date">
@@ -765,91 +809,6 @@ both date and time, with time zone，
 
 
   
-    <article id="post-SQL-Server-NVARCHAR與VARCHAR差別比較" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2022/02/17/SQL-Server-NVARCHAR%E8%88%87VARCHAR%E5%B7%AE%E5%88%A5%E6%AF%94%E8%BC%83/" class="article-date">
-  <time class="dt-published" datetime="2022-02-17T02:34:02.000Z" itemprop="datePublished">2022-02-17</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/Database/">Database</a>►<a class="article-category-link" href="/categories/Database/SQL-Server/">SQL Server</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2022/02/17/SQL-Server-NVARCHAR%E8%88%87VARCHAR%E5%B7%AE%E5%88%A5%E6%AF%94%E8%BC%83/">SQL Server NVARCHAR與VARCHAR差別比較</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>在開資料時在存字串常會有選擇上的問題，到底該存哪種型別?<br>而在此就稍微介紹NVARCHAR、VARCHAR的差異。<br>以SQL Server 2019資料庫為準。</p>
-<h3 id="NVARCHAR-n-max"><a href="#NVARCHAR-n-max" class="headerlink" title="NVARCHAR [ ( n | max ) ]"></a>NVARCHAR [ ( n | max ) ]</h3><p>n表示可變大小字串資料。 n 會定義字串大小 (單位為位元組配對)，且可以是 1 到 4,000 之間的值。max 表示儲存大小上限是 2^30-1 個字元 (2 GB)。 </p>
-<h3 id="VARCHAR-n-max"><a href="#VARCHAR-n-max" class="headerlink" title="VARCHAR [ ( n | max ) ]"></a>VARCHAR [ ( n | max ) ]</h3><p>使用 n 以位元組為單位來定義字串大小，該值可以介於 1 到 8,000，或使用 max 來表示資料行大小限制最多為 2^31-1 個位元組 (2 GB) 的儲存體。 </p>
-<table>
-<tr>
-<td></td>
-<td>NVARCHAR</td>
-<td>VARCHAR</td>
-</tr>
-<tr>
-<td>Unicode支援</td>
-<td>有</td>
-<td>無</td>
-</tr>
-<tr>
-<td>每個字元儲存容量</td>
-<td>英文字元2 Byte;非英文字元2 Byte</td>
-<td>英文字元1 Byte;非英文字元2 Byte</td>
-</tr>
-<tr>
-<td>儲存長度</td>
-<td>不定長，依照資料內容</td>
-<td>不定長，依照資料內容</td>
-</tr>
-<tr>
-<td>n的長度限制</td>
-<td>1~4000(表示可以用寫4000個中、英文字元)</td>
-<td>1~8000(表示可以用寫8000個英文字元)</td>
-</tr>
-<tr>
-<td>max</td>
-<td>2GB</td>
-<td>2GB</td>
-</tr>
-<tr>
-<td>結論</td>
-<td>要儲存英文以外的用NVARCHAR，可以避免亂碼問題，但儲存空間相較VARCHAR會多一些。</td>
-<td>只存英文VARCHAR沒問題，存其他可能會有亂碼問題。</td>
-</tr>
-</table>
-
-<h3 id="總結"><a href="#總結" class="headerlink" title="總結"></a>總結</h3><p>使用NVARCHAR來儲存字串會比較好，因為可避免字串因為中英混雜亂碼。</p>
-<h3 id="參考資料"><a href="#參考資料" class="headerlink" title="參考資料"></a>參考資料</h3><p><a target="_blank" rel="noopener" href="https://docs.microsoft.com/zh-tw/sql/t-sql/data-types/char-and-varchar-transact-sql?view=sql-server-ver15">https://docs.microsoft.com/zh-tw/sql/t-sql/data-types/char-and-varchar-transact-sql?view=sql-server-ver15</a><br><a target="_blank" rel="noopener" href="https://docs.microsoft.com/zh-tw/sql/t-sql/data-types/nchar-and-nvarchar-transact-sql?view=sql-server-ver15">https://docs.microsoft.com/zh-tw/sql/t-sql/data-types/nchar-and-nvarchar-transact-sql?view=sql-server-ver15</a><br><a target="_blank" rel="noopener" href="https://ithelp.ithome.com.tw/articles/10213922">https://ithelp.ithome.com.tw/articles/10213922</a></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://yuhsiang237.github.io/2022/02/17/SQL-Server-NVARCHAR%E8%88%87VARCHAR%E5%B7%AE%E5%88%A5%E6%AF%94%E8%BC%83/" data-id="cl0g433ot002dtwgh6prc0suf" data-title="SQL Server NVARCHAR與VARCHAR差別比較" class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
 
 
   <nav id="page-nav">
@@ -865,7 +824,7 @@ both date and time, with time zone，
   <div class="widget-wrap">
     <h3 class="widget-title">Categories</h3>
     <div class="widget">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Code/">Code</a><span class="category-list-count">73</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Code/C/">C#</a><span class="category-list-count">67</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Code/Javascript/">Javascript</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Code/Refactoring/">Refactoring</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/">Computer Science</a><span class="category-list-count">5</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/Algorithm/">Algorithm</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/Data-structure/">Data structure</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/Electronic-Circuit/">Electronic Circuit</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Daily-Log/">Daily Log</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/">Database</a><span class="category-list-count">57</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Database/PostgreSQL/">PostgreSQL</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/SQL-Server/">SQL Server</a><span class="category-list-count">47</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/">Framework</a><span class="category-list-count">27</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/AspNetCore-API/">AspNetCore API</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/AspNetCore-MVC/">AspNetCore MVC</a><span class="category-list-count">21</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/">Topic</a><span class="category-list-count">75</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2021-C-AspNetCore-Challenge/">2021 C# AspNetCore Challenge</a><span class="category-list-count">30</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2021-SQL-Server-Challenge/">2021 SQL Server Challenge</a><span class="category-list-count">30</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2022-C-SyncAndAsync/">2022 C# SyncAndAsync</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/Big-Data/">Big Data</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/LeetCode/">LeetCode</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/SystemStructure/">SystemStructure</a><span class="category-list-count">1</span></li></ul></li></ul>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Code/">Code</a><span class="category-list-count">74</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Code/C/">C#</a><span class="category-list-count">68</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Code/Javascript/">Javascript</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Code/Refactoring/">Refactoring</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/">Computer Science</a><span class="category-list-count">5</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/Algorithm/">Algorithm</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/Data-structure/">Data structure</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/Electronic-Circuit/">Electronic Circuit</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Daily-Log/">Daily Log</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/">Database</a><span class="category-list-count">57</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Database/PostgreSQL/">PostgreSQL</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/SQL-Server/">SQL Server</a><span class="category-list-count">47</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/">Framework</a><span class="category-list-count">27</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/AspNetCore-API/">AspNetCore API</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/AspNetCore-MVC/">AspNetCore MVC</a><span class="category-list-count">21</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/">Topic</a><span class="category-list-count">75</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2021-C-AspNetCore-Challenge/">2021 C# AspNetCore Challenge</a><span class="category-list-count">30</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2021-SQL-Server-Challenge/">2021 SQL Server Challenge</a><span class="category-list-count">30</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2022-C-SyncAndAsync/">2022 C# SyncAndAsync</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/Big-Data/">Big Data</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/LeetCode/">LeetCode</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/SystemStructure/">SystemStructure</a><span class="category-list-count">1</span></li></ul></li></ul>
     </div>
   </div>
 
@@ -875,7 +834,7 @@ both date and time, with time zone，
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/03/">March 2023</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/02/">February 2023</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/01/">January 2023</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/12/">December 2022</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/09/">September 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/07/">July 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/06/">June 2022</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/05/">May 2022</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/04/">April 2022</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/03/">March 2022</a><span class="archive-list-count">17</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/02/">February 2022</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/01/">January 2022</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">December 2021</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">October 2021</a><span class="archive-list-count">24</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">September 2021</a><span class="archive-list-count">46</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">August 2021</a><span class="archive-list-count">12</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/03/">March 2023</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/02/">February 2023</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/01/">January 2023</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/12/">December 2022</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/09/">September 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/07/">July 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/06/">June 2022</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/05/">May 2022</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/04/">April 2022</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/03/">March 2022</a><span class="archive-list-count">17</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/02/">February 2022</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/01/">January 2022</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">December 2021</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">October 2021</a><span class="archive-list-count">24</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">September 2021</a><span class="archive-list-count">46</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">August 2021</a><span class="archive-list-count">12</span></li></ul>
     </div>
   </div>
 

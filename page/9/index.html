@@ -77,6 +77,71 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-C-MVC-LINQ基礎用法" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2021/10/10/C-MVC-LINQ%E5%9F%BA%E7%A4%8E%E7%94%A8%E6%B3%95/" class="article-date">
+  <time class="dt-published" datetime="2021-10-10T11:20:46.000Z" itemprop="datePublished">2021-10-10</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Code/">Code</a>►<a class="article-category-link" href="/categories/Code/C/">C#</a>►<a class="article-category-link" href="/categories/Framework/">Framework</a>►<a class="article-category-link" href="/categories/Framework/AspNetCore-MVC/">AspNetCore MVC</a>►<a class="article-category-link" href="/categories/Topic/">Topic</a>►<a class="article-category-link" href="/categories/Topic/2021-C-AspNetCore-Challenge/">2021 C# AspNetCore Challenge</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2021/10/10/C-MVC-LINQ%E5%9F%BA%E7%A4%8E%E7%94%A8%E6%B3%95/">[Day14] C# MVC LINQ基礎用法 - C#&amp;AspNetCore</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>在上回 <a href="/2021/10/08/C-MVC-%E9%A9%97%E8%AD%89%E8%88%87%E6%8E%88%E6%AC%8A%EF%BC%8C%E6%96%B0%E5%88%AA%E4%BF%AE%E6%9F%A5%E6%8C%89%E9%88%95%E6%AC%8A%E9%99%90/" title="[Day13] C# MVC 驗證與授權，新刪修查按鈕權限 - C#&amp;AspNetCore">[Day13] C# MVC 驗證與授權，新刪修查按鈕權限 - C#&amp;AspNetCore</a>  ，我們學會了進階的權限切割。</p>
+<p>而這回就要開始操作資料了，使用LINQ。</p>
+<h3 id="LINQ"><a href="#LINQ" class="headerlink" title="LINQ"></a>LINQ</h3><p>Language Integrated Query (LINQ) 是一組以直接將查詢功能整合至 C# 語言為基礎之技術的名稱。 傳統上，資料查詢是以簡單的字串表示，既不會在編譯時進行類型檢查，也不支援 IntelliSense。 此外，您還必須針對每種資料來源類型學習不同的查詢語言：SQL 資料庫、XML 文件、各種 Web 服務等等。透過 LINQ，查詢會是第一級語言建構，和類別、方法及事件相同。 您可以使用語言關鍵字和熟悉的運算子，針對強型別的物件集合撰寫查詢。 LINQ 技術系列會針對物件 (LINQ to Object)、關聯式資料庫 (LINQ to SQL) 與 XML (LINQ to XML)，提供一致的查詢體驗。</p>
+<p>對於撰寫查詢的開發人員來說，LINQ 最明顯的「語言整合」部分就是查詢運算式。 查詢運算式是以宣告式「查詢語法」撰寫。 透過使用查詢語法，您就可以利用最少的程式碼，針對資料來源執行篩選、排序及分組作業。 您可以使用相同的基本查詢運算式模式來查詢和轉換 SQL 資料庫、ADO.NET 資料集、XML 檔和資料流程和 .net 集合中的資料。</p>
+<p>您可以使用 C# 針對下列項目撰寫 LINQ 查詢：SQL Server 資料庫、XML 文件、ADO.NET 資料集，以及支援 IEnumerable 或泛型 IEnumerable<T> 介面的任何物件集合。 也有協力廠商針對許多 Web 服務和其他資料庫實作提供 LINQ 支援。</p>
+<p>所有 LINQ 查詢作業都包含三個不同的動作：</p>
+<ol>
+<li>取得資料來源。</li>
+<li>建立查詢。</li>
+<li>執行查詢。</li>
+</ol>
+<h3 id="實作"><a href="#實作" class="headerlink" title="實作"></a>實作</h3><p><strong>HomeController.cs</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">public IActionResult Index()</span><br><span class="line">&#123;</span><br><span class="line">    // Specify the data source.</span><br><span class="line">    int[] scores = new int[] &#123; 97, 92, 81, 60 &#125;;</span><br><span class="line"></span><br><span class="line">    // Define the query expression.</span><br><span class="line">    IEnumerable&lt;int&gt; scoreQuery =</span><br><span class="line">        from score in scores</span><br><span class="line">        where score &gt; 80</span><br><span class="line">        select score;</span><br><span class="line"></span><br><span class="line">    // Execute the query.</span><br><span class="line">    foreach (int i in scoreQuery)</span><br><span class="line">    &#123;</span><br><span class="line">        Console.Write(i + &quot; &quot;);</span><br><span class="line">    &#125;</span><br><span class="line">    return View();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>說明:<br>以上就是過濾&gt;80的分數。</p>
+<ul>
+<li>IEnumerable:第7行，公開能逐一查看非泛型集合內容一次的列舉程式。而其實可以用var當作宣告替代。</li>
+<li>scoreQuery:過濾的結果。<img src="/2021/10/10/C-MVC-LINQ%E5%9F%BA%E7%A4%8E%E7%94%A8%E6%B3%95/1.png" class="">
+下圖顯示完整的查詢作業。<img src="/2021/10/10/C-MVC-LINQ%E5%9F%BA%E7%A4%8E%E7%94%A8%E6%B3%95/2.png" class=""></li>
+</ul>
+<h3 id="總結"><a href="#總結" class="headerlink" title="總結"></a>總結</h3><p>本人習慣直接操作SQL語言，但LINQ說實在也不錯(可以直接防SQL INJECTION、強型別的優勢)。<br>但感覺上LINQ比較適合簡單的查詢，變成在程式裏面爬出來後去操作，性能可能會低，但比較穩。<br>而對於複雜的SQL查詢還是有困難QQ，變成翻譯家的感覺。<br>基於以上原因，複雜查詢我應該會使用Dapper來做，寫原生。</p>
+<p>此外，以有寫過Laravel跟Java的經驗來說，LINQ是C#微軟Only。<br>也就表示熟悉LINQ可能會有換其他語言SQL卡住、忘記正常該怎麼組的問題。</p>
+<p>在這篇中先小試一下，下篇將注重一些平常可能會做的LINQ查詢操作。</p>
+<p><strong>參考資料</strong><br><a target="_blank" rel="noopener" href="https://docs.microsoft.com/zh-tw/dotnet/csharp/programming-guide/concepts/linq/">https://docs.microsoft.com/zh-tw/dotnet/csharp/programming-guide/concepts/linq/</a><br><a target="_blank" rel="noopener" href="https://ithelp.ithome.com.tw/articles/10194468">https://ithelp.ithome.com.tw/articles/10194468</a><br><a target="_blank" rel="noopener" href="https://blog.darkthread.net/blog/linq-or-direct-sql/">https://blog.darkthread.net/blog/linq-or-direct-sql/</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://yuhsiang237.github.io/2021/10/10/C-MVC-LINQ%E5%9F%BA%E7%A4%8E%E7%94%A8%E6%B3%95/" data-id="cl0g433o4000ntwgh8qmffecr" data-title="[Day14] C# MVC LINQ基礎用法 - C#&amp;AspNetCore" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
     <article id="post-後端API適合共用APP與網頁嗎" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
     <a href="/2021/10/09/%E5%BE%8C%E7%AB%AFAPI%E9%81%A9%E5%90%88%E5%85%B1%E7%94%A8APP%E8%88%87%E7%B6%B2%E9%A0%81%E5%97%8E/" class="article-date">
@@ -843,91 +908,6 @@
 
 
   
-    <article id="post-C-MVC-Model模型驗證" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2021/10/01/C-MVC-Model%E6%A8%A1%E5%9E%8B%E9%A9%97%E8%AD%89/" class="article-date">
-  <time class="dt-published" datetime="2021-10-01T04:00:51.000Z" itemprop="datePublished">2021-10-01</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/Code/">Code</a>►<a class="article-category-link" href="/categories/Code/C/">C#</a>►<a class="article-category-link" href="/categories/Framework/">Framework</a>►<a class="article-category-link" href="/categories/Framework/AspNetCore-MVC/">AspNetCore MVC</a>►<a class="article-category-link" href="/categories/Topic/">Topic</a>►<a class="article-category-link" href="/categories/Topic/2021-C-AspNetCore-Challenge/">2021 C# AspNetCore Challenge</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2021/10/01/C-MVC-Model%E6%A8%A1%E5%9E%8B%E9%A9%97%E8%AD%89/">[Day6] C# MVC Model模型驗證 - C#&amp;AspNetCore</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p>在上回 <a href="/2021/09/30/C-MVC-Model%E6%A8%A1%E5%9E%8B%E4%BD%BF%E7%94%A8/" title="[Day5] C# MVC Model模型使用 - C#&amp;AspNetCore">[Day5] C# MVC Model模型使用 - C#&amp;AspNetCore</a>  ，我們建立了基本的Model，並且示範讓資料藉由Model資料呈現在網頁上。<br>在這篇主要談如何Model模型上進行驗證。</p>
-<h3 id="Model的驗證"><a href="#Model的驗證" class="headerlink" title="Model的驗證"></a>Model的驗證</h3><p>為了讓資料進到資料庫是符合我們要的格式，就必須在前面先擋過一層，而這層我們可以透過Model來達到。</p>
-<p><strong>常見的驗證屬性</strong></p>
-<ul>
-<li>[ValidateNever]： ValidateNeverAttribute 指出屬性或參數應該從驗證中排除。</li>
-<li>[CreditCard]：驗證屬性是否具有信用卡格式。 需要 JQuery 驗證的其他方法。</li>
-<li>[Compare]：驗證模型中的兩個屬性是否相符。</li>
-<li>[EmailAddress]：驗證屬性具有電子郵件格式。</li>
-<li>[Phone]：驗證屬性具有電話號碼格式。</li>
-<li>[Range]：驗證屬性值是否落在指定的範圍內。像是最大值(Max)、最小值(min)</li>
-<li>[RegularExpression]：驗證屬性值是否符合指定的正則運算式。</li>
-<li>[Required]：驗證欄位不是 null。 </li>
-<li>[StringLength]：驗證字串屬性值不超過指定的長度限制。</li>
-<li>[Url]：驗證屬性是否具有 URL 格式。</li>
-<li>[Remote]：在伺服器上呼叫動作方法，以驗證用戶端上的輸入。</li>
-<li>[Display]:顯示名稱為</li>
-<li>[DataType]:資料型別</li>
-</ul>
-<h3 id="添加驗證屬性範例實作"><a href="#添加驗證屬性範例實作" class="headerlink" title="添加驗證屬性範例實作"></a>添加驗證屬性範例實作</h3><p>我們先在UsersModel.cs增加屬性<br>需先添加<code>using System.ComponentModel.DataAnnotations</code>才可使用驗證屬性。</p>
-<h5 id="UsersModel-cs"><a href="#UsersModel-cs" class="headerlink" title="UsersModel.cs"></a>UsersModel.cs</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">using System;</span><br><span class="line">using System.Collections.Generic;</span><br><span class="line">using System.Linq;</span><br><span class="line">using System.Threading.Tasks;</span><br><span class="line">using System.ComponentModel.DataAnnotations;</span><br><span class="line"></span><br><span class="line">namespace WebApplication1.Models</span><br><span class="line">&#123;</span><br><span class="line">    public class UsersModel</span><br><span class="line">    &#123;</span><br><span class="line">        [Display(Name = &quot;編號&quot;)]</span><br><span class="line">        public int ID &#123; get; set; &#125;</span><br><span class="line"></span><br><span class="line">        [Required(ErrorMessage = &quot;姓名不可為空&quot;)]</span><br><span class="line">        [Display(Name = &quot;姓名&quot;)]</span><br><span class="line">        public string Name &#123; get; set; &#125;</span><br><span class="line"></span><br><span class="line">        [Display(Name = &quot;年齡&quot;)]</span><br><span class="line">        public int Age &#123; get; set; &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>接著在HomeController.cs裡面個添加一個HttpGet、HttpPost的Create方法<br>HttpGet是進頁面時會跑的方法<br>HttpPost是表單觸發發送後會跑的方法</p>
-<h5 id="HomeController-cs"><a href="#HomeController-cs" class="headerlink" title="HomeController.cs"></a>HomeController.cs</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">[HttpGet]</span><br><span class="line">public IActionResult Create()</span><br><span class="line">&#123;</span><br><span class="line">    return View();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">[HttpPost]</span><br><span class="line">public IActionResult Create(UsersModel usersmodel)</span><br><span class="line">&#123;</span><br><span class="line">    if (ModelState.IsValid)</span><br><span class="line">    &#123;</span><br><span class="line">        //如果連結資料庫在這進行儲存</span><br><span class="line"></span><br><span class="line">        //導回首頁</span><br><span class="line">        return RedirectToAction(nameof(Index));</span><br><span class="line">    &#125;</span><br><span class="line">    return View(usersmodel);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>接著新增一個View頁面，在前台畫面上製作一個form表單。</p>
-<h5 id="Create-cshtml"><a href="#Create-cshtml" class="headerlink" title="Create.cshtml"></a>Create.cshtml</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">@model WebApplication1.Models.UsersModel</span><br><span class="line">@&#123;</span><br><span class="line">    ViewData[&quot;Title&quot;] = &quot;Create Page&quot;;</span><br><span class="line">&#125;</span><br><span class="line">&lt;form asp-action=&quot;Create&quot;&gt;</span><br><span class="line">    &lt;div&gt;</span><br><span class="line">        &lt;label asp-for=&quot;Name&quot;&gt;&lt;/label&gt;</span><br><span class="line">        &lt;input asp-for=&quot;Name&quot; /&gt;</span><br><span class="line">        &lt;span asp-validation-for=&quot;Name&quot;&gt;&lt;/span&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">    &lt;div&gt;</span><br><span class="line">        &lt;label asp-for=&quot;Age&quot;&gt;&lt;/label&gt;</span><br><span class="line">        &lt;input asp-for=&quot;Age&quot; /&gt;</span><br><span class="line">        &lt;span asp-validation-for=&quot;Age&quot;&gt;&lt;/span&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">    &lt;div&gt;</span><br><span class="line">        &lt;input type=&quot;submit&quot; value=&quot;Save&quot; /&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">&lt;/form&gt;</span><br></pre></td></tr></table></figure>
-
-<p>注意，<code>asp-validation-for="Name"</code>表示後端回傳的錯誤訊息會傳送到這裡。</p>
-<p>然後至網址:<a target="_blank" rel="noopener" href="https://localhost:44378/Home/Create">https://localhost:44378/Home/Create</a> 查看後<br>名子不填儲存就會出現錯誤了</p>
-<img src="/2021/10/01/C-MVC-Model%E6%A8%A1%E5%9E%8B%E9%A9%97%E8%AD%89/1.gif" class="">
-<p>在程式碼上會發現跑到HttpPost的Create裡面</p>
-<img src="/2021/10/01/C-MVC-Model%E6%A8%A1%E5%9E%8B%E9%A9%97%E8%AD%89/2.gif" class="">
-
-<h3 id="自訂驗證"><a href="#自訂驗證" class="headerlink" title="自訂驗證"></a>自訂驗證</h3><p>系統預設的驗證肯定不夠，所以就來製作自己的驗證。</p>
-<p>我們在UsersModel.cs裡面增加一個CheckValidAge的class並且繼承ValidationAttribute<br>並覆寫裡面IsValid方法。</p>
-<h5 id="UsersModel-cs-1"><a href="#UsersModel-cs-1" class="headerlink" title="UsersModel.cs"></a>UsersModel.cs</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line">using System;</span><br><span class="line">using System.Collections.Generic;</span><br><span class="line">using System.Linq;</span><br><span class="line">using System.Threading.Tasks;</span><br><span class="line">using System.ComponentModel.DataAnnotations;</span><br><span class="line"></span><br><span class="line">namespace WebApplication1.Models</span><br><span class="line">&#123;</span><br><span class="line">    public class UsersModel</span><br><span class="line">    &#123;</span><br><span class="line">        [Display(Name = &quot;編號&quot;)]</span><br><span class="line">        public int ID &#123; get; set; &#125;</span><br><span class="line"></span><br><span class="line">        [Required(ErrorMessage = &quot;姓名不可為空&quot;)]</span><br><span class="line">        [Display(Name = &quot;姓名&quot;)]</span><br><span class="line">        public string Name &#123; get; set; &#125;</span><br><span class="line"></span><br><span class="line">        [CheckValidAge]</span><br><span class="line">        [Display(Name = &quot;年齡&quot;)]</span><br><span class="line">        public int Age &#123; get; set; &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public class CheckValidAge : ValidationAttribute</span><br><span class="line">    &#123;</span><br><span class="line"></span><br><span class="line">        public CheckValidAge()</span><br><span class="line">        &#123;</span><br><span class="line">            ErrorMessage = &quot;年齡不可超過50歲&quot;;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        public override bool IsValid(object value)</span><br><span class="line">        &#123;</span><br><span class="line">            if (value == null)</span><br><span class="line">            &#123;</span><br><span class="line">                return true;</span><br><span class="line">            &#125;</span><br><span class="line">            int age = (int)value;</span><br><span class="line">            if (age &gt; 50)</span><br><span class="line">            &#123;</span><br><span class="line">                return false;</span><br><span class="line">            &#125;</span><br><span class="line">            else</span><br><span class="line">            &#123;</span><br><span class="line">                return true;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<p>如此一來，送出如果&gt;50就會顯示出錯誤。</p>
-<img src="/2021/10/01/C-MVC-Model%E6%A8%A1%E5%9E%8B%E9%A9%97%E8%AD%89/3.gif" class="">
-
-
-<h3 id="總結"><a href="#總結" class="headerlink" title="總結"></a>總結</h3><p>雖然2021年的今天，大多數人都不使用這種form驗證，而是用API傳送。<br>因為頁面不用跳轉，用戶也能得到比較好的體驗。</p>
-<p>然而，這種傳統的送資料方式還是有存在必要，就是系統追求安全性、穩定性，因為API方式會有比較難管理的問題。</p>
-<p>此外，寫到這裡就開始有綁手綁腳的感覺<br>因為框架不那麼自由的讓你直接寫想寫的程式碼，而是照MVC架構<br>這就是一個好處，代表維護或後續開發的人就會照同條路走</p>
-<p><strong>參考資料</strong><br><a target="_blank" rel="noopener" href="https://ithelp.ithome.com.tw/articles/10240340">https://ithelp.ithome.com.tw/articles/10240340</a><br><a target="_blank" rel="noopener" href="https://docs.microsoft.com/zh-tw/aspnet/core/mvc/models/validation?view=aspnetcore-5.0">https://docs.microsoft.com/zh-tw/aspnet/core/mvc/models/validation?view=aspnetcore-5.0</a></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://yuhsiang237.github.io/2021/10/01/C-MVC-Model%E6%A8%A1%E5%9E%8B%E9%A9%97%E8%AD%89/" data-id="cl0g433o8000ttwgh3grp9voo" data-title="[Day6] C# MVC Model模型驗證 - C#&amp;AspNetCore" class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
 
 
   <nav id="page-nav">
@@ -943,7 +923,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Categories</h3>
     <div class="widget">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Code/">Code</a><span class="category-list-count">73</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Code/C/">C#</a><span class="category-list-count">67</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Code/Javascript/">Javascript</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Code/Refactoring/">Refactoring</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/">Computer Science</a><span class="category-list-count">5</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/Algorithm/">Algorithm</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/Data-structure/">Data structure</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/Electronic-Circuit/">Electronic Circuit</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Daily-Log/">Daily Log</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/">Database</a><span class="category-list-count">57</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Database/PostgreSQL/">PostgreSQL</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/SQL-Server/">SQL Server</a><span class="category-list-count">47</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/">Framework</a><span class="category-list-count">27</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/AspNetCore-API/">AspNetCore API</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/AspNetCore-MVC/">AspNetCore MVC</a><span class="category-list-count">21</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/">Topic</a><span class="category-list-count">75</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2021-C-AspNetCore-Challenge/">2021 C# AspNetCore Challenge</a><span class="category-list-count">30</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2021-SQL-Server-Challenge/">2021 SQL Server Challenge</a><span class="category-list-count">30</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2022-C-SyncAndAsync/">2022 C# SyncAndAsync</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/Big-Data/">Big Data</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/LeetCode/">LeetCode</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/SystemStructure/">SystemStructure</a><span class="category-list-count">1</span></li></ul></li></ul>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Code/">Code</a><span class="category-list-count">74</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Code/C/">C#</a><span class="category-list-count">68</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Code/Javascript/">Javascript</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Code/Refactoring/">Refactoring</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/">Computer Science</a><span class="category-list-count">5</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/Algorithm/">Algorithm</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/Data-structure/">Data structure</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/Electronic-Circuit/">Electronic Circuit</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Daily-Log/">Daily Log</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/">Database</a><span class="category-list-count">57</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Database/PostgreSQL/">PostgreSQL</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/SQL-Server/">SQL Server</a><span class="category-list-count">47</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/">Framework</a><span class="category-list-count">27</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/AspNetCore-API/">AspNetCore API</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/AspNetCore-MVC/">AspNetCore MVC</a><span class="category-list-count">21</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/">Topic</a><span class="category-list-count">75</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2021-C-AspNetCore-Challenge/">2021 C# AspNetCore Challenge</a><span class="category-list-count">30</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2021-SQL-Server-Challenge/">2021 SQL Server Challenge</a><span class="category-list-count">30</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2022-C-SyncAndAsync/">2022 C# SyncAndAsync</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/Big-Data/">Big Data</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/LeetCode/">LeetCode</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/SystemStructure/">SystemStructure</a><span class="category-list-count">1</span></li></ul></li></ul>
     </div>
   </div>
 
@@ -953,7 +933,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/03/">March 2023</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/02/">February 2023</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/01/">January 2023</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/12/">December 2022</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/09/">September 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/07/">July 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/06/">June 2022</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/05/">May 2022</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/04/">April 2022</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/03/">March 2022</a><span class="archive-list-count">17</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/02/">February 2022</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/01/">January 2022</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">December 2021</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">October 2021</a><span class="archive-list-count">24</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">September 2021</a><span class="archive-list-count">46</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">August 2021</a><span class="archive-list-count">12</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/03/">March 2023</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/02/">February 2023</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/01/">January 2023</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/12/">December 2022</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/09/">September 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/07/">July 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/06/">June 2022</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/05/">May 2022</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/04/">April 2022</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/03/">March 2022</a><span class="archive-list-count">17</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/02/">February 2022</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/01/">January 2022</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">December 2021</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">October 2021</a><span class="archive-list-count">24</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">September 2021</a><span class="archive-list-count">46</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">August 2021</a><span class="archive-list-count">12</span></li></ul>
     </div>
   </div>
 
