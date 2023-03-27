@@ -84,6 +84,10 @@ id:,pid:B111111111,name:J.Cole,age:26
 
 Because id was set to ignore, it's null when the console prints them. 
 
+The following is the mapping of the different name properity. Due to The model's properity is different so I have to define a rule to map, such as PersionalID => Pid.
+```csharp
+ForMember(dest => dest.Pid, opt => opt.MapFrom(src => src.PersionalID))
+```
 The following is a check for missing mapped properties.
 ```csharp
 config.AssertConfigurationIsValid()
