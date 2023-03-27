@@ -14,7 +14,7 @@
 <meta property="og:description" content="When writing data to SQL Server, there is always a process about mapping model.The process is a transformation, such as A model transforming B model.If the model contains too many properties, the code">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2023-03-27T03:18:27.000Z">
-<meta property="article:modified_time" content="2023-03-27T03:44:44.092Z">
+<meta property="article:modified_time" content="2023-03-27T05:45:42.639Z">
 <meta property="article:author" content="Yu Hsiang">
 <meta name="twitter:card" content="summary">
   
@@ -112,7 +112,7 @@
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">id:,pid:E111111111,name:TOM,age:20</span><br><span class="line">id:,pid:B111111111,name:J.Cole,age:26</span><br></pre></td></tr></table></figure>
 
 <p>Because id was set to ignore, it’s null when the console prints them. </p>
-<p>The following is the mapping of the different name properity. Due to The model’s properity is different so I have to define a rule to map, such as PersionalID =&gt; Pid.</p>
+<p>The following is the mapping of the different name properity. Due to The properity name is different so I have to define a rule to map, such as PersionalID =&gt; Pid.</p>
 <figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ForMember(dest =&gt; dest.Pid, opt =&gt; opt.MapFrom(src =&gt; src.PersionalID))</span><br></pre></td></tr></table></figure>
 <p>The following is a check for missing mapped properties.</p>
 <figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">config.AssertConfigurationIsValid()</span><br></pre></td></tr></table></figure>
