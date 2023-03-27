@@ -112,6 +112,8 @@
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">id:,pid:E111111111,name:TOM,age:20</span><br><span class="line">id:,pid:B111111111,name:J.Cole,age:26</span><br></pre></td></tr></table></figure>
 
 <p>Because id was set to ignore, it’s null when the console prints them. </p>
+<p>The following is the mapping of the different name properity. Due to The model’s properity is different so I have to define a rule to map, such as PersionalID =&gt; Pid.</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ForMember(dest =&gt; dest.Pid, opt =&gt; opt.MapFrom(src =&gt; src.PersionalID))</span><br></pre></td></tr></table></figure>
 <p>The following is a check for missing mapped properties.</p>
 <figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">config.AssertConfigurationIsValid()</span><br></pre></td></tr></table></figure>
       
