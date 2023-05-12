@@ -77,6 +77,107 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-SQL-server資料表建立" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2021/09/06/SQL-server%E8%B3%87%E6%96%99%E8%A1%A8%E5%BB%BA%E7%AB%8B/" class="article-date">
+  <time class="dt-published" datetime="2021-09-05T16:00:17.000Z" itemprop="datePublished">2021-09-06</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Database/">Database</a>►<a class="article-category-link" href="/categories/Database/SQL-Server/">SQL Server</a>►<a class="article-category-link" href="/categories/Topic/">Topic</a>►<a class="article-category-link" href="/categories/Topic/2021-SQL-Server-Challenge/">2021 SQL Server Challenge</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2021/09/06/SQL-server%E8%B3%87%E6%96%99%E8%A1%A8%E5%BB%BA%E7%AB%8B/">[Day6] SQL server資料表建立 - SQL Server資料庫入門</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>在上回 <a href="/2021/09/05/SQL-server%E8%B3%87%E6%96%99%E5%BA%AB%E6%AD%A3%E8%A6%8F%E5%8C%96/" title="[Day5] 規劃資料表，透過資料庫正規化 - SQL Server資料庫入門">[Day5] 規劃資料表，透過資料庫正規化 - SQL Server資料庫入門</a> 中，我們經由資料庫正規化1NF-&gt;2NF-&gt;3NF將訂單表單正規化，再來我們就要使用SSMS(Microsoft SQL Server Management Studio)協助我們在資料庫中建立資料表。</p>
+<p><strong>在這篇中，主要涵蓋內容為:</strong><br>1.如何在SQL server中建立資料表<br>2.如何設定自動遞增<br>3.欄位型別選擇</p>
+<p><strong>訂單示意圖:</strong></p>
+<img src="/2021/09/06/SQL-server%E8%B3%87%E6%96%99%E8%A1%A8%E5%BB%BA%E7%AB%8B/%E8%A8%82%E5%96%AE.png" class="" title="訂單">
+
+<p><strong>3NF正規化後:</strong></p>
+<img src="/2021/09/06/SQL-server%E8%B3%87%E6%96%99%E8%A1%A8%E5%BB%BA%E7%AB%8B/%E8%B3%87%E6%96%99%E8%A1%A8%E4%BF%AE%E6%AD%A3.png" class="" title="資料表">
+
+
+
+
+<h3 id="建立資料表orders"><a href="#建立資料表orders" class="headerlink" title="建立資料表orders"></a>建立資料表orders</h3><p>1.對table點右鍵&gt;new table</p>
+<img src="/2021/09/06/SQL-server%E8%B3%87%E6%96%99%E8%A1%A8%E5%BB%BA%E7%AB%8B/%E5%BB%BA%E7%AB%8B%E8%B3%87%E6%96%99%E8%A1%A81.png" class="" title="建立資料表1">
+<p>2.接著會出現設計的框框</p>
+<img src="/2021/09/06/SQL-server%E8%B3%87%E6%96%99%E8%A1%A8%E5%BB%BA%E7%AB%8B/%E5%BB%BA%E7%AB%8B%E8%B3%87%E6%96%99%E8%A1%A82.png" class="" title="建立資料表2">
+<p>3.填入欄位與型別<br>在此，補充一點，金額使用decimal，不要使用float，因為以下原因:<br>因為float表示近似數值，存在精度損失，存有小數的值可能會造成誤差，因此使用decimal。<br>decimal(p,s) 需要分別指定小數的最大位數（p）和小數位的數量（s）。<br>p (precision) ：指定小數的最大位數，小數點的左側和右側的數字的總數量不能超過p，p的取值範圍是從1到38，默認值爲18。<br>s (scale)：指定在小數點右側的小數位數，p-s是小數點左邊的最大位數。s必須是從0到p的值，只有在指定了精度的情況下才能指定s，s的默認值是0，因此，0 &lt;= s &lt;= p。 </p>
+<img src="/2021/09/06/SQL-server%E8%B3%87%E6%96%99%E8%A1%A8%E5%BB%BA%E7%AB%8B/decimal.png" class="" title="decimal">
+
+<p>延伸閱讀: <a href="/2021/09/03/sql-server%E8%B3%87%E6%96%99%E5%9E%8B%E6%85%8B/" title="[Day3] SQL Server資料型態 - SQL Server資料庫入門">[Day3] SQL Server資料型態 - SQL Server資料庫入門</a> 可以多加參考。</p>
+<img src="/2021/09/06/SQL-server%E8%B3%87%E6%96%99%E8%A1%A8%E5%BB%BA%E7%AB%8B/%E5%BB%BA%E7%AB%8B%E8%B3%87%E6%96%99%E8%A1%A83.png" class="" title="建立資料表3">
+<p>4.設定主鍵(PK)</p>
+<img src="/2021/09/06/SQL-server%E8%B3%87%E6%96%99%E8%A1%A8%E5%BB%BA%E7%AB%8B/%E5%BB%BA%E7%AB%8B%E8%B3%87%E6%96%99%E8%A1%A84.png" class="" title="建立資料表4">
+<p>5.儲存Ctrl+S，並命名為orders</p>
+<img src="/2021/09/06/SQL-server%E8%B3%87%E6%96%99%E8%A1%A8%E5%BB%BA%E7%AB%8B/%E5%BB%BA%E7%AB%8B%E8%B3%87%E6%96%99%E8%A1%A85.png" class="" title="建立資料表5">
+<p>6.重新整理，左方會出現orders資料表，代表成功建立</p>
+<img src="/2021/09/06/SQL-server%E8%B3%87%E6%96%99%E8%A1%A8%E5%BB%BA%E7%AB%8B/%E5%BB%BA%E7%AB%8B%E8%B3%87%E6%96%99%E8%A1%A86.png" class="" title="建立資料表6">
+
+
+<h3 id="建立資料表customers"><a href="#建立資料表customers" class="headerlink" title="建立資料表customers"></a>建立資料表customers</h3><p>基本上可以照前面做法建立即可。</p>
+<img src="/2021/09/06/SQL-server%E8%B3%87%E6%96%99%E8%A1%A8%E5%BB%BA%E7%AB%8B/customerstable.PNG" class="" title="customers">
+
+<h3 id="建立資料表products"><a href="#建立資料表products" class="headerlink" title="建立資料表products"></a>建立資料表products</h3><p>基本上可以照前面做法建立即可。</p>
+<img src="/2021/09/06/SQL-server%E8%B3%87%E6%96%99%E8%A1%A8%E5%BB%BA%E7%AB%8B/producttable.PNG" class="" title="customers">
+
+<h3 id="建立資料表order-details"><a href="#建立資料表order-details" class="headerlink" title="建立資料表order_details"></a>建立資料表order_details</h3><p>1.建構表<br>這邊我把amount數量設為整數。</p>
+<img src="/2021/09/06/SQL-server%E8%B3%87%E6%96%99%E8%A1%A8%E5%BB%BA%E7%AB%8B/orderdetailstable1.PNG" class="" title="customers">
+<p>2.這邊注意，要把id設定為主鍵，之後設定「自動遞增」，作法是identify設定成YES</p>
+<img src="/2021/09/06/SQL-server%E8%B3%87%E6%96%99%E8%A1%A8%E5%BB%BA%E7%AB%8B/orderdetailstable2.PNG" class="" title="customers">
+<p>3.刷新出現order_details</p>
+<img src="/2021/09/06/SQL-server%E8%B3%87%E6%96%99%E8%A1%A8%E5%BB%BA%E7%AB%8B/orderdetailstable3.PNG" class="" title="customers">
+
+
+
+<h3 id="資料表視圖，總覽資料表"><a href="#資料表視圖，總覽資料表" class="headerlink" title="資料表視圖，總覽資料表"></a>資料表視圖，總覽資料表</h3><p>1.建立資料表視圖</p>
+<img src="/2021/09/06/SQL-server%E8%B3%87%E6%96%99%E8%A1%A8%E5%BB%BA%E7%AB%8B/all1.PNG" class="">
+<p>2.選取要呈現的表</p>
+<img src="/2021/09/06/SQL-server%E8%B3%87%E6%96%99%E8%A1%A8%E5%BB%BA%E7%AB%8B/all2.PNG" class="">
+<p>3.顯示我們剛剛建立的4張表</p>
+<img src="/2021/09/06/SQL-server%E8%B3%87%E6%96%99%E8%A1%A8%E5%BB%BA%E7%AB%8B/all3.PNG" class="">
+
+<p>在跟我們在先前規劃的對照</p>
+<img src="/2021/09/06/SQL-server%E8%B3%87%E6%96%99%E8%A1%A8%E5%BB%BA%E7%AB%8B/%E8%B3%87%E6%96%99%E8%A1%A8%E4%BF%AE%E6%AD%A3.png" class="" title="資料表">
+
+<h3 id="總結"><a href="#總結" class="headerlink" title="總結"></a>總結</h3><p>如果在先前正規化好的話，那建表時真的會很輕鬆XD，就只要考慮型別即可。</p>
+<p>欄位命名規則上，我使用「全小寫，搭配底線」的規則(參考Laravel&amp;MySQL)，如果專案有統一就用專案內的，重點是整份是一樣規則就好。ps.此外，我發現用google翻譯翻出來的英文都怪怪的，有些是形容詞、名詞等等，可能要找天弄清楚。</p>
+<p>欄位型態上，可參考先前寫的 <a href="/2021/09/03/sql-server%E8%B3%87%E6%96%99%E5%9E%8B%E6%85%8B/" title="[Day3] SQL Server資料型態 - SQL Server資料庫入門">[Day3] SQL Server資料型態 - SQL Server資料庫入門</a> 。<br>在這回中發現了float與decimal的差別，因此在存有小數的金額請使用decimal，避免造成誤差、不準確。</p>
+<p>特殊規則上，如某些欄位是流水號id需要「自動遞增」，作法是identify設定成YES。</p>
+<p>在下回，我們將開始關聯這些表。</p>
+<p><strong>參考資料:</strong><br><a target="_blank" rel="noopener" href="https://ithelp.ithome.com.tw/articles/10214381">https://ithelp.ithome.com.tw/articles/10214381</a><br><a target="_blank" rel="noopener" href="https://ithelp.ithome.com.tw/articles/10214308">https://ithelp.ithome.com.tw/articles/10214308</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://yuhsiang237.github.io/2021/09/06/SQL-server%E8%B3%87%E6%96%99%E8%A1%A8%E5%BB%BA%E7%AB%8B/" data-id="cl0g433ow002ptwgh75n868me" data-title="[Day6] SQL server資料表建立 - SQL Server資料庫入門" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
     <article id="post-SQL-server資料庫正規化" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
     <a href="/2021/09/05/SQL-server%E8%B3%87%E6%96%99%E5%BA%AB%E6%AD%A3%E8%A6%8F%E5%8C%96/" class="article-date">
@@ -815,55 +916,6 @@ All other precision require 8 bytes.2<br></span></td>
 
 
   
-    <article id="post-javascript-event-loop機制" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2021/08/30/javascript-event-loop%E6%A9%9F%E5%88%B6/" class="article-date">
-  <time class="dt-published" datetime="2021-08-29T19:40:36.000Z" itemprop="datePublished">2021-08-30</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/Code/">Code</a>►<a class="article-category-link" href="/categories/Code/Javascript/">Javascript</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2021/08/30/javascript-event-loop%E6%A9%9F%E5%88%B6/">javascript event loop機制(未完)</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>javascript是單一執行序，所以一次只能執行一件事。我們網頁上的操作也都會影響這機制，造成效能不好(時間延誤)。<br>而這其實很難用文字去解釋，我們可以看這支影片。<br><a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=8aGhZQkoFbQ">https://www.youtube.com/watch?v=8aGhZQkoFbQ</a></p>
-<img src="/2021/08/30/javascript-event-loop%E6%A9%9F%E5%88%B6/1.PNG" class="" title="Js event loop">
-
-<h3 id="小結"><a href="#小結" class="headerlink" title="小結"></a>小結</h3><p>1.盡量不要在 callback 當中執行負擔過重的函數，避免佔據 call stack<br>2.理解 microtask 與一般 task queue 執行順序不同。<br>－－引用自參考資料</p>
-<p>雖然理解底層跟實際面操作其實並不會有什麼大改變，因為還是得寫。<br>但至少可以透過這些底層觀念，讓我們思考有些程式碼其實有更好的寫法，就能減少這種效能問題。<br><del>(雖然使用者本身就只會覺得是網路lag而已)</del></p>
-<p>其實還有microtask未補，待下次補完。</p>
-<p><strong>參考資料</strong><br><a target="_blank" rel="noopener" href="https://ithelp.ithome.com.tw/articles/10214017">https://ithelp.ithome.com.tw/articles/10214017</a><br><a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=8aGhZQkoFbQ">https://www.youtube.com/watch?v=8aGhZQkoFbQ</a></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://yuhsiang237.github.io/2021/08/30/javascript-event-loop%E6%A9%9F%E5%88%B6/" data-id="cl0g433p0003atwgh7lqq6suq" data-title="javascript event loop機制(未完)" class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
 
 
   <nav id="page-nav">
@@ -879,7 +931,7 @@ All other precision require 8 bytes.2<br></span></td>
   <div class="widget-wrap">
     <h3 class="widget-title">Categories</h3>
     <div class="widget">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Code/">Code</a><span class="category-list-count">74</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Code/C/">C#</a><span class="category-list-count">68</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Code/Javascript/">Javascript</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Code/Refactoring/">Refactoring</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/">Computer Science</a><span class="category-list-count">5</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/Algorithm/">Algorithm</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/Data-structure/">Data structure</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/Electronic-Circuit/">Electronic Circuit</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Daily-Log/">Daily Log</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/">Database</a><span class="category-list-count">57</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Database/PostgreSQL/">PostgreSQL</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/SQL-Server/">SQL Server</a><span class="category-list-count">47</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/">Framework</a><span class="category-list-count">27</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/AspNetCore-API/">AspNetCore API</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/AspNetCore-MVC/">AspNetCore MVC</a><span class="category-list-count">21</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/">Topic</a><span class="category-list-count">75</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2021-C-AspNetCore-Challenge/">2021 C# AspNetCore Challenge</a><span class="category-list-count">30</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2021-SQL-Server-Challenge/">2021 SQL Server Challenge</a><span class="category-list-count">30</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2022-C-SyncAndAsync/">2022 C# SyncAndAsync</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/Big-Data/">Big Data</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/LeetCode/">LeetCode</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/SystemStructure/">SystemStructure</a><span class="category-list-count">1</span></li></ul></li></ul>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Code/">Code</a><span class="category-list-count">75</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Code/C/">C#</a><span class="category-list-count">69</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Code/Javascript/">Javascript</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Code/Refactoring/">Refactoring</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/">Computer Science</a><span class="category-list-count">5</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/Algorithm/">Algorithm</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/Data-structure/">Data structure</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/Electronic-Circuit/">Electronic Circuit</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Daily-Log/">Daily Log</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/">Database</a><span class="category-list-count">57</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Database/PostgreSQL/">PostgreSQL</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/SQL-Server/">SQL Server</a><span class="category-list-count">47</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/">Framework</a><span class="category-list-count">27</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/AspNetCore-API/">AspNetCore API</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/AspNetCore-MVC/">AspNetCore MVC</a><span class="category-list-count">21</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/">Topic</a><span class="category-list-count">75</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2021-C-AspNetCore-Challenge/">2021 C# AspNetCore Challenge</a><span class="category-list-count">30</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2021-SQL-Server-Challenge/">2021 SQL Server Challenge</a><span class="category-list-count">30</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2022-C-SyncAndAsync/">2022 C# SyncAndAsync</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/Big-Data/">Big Data</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/LeetCode/">LeetCode</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/SystemStructure/">SystemStructure</a><span class="category-list-count">1</span></li></ul></li></ul>
     </div>
   </div>
 
@@ -889,7 +941,7 @@ All other precision require 8 bytes.2<br></span></td>
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/03/">March 2023</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/02/">February 2023</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/01/">January 2023</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/12/">December 2022</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/09/">September 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/07/">July 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/06/">June 2022</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/05/">May 2022</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/04/">April 2022</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/03/">March 2022</a><span class="archive-list-count">17</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/02/">February 2022</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/01/">January 2022</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">December 2021</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">October 2021</a><span class="archive-list-count">24</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">September 2021</a><span class="archive-list-count">46</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">August 2021</a><span class="archive-list-count">12</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/05/">May 2023</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/03/">March 2023</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/02/">February 2023</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/01/">January 2023</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/12/">December 2022</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/09/">September 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/07/">July 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/06/">June 2022</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/05/">May 2022</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/04/">April 2022</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/03/">March 2022</a><span class="archive-list-count">17</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/02/">February 2022</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/01/">January 2022</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">December 2021</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">October 2021</a><span class="archive-list-count">24</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">September 2021</a><span class="archive-list-count">46</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">August 2021</a><span class="archive-list-count">12</span></li></ul>
     </div>
   </div>
 
