@@ -14,7 +14,7 @@
 <meta property="og:description" content="因為未來工作長期會使用到Typescript，所以就趁這時候筆記一下與JS的差異方面。過去在寫Vue3、Angular時有大量接觸Typescript，就趁這時間重溫一下。  賦值  JS 是動態型別 → 錯誤在執行時才發現TS 是靜態型別 → 編譯時就檢查出錯，減少 bug JS 12let age &#x3D; 25;age &#x3D; &quot;twenty-five&quot;; &#x2F;&#x2F; ✅ JS 不會報錯">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2025-08-11T13:17:12.000Z">
-<meta property="article:modified_time" content="2025-08-11T04:17:05.143Z">
+<meta property="article:modified_time" content="2025-08-11T04:34:41.871Z">
 <meta property="article:author" content="Yu Hsiang">
 <meta name="twitter:card" content="summary">
   
@@ -178,6 +178,90 @@
 <p>TS 提供 public（預設）、private、protected，可精確控制存取範圍</p>
 <p>TS:</p>
 <figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Person</span> </span>&#123;</span><br><span class="line">  <span class="keyword">private</span> name: <span class="built_in">string</span>; <span class="comment">// 僅類別內可訪問</span></span><br><span class="line">  <span class="function"><span class="title">constructor</span>(<span class="params">name: <span class="built_in">string</span></span>)</span> &#123;</span><br><span class="line">    <span class="built_in">this</span>.name = name;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ol start="11">
+<li>型別別名（Type Alias）與複雜型別組合</li>
+</ol>
+<p>大型專案中可以將複雜型別命名，方便重用與維護<br>TS:</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> OrderStatus = <span class="string">&quot;pending&quot;</span> | <span class="string">&quot;shipped&quot;</span> | <span class="string">&quot;delivered&quot;</span>;</span><br><span class="line"><span class="keyword">type</span> Order = &#123; <span class="attr">id</span>: <span class="built_in">number</span>; status: OrderStatus &#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">process</span>(<span class="params">order: Order</span>) </span>&#123; <span class="comment">/* ... */</span> &#125;</span><br></pre></td></tr></table></figure>
+
+<ol start="12">
+<li>Intersection Types（交叉型別）合併資料結構</li>
+</ol>
+<p>JS:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 只能動態合併物件</span></span><br><span class="line"><span class="keyword">const</span> person = <span class="built_in">Object</span>.assign(&#123;&#125;, &#123; <span class="attr">name</span>: <span class="string">&quot;Alex&quot;</span> &#125;, &#123; <span class="attr">age</span>: <span class="number">25</span> &#125;);</span><br></pre></td></tr></table></figure>
+
+<p>交叉型別在多個模組資料合併時很常用（特別是 Redux / API 結果整合）</p>
+<p>TS:</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> Name = &#123; <span class="attr">name</span>: <span class="built_in">string</span> &#125;;</span><br><span class="line"><span class="keyword">type</span> Age = &#123; <span class="attr">age</span>: <span class="built_in">number</span> &#125;;</span><br><span class="line"><span class="keyword">type</span> Person = Name &amp; Age; <span class="comment">// 交叉型別</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> person: Person = &#123; <span class="attr">name</span>: <span class="string">&quot;Alex&quot;</span>, <span class="attr">age</span>: <span class="number">25</span> &#125;;</span><br></pre></td></tr></table></figure>
+
+<ol start="13">
+<li>型別守衛（Type Guards）</li>
+</ol>
+<p>JS</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">handle</span>(<span class="params">val</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">if</span> (val.start) val.start(); <span class="comment">// 可能 undefined</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<p>大型專案裡經常用自訂型別守衛來精準縮小型別範圍</p>
+<p>TS</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">isFunction</span>(<span class="params">value: unknown</span>): <span class="title">value</span> <span class="title">is</span> <span class="title">Function</span> </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">typeof</span> value === <span class="string">&quot;function&quot;</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">handle</span>(<span class="params">val: unknown</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">if</span> (isFunction(val)) &#123;</span><br><span class="line">    val(); <span class="comment">// ✅ 已縮小型別</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ol start="14">
+<li>宣告檔（.d.ts）與第三方函式庫型別</li>
+</ol>
+<p>JS:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 使用第三方庫時，無法獲得型別提示</span></span><br><span class="line"><span class="keyword">import</span> moment <span class="keyword">from</span> <span class="string">&quot;moment&quot;</span>;</span><br><span class="line">moment().format(<span class="string">&quot;YYYY-MM-DD&quot;</span>); <span class="comment">// 沒 IntelliSense</span></span><br></pre></td></tr></table></figure>
+
+<p>大型專案幾乎都要用 .d.ts 來補齊沒有型別定義的第三方套件<br>TS:</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// @types/moment 提供型別定義</span></span><br><span class="line"><span class="keyword">import</span> moment <span class="keyword">from</span> <span class="string">&quot;moment&quot;</span>;</span><br><span class="line">moment().format(<span class="string">&quot;YYYY-MM-DD&quot;</span>); <span class="comment">// ✅ 型別提示 + 自動完成</span></span><br></pre></td></tr></table></figure>
+
+<p>15.readonly 與 Immutable 資料結構</p>
+<p>readonly 對大型專案的設定檔、常量物件非常重要</p>
+<p>Typescript</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> Config = &#123;</span><br><span class="line">  <span class="keyword">readonly</span> port: <span class="built_in">number</span>;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> config: Config = &#123; <span class="attr">port</span>: <span class="number">3000</span> &#125;;</span><br><span class="line">config.port = <span class="number">4000</span>; </span><br><span class="line"><span class="comment">// ❌ Cannot assign to &#x27;port&#x27; because it is a read-only property</span></span><br></pre></td></tr></table></figure>
+
+<ol start="16">
+<li>keyof 與型別安全的物件鍵名存取</li>
+</ol>
+<p>JS</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">getProp</span>(<span class="params">obj, key</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> obj[key]; <span class="comment">// key 可能錯拼</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>keyof 確保傳入的屬性名稱是物件中真實存在的鍵名</p>
+<p>TS</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">getProp</span>&lt;<span class="title">T</span>, <span class="title">K</span> <span class="title">extends</span> <span class="title">keyof</span> <span class="title">T</span>&gt;(<span class="params">obj: T, key: K</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> obj[key];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> user = &#123; <span class="attr">id</span>: <span class="number">1</span>, <span class="attr">name</span>: <span class="string">&quot;Alex&quot;</span> &#125;;</span><br><span class="line">getProp(user, <span class="string">&quot;name&quot;</span>); <span class="comment">// ✅</span></span><br><span class="line">getProp(user, <span class="string">&quot;age&quot;</span>);  </span><br><span class="line"><span class="comment">// ❌ Argument of type &#x27;&quot;age&quot;&#x27; is not assignable to parameter of type &#x27;&quot;id&quot; | &quot;name&quot;&#x27;</span></span><br></pre></td></tr></table></figure>
+<ol start="17">
+<li>Mapped Types（映射型別）</li>
+</ol>
+<p>JS:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 只能手動定義每個屬性為可選</span></span><br><span class="line"><span class="keyword">const</span> partialUser = &#123; <span class="attr">name</span>: <span class="string">&quot;Alex&quot;</span> &#125;;</span><br></pre></td></tr></table></figure>
+<p>大型專案中 Partial、Required、Readonly 等都是 Mapped Types 的應用</p>
+<p>TS:</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> User = &#123; <span class="attr">id</span>: <span class="built_in">number</span>; name: <span class="built_in">string</span>; age: <span class="built_in">number</span> &#125;;</span><br><span class="line"><span class="keyword">type</span> PartialUser = &#123; [K <span class="keyword">in</span> keyof User]?: User[K] &#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> partialUser: PartialUser = &#123; <span class="attr">name</span>: <span class="string">&quot;Alex&quot;</span> &#125;;</span><br></pre></td></tr></table></figure>
+
+<ol start="18">
+<li>模組與命名空間（Modules vs Namespaces）</li>
+</ol>
+<p>JS:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 無型別檢查的全域污染</span></span><br><span class="line"><span class="built_in">window</span>.myApp = &#123;&#125;;</span><br></pre></td></tr></table></figure>
+<p>大型專案建議使用 ES Modules 搭配 TS 的型別系統管理命名與依賴</p>
+<p>TS:</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 使用模組系統</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> myApp = &#123;&#125;;</span><br></pre></td></tr></table></figure>
+
+<ol start="19">
+<li>型別推斷與 as const</li>
+</ol>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> roles = [<span class="string">&quot;admin&quot;</span>, <span class="string">&quot;user&quot;</span>];</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>as const 在定義固定字面值陣列、物件時非常有用（例如權限、狀態碼）</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> roles = [<span class="string">&quot;admin&quot;</span>, <span class="string">&quot;user&quot;</span>] <span class="keyword">as</span> <span class="keyword">const</span>;</span><br><span class="line"><span class="comment">// roles: readonly [&quot;admin&quot;, &quot;user&quot;]</span></span><br><span class="line"><span class="keyword">type</span> Role = <span class="keyword">typeof</span> roles[<span class="built_in">number</span>]; <span class="comment">// &quot;admin&quot; | &quot;user&quot;</span></span><br></pre></td></tr></table></figure>
+
+<ol start="20">
+<li>Non-null Assertion（非空斷言）與嚴格模式</li>
+</ol>
+<p>JS:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> el = <span class="built_in">document</span>.getElementById(<span class="string">&quot;myDiv&quot;</span>);</span><br><span class="line">el.style.color = <span class="string">&quot;red&quot;</span>; <span class="comment">// el 可能是 null</span></span><br></pre></td></tr></table></figure>
+<p>嚴格模式 (strictNullChecks) 在大型專案中很重要，可以提早發現 null/undefined 錯誤</p>
+<p>TS:</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> el = <span class="built_in">document</span>.getElementById(<span class="string">&quot;myDiv&quot;</span>)!;</span><br><span class="line">el.style.color = <span class="string">&quot;red&quot;</span>; <span class="comment">// ✅ 告訴 TS 這裡一定不為 null</span></span><br></pre></td></tr></table></figure>
       
     </div>
     <footer class="article-footer">
