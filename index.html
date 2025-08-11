@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>UM&#39;s Coding Note</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="I record my coding experience at this place">
+<meta property="og:type" content="website">
+<meta property="og:title" content="UM&#39;s Coding Note">
+<meta property="og:url" content="https://yuhsiang237.github.io/index.html">
+<meta property="og:site_name" content="UM&#39;s Coding Note">
+<meta property="og:description" content="I record my coding experience at this place">
+<meta property="og:locale" content="en_US">
+<meta property="article:author" content="Yu Hsiang">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="UM's Coding Note" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">UM&#39;s Coding Note</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">I record my coding experience at this place🤙</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://yuhsiang237.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main">
+  
+    <article id="post-Typescript-Day01" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2025/08/11/Typescript-Day01/" class="article-date">
+  <time class="dt-published" datetime="2025-08-11T13:17:12.000Z" itemprop="datePublished">2025-08-11</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Code/">Code</a>►<a class="article-category-link" href="/categories/Code/Javascript/">Javascript</a>►<a class="article-category-link" href="/categories/Code/Typescript/">Typescript</a>►<a class="article-category-link" href="/categories/Topic/">Topic</a>►<a class="article-category-link" href="/categories/Topic/2025-Typescript/">2025 Typescript</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2025/08/11/Typescript-Day01/">[Day01] Typescript與Javascript差異</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>因為未來工作長期會使用到Typescript，所以就趁這時候筆記一下與JS的差異方面。<br>過去在寫Vue3、Angular時有大量接觸Typescript，就趁這時間重溫一下。</p>
+<ol>
+<li>賦值</li>
+</ol>
+<p>JS 是動態型別 → 錯誤在執行時才發現<br>TS 是靜態型別 → 編譯時就檢查出錯，減少 bug</p>
+<p>JS</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> age = <span class="number">25</span>;</span><br><span class="line">age = <span class="string">&quot;twenty-five&quot;</span>; <span class="comment">// ✅ JS 不會報錯，可能導致執行期錯誤</span></span><br></pre></td></tr></table></figure>
+<p>TS</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> age: <span class="built_in">number</span> = <span class="number">25</span>;</span><br><span class="line">age = <span class="string">&quot;twenty-five&quot;</span>; </span><br><span class="line"><span class="comment">// ❌ 編譯錯誤：Type &#x27;string&#x27; is not assignable to type &#x27;number&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>函數參數與回傳型別<br>TS 允許定義 參數型別 和 回傳型別，防止不合法輸入</li>
+</ol>
+<p>TS</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">add</span>(<span class="params">a: <span class="built_in">number</span>, b: <span class="built_in">number</span></span>): <span class="title">number</span> </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> a + b;</span><br><span class="line">&#125;</span><br><span class="line">add(<span class="number">1</span>, <span class="string">&quot;2&quot;</span>); </span><br><span class="line"><span class="comment">// ❌ Argument of type &#x27;string&#x27; is not assignable to parameter of type &#x27;number&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p>3.可選參數及預設值</p>
+<p>TS 用 ? 宣告參數可選<br>搭配 nullish coalescing (??) 處理 null 或 undefined</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">greet</span>(<span class="params">name?: <span class="built_in">string</span></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">`Hello, <span class="subst">$&#123;name ?? <span class="string">&quot;Guest&quot;</span>&#125;</span>`</span>);</span><br><span class="line">&#125;</span><br><span class="line">greet();  <span class="comment">// Hello, Guest</span></span><br></pre></td></tr></table></figure>
+
+<p>JS則是用||處理</p>
+<p>JS</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">greet</span>(<span class="params">name</span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">`Hello, <span class="subst">$&#123;name || <span class="string">&quot;Guest&quot;</span>&#125;</span>`</span>);</span><br><span class="line">&#125;</span><br><span class="line">greet(); <span class="comment">// Hello, Guest</span></span><br></pre></td></tr></table></figure>
+
+<p>4.Interface </p>
+<p>TS interface 能保證物件結構正確，JS 則只能在執行時才發現問題</p>
+<p>TS</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">interface</span> User &#123;</span><br><span class="line">  <span class="attr">name</span>: <span class="built_in">string</span>;</span><br><span class="line">  age: <span class="built_in">number</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">printUser</span>(<span class="params">user: User</span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(user.name, user.age);</span><br><span class="line">&#125;</span><br><span class="line">printUser(&#123; <span class="attr">name</span>: <span class="string">&quot;Alex&quot;</span>, <span class="attr">age</span>: <span class="number">25</span> &#125;); <span class="comment">// ✅</span></span><br><span class="line">printUser(&#123; <span class="attr">name</span>: <span class="string">&quot;Alex&quot;</span> &#125;);</span><br><span class="line"><span class="comment">// ❌ Property &#x27;age&#x27; is missing in type ...</span></span><br></pre></td></tr></table></figure>
+
+<p>5.Enum vs. Magic String</p>
+<p>Enum 可集中管理常量並提供型別檢查，避免拼錯問題<br>TS</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">enum</span> Status &#123;</span><br><span class="line">  Success = <span class="string">&quot;success&quot;</span>,</span><br><span class="line">  Fail = <span class="string">&quot;fail&quot;</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> status: Status = Status.Success;</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (status === Status.Success) &#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">&quot;OK&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>JS則無<br>JS</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> status = <span class="string">&quot;success&quot;</span>; <span class="comment">// Magic string，容易拼錯</span></span><br><span class="line"><span class="keyword">if</span> (status === <span class="string">&quot;succes&quot;</span>) &#123; <span class="comment">// 拼錯不會報錯</span></span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">&quot;OK&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>6.參數多種型別檢查Union Types</p>
+<p>TS:</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">printId</span>(<span class="params">id: <span class="built_in">number</span> | <span class="built_in">string</span></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(id);</span><br><span class="line">&#125;</span><br><span class="line">printId(<span class="number">123</span>);</span><br><span class="line">printId(<span class="string">&quot;abc&quot;</span>);</span><br><span class="line">printId(<span class="literal">true</span>); </span><br><span class="line"><span class="comment">// ❌ Argument of type &#x27;boolean&#x27; is not assignable to parameter of type &#x27;string | number&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<ol start="7">
+<li>泛型 (Generics)</li>
+</ol>
+<p>any 會失去型別資訊<br>泛型保留型別，讓函數既安全又通用<br>TS:</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">identity</span>&lt;<span class="title">T</span>&gt;(<span class="params">arg: T</span>): <span class="title">T</span> </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> arg;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> a = identity(<span class="number">123</span>); <span class="comment">// a: number</span></span><br><span class="line"><span class="keyword">const</span> b = identity(<span class="string">&quot;hi&quot;</span>); <span class="comment">// b: string</span></span><br></pre></td></tr></table></figure>
+
+<p>一般JS不好確認型別<br>JS:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">identity</span>(<span class="params">arg</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> arg; <span class="comment">// 無法知道回傳型別</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>8.非空斷言與 Optional Chaining</p>
+<p>?. 可安全存取深層屬性<br>搭配 ! 非空斷言在確定不為空時跳過檢查<br>TS:</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> user: <span class="built_in">any</span> = &#123;&#125;;</span><br><span class="line"><span class="built_in">console</span>.log(user?.profile?.name); <span class="comment">// ✅ undefined</span></span><br></pre></td></tr></table></figure>
+
+<p>JS則無法<br>JS:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> user = &#123;&#125;;</span><br><span class="line"><span class="built_in">console</span>.log(user.profile.name); <span class="comment">// ❌ TypeError</span></span><br></pre></td></tr></table></figure>
+
+<ol start="9">
+<li>any vs. unknown<br>什麼時候用 any，什麼時候用 unknown？</li>
+</ol>
+<p>JS:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> value; <span class="comment">// 無型別限制</span></span><br><span class="line">value.foo(); <span class="comment">// 可能出錯</span></span><br></pre></td></tr></table></figure>
+
+<p>any 跟 JS 一樣完全不檢查型別（危險）<br>unknown 要先檢查型別才可使用（安全）</p>
+<p>TS:</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> value: unknown;</span><br><span class="line">value = <span class="string">&quot;hello&quot;</span>;</span><br><span class="line"><span class="comment">// value.toUpperCase(); ❌ 必須先做型別檢查</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (<span class="keyword">typeof</span> value === <span class="string">&quot;string&quot;</span>) &#123;</span><br><span class="line">  <span class="built_in">console</span>.log(value.toUpperCase()); <span class="comment">// ✅</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ol start="10">
+<li>類別 (Class) 的型別修飾符</li>
+</ol>
+<p>JS 與 TS 在類別屬性可見性上的差異<br>JS:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Person</span> </span>&#123;</span><br><span class="line">  <span class="function"><span class="title">constructor</span>(<span class="params">name</span>)</span> &#123;</span><br><span class="line">    <span class="built_in">this</span>.name = name; <span class="comment">// 無法限制外部訪問</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>TS 提供 public（預設）、private、protected，可精確控制存取範圍</p>
+<p>TS:</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Person</span> </span>&#123;</span><br><span class="line">  <span class="keyword">private</span> name: <span class="built_in">string</span>; <span class="comment">// 僅類別內可訪問</span></span><br><span class="line">  <span class="function"><span class="title">constructor</span>(<span class="params">name: <span class="built_in">string</span></span>)</span> &#123;</span><br><span class="line">    <span class="built_in">this</span>.name = name;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://yuhsiang237.github.io/2025/08/11/Typescript-Day01/" data-id="cme6kwo2p0057galjfcca2g42" data-title="[Day01] Typescript與Javascript差異" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-C-Flatten-data-by-Linq" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2023/05/12/C-Flatten-data-by-Linq/" class="article-date">
+  <time class="dt-published" datetime="2023-05-12T08:09:52.000Z" itemprop="datePublished">2023-05-12</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Code/">Code</a>►<a class="article-category-link" href="/categories/Code/C/">C#</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2023/05/12/C-Flatten-data-by-Linq/">C# Flatten data by Linq</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>When I work on the project, I usually run into a problem about flatting data.<br>Because the original data could in the nested property, I have to get it out.<br>The following is an example about nested properties, and the requirement is that I must get all OrderDetailNumber.</p>
+<p>Finally, I found an easy method that is use SelectMany.</p>
+<p><strong>LINQ SelectMany</strong></p>
+<p>Projects each element of a sequence to an IEnumerable<T> and flattens the resulting sequences into one sequence.</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> System;</span><br><span class="line"><span class="keyword">using</span> System.Linq;</span><br><span class="line"><span class="keyword">using</span> System.Collections.Generic;</span><br><span class="line"></span><br><span class="line"><span class="keyword">namespace</span> <span class="title">FlattenResult</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">internal</span> <span class="keyword">class</span> <span class="title">Program</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">class</span> <span class="title">Order</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">public</span> <span class="built_in">string</span> OrderNumber &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">public</span> List&lt;OrderDetail&gt; orderDetails &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">public</span> <span class="keyword">class</span> <span class="title">OrderDetail</span></span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">public</span> <span class="built_in">string</span> OrderDetailNumber &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">Main</span>(<span class="params"><span class="built_in">string</span>[] args</span>)</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">var</span> orders = <span class="keyword">new</span> List&lt;Order&gt;</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">new</span> Order</span><br><span class="line">                &#123;</span><br><span class="line">                    OrderNumber = <span class="string">&quot;202305121111&quot;</span>,</span><br><span class="line">                    orderDetails = <span class="keyword">new</span> List&lt;Order.OrderDetail&gt;</span><br><span class="line">                        &#123;</span><br><span class="line">                            <span class="keyword">new</span> Order.OrderDetail</span><br><span class="line">                            &#123;</span><br><span class="line">                                OrderDetailNumber = <span class="string">&quot;OD0001&quot;</span>,</span><br><span class="line">                            &#125;,</span><br><span class="line">                            <span class="keyword">new</span> Order.OrderDetail</span><br><span class="line">                            &#123;</span><br><span class="line">                                OrderDetailNumber = <span class="string">&quot;OD0001&quot;</span>,</span><br><span class="line">                            &#125;</span><br><span class="line">                        &#125;</span><br><span class="line">                &#125;,</span><br><span class="line">                <span class="keyword">new</span> Order</span><br><span class="line">                &#123;</span><br><span class="line">                    OrderNumber = <span class="string">&quot;202305121112&quot;</span>,</span><br><span class="line">                    orderDetails = <span class="keyword">new</span> List&lt;Order.OrderDetail&gt;</span><br><span class="line">                        &#123;</span><br><span class="line">                            <span class="keyword">new</span> Order.OrderDetail</span><br><span class="line">                            &#123;</span><br><span class="line">                                OrderDetailNumber = <span class="string">&quot;OD0003&quot;</span>,</span><br><span class="line">                            &#125;,</span><br><span class="line">                            <span class="keyword">new</span> Order.OrderDetail</span><br><span class="line">                            &#123;</span><br><span class="line">                                OrderDetailNumber = <span class="string">&quot;OD0004&quot;</span>,</span><br><span class="line">                            &#125;</span><br><span class="line">                        &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">var</span> orderDetailNumbers = orders.SelectMany(s =&gt; s.orderDetails)</span><br><span class="line">                                           .Select(s =&gt; s.OrderDetailNumber)</span><br><span class="line">                                           .ToList();</span><br><span class="line"></span><br><span class="line">            orderDetailNumbers.ForEach(f =&gt;</span><br><span class="line">            &#123;</span><br><span class="line">                Console.WriteLine(f);</span><br><span class="line">            &#125;);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>Output:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">OD0001</span><br><span class="line">OD0001</span><br><span class="line">OD0003</span><br><span class="line">OD0004</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://yuhsiang237.github.io/2023/05/12/C-Flatten-data-by-Linq/" data-id="cme6kwo01000fgalj42mpgf38" data-title="C# Flatten data by Linq" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-C-AutomapperDemo" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2023/03/27/C-AutomapperDemo/" class="article-date">
+  <time class="dt-published" datetime="2023-03-27T03:18:27.000Z" itemprop="datePublished">2023-03-27</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Code/">Code</a>►<a class="article-category-link" href="/categories/Code/C/">C#</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2023/03/27/C-AutomapperDemo/">C# Use AutoMapper to map data model</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>When writing data to SQL Server, there is always a process about mapping model.<br>The process is a transformation, such as A model transforming B model.<br>If the model contains too many properties, the code could became very long.<br>So we can use a plugin, AutoMapper, to avoid that.</p>
+<p>AutoMapper : <a target="_blank" rel="noopener" href="https://docs.automapper.org/">https://docs.automapper.org/</a></p>
+<p>The following is an example of implementation about converting PersonModel to PersonDto, which is a list convert.</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> System;</span><br><span class="line"><span class="keyword">using</span> System.Collections.Generic;</span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> AutoMapper;</span><br><span class="line"></span><br><span class="line"><span class="keyword">namespace</span> <span class="title">AutoMapExample</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">class</span> <span class="title">Program</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">class</span> <span class="title">PersonModel</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">public</span> <span class="built_in">string</span> PersionalID &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line">            <span class="keyword">public</span> <span class="built_in">string</span> Name &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line">            <span class="keyword">public</span> <span class="built_in">int</span>? Age &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">class</span> <span class="title">PersonDto</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">public</span> <span class="built_in">int</span>? Id &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line">            <span class="keyword">public</span> <span class="built_in">string</span> Pid &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line">            <span class="keyword">public</span> <span class="built_in">string</span> Name &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line">            <span class="keyword">public</span> <span class="built_in">int</span>? Age &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">Main</span>(<span class="params"></span>)</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">var</span> personlist = <span class="keyword">new</span> List&lt;PersonModel&gt;</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">new</span> PersonModel</span><br><span class="line">                &#123;</span><br><span class="line">                    PersionalID = <span class="string">&quot;E111111111&quot;</span>,</span><br><span class="line">                    Name = <span class="string">&quot;TOM&quot;</span>,</span><br><span class="line">                    Age = <span class="number">20</span>,</span><br><span class="line">                &#125;,</span><br><span class="line">                <span class="keyword">new</span> PersonModel</span><br><span class="line">                &#123;</span><br><span class="line">                    PersionalID = <span class="string">&quot;B111111111&quot;</span>,</span><br><span class="line">                    Name = <span class="string">&quot;J.Cole&quot;</span>,</span><br><span class="line">                    Age = <span class="number">26</span>,</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">var</span> config = <span class="keyword">new</span> MapperConfiguration(cfg =&gt;</span><br><span class="line">            &#123;</span><br><span class="line">                cfg.CreateMap&lt;PersonModel, PersonDto&gt;()</span><br><span class="line">                    .ForMember(dest =&gt; dest.Pid, opt =&gt; opt.MapFrom(src =&gt; src.PersionalID))</span><br><span class="line">                    .ForMember(dest =&gt; dest.Id, opt =&gt; opt.Ignore());</span><br><span class="line">            &#125;);</span><br><span class="line"></span><br><span class="line">            <span class="comment">// Check for missing mapped properties.</span></span><br><span class="line">            config.AssertConfigurationIsValid();</span><br><span class="line"></span><br><span class="line">            <span class="keyword">var</span> mapper = config.CreateMapper();</span><br><span class="line">            <span class="keyword">var</span> dtoList = mapper.Map&lt;List&lt;PersonModel&gt;, List&lt;PersonDto&gt;&gt;(personlist);</span><br><span class="line"></span><br><span class="line">            dtoList.ForEach(x =&gt;</span><br><span class="line">                &#123;</span><br><span class="line">                    Console.WriteLine(<span class="string">$&quot;id:<span class="subst">&#123;x.Id&#125;</span>,pid:<span class="subst">&#123;x.Pid&#125;</span>,name:<span class="subst">&#123;x.Name&#125;</span>,age:<span class="subst">&#123;x.Age&#125;</span>&quot;</span>);</span><br><span class="line">                &#125;);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>output</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">id:,pid:E111111111,name:TOM,age:20</span><br><span class="line">id:,pid:B111111111,name:J.Cole,age:26</span><br></pre></td></tr></table></figure>
+
+<p>Because id was set to ignore, it’s null when the console prints them. </p>
+<p>The following is the mapping of the different name properity. Due to the name of the properity is different so I have to define a rule to map, such as PersionalID =&gt; Pid.</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ForMember(dest =&gt; dest.Pid, opt =&gt; opt.MapFrom(src =&gt; src.PersionalID))</span><br></pre></td></tr></table></figure>
+<p>The following is a check for missing mapped properties.</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">config.AssertConfigurationIsValid()</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://yuhsiang237.github.io/2023/03/27/C-AutomapperDemo/" data-id="cme6kwnzw0008galjexzjgnjm" data-title="C# Use AutoMapper to map data model" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-Use-C-SemaphoreSlim-to-lock-async" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2023/03/13/Use-C-SemaphoreSlim-to-lock-async/" class="article-date">
+  <time class="dt-published" datetime="2023-03-13T09:18:49.000Z" itemprop="datePublished">2023-03-13</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Code/">Code</a>►<a class="article-category-link" href="/categories/Code/C/">C#</a>►<a class="article-category-link" href="/categories/Topic/">Topic</a>►<a class="article-category-link" href="/categories/Topic/2022-C-SyncAndAsync/">2022 C# SyncAndAsync</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2023/03/13/Use-C-SemaphoreSlim-to-lock-async/">Use C# SemaphoreSlim to lock async functions</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>When writing an async function or method, I encountered a problem with accessing data one-by-one, such as starting 100000 async APIs, which could lead to bugs. </p>
+<p>Below is a problem example. I expect the result to be “Sum:100000”, but the actual result is “Sum:99995” or other abnormal results.</p>
+<p><strong>Example 1:</strong></p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">namespace</span> <span class="title">SemaphoreSlimExample</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">Program</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="built_in">int</span> _sum;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span>  <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">Main</span>(<span class="params"><span class="built_in">string</span>[] args</span>)</span></span><br><span class="line">    &#123;</span><br><span class="line">        Task.WaitAll(Enumerable</span><br><span class="line">            .Range(<span class="number">0</span>, <span class="number">100000</span>)</span><br><span class="line">            .Select(x =&gt; Add(<span class="number">1</span>))</span><br><span class="line">            .ToArray());</span><br><span class="line">        Console.WriteLine(<span class="string">$&quot;Sum:<span class="subst">&#123;_sum&#125;</span>&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">async</span> Task <span class="title">Add</span>(<span class="params"><span class="built_in">int</span> num</span>)</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">await</span> Task.Run(() =&gt;</span><br><span class="line">        &#123;</span><br><span class="line">            _sum += num;</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p><strong>Result:</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Sum:99995</span><br></pre></td></tr></table></figure>
+
+
+<p>To fix this problem, I added the SemaphoreSlim to code, and the result always is correct  “Sum:100000”.<br>It helps us lock and limit the asynchronous function’s data to one-by-one. </p>
+<p>What is Semaphoreslim:<br><a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/dotnet/api/system.threading.semaphoreslim?view=net-7.0">https://learn.microsoft.com/en-us/dotnet/api/system.threading.semaphoreslim?view=net-7.0</a></p>
+<p>Represents a lightweight alternative to Semaphore that limits the number of threads that can access a resource or pool of resources concurrently.</p>
+<p><strong>Example2:</strong></p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">namespace</span> <span class="title">SemaphoreSlimExample</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">Program</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="built_in">int</span> _sum;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">readonly</span> SemaphoreSlim locker = <span class="keyword">new</span> SemaphoreSlim(<span class="number">1</span>, <span class="number">1</span>);</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">Main</span>(<span class="params"><span class="built_in">string</span>[] args</span>)</span></span><br><span class="line">    &#123;</span><br><span class="line">        Task.WaitAll(Enumerable</span><br><span class="line">            .Range(<span class="number">0</span>, <span class="number">100000</span>)</span><br><span class="line">            .Select(x =&gt; Add(<span class="number">1</span>))</span><br><span class="line">            .ToArray());</span><br><span class="line">        Console.WriteLine(<span class="string">$&quot;Sum:<span class="subst">&#123;_sum&#125;</span>&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">async</span> Task <span class="title">Add</span>(<span class="params"><span class="built_in">int</span> num</span>)</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">await</span> locker.WaitAsync();</span><br><span class="line"></span><br><span class="line">        <span class="keyword">await</span> Task.Run(() =&gt;</span><br><span class="line">        &#123;</span><br><span class="line">            _sum += num;</span><br><span class="line">        &#125;);</span><br><span class="line"></span><br><span class="line">        locker.Release();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p><strong>Result:</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Sum:100000</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://yuhsiang237.github.io/2023/03/13/Use-C-SemaphoreSlim-to-lock-async/" data-id="cme6kwo2r005agalj4tz63mr6" data-title="Use C# SemaphoreSlim to lock async functions" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-C-Distinct-object" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2023/02/14/C-Distinct-object/" class="article-date">
+  <time class="dt-published" datetime="2023-02-14T08:13:37.000Z" itemprop="datePublished">2023-02-14</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Code/">Code</a>►<a class="article-category-link" href="/categories/Code/C/">C#</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2023/02/14/C-Distinct-object/">C# Distinct objects</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>In the case, I want to remove the duplicate objects of the list.<br>I use the object key, <code>UserId</code> and <code>Type</code>, to distinguish them in the list.<br>After I distinct the objects, the count of the list becomes 2.<br>The numbers of the list are 2023021403 and 2023021401.</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> System;</span><br><span class="line"><span class="keyword">using</span> System.Collections.Generic;</span><br><span class="line"><span class="keyword">using</span> System.Linq;</span><br><span class="line"></span><br><span class="line"><span class="keyword">namespace</span> <span class="title">App</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">internal</span> <span class="keyword">class</span> <span class="title">Program</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">private</span> <span class="keyword">class</span> <span class="title">OrderModel</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">public</span> <span class="built_in">int</span> UserId &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line">            <span class="keyword">public</span> <span class="built_in">int</span> Type &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line">            <span class="keyword">public</span> <span class="built_in">string</span> Number &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">Main</span>(<span class="params"><span class="built_in">string</span>[] args</span>)</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">var</span> orders = <span class="keyword">new</span> List&lt;OrderModel&gt;</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">new</span> OrderModel</span><br><span class="line">                &#123;</span><br><span class="line">                    UserId = <span class="number">1</span>,</span><br><span class="line">                    Type = <span class="number">1</span>,</span><br><span class="line">                    Number = <span class="string">&quot;2023021401&quot;</span></span><br><span class="line">                &#125;,</span><br><span class="line">                <span class="keyword">new</span> OrderModel</span><br><span class="line">                &#123;</span><br><span class="line">                    UserId = <span class="number">1</span>,</span><br><span class="line">                    Type = <span class="number">1</span>,</span><br><span class="line">                    Number = <span class="string">&quot;2023021402&quot;</span></span><br><span class="line">                &#125;</span><br><span class="line">                ,</span><br><span class="line">                <span class="keyword">new</span> OrderModel</span><br><span class="line">                &#123;</span><br><span class="line">                    UserId = <span class="number">1</span>,</span><br><span class="line">                    Type = <span class="number">2</span>,</span><br><span class="line">                    Number = <span class="string">&quot;2023021403&quot;</span></span><br><span class="line">                &#125;</span><br><span class="line">            &#125;;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">var</span> distinctList = orders</span><br><span class="line">                               .GroupBy(x =&gt; <span class="keyword">new</span> &#123; x.Type, x.UserId &#125;)</span><br><span class="line">                               .Select(x =&gt; x.FirstOrDefault())</span><br><span class="line">                               .ToList();</span><br><span class="line"></span><br><span class="line">            <span class="keyword">foreach</span> (<span class="keyword">var</span> o <span class="keyword">in</span> distinctList)</span><br><span class="line">            &#123;</span><br><span class="line">                Console.WriteLine(<span class="string">$&quot;Number:<span class="subst">&#123;o.Number&#125;</span>&quot;</span>);</span><br><span class="line">                Console.WriteLine(<span class="string">$&quot;UserId:<span class="subst">&#123;o.UserId&#125;</span>&quot;</span>);</span><br><span class="line">                Console.WriteLine(<span class="string">$&quot;Type:<span class="subst">&#123;o.Type&#125;</span>&quot;</span>);</span><br><span class="line">                Console.WriteLine(<span class="string">&quot;===&quot;</span>);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Output:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">Number:2023021401</span><br><span class="line">UserId:1</span><br><span class="line">Type:1</span><br><span class="line">===</span><br><span class="line">Number:2023021403</span><br><span class="line">UserId:1</span><br><span class="line">Type:2</span><br><span class="line">===</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://yuhsiang237.github.io/2023/02/14/C-Distinct-object/" data-id="cme6kwnzz000cgalj6on3fgov" data-title="C# Distinct objects" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-Use-CTE-to-simplify-query-in-SQL-Server" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2023/02/03/Use-CTE-to-simplify-query-in-SQL-Server/" class="article-date">
+  <time class="dt-published" datetime="2023-02-03T07:21:45.000Z" itemprop="datePublished">2023-02-03</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Database/">Database</a>►<a class="article-category-link" href="/categories/Database/SQL-Server/">SQL Server</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2023/02/03/Use-CTE-to-simplify-query-in-SQL-Server/">Simplify queries in SQL Server using CTE</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>If you use queries in SQL, you could involve complex statements that could cause some maintenance or reading problems. You can still do them, but you can choose a new way, <code>CTE</code>.</p>
+<p><strong>What is CTE?</strong><br>The common table expression (CTE) is a powerful construct in SQL that helps simplify a query.</p>
+<p>With CTE, you can split the query into different temporary tables and use them.</p>
+<h3 id="Example"><a href="#Example" class="headerlink" title="Example"></a>Example</h3><p>If I want to create a report about the total amount of the user’s order, I could use CTE to simplify it.</p>
+<p><strong>[dbo].[Orders]</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">OrderNumber	UserId	Amount</span><br><span class="line">2023020300000001	1	500</span><br><span class="line">2023020300000002	3	100</span><br><span class="line">2023020300000003	1	300</span><br><span class="line">2023020300000004	2	400</span><br><span class="line">2023020300000005	1	100</span><br></pre></td></tr></table></figure>
+
+<p><strong>[dbo].[Users]</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Id	Name	Age</span><br><span class="line">1	CK	30</span><br><span class="line">2	RR	29</span><br><span class="line">3	NC	25</span><br></pre></td></tr></table></figure>
+
+<p>Then I use the CTE to create a temp table and join them.</p>
+<p>Result:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Id	Name	Age	OrderTotalAmount</span><br><span class="line">1	CK	30	900</span><br><span class="line">2	RR	29	400</span><br><span class="line">3	NC	25	100</span><br></pre></td></tr></table></figure>
+<p>SQL:</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">USE OrderDB</span><br><span class="line">GO</span><br><span class="line"><span class="keyword">WITH</span> Order_User_Total_CTE (UserId, OrderTotalAmount)</span><br><span class="line"><span class="keyword">AS</span></span><br><span class="line"><span class="comment">-- Define the User Order Total CTE query.</span></span><br><span class="line">(</span><br><span class="line">    <span class="keyword">SELECT</span> UserId, <span class="built_in">SUM</span>(Amount) <span class="keyword">AS</span> OrderTotalAmount</span><br><span class="line">    <span class="keyword">FROM</span> Orders</span><br><span class="line">    <span class="keyword">GROUP</span> <span class="keyword">BY</span> UserId</span><br><span class="line">)</span><br><span class="line"><span class="comment">-- Query</span></span><br><span class="line"><span class="keyword">SELECT</span> </span><br><span class="line">	U.<span class="operator">*</span>, </span><br><span class="line">	OUTC.OrderTotalAmount</span><br><span class="line"><span class="keyword">FROM</span> Users U</span><br><span class="line"><span class="keyword">LEFT</span> <span class="keyword">JOIN</span> Order_User_Total_CTE OUTC <span class="keyword">ON</span> U.Id <span class="operator">=</span> OUTC.UserId</span><br><span class="line">GO</span><br></pre></td></tr></table></figure>
+
+<p>Now, if I need to create complex reports, summaries or stored procedures , I will use CTE to help me.</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://yuhsiang237.github.io/2023/02/03/Use-CTE-to-simplify-query-in-SQL-Server/" data-id="cme6kwo2q0058galj5k16c1vv" data-title="Simplify queries in SQL Server using CTE" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-Improve-sql-speed-by-adding-index-in-Sql-Server" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2023/02/02/Improve-sql-speed-by-adding-index-in-Sql-Server/" class="article-date">
+  <time class="dt-published" datetime="2023-02-02T08:00:42.000Z" itemprop="datePublished">2023-02-02</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Database/">Database</a>►<a class="article-category-link" href="/categories/Database/SQL-Server/">SQL Server</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2023/02/02/Improve-sql-speed-by-adding-index-in-Sql-Server/">Improve SQL speed by adding index in SQL Server</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>In the case, I have a simple sql about select, which sorts by date, <code>OrderDate</code>. At the same time, there are <strong>5,000,000 records</strong> in the table, Orders. Due to the large amount of data, the SQL speed becomes very slow, about 6 seconds.</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> TOP <span class="number">1000</span> [Id]</span><br><span class="line">      ,[CreatedOn]</span><br><span class="line">      ,[UpdatedOn]</span><br><span class="line">      ,[IsValid]</span><br><span class="line">      ,[OrderDate]</span><br><span class="line">      ,[OrderNumber]</span><br><span class="line"><span class="keyword">FROM</span> [OrderDB].[dbo].[Orders]</span><br><span class="line"><span class="keyword">ORDER</span> <span class="keyword">BY</span> [OrderDate] <span class="keyword">DESC</span></span><br></pre></td></tr></table></figure>
+<p>After running the sql script, the speed of the result was very slow, about 6 seconds.  </p>
+<img src="/2023/02/02/Improve-sql-speed-by-adding-index-in-Sql-Server/ScriptSpeed.png" class="">
+
+<p>So to imporve this problem, I add the index,  <code>NONCLUSTERED INDEX</code>.</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">USE OrderDB;  </span><br><span class="line">GO  </span><br><span class="line"><span class="keyword">CREATE</span> NONCLUSTERED INDEX [IX_Orders_OrderDate]  </span><br><span class="line">    <span class="keyword">ON</span> Orders ([OrderDate]);   </span><br><span class="line">GO </span><br></pre></td></tr></table></figure>
+
+<p>After running the script, I found the speed has been improved by index, about 0 seconds, and there’re still <strong>5,000,000 records</strong> in the table.</p>
+<img src="/2023/02/02/Improve-sql-speed-by-adding-index-in-Sql-Server/ScriptSpeedImporve.png" class="">
+
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://yuhsiang237.github.io/2023/02/02/Improve-sql-speed-by-adding-index-in-Sql-Server/" data-id="cme6kwo1n003cgalj2ef5696l" data-title="Improve SQL speed by adding index in SQL Server" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-Loop-in-SQL-Server-stored-procedure-example" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2023/02/02/Loop-in-SQL-Server-stored-procedure-example/" class="article-date">
+  <time class="dt-published" datetime="2023-02-02T06:34:44.000Z" itemprop="datePublished">2023-02-02</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Database/">Database</a>►<a class="article-category-link" href="/categories/Database/SQL-Server/">SQL Server</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2023/02/02/Loop-in-SQL-Server-stored-procedure-example/">Generate the test data in SQL Server by stored procedure example</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>In the case, I want to create a simple script about creating the test data of 100000 records in SQL Server stored procedure.</p>
+<p>Today, I have a table, Orders, and I want to generate the test data to it.</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">USE [OrderDB]</span><br><span class="line">GO</span><br><span class="line"><span class="comment">/****** Object:  Table [dbo].[Orders]    Script Date: 2/2/2023 3:14:07 PM ******/</span></span><br><span class="line"><span class="keyword">SET</span> ANSI_NULLS <span class="keyword">ON</span></span><br><span class="line">GO</span><br><span class="line"><span class="keyword">SET</span> QUOTED_IDENTIFIER <span class="keyword">ON</span></span><br><span class="line">GO</span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> [dbo].[Orders](</span><br><span class="line">	[Id] [<span class="type">int</span>] <span class="keyword">IDENTITY</span>(<span class="number">1</span>,<span class="number">1</span>) <span class="keyword">NOT</span> <span class="keyword">NULL</span>,</span><br><span class="line">	[CreatedOn] [datetime] <span class="keyword">NULL</span>,</span><br><span class="line">	[UpdatedOn] [datetime] <span class="keyword">NULL</span>,</span><br><span class="line">	[IsValid] [bit] <span class="keyword">NULL</span>,</span><br><span class="line">	[OrderDate] [datetime] <span class="keyword">NULL</span>,</span><br><span class="line">	[OrderNumber] [<span class="type">varchar</span>](<span class="number">50</span>) <span class="keyword">NULL</span>,</span><br><span class="line"> <span class="keyword">CONSTRAINT</span> [PK_Orders] <span class="keyword">PRIMARY</span> KEY CLUSTERED </span><br><span class="line">(</span><br><span class="line">	[Id] <span class="keyword">ASC</span></span><br><span class="line">)<span class="keyword">WITH</span> (PAD_INDEX <span class="operator">=</span> OFF, STATISTICS_NORECOMPUTE <span class="operator">=</span> OFF, IGNORE_DUP_KEY <span class="operator">=</span> OFF, ALLOW_ROW_LOCKS <span class="operator">=</span> <span class="keyword">ON</span>, ALLOW_PAGE_LOCKS <span class="operator">=</span> <span class="keyword">ON</span>, OPTIMIZE_FOR_SEQUENTIAL_KEY <span class="operator">=</span> OFF) <span class="keyword">ON</span> [<span class="keyword">PRIMARY</span>]</span><br><span class="line">) <span class="keyword">ON</span> [<span class="keyword">PRIMARY</span>]</span><br><span class="line">GO</span><br></pre></td></tr></table></figure>
+<p>Then I write a simple stored procedure.<br>You can control the data count you want to generate.</p>
+<p>If I want to create the 100000 records, I can do this.</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">use OrderDB</span><br><span class="line">go</span><br><span class="line"><span class="keyword">execute</span> dbo.CreateTestData <span class="number">100000</span></span><br></pre></td></tr></table></figure>
+
+<p>Below is the complete script, I wrote.</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">USE [OrderDB]</span><br><span class="line">GO</span><br><span class="line"><span class="comment">/****** Object:  StoredProcedure [dbo].[CreateTestData]    Script Date: 2/2/2023 2:46:33 PM ******/</span></span><br><span class="line"><span class="keyword">SET</span> ANSI_NULLS <span class="keyword">ON</span></span><br><span class="line">GO</span><br><span class="line"><span class="keyword">SET</span> QUOTED_IDENTIFIER <span class="keyword">ON</span></span><br><span class="line">GO</span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">PROCEDURE</span> [dbo].[CreateTestData] <span class="variable">@Number</span> <span class="type">int</span></span><br><span class="line"><span class="keyword">AS</span></span><br><span class="line"><span class="keyword">BEGIN</span></span><br><span class="line">	<span class="keyword">DECLARE</span></span><br><span class="line">		<span class="variable">@Counter</span> <span class="type">int</span> <span class="operator">=</span> <span class="number">1</span></span><br><span class="line">	WHILE <span class="variable">@Counter</span> <span class="operator">&lt;=</span> <span class="variable">@Number</span></span><br><span class="line">	<span class="keyword">BEGIN</span></span><br><span class="line">		<span class="keyword">INSERT</span> <span class="keyword">INTO</span> Orders (OrderDate,OrderNumber,IsValid,CreatedOn,UpdatedOn) </span><br><span class="line">		<span class="keyword">VALUES</span> </span><br><span class="line">		(</span><br><span class="line">			DATEADD(<span class="keyword">DAY</span>, <span class="built_in">ABS</span>(CHECKSUM(NEWID()) <span class="operator">%</span> <span class="number">3650</span>), <span class="string">&#x27;2000-01-01&#x27;</span>),</span><br><span class="line">			<span class="keyword">CONVERT</span>(<span class="type">CHAR</span>(<span class="number">8</span>), FORMAT(GetDate(),<span class="string">&#x27;yyyyMMdd&#x27;</span>)) <span class="operator">+</span> <span class="keyword">right</span>(<span class="string">&#x27;00000000&#x27;</span><span class="operator">+</span><span class="built_in">cast</span>(<span class="variable">@Counter</span> <span class="keyword">as</span> <span class="type">varchar</span>(<span class="number">8</span>)),<span class="number">8</span>),</span><br><span class="line">			<span class="number">1</span>,</span><br><span class="line">			GETDATE(),</span><br><span class="line">			GETDATE()</span><br><span class="line">		)</span><br><span class="line">		<span class="keyword">SET</span> <span class="variable">@Counter</span><span class="operator">=</span> <span class="variable">@Counter</span> <span class="operator">+</span> <span class="number">1</span></span><br><span class="line">	<span class="keyword">END</span></span><br><span class="line"><span class="keyword">END</span></span><br></pre></td></tr></table></figure>
+<p>The stored procedure inserts a random date into <code>OrderDate</code> and a sequence number into <code>OrderNumber</code>.</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Id	CreatedOn	UpdatedOn	IsValid	OrderDate	OrderNumber</span><br><span class="line">1	2023-02-02 15:27:27.763	2023-02-02 15:27:27.763	1	2002-11-30 00:00:00.000	2023020200000001</span><br><span class="line">2	2023-02-02 15:27:27.763	2023-02-02 15:27:27.763	1	2007-04-29 00:00:00.000	2023020200000002</span><br><span class="line">3	2023-02-02 15:27:27.763	2023-02-02 15:27:27.763	1	2002-03-18 00:00:00.000	2023020200000003</span><br><span class="line">4	2023-02-02 15:27:27.763	2023-02-02 15:27:27.763	1	2003-03-27 00:00:00.000	2023020200000004</span><br><span class="line">5	2023-02-02 15:27:27.763	2023-02-02 15:27:27.763	1	2007-11-07 00:00:00.000	2023020200000005</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://yuhsiang237.github.io/2023/02/02/Loop-in-SQL-Server-stored-procedure-example/" data-id="cme6kwo1q003jgaljc0r1adep" data-title="Generate the test data in SQL Server by stored procedure example" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-簡易後端處理商業邏輯的方式-系統架構篇" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2023/01/30/%E7%B0%A1%E6%98%93%E5%BE%8C%E7%AB%AF%E8%99%95%E7%90%86%E5%95%86%E6%A5%AD%E9%82%8F%E8%BC%AF%E7%9A%84%E6%96%B9%E5%BC%8F-%E7%B3%BB%E7%B5%B1%E6%9E%B6%E6%A7%8B%E7%AF%87/" class="article-date">
+  <time class="dt-published" datetime="2023-01-30T07:19:31.000Z" itemprop="datePublished">2023-01-30</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Topic/">Topic</a>►<a class="article-category-link" href="/categories/Topic/SystemStructure/">SystemStructure</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2023/01/30/%E7%B0%A1%E6%98%93%E5%BE%8C%E7%AB%AF%E8%99%95%E7%90%86%E5%95%86%E6%A5%AD%E9%82%8F%E8%BC%AF%E7%9A%84%E6%96%B9%E5%BC%8F-%E7%B3%BB%E7%B5%B1%E6%9E%B6%E6%A7%8B%E7%AF%87/">簡易後端處理商業邏輯的方式-系統架構篇</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>在常見的API設計中，透過接收參數到後端服務中，再透過一連串資料操作的邏輯再寫入資料庫或做額外的操作。  </p>
+<p>這時情況會像是下面這樣:</p>
+<img src="/2023/01/30/%E7%B0%A1%E6%98%93%E5%BE%8C%E7%AB%AF%E8%99%95%E7%90%86%E5%95%86%E6%A5%AD%E9%82%8F%E8%BC%AF%E7%9A%84%E6%96%B9%E5%BC%8F-%E7%B3%BB%E7%B5%B1%E6%9E%B6%E6%A7%8B%E7%AF%87/1.png" class="">
+
+<p>因為有過多的操作，且這些操作可能在其他的API也會遇到<br>此時，就可以把他們抽出來成:<strong>處理程序(Handler)</strong></p>
+<p>透過Handler，把相同的服務可以用的Method或Function整理在一起。</p>
+<p><strong>舉個例子:</strong><br>有支API叫做建立訂單(CreateOrder)<br>他可能的商業邏輯操作如:建立訂單、修正庫存…等等。<br>那我們就可以把它抽出來叫做OrderHandler，把複雜的商業邏輯封裝在裡面。  </p>
+<p>這時如果要使用到建立訂單時就能透過這Handler去幫我們處理。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">OrderHandler.CreateOrder()</span><br></pre></td></tr></table></figure>
+
+<p>比如API叫做:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/Order/CreateOrder</span><br></pre></td></tr></table></figure>
+<p>那他的Controller裡面就可以這樣寫</p>
+<p>OrderController裡的Action(CreateOrder)就能呼叫OrderHandler.CreateOrder()去協助建立訂單的操作。</p>
+<p>這樣做的好處是能集中管理服務的功能，比較不會遇到全都散在Controller的情況。此外，其他Controller要使用到相同的功能，只要呼叫該Handler，而不用整段複製過去。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://yuhsiang237.github.io/2023/01/30/%E7%B0%A1%E6%98%93%E5%BE%8C%E7%AB%AF%E8%99%95%E7%90%86%E5%95%86%E6%A5%AD%E9%82%8F%E8%BC%AF%E7%9A%84%E6%96%B9%E5%BC%8F-%E7%B3%BB%E7%B5%B1%E6%9E%B6%E6%A7%8B%E7%AF%87/" data-id="cme6kwo47008cgalj4ed4d4xr" data-title="簡易後端處理商業邏輯的方式-系統架構篇" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-C-中使用雙問號-取值用法" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2022/12/07/C-%E4%B8%AD%E4%BD%BF%E7%94%A8%E9%9B%99%E5%95%8F%E8%99%9F-%E5%8F%96%E5%80%BC%E7%94%A8%E6%B3%95/" class="article-date">
+  <time class="dt-published" datetime="2022-12-07T06:55:29.000Z" itemprop="datePublished">2022-12-07</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Code/">Code</a>►<a class="article-category-link" href="/categories/Code/C/">C#</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2022/12/07/C-%E4%B8%AD%E4%BD%BF%E7%94%A8%E9%9B%99%E5%95%8F%E8%99%9F-%E5%8F%96%E5%80%BC%E7%94%A8%E6%B3%95/">C#中使用雙問號??取值用法</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>在C#中可以運用??來判斷前者是否為null，若為null則將後面值遞補上去。<br>如下，因Amount為空，所以會套用後面的default。<br>而default就是decimal的預設值0。<br>因此，在最後會得到amount結果為0。</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">namespace</span> <span class="title">Application</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">class</span> <span class="title">OrderDetail</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> amount</span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">        <span class="keyword">public</span> <span class="built_in">decimal</span>? Amount;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">internal</span> <span class="keyword">class</span> <span class="title">Program</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">Main</span>(<span class="params"><span class="built_in">string</span>[] args</span>)</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">var</span> orderDetail = <span class="keyword">new</span> OrderDetail();</span><br><span class="line">            <span class="keyword">var</span> amount = orderDetail.Amount ?? <span class="literal">default</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://yuhsiang237.github.io/2022/12/07/C-%E4%B8%AD%E4%BD%BF%E7%94%A8%E9%9B%99%E5%95%8F%E8%99%9F-%E5%8F%96%E5%80%BC%E7%94%A8%E6%B3%95/" data-id="cme6kwo17002kgalj64rchiv0" data-title="C#中使用雙問號??取值用法" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+
+
+  <nav id="page-nav">
+    
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/16/">16</a><a class="extend next" rel="next" href="/page/2/">Next &raquo;</a>
+  </nav>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Code/">Code</a><span class="category-list-count">76</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Code/C/">C#</a><span class="category-list-count">69</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Code/Javascript/">Javascript</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Code/Refactoring/">Refactoring</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Code/Typescript/">Typescript</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/">Computer Science</a><span class="category-list-count">5</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/Algorithm/">Algorithm</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/Data-structure/">Data structure</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/Electronic-Circuit/">Electronic Circuit</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Daily-Log/">Daily Log</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/">Database</a><span class="category-list-count">57</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Database/PostgreSQL/">PostgreSQL</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/SQL-Server/">SQL Server</a><span class="category-list-count">47</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/">Framework</a><span class="category-list-count">27</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/AspNetCore-API/">AspNetCore API</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/AspNetCore-MVC/">AspNetCore MVC</a><span class="category-list-count">21</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/">Topic</a><span class="category-list-count">76</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2021-C-AspNetCore-Challenge/">2021 C# AspNetCore Challenge</a><span class="category-list-count">30</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2021-SQL-Server-Challenge/">2021 SQL Server Challenge</a><span class="category-list-count">30</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2022-C-SyncAndAsync/">2022 C# SyncAndAsync</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2025-Typescript/">2025 Typescript</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/Big-Data/">Big Data</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/LeetCode/">LeetCode</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/SystemStructure/">SystemStructure</a><span class="category-list-count">1</span></li></ul></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/08/">August 2025</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/05/">May 2023</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/03/">March 2023</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/02/">February 2023</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/01/">January 2023</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/12/">December 2022</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/09/">September 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/07/">July 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/06/">June 2022</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/05/">May 2022</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/04/">April 2022</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/03/">March 2022</a><span class="archive-list-count">17</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/02/">February 2022</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/01/">January 2022</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">December 2021</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">October 2021</a><span class="archive-list-count">24</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">September 2021</a><span class="archive-list-count">46</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">August 2021</a><span class="archive-list-count">12</span></li></ul>
+    </div>
+  </div>
+
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2025 Yu Hsiang<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

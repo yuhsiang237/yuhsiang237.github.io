@@ -1,0 +1,1075 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>UM&#39;s Coding Note</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="I record my coding experience at this place">
+<meta property="og:type" content="website">
+<meta property="og:title" content="UM&#39;s Coding Note">
+<meta property="og:url" content="https://yuhsiang237.github.io/page/13/index.html">
+<meta property="og:site_name" content="UM&#39;s Coding Note">
+<meta property="og:description" content="I record my coding experience at this place">
+<meta property="og:locale" content="en_US">
+<meta property="article:author" content="Yu Hsiang">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="UM's Coding Note" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">UM&#39;s Coding Note</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">I record my coding experience at this place🤙</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://yuhsiang237.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main">
+  
+    <article id="post-sql-server-exists" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2021/09/16/sql-server-exists/" class="article-date">
+  <time class="dt-published" datetime="2021-09-16T04:47:44.000Z" itemprop="datePublished">2021-09-16</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Database/">Database</a>►<a class="article-category-link" href="/categories/Database/SQL-Server/">SQL Server</a>►<a class="article-category-link" href="/categories/Topic/">Topic</a>►<a class="article-category-link" href="/categories/Topic/2021-SQL-Server-Challenge/">2021 SQL Server Challenge</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2021/09/16/sql-server-exists/">[Day16] SQL server exists用法 - SQL Server資料庫入門</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>這回探討SQL server exists用法。<br>之前有在子查詢的範例中使用到，但覺得不夠清楚所以拉出來探討看看。</p>
+<h3 id="Exists"><a href="#Exists" class="headerlink" title="Exists"></a>Exists</h3><p>EXISTS 運算子可以連接子查詢，用來判斷子查詢是否有返回的結果，如果有結果返回則為真、否則為假。若 EXISTS 為真，就會繼續執行外查詢中的 SQL；若 EXISTS 為假，則整個 SQL 查詢就不會返回任何結果。</p>
+<p>語法</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">SELECT column_name(s)</span><br><span class="line">FROM table_name</span><br><span class="line">WHERE EXISTS</span><br><span class="line">(SELECT column_name FROM table_name WHERE condition); </span><br></pre></td></tr></table></figure>
+<p>且exists跟in語法都可以達到相同效果。<br>如:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">SELECT * FROM table_a</span><br><span class="line">WHERE EXISTS</span><br><span class="line">(SELECT * FROM table_b WHERE table_b.id=table_a.id);</span><br></pre></td></tr></table></figure>
+<p>等價於</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">SELECT * FROM table_a</span><br><span class="line">WHERE id</span><br><span class="line">in (SELECT id FROM table_b);</span><br></pre></td></tr></table></figure>
+<p>注意使用EXISTS條件,main query(外部查詢)和subquery(子查詢)一定要有連接,例如 table_b.id=table_a.id,如果沒有連結EXISTS條件使用是無效的</p>
+<h3 id="實作"><a href="#實作" class="headerlink" title="實作"></a>實作</h3><p><strong>customers 顧客</strong></p>
+<img src="/2021/09/16/sql-server-exists/%E9%A1%A7%E5%AE%A2.png" class="">
+<p><strong>products 產品</strong></p>
+<img src="/2021/09/16/sql-server-exists/%E7%94%A2%E5%93%81.png" class="">
+<p><strong>orders 出貨單</strong></p>
+<img src="/2021/09/16/sql-server-exists/%E8%A8%82%E5%96%AE.png" class="">
+<p><strong>order_details 出貨單明細</strong></p>
+<img src="/2021/09/16/sql-server-exists/%E6%98%8E%E7%B4%B0.png" class="">
+
+
+<p>實作:尋找有下訂單的客戶</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Select * from customers </span><br><span class="line">where exists (select * from orders where customers.number = orders.customer_number )</span><br></pre></td></tr></table></figure>
+<p>結果:<br>把結果符合customers.number = orders.customer_number的列都返回。<br>所以得到有下訂單的客戶。<br>此外發現exists子查詢的Select * from其實隨便指派一個欄位都可以，因為並不影響結果。</p>
+<img src="/2021/09/16/sql-server-exists/1.png" class="">
+
+<p>實作:尋找”沒”有下訂單的客戶</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Select * from customers </span><br><span class="line">where not exists (select * from orders where customers.number = orders.customer_number )</span><br></pre></td></tr></table></figure>
+<p>結果:<br>在exists前加個not可以得到相反結果，即沒下訂單的客戶</p>
+<img src="/2021/09/16/sql-server-exists/2.png" class="">
+
+<h3 id="總結"><a href="#總結" class="headerlink" title="總結"></a>總結</h3><p>覺得還是用in會比較直覺，用exists時會突然覺得where竟然能直接接一個非欄位的用法。<br>但熟悉後可能又覺得還好了。</p>
+<p>此外，似乎有in跟exists效能一說，目前就先記著，改日有空再找機會打一篇。</p>
+<p><strong>參考資料</strong><br><a target="_blank" rel="noopener" href="https://www.w3schools.com/sql/sql_exists.asp">https://www.w3schools.com/sql/sql_exists.asp</a><br><a target="_blank" rel="noopener" href="https://www.fooish.com/sql/exists.html">https://www.fooish.com/sql/exists.html</a><br><a target="_blank" rel="noopener" href="http://mylinoraclesql.blogspot.com/2013/07/exists.html">http://mylinoraclesql.blogspot.com/2013/07/exists.html</a><br><a target="_blank" rel="noopener" href="https://eeluck.pixnet.net/blog/post/27559378">https://eeluck.pixnet.net/blog/post/27559378</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://yuhsiang237.github.io/2021/09/16/sql-server-exists/" data-id="cme6kwo32005wgalj92d9768v" data-title="[Day16] SQL server exists用法 - SQL Server資料庫入門" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-sql-server-like用法" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2021/09/16/sql-server-like%E7%94%A8%E6%B3%95/" class="article-date">
+  <time class="dt-published" datetime="2021-09-16T04:22:56.000Z" itemprop="datePublished">2021-09-16</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Database/">Database</a>►<a class="article-category-link" href="/categories/Database/SQL-Server/">SQL Server</a>►<a class="article-category-link" href="/categories/Topic/">Topic</a>►<a class="article-category-link" href="/categories/Topic/2021-SQL-Server-Challenge/">2021 SQL Server Challenge</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2021/09/16/sql-server-like%E7%94%A8%E6%B3%95/">[Day15] SQL server like用法 - SQL Server資料庫入門</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>在這回中將探討SQL server中like的使用方式。</p>
+<h3 id="Like"><a href="#Like" class="headerlink" title="Like"></a>Like</h3><p>like被用在SQL語法中的where條件。<br>用來篩選模糊字串。</p>
+<p>通常搭配這兩種運算子去實作模糊搜尋條件。</p>
+<p><strong>%</strong> 代表零或一個或更多的字符<br><strong>_</strong> 代表一個字符</p>
+<p>語法:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">SELECT column1, column2, ...</span><br><span class="line">FROM table_name</span><br><span class="line">WHERE columnN LIKE pattern; </span><br></pre></td></tr></table></figure>
+
+<p>常見的模糊字串操作:</p>
+<table class="ws-table-all notranslate">
+  <tbody><tr>
+    <th>LIKE Operator</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td>WHERE CustomerName LIKE 'a%'</td>
+    <td>Finds any values that start with "a"</td>
+  </tr>
+  <tr>
+    <td>WHERE CustomerName LIKE '%a'</td>
+    <td>Finds any values that end with "a"</td>
+  </tr>
+  <tr>
+    <td>WHERE CustomerName LIKE '%or%'</td>
+    <td>Finds any values that have "or" in any position</td>
+  </tr>
+  <tr>
+    <td>WHERE CustomerName LIKE '_r%'</td>
+    <td>Finds any values that have "r" in the second position</td>
+  </tr>
+  <tr>
+    <td>WHERE CustomerName LIKE 'a_%'</td>
+    <td>Finds any values that start with "a" and are at least 2 characters in length</td>
+  </tr>
+  <tr>
+    <td>WHERE CustomerName LIKE 'a__%'</td>
+    <td>Finds any values that start with "a" and are at least 3 characters in length</td>
+  </tr>
+  <tr>
+    <td>WHERE ContactName LIKE 'a%o'</td>
+    <td>Finds any values that start with "a" and ends with "o"</td>
+  </tr>
+</tbody></table>
+
+
+<h3 id="範例實作"><a href="#範例實作" class="headerlink" title="範例實作"></a>範例實作</h3><p><strong>customers 顧客</strong></p>
+<img src="/2021/09/16/sql-server-like%E7%94%A8%E6%B3%95/%E9%A1%A7%E5%AE%A2.png" class="">
+<p><strong>products 產品</strong></p>
+<img src="/2021/09/16/sql-server-like%E7%94%A8%E6%B3%95/%E7%94%A2%E5%93%81.png" class="">
+<p><strong>orders 出貨單</strong></p>
+<img src="/2021/09/16/sql-server-like%E7%94%A8%E6%B3%95/%E8%A8%82%E5%96%AE.png" class="">
+<p><strong>order_details 出貨單明細</strong></p>
+<img src="/2021/09/16/sql-server-like%E7%94%A8%E6%B3%95/%E6%98%8E%E7%B4%B0.png" class="">
+
+
+<p>實作:想取得產品名稱為P開頭的產品。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Select * from products where name like &#x27;P%&#x27;</span><br></pre></td></tr></table></figure>
+<p>結果:</p>
+<img src="/2021/09/16/sql-server-like%E7%94%A8%E6%B3%95/1.png" class="">
+
+
+<p>實作:實作訂單收或簽名為「X中間有一個字X」的人</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Select * from orders where orders.customer_signature like &#x27;X_X&#x27;</span><br></pre></td></tr></table></figure>
+<p>結果:<br>可得到XXX這個人的訂單明細。因為他X與X間隔一個字符。</p>
+<img src="/2021/09/16/sql-server-like%E7%94%A8%E6%B3%95/2.png" class="">
+
+<h3 id="結論"><a href="#結論" class="headerlink" title="結論"></a>結論</h3><p>可以用like在資料庫內做簡易的模糊比對，將一些無法直接對應的數值用這種方式去篩選。</p>
+<p><strong>參考資料</strong><br><a target="_blank" rel="noopener" href="https://www.w3schools.com/sql/sql_like.asp">https://www.w3schools.com/sql/sql_like.asp</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://yuhsiang237.github.io/2021/09/16/sql-server-like%E7%94%A8%E6%B3%95/" data-id="cme6kwo360063galj4fu5dmdv" data-title="[Day15] SQL server like用法 - SQL Server資料庫入門" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-sql-server-in-not-in" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2021/09/16/sql-server-in-not-in/" class="article-date">
+  <time class="dt-published" datetime="2021-09-16T03:45:33.000Z" itemprop="datePublished">2021-09-16</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Database/">Database</a>►<a class="article-category-link" href="/categories/Database/SQL-Server/">SQL Server</a>►<a class="article-category-link" href="/categories/Topic/">Topic</a>►<a class="article-category-link" href="/categories/Topic/2021-SQL-Server-Challenge/">2021 SQL Server Challenge</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2021/09/16/sql-server-in-not-in/">[Day14] SQL server in與not in - SQL Server資料庫入門</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>在這回中將探討SQL server的in與not in 用法。</p>
+<h3 id="IN-與-NOT-IN"><a href="#IN-與-NOT-IN" class="headerlink" title="IN 與 NOT IN"></a>IN 與 NOT IN</h3><p>1.可以使用在where中揀選多個值<br>2.其實就是多個or的簡化寫法</p>
+<p>有點像是以下的感覺:</p>
+<p>where 欄位值 in (‘A’,’B’,’C’)<br>欄位值==’A’ or 欄位值==’B’ or 欄位值==’C’</p>
+<p>where 欄位值 not in (‘A’,’B’,’C’)<br>欄位值!=’A’ or 欄位值!=’B’ or 欄位值!=’C’</p>
+<p>1.給予明確數值，篩選是否在這些值中。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">SELECT column_name(s)</span><br><span class="line">FROM table_name</span><br><span class="line">WHERE column_name IN (value1, value2, ...); </span><br></pre></td></tr></table></figure>
+<p>2.可以用在子查詢上，篩選是否在子查詢的數值中</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">SELECT column_name(s)</span><br><span class="line">FROM table_name</span><br><span class="line">WHERE column_name IN (SELECT STATEMENT); </span><br></pre></td></tr></table></figure>
+
+<h3 id="範例實作"><a href="#範例實作" class="headerlink" title="範例實作"></a>範例實作</h3><p>在此，提供一下目前資料表中的測試資料，作為核對。</p>
+<p><strong>customers 顧客</strong></p>
+<img src="/2021/09/16/sql-server-in-not-in/%E9%A1%A7%E5%AE%A2.png" class="">
+<p><strong>products 產品</strong></p>
+<img src="/2021/09/16/sql-server-in-not-in/%E7%94%A2%E5%93%81.png" class="">
+<p><strong>orders 出貨單</strong></p>
+<img src="/2021/09/16/sql-server-in-not-in/%E8%A8%82%E5%96%AE.png" class="">
+<p><strong>order_details 出貨單明細</strong></p>
+<img src="/2021/09/16/sql-server-in-not-in/%E6%98%8E%E7%B4%B0.png" class="">
+
+<h3 id="實驗"><a href="#實驗" class="headerlink" title="實驗"></a>實驗</h3><p>實作:想取得產品名稱為PS5和PS4的產品。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Select * from products where name in (&#x27;PS5&#x27;,&#x27;PS4&#x27;)</span><br></pre></td></tr></table></figure>
+<p>結果:</p>
+<img src="/2021/09/16/sql-server-in-not-in/1.png" class="">
+
+<p>實作:想取訂單明細中不包含PS4的訂單。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Select * from order_details </span><br><span class="line">where product_number not in (Select number from products where name = &#x27;PS4&#x27; )</span><br></pre></td></tr></table></figure>
+<p>結果:<br>後方的子查詢結果是[‘P002’]，之後因為條件下not in表示是不包含P002，not in (‘P002’)。<br>所以得到不含PS4的訂單明細。</p>
+<img src="/2021/09/16/sql-server-in-not-in/2.png" class="">
+
+<h3 id="結論"><a href="#結論" class="headerlink" title="結論"></a>結論</h3><p>其實就把in拆成多個or去理解就好。</p>
+<p><strong>參考資料</strong><br><a target="_blank" rel="noopener" href="https://www.w3schools.com/sql/sql_in.asp">https://www.w3schools.com/sql/sql_in.asp</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://yuhsiang237.github.io/2021/09/16/sql-server-in-not-in/" data-id="cme6kwo340060galjaiby3pnf" data-title="[Day14] SQL server in與not in - SQL Server資料庫入門" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-適當的調整自己心態，不再當個完美主義者" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2021/09/16/%E9%81%A9%E7%95%B6%E7%9A%84%E8%AA%BF%E6%95%B4%E8%87%AA%E5%B7%B1%E5%BF%83%E6%85%8B%EF%BC%8C%E4%B8%8D%E5%86%8D%E7%95%B6%E5%80%8B%E5%AE%8C%E7%BE%8E%E4%B8%BB%E7%BE%A9%E8%80%85/" class="article-date">
+  <time class="dt-published" datetime="2021-09-15T23:21:08.000Z" itemprop="datePublished">2021-09-16</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Daily-Log/">Daily Log</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2021/09/16/%E9%81%A9%E7%95%B6%E7%9A%84%E8%AA%BF%E6%95%B4%E8%87%AA%E5%B7%B1%E5%BF%83%E6%85%8B%EF%BC%8C%E4%B8%8D%E5%86%8D%E7%95%B6%E5%80%8B%E5%AE%8C%E7%BE%8E%E4%B8%BB%E7%BE%A9%E8%80%85/">適當的調整自己心態，不再當個完美主義者</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>為什麼這麼說呢?因為這社會本來就不是完美的。</p>
+<img src="/2021/09/16/%E9%81%A9%E7%95%B6%E7%9A%84%E8%AA%BF%E6%95%B4%E8%87%AA%E5%B7%B1%E5%BF%83%E6%85%8B%EF%BC%8C%E4%B8%8D%E5%86%8D%E7%95%B6%E5%80%8B%E5%AE%8C%E7%BE%8E%E4%B8%BB%E7%BE%A9%E8%80%85/11aac1e1ef.jpg" class="">
+
+<p>完美是個理想狀況。</p>
+<p>過往，我在做事總有個目標，就是一次做到最好。因為這樣可以省下未來很多修改的功夫。<br>但是現在往回看的話，會發現：「欸！這方法好像在現在不算好了，已經過時了。」</p>
+<p>在工作上，就如面試，總想拿出很猛的作品，所以一直追加，但後來反而累死了自己。（真實）<br>(按:就像饒舌歌手都想把自己弄成很屌那樣)</p>
+<p>所以，我想改變我的作法了，先規劃<strong>最低限度的東西</strong>。<br>完美的這目標先擺在一旁，有時間，那就追求；沒時間，那就沒時間（誤）。</p>
+<h3 id="這邊講個例子"><a href="#這邊講個例子" class="headerlink" title="這邊講個例子"></a>這邊講個例子</h3><p><strong>例子1</strong><br>某公司開發A產品，公司目標是賺到錢，所以最低限度就是A產品做出來，完成交易。可以完成需求、對方能接受就好。<br>再來才是雙方提供交流再把他們變得更好。為了更好而畫蛇添足，也不見得帶來好結果。<br>所以不要一股腦的死做，差異是比較出來的。</p>
+<p><strong>例子2</strong><br>某面試需要有作品集，但實際上不知道面試公司到底要的水平、程度。<br>就依照自己能力，先規劃出個能夠展示的作品吧!<br>比如，簡單的留言板、訂單，想追求完美那就再到複雜的電商。</p>
+<p><strong>例子3</strong><br>想做一個遊戲，那就先把你想訴求的點先做出mockup吧!<br>可玩性還是角色?在做個類似分鏡的結構，最後再找特定領域的人把優化。<br>如把畫面變好要UI、把效能變好要程式、把角色變好要原畫師。</p>
+<h3 id="總結"><a href="#總結" class="headerlink" title="總結"></a>總結</h3><p>足球不是一個人能踢的，山不是一日就能堆的，坑不是一次就能填的。</p>
+<ol>
+<li>循序漸進，不然就只會被壓力轟炸而無法繼續下去。</li>
+<li>講求比較實際的作法，嘗試再修正找到一條能通的路。</li>
+</ol>
+<p>最後補充，其實寫這種非技術文章可能對技術提升沒什麼用。<br>但是，想到有人可能會跟我過去一樣執迷不悟，就自己現身說法，希望能改善到看這文章的各位。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://yuhsiang237.github.io/2021/09/16/%E9%81%A9%E7%95%B6%E7%9A%84%E8%AA%BF%E6%95%B4%E8%87%AA%E5%B7%B1%E5%BF%83%E6%85%8B%EF%BC%8C%E4%B8%8D%E5%86%8D%E7%95%B6%E5%80%8B%E5%AE%8C%E7%BE%8E%E4%B8%BB%E7%BE%A9%E8%80%85/" data-id="cme6kwo7e00otgaljd0l7ca6p" data-title="適當的調整自己心態，不再當個完美主義者" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-sql-server-group-by-分組" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2021/09/13/sql-server-group-by-%E5%88%86%E7%B5%84/" class="article-date">
+  <time class="dt-published" datetime="2021-09-12T20:31:26.000Z" itemprop="datePublished">2021-09-13</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Database/">Database</a>►<a class="article-category-link" href="/categories/Database/SQL-Server/">SQL Server</a>►<a class="article-category-link" href="/categories/Topic/">Topic</a>►<a class="article-category-link" href="/categories/Topic/2021-SQL-Server-Challenge/">2021 SQL Server Challenge</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2021/09/13/sql-server-group-by-%E5%88%86%E7%B5%84/">[Day13] SQL server Group By 資料分組與聚合函數COUNT(), MAX(), MIN(), SUM(), AVG() - SQL Server資料庫入門</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>在這回中，將要探討SQL server中的Group By用法，並搭配聚合函數使用。<br>資料在資料表中都是一列一列的，而分組則是把這些列的某些特徵欄位視為分組依據，並且將他們合為一組，並使用聚合函數就能夠做出簡易的統計。</p>
+<h3 id="測試資料"><a href="#測試資料" class="headerlink" title="測試資料"></a>測試資料</h3><p>還是一樣，先放上資料表:</p>
+<p><strong>customers 顧客</strong></p>
+<img src="/2021/09/13/sql-server-group-by-%E5%88%86%E7%B5%84/%E9%A1%A7%E5%AE%A2.png" class="">
+<p><strong>products 產品</strong></p>
+<img src="/2021/09/13/sql-server-group-by-%E5%88%86%E7%B5%84/%E7%94%A2%E5%93%81.png" class="">
+<p><strong>orders 出貨單</strong></p>
+<img src="/2021/09/13/sql-server-group-by-%E5%88%86%E7%B5%84/%E8%A8%82%E5%96%AE.png" class="">
+<p><strong>order_details 出貨單明細</strong></p>
+<img src="/2021/09/13/sql-server-group-by-%E5%88%86%E7%B5%84/%E6%98%8E%E7%B4%B0.png" class="">
+
+
+<h3 id="GROUP-BY"><a href="#GROUP-BY" class="headerlink" title="GROUP BY"></a>GROUP BY</h3><p>把相同值列分組成匯總列。<br>Group By常常與COUNT(), MAX(), MIN(), SUM(), AVG()這些總計有關的語法一起用。</p>
+<p><strong>聚合函數</strong><br>COUNT(column_name):取得欄位資料筆數。(ps.如果想統計整列不管有沒有空值問題可以下 COUNT(*) )<br>MAX(column_name):取得欄位最大值。<br>MIN(column_name):取得欄位最小值。<br>SUM(column_name):取得欄位加總。<br>AVG(column_name):取得欄位平均值。</p>
+<p>語法:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">SELECT column_name(s)</span><br><span class="line">FROM table_name</span><br><span class="line">WHERE condition</span><br><span class="line">GROUP BY column_name(s)</span><br><span class="line">ORDER BY column_name(s); </span><br></pre></td></tr></table></figure>
+
+<p>實作:統計訂單明細的資料內容。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Select order_number,sum(price*amount) as 訂單總額 </span><br><span class="line">,avg(price) as 平均商品單價,min(price) as 最低商品單價</span><br><span class="line">,max(price) 最高商品單價,sum(amount) as 總貨量</span><br><span class="line">,count(order_number) as 細項數量 </span><br><span class="line">from order_details group by order_details.order_number</span><br></pre></td></tr></table></figure>
+<p>結果:<br>以order_number訂單編號為分組要件，把order_details表中所有重複的order_number都獨立識別成一個群組。<br>再以這個群組去統計資料。<br>如下圖，因為資料庫中order_details只有2筆資料，所以把這2筆的order_number嘗試分組，發現都只有A002這個訂單編號，於是就只分成了一組A002的資料，而這組A002資料底下則有2筆資料，可供統計聚合函數COUNT(), MAX(), MIN(), SUM(), AVG()使用。</p>
+<img src="/2021/09/13/sql-server-group-by-%E5%88%86%E7%B5%84/ex1.png" class="">
+
+
+
+<p><strong>參考資料</strong><br><a target="_blank" rel="noopener" href="https://www.w3schools.com/sql/sql_groupby.asp">https://www.w3schools.com/sql/sql_groupby.asp</a><br><a target="_blank" rel="noopener" href="https://ithelp.ithome.com.tw/articles/10218537">https://ithelp.ithome.com.tw/articles/10218537</a><br><a target="_blank" rel="noopener" href="https://ithelp.ithome.com.tw/articles/10218055">https://ithelp.ithome.com.tw/articles/10218055</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://yuhsiang237.github.io/2021/09/13/sql-server-group-by-%E5%88%86%E7%B5%84/" data-id="cme6kwo32005ygalj6mocah5d" data-title="[Day13] SQL server Group By 資料分組與聚合函數COUNT(), MAX(), MIN(), SUM(), AVG() - SQL Server資料庫入門" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-sql-server-集合運算union、intersect、except-垂直整合資料" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2021/09/12/sql-server-%E9%9B%86%E5%90%88%E9%81%8B%E7%AE%97union%E3%80%81intersect%E3%80%81except-%E5%9E%82%E7%9B%B4%E6%95%B4%E5%90%88%E8%B3%87%E6%96%99/" class="article-date">
+  <time class="dt-published" datetime="2021-09-12T05:48:48.000Z" itemprop="datePublished">2021-09-12</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Database/">Database</a>►<a class="article-category-link" href="/categories/Database/SQL-Server/">SQL Server</a>►<a class="article-category-link" href="/categories/Topic/">Topic</a>►<a class="article-category-link" href="/categories/Topic/2021-SQL-Server-Challenge/">2021 SQL Server Challenge</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2021/09/12/sql-server-%E9%9B%86%E5%90%88%E9%81%8B%E7%AE%97union%E3%80%81intersect%E3%80%81except-%E5%9E%82%E7%9B%B4%E6%95%B4%E5%90%88%E8%B3%87%E6%96%99/">[Day12] 集合運算union、intersect、except 垂直整合 - SQL Server資料庫入門</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>在先前我們有使用過的多表查詢都是水平整合的概念，如JOIN <a href="/2021/09/10/sql-server-%E5%90%88%E4%BD%B5%E6%9F%A5%E8%A9%A2join/" title="[Day10] SQL server Select合併查詢JOIN用法 - SQL Server資料庫入門">[Day10] SQL server Select合併查詢JOIN用法 - SQL Server資料庫入門</a> 。<br>以及上篇的子查詢 <a href="/2021/09/28/%E5%BB%BA%E7%AB%8BC-MVC%E5%B0%88%E6%A1%88/" title="[Day11] SQL server 子查詢 - SQL Server資料庫入門">[Day11] SQL server 子查詢 - SQL Server資料庫入門</a><br>而這回，將要探討垂直整合這塊，資料庫提供聯集(union)、交集(intersect)、差集(except)語法可以實作這概念。</p>
+<h3 id="測試資料"><a href="#測試資料" class="headerlink" title="測試資料"></a>測試資料</h3><p>還是一樣，先放上資料表:<br><strong>customers 顧客</strong></p>
+<img src="/2021/09/12/sql-server-%E9%9B%86%E5%90%88%E9%81%8B%E7%AE%97union%E3%80%81intersect%E3%80%81except-%E5%9E%82%E7%9B%B4%E6%95%B4%E5%90%88%E8%B3%87%E6%96%99/%E9%A1%A7%E5%AE%A2.png" class="">
+<p><strong>products 產品</strong></p>
+<img src="/2021/09/12/sql-server-%E9%9B%86%E5%90%88%E9%81%8B%E7%AE%97union%E3%80%81intersect%E3%80%81except-%E5%9E%82%E7%9B%B4%E6%95%B4%E5%90%88%E8%B3%87%E6%96%99/%E7%94%A2%E5%93%81.png" class="">
+<p><strong>orders 出貨單</strong></p>
+<img src="/2021/09/12/sql-server-%E9%9B%86%E5%90%88%E9%81%8B%E7%AE%97union%E3%80%81intersect%E3%80%81except-%E5%9E%82%E7%9B%B4%E6%95%B4%E5%90%88%E8%B3%87%E6%96%99/%E8%A8%82%E5%96%AE.png" class="">
+<p><strong>order_details 出貨單明細</strong></p>
+<img src="/2021/09/12/sql-server-%E9%9B%86%E5%90%88%E9%81%8B%E7%AE%97union%E3%80%81intersect%E3%80%81except-%E5%9E%82%E7%9B%B4%E6%95%B4%E5%90%88%E8%B3%87%E6%96%99/%E6%98%8E%E7%B4%B0.png" class="">
+<h3 id="UNION-聯集-剔除重複"><a href="#UNION-聯集-剔除重複" class="headerlink" title="UNION 聯集(剔除重複)"></a>UNION 聯集(剔除重複)</h3><p>聯集<br>被用來結合多個Select語句的結果集(result set)。<br>與UNION ALL差別在”會剔除重複”，有重複的資料只會顯示其中一筆</p>
+<p><strong>限制:</strong><br>1.欄位的屬性必須一樣<br>2.每個select語句都必須有相同的欄位數<br>3.select語句有多個欄位時，欄位的屬性要符合順序</p>
+<p>語法:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">SELECT column_name(s) FROM table1</span><br><span class="line">UNION </span><br><span class="line">SELECT column_name(s) FROM table2; </span><br></pre></td></tr></table></figure>
+
+<p>實作:想要把products的price與order_details的price結合，且剔除重複。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">select price from products</span><br><span class="line">union </span><br><span class="line">select price from order_details</span><br></pre></td></tr></table></figure>
+<p>結果:</p>
+<img src="/2021/09/12/sql-server-%E9%9B%86%E5%90%88%E9%81%8B%E7%AE%97union%E3%80%81intersect%E3%80%81except-%E5%9E%82%E7%9B%B4%E6%95%B4%E5%90%88%E8%B3%87%E6%96%99/ex1.png" class="">
+
+<h3 id="UNION-ALL-聯集-不剔除重複"><a href="#UNION-ALL-聯集-不剔除重複" class="headerlink" title="UNION ALL 聯集(不剔除重複)"></a>UNION ALL 聯集(不剔除重複)</h3><p>聯集<br>與UNION差別在”不剔除重複”，有重複的資料會顯示多筆</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">SELECT column_name(s) FROM table1</span><br><span class="line">UNION ALL</span><br><span class="line">SELECT column_name(s) FROM table2; </span><br></pre></td></tr></table></figure>
+
+<p>實作:想要把products的price與order_details的price結合，且不剔除重複。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">select price from products</span><br><span class="line">union all</span><br><span class="line">select price from order_details</span><br></pre></td></tr></table></figure>
+<p>結果:</p>
+<img src="/2021/09/12/sql-server-%E9%9B%86%E5%90%88%E9%81%8B%E7%AE%97union%E3%80%81intersect%E3%80%81except-%E5%9E%82%E7%9B%B4%E6%95%B4%E5%90%88%E8%B3%87%E6%96%99/ex2.png" class="">
+
+
+<h2 id="INTERSECT-交集"><a href="#INTERSECT-交集" class="headerlink" title="INTERSECT 交集"></a>INTERSECT 交集</h2><p>交集，將select語句的結果集合併後找出相同的值然後返回結果集。<br>附註:沒有INTERSECT ALL這種用法<br>語法:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">SELECT column_name(s) FROM table1</span><br><span class="line">INTERSECT </span><br><span class="line">SELECT column_name(s) FROM table2; </span><br></pre></td></tr></table></figure>
+
+<p>實作:取出有訂過訂單的客戶編號，把customers的number與orders的customer_number做交集。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">select number from customers</span><br><span class="line">intersect</span><br><span class="line">select customer_number from orders</span><br></pre></td></tr></table></figure>
+<p>結果:</p>
+<img src="/2021/09/12/sql-server-%E9%9B%86%E5%90%88%E9%81%8B%E7%AE%97union%E3%80%81intersect%E3%80%81except-%E5%9E%82%E7%9B%B4%E6%95%B4%E5%90%88%E8%B3%87%E6%96%99/ex3.png" class="">
+
+
+<h2 id="EXCEPT-差集"><a href="#EXCEPT-差集" class="headerlink" title="EXCEPT 差集"></a>EXCEPT 差集</h2><p>差集，將select語句的結果集合併後找出不相同的值然後返回結果集。<br><strong>[補充]</strong> EXCEPT及只適用於 SQL Server，Oracle的交集則是使用 MINUS，使用方法與EXCEPT一樣; 而MySQL不支援EXCEPT及MINUS，則要使用left join。可參考:<a target="_blank" rel="noopener" href="http://www.geeksengine.com/database/multiple-table-select/minus-except.php">http://www.geeksengine.com/database/multiple-table-select/minus-except.php</a><br>語法:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">SELECT column_name(s) FROM table1</span><br><span class="line">EXCEPT </span><br><span class="line">SELECT column_name(s) FROM table2; </span><br></pre></td></tr></table></figure>
+
+<p>實作:取出”沒有”訂過訂單的客戶編號，把customers的number與orders的customer_number做差集。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">select number from customers</span><br><span class="line">except</span><br><span class="line">select customer_number from orders </span><br></pre></td></tr></table></figure>
+<p>結果:</p>
+<img src="/2021/09/12/sql-server-%E9%9B%86%E5%90%88%E9%81%8B%E7%AE%97union%E3%80%81intersect%E3%80%81except-%E5%9E%82%E7%9B%B4%E6%95%B4%E5%90%88%E8%B3%87%E6%96%99/ex4.png" class="">
+
+
+<h3 id="小結"><a href="#小結" class="headerlink" title="小結"></a>小結</h3><p>發現蠻多細節的語法在不同資料庫的名稱、寫法又會不一樣。<br>如果不熟某一資料庫，只能盡可能查，否則就得在程式裡面做(雖然較耗記憶體)。<br>而本篇中練習了聯集(union)、交集(intersect)、差集(except)，在使用上蠻直覺的，沒有太困難的操作語法，只要注意一些欄位的屬性排列不要排錯就好。<br>而我回顧以前，就是使用ORM(Object Relational Mapping)，雖然有提供語法，但卻在Select時很難直覺寫出語句，有時甚至不支援還要變成半原生寫法。<br>所以，以個人經驗覺得原生的SQL語法比較好懂@@。<br>然後，下篇預告是GROUP BY分組的用法。<br><strong>參考資料</strong><br><a target="_blank" rel="noopener" href="https://www.w3schools.com/sql/sql_union.asp">https://www.w3schools.com/sql/sql_union.asp</a><br><a target="_blank" rel="noopener" href="https://ithelp.ithome.com.tw/articles/10216761">https://ithelp.ithome.com.tw/articles/10216761</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://yuhsiang237.github.io/2021/09/12/sql-server-%E9%9B%86%E5%90%88%E9%81%8B%E7%AE%97union%E3%80%81intersect%E3%80%81except-%E5%9E%82%E7%9B%B4%E6%95%B4%E5%90%88%E8%B3%87%E6%96%99/" data-id="cme6kwo3h006pgaljd3z60kly" data-title="[Day12] 集合運算union、intersect、except 垂直整合 - SQL Server資料庫入門" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-sql-server-子查詢" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2021/09/11/sql-server-%E5%AD%90%E6%9F%A5%E8%A9%A2/" class="article-date">
+  <time class="dt-published" datetime="2021-09-11T10:47:01.000Z" itemprop="datePublished">2021-09-11</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Database/">Database</a>►<a class="article-category-link" href="/categories/Database/SQL-Server/">SQL Server</a>►<a class="article-category-link" href="/categories/Topic/">Topic</a>►<a class="article-category-link" href="/categories/Topic/2021-SQL-Server-Challenge/">2021 SQL Server Challenge</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2021/09/11/sql-server-%E5%AD%90%E6%9F%A5%E8%A9%A2/">[Day11] SQL server 子查詢 - SQL Server資料庫入門</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>在上回 <a href="/2021/09/10/sql-server-%E5%90%88%E4%BD%B5%E6%9F%A5%E8%A9%A2join/" title="[Day10] SQL server Select合併查詢JOIN用法 - SQL Server資料庫入門">[Day10] SQL server Select合併查詢JOIN用法 - SQL Server資料庫入門</a> 中，我們練習了合併查詢的JOIN。</p>
+<p>在這回中，我們主要淺談一下子查詢。<br>他跟JOIN一樣都可以使用在多表的查詢上。</p>
+<h3 id="子查詢"><a href="#子查詢" class="headerlink" title="子查詢"></a>子查詢</h3><p>子查詢通常使用在Select的Where子句上。<br>首先處理的是子查詢條件，才會向外處理外部的主查詢。有點像是寫一個function，然後回傳一個結果再給主程式去跑。</p>
+<p>語法:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">SELECT 欄位名稱1,欄位名稱2,...,欄位名稱n </span><br><span class="line">FROM 資料表名稱1</span><br><span class="line">WHERE 欄位名稱 = </span><br><span class="line">(SELECT 欄位名稱 FROM 資料表名稱2 WHERE 條件)</span><br></pre></td></tr></table></figure>
+<p>1.子查詢要在括號()中。<br>2.通常子查詢SELECT只會取得單一欄位的值，以便主查詢的欄位進行比較運算。<br>3.如需排序，子查詢不能使用ORDER BY，只能使用GROUP BY 子句。<br>4.如果子查詢可以取得多筆資料，在主查詢需使用IN邏輯運算子。</p>
+<p>在WHERE使用子查詢主要目的是取得其他資料表紀錄的欄位值來建立WHERE句的條件運算式。</p>
+<h3 id="實際演練"><a href="#實際演練" class="headerlink" title="實際演練"></a>實際演練</h3><h3 id="目前表中資料"><a href="#目前表中資料" class="headerlink" title="目前表中資料"></a>目前表中資料</h3><p>在此，提供一下目前資料表中的測試資料，作為核對。</p>
+<p><strong>customers 顧客</strong></p>
+<img src="/2021/09/11/sql-server-%E5%AD%90%E6%9F%A5%E8%A9%A2/%E9%A1%A7%E5%AE%A2.png" class="">
+<p><strong>products 產品</strong></p>
+<img src="/2021/09/11/sql-server-%E5%AD%90%E6%9F%A5%E8%A9%A2/%E7%94%A2%E5%93%81.png" class="">
+<p><strong>orders 出貨單</strong></p>
+<img src="/2021/09/11/sql-server-%E5%AD%90%E6%9F%A5%E8%A9%A2/%E8%A8%82%E5%96%AE.png" class="">
+<p><strong>order_details 出貨單明細</strong></p>
+<img src="/2021/09/11/sql-server-%E5%AD%90%E6%9F%A5%E8%A9%A2/%E6%98%8E%E7%B4%B0.png" class="">
+
+
+<p>實作:想要取得名子為XXX的訂單。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Select * from orders </span><br><span class="line">where orders.customer_number = (Select number from customers where customers.name = &#x27;XXX&#x27; )</span><br></pre></td></tr></table></figure>
+<p>結果:<br>子查詢的語句只會返回單一一筆的number叫做U001，之後就會變成orders.customer_number = ‘U001’去搜尋，最後得到結果。</p>
+<img src="/2021/09/11/sql-server-%E5%AD%90%E6%9F%A5%E8%A9%A2/ex1.png" class="">
+
+
+
+<p>實作:想要取得大於平均值的商品列表。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Select *,(select avg(price) from products) as avg_price from products </span><br><span class="line">where price &gt; (select avg(price) from products)</span><br></pre></td></tr></table></figure>
+<p>結果:<br>原本想要寫成 where price &gt; avg_price，但發現這樣的寫法不可以，因為前面的這種匿名欄位(原本就不在資料表中的欄位)在where後沒辦法取得，所以又補了一段(select avg(price) from products)。<br>總之，子查詢也可以用在欄位上。</p>
+<img src="/2021/09/11/sql-server-%E5%AD%90%E6%9F%A5%E8%A9%A2/ex2.png" class="">
+
+<p>實作:想取得訂單明細中有商品PS4及PS5的明細。<br>[補充]EXISTS指令:可以判斷子查詢的結果有沒有回傳資料，若有則會執行查詢中的結果。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Select * from order_details </span><br><span class="line">where exists </span><br><span class="line">(Select * from products where (products.name = &#x27;PS4&#x27; or products.name =&#x27;PS5&#x27;) and products.number = order_details.product_number)</span><br></pre></td></tr></table></figure>
+<p>結果:<br>搜尋order_details表單後用Exists子查詢，用Select取出商品名稱為PS4或PS5的集合，並且這集合的產品編號在訂單明細的產品編號裡。</p>
+<img src="/2021/09/11/sql-server-%E5%AD%90%E6%9F%A5%E8%A9%A2/ex3.png" class="">
+
+<p>實作:想取得還沒有下過訂單的顧客。<br>[補充]IN指令可以檢查是否存在子查詢的資料紀錄中。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Select * from customers </span><br><span class="line">where customers.number not in (Select orders.customer_number from orders )</span><br></pre></td></tr></table></figure>
+<p>結果:<br>用子查詢去查orders資料表，得到客戶編號的集合。之後主查詢用not in去篩選不在集合中的顧客編號。<br>最終得到U002這個沒下訂單的顧客。</p>
+<img src="/2021/09/11/sql-server-%E5%AD%90%E6%9F%A5%E8%A9%A2/ex4.png" class="">
+
+<h3 id="小結"><a href="#小結" class="headerlink" title="小結"></a>小結</h3><p>在這篇中練習了子查詢的寫法，並且知道子查詢可以放在欄位、或where後，且可以搭配如exists、in等等做法去擴展用法。<br>可能會找一時間把一些擴展語法如exists、in等等類型的都拉出來獨立講一遍。<br>下篇預計會是垂直的UNION查詢的做法。</p>
+<p><strong>參考資料</strong><br><a target="_blank" rel="noopener" href="https://ithelp.ithome.com.tw/articles/10219497">https://ithelp.ithome.com.tw/articles/10219497</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://yuhsiang237.github.io/2021/09/11/sql-server-%E5%AD%90%E6%9F%A5%E8%A9%A2/" data-id="cme6kwo3a006bgaljhbvg2e1o" data-title="[Day11] SQL server 子查詢 - SQL Server資料庫入門" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-sql-server-合併查詢join" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2021/09/10/sql-server-%E5%90%88%E4%BD%B5%E6%9F%A5%E8%A9%A2join/" class="article-date">
+  <time class="dt-published" datetime="2021-09-10T14:31:26.000Z" itemprop="datePublished">2021-09-10</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Database/">Database</a>►<a class="article-category-link" href="/categories/Database/SQL-Server/">SQL Server</a>►<a class="article-category-link" href="/categories/Topic/">Topic</a>►<a class="article-category-link" href="/categories/Topic/2021-SQL-Server-Challenge/">2021 SQL Server Challenge</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2021/09/10/sql-server-%E5%90%88%E4%BD%B5%E6%9F%A5%E8%A9%A2join/">[Day10] SQL server Select合併查詢JOIN用法 - SQL Server資料庫入門</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>在上回 <a href="/2021/09/09/sql-server%E6%9F%A5%E8%A9%A2%E8%AA%9E%E6%B3%95Select/" title="[Day9] SQL server查詢語法Select - SQL Server資料庫入門">[Day9] SQL server查詢語法Select - SQL Server資料庫入門</a> 中，我們練習了一些查詢語法，且都是針對同一張表的查詢。<br>而在這回中，我們將要開始活用關聯式資料庫的核心用法「JOIN」，透過它實踐合併的查詢。</p>
+<p>在這回中我們主要探討五種查詢，並實際來操作:</p>
+<p>1.inner Join 內部合併查詢<br>2.left (outer) Join 左外部合併查詢<br>3.right (outer) Join 右外部合併查詢<br>4.full (outer) Join 完全外部合併查詢<br>5.cross Join 交叉合併查詢</p>
+<h3 id="目前表中資料"><a href="#目前表中資料" class="headerlink" title="目前表中資料"></a>目前表中資料</h3><p>在此，提供一下目前資料表中的測試資料，作為核對。</p>
+<p><strong>關聯圖</strong></p>
+<img src="/2021/09/10/sql-server-%E5%90%88%E4%BD%B5%E6%9F%A5%E8%A9%A2join/%E6%8B%89%E9%97%9C%E8%81%AF%E5%AE%8C%E6%88%90.png" class="">
+
+<p><strong>customers 顧客</strong></p>
+<img src="/2021/09/10/sql-server-%E5%90%88%E4%BD%B5%E6%9F%A5%E8%A9%A2join/%E9%A1%A7%E5%AE%A2.png" class="">
+<p><strong>products 產品</strong></p>
+<img src="/2021/09/10/sql-server-%E5%90%88%E4%BD%B5%E6%9F%A5%E8%A9%A2join/%E7%94%A2%E5%93%81.png" class="">
+<p><strong>orders 出貨單</strong></p>
+<img src="/2021/09/10/sql-server-%E5%90%88%E4%BD%B5%E6%9F%A5%E8%A9%A2join/%E8%A8%82%E5%96%AE.png" class="">
+<p><strong>order_details 出貨單明細</strong></p>
+<img src="/2021/09/10/sql-server-%E5%90%88%E4%BD%B5%E6%9F%A5%E8%A9%A2join/%E6%98%8E%E7%B4%B0.png" class="">
+
+
+<h3 id="Inner-Join-內部合併查詢"><a href="#Inner-Join-內部合併查詢" class="headerlink" title="Inner Join  內部合併查詢"></a>Inner Join  內部合併查詢</h3><p>內部合併查詢，為兩個表中都有的值才把資料拉出來。<br>如下圖，就是A、B的交集。</p>
+<img src="/2021/09/10/sql-server-%E5%90%88%E4%BD%B5%E6%9F%A5%E8%A9%A2join/1.png" class="">
+<p>語法:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">SELECT column_name(s)</span><br><span class="line">FROM table1</span><br><span class="line">INNER JOIN table2</span><br><span class="line">ON table1.column_name = table2.column_name;</span><br></pre></td></tr></table></figure>
+
+<p>實作:對customers以及orders做inner join，得到出貨單與顧客關聯的資料集。<br>ps.稍微補充一下 orders.number as orders_number 是代表把某東西用as設定別稱</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Select customers.number,customers.name,orders.number as orders_number </span><br><span class="line">from customers </span><br><span class="line">inner join orders </span><br><span class="line">on customers.number = orders.customer_number</span><br></pre></td></tr></table></figure>
+<p>結果:<br>可以發現，原本在order表內看不到的客戶名稱name出現了。且customers表中的編號U002並沒出現在表裡，因為在orders表中它找不到相同的值。</p>
+<img src="/2021/09/10/sql-server-%E5%90%88%E4%BD%B5%E6%9F%A5%E8%A9%A2join/%E7%AF%84%E4%BE%8B1.PNG" class="">
+
+<h3 id="Left-outer-Join-左外部合併查詢"><a href="#Left-outer-Join-左外部合併查詢" class="headerlink" title="Left (outer) Join 左外部合併查詢"></a>Left (outer) Join 左外部合併查詢</h3><p>取回左邊資料表的所有紀錄，並拉進右邊資料表的值。結果會以左邊資料表為主。</p>
+<img src="/2021/09/10/sql-server-%E5%90%88%E4%BD%B5%E6%9F%A5%E8%A9%A2join/2.png" class="">
+<p>語法:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">SELECT column_name(s)</span><br><span class="line">FROM table1</span><br><span class="line">LEFT JOIN table2</span><br><span class="line">ON table1.column_name = table2.column_name;</span><br></pre></td></tr></table></figure>
+
+<p>實作:想要取得顧客名單同時也想知道他們有關的出訂單，對customers以及orders做left join。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Select customers.number,customers.name,orders.number as orders_number </span><br><span class="line">from customers</span><br><span class="line">left join orders </span><br><span class="line">on customers.number = orders.customer_number</span><br></pre></td></tr></table></figure>
+<p>結果:<br>可以發現，customers為主表，所以有客戶即使沒出貨單也被拉出來，而U001這位客戶因為關連到兩筆所以列出兩列。</p>
+<img src="/2021/09/10/sql-server-%E5%90%88%E4%BD%B5%E6%9F%A5%E8%A9%A2join/%E7%AF%84%E4%BE%8B2.PNG" class="">
+
+<h3 id="Right-outer-Join-右外部合併查詢"><a href="#Right-outer-Join-右外部合併查詢" class="headerlink" title="Right (outer) Join 右外部合併查詢"></a>Right (outer) Join 右外部合併查詢</h3><p>取回右邊資料表的所有紀錄，並拉進左邊資料表的值。結果會以右邊資料表為主。<br>其實就是跟左外部查詢一樣，只是表顛倒放而已，通常左邊比較直覺。</p>
+<img src="/2021/09/10/sql-server-%E5%90%88%E4%BD%B5%E6%9F%A5%E8%A9%A2join/3.png" class="">
+<p>語法:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">SELECT column_name(s)</span><br><span class="line">FROM table1</span><br><span class="line">RIGHT JOIN table2</span><br><span class="line">ON table1.column_name = table2.column_name;</span><br></pre></td></tr></table></figure>
+
+<p>實作:想要取得訂單，並嘗試抓出顧客名單即使客戶名單消失或為NULL，對customers以及orders做right join。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Select customers.number,customers.name,orders.number as orders_number </span><br><span class="line">from customers </span><br><span class="line">right join orders </span><br><span class="line">on customers.number = orders.customer_number</span><br></pre></td></tr></table></figure>
+<p>結果:<br>可以發現，orders為主表列出了所有訂單2筆A002、A003，並嘗試關聯到顧客。</p>
+<img src="/2021/09/10/sql-server-%E5%90%88%E4%BD%B5%E6%9F%A5%E8%A9%A2join/%E7%AF%84%E4%BE%8B3.PNG" class="">
+
+<h3 id="Full-outer-Join-完全外部合併查詢"><a href="#Full-outer-Join-完全外部合併查詢" class="headerlink" title="Full (outer) Join 完全外部合併查詢"></a>Full (outer) Join 完全外部合併查詢</h3><p>full Join(完全外部合併)可以取回左右兩邊資料表的所有紀錄。</p>
+<img src="/2021/09/10/sql-server-%E5%90%88%E4%BD%B5%E6%9F%A5%E8%A9%A2join/4.png" class="">
+<p>語法:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">SELECT column_name(s)</span><br><span class="line">FROM table1</span><br><span class="line">FULL OUTER JOIN table2</span><br><span class="line">ON table1.column_name = table2.column_name</span><br><span class="line">WHERE condition; </span><br></pre></td></tr></table></figure>
+<p>實作:訂單、顧客名單的左右資料全部合併</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Select customers.number,customers.name,orders.number as orders_number </span><br><span class="line">from customers </span><br><span class="line">full join orders </span><br><span class="line">on customers.number = orders.customer_number</span><br></pre></td></tr></table></figure>
+<p>結果:<br>跟inner join比較的話，就是原本因為orders資料表沒有相關資料消失的U002客戶出現了。</p>
+<img src="/2021/09/10/sql-server-%E5%90%88%E4%BD%B5%E6%9F%A5%E8%A9%A2join/%E7%AF%84%E4%BE%8B4.PNG" class="">
+
+<h3 id="Cross-Join-交叉合併查詢"><a href="#Cross-Join-交叉合併查詢" class="headerlink" title="Cross Join 交叉合併查詢"></a>Cross Join 交叉合併查詢</h3><p>交叉連接為兩個資料表間的笛卡兒乘積 (Cartesian product)，兩個資料表在結合時，不指定任何條件，即將兩個資料表中所有的可能排列組合出來<br>語法:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Select * From 表A Cross Join 表B;</span><br></pre></td></tr></table></figure>
+<p>也就是說表A有5筆紀錄，表B有8筆紀錄，交查合併後會得到5 * 8=40筆的紀錄，如果沒有指名欄位，欄位數就是2個資料表的欄位總數。</p>
+<p>實作:取得訂單、顧客名單的所有可能排列組合</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Select customers.number,customers.name,orders.number as orders_number </span><br><span class="line">from customers </span><br><span class="line">cross join orders </span><br></pre></td></tr></table></figure>
+<p>結果:<br>customers目前兩筆資料、orders目前兩筆資料 2x2 = 4 所有可能排列組合。<br>因為沒用ON去指定，所以會發現顧客U002明明沒訂單卻關聯上了A002、A003訂單。</p>
+<img src="/2021/09/10/sql-server-%E5%90%88%E4%BD%B5%E6%9F%A5%E8%A9%A2join/%E7%AF%84%E4%BE%8B5.PNG" class="">
+
+<h3 id="多組JOIN寫法"><a href="#多組JOIN寫法" class="headerlink" title="多組JOIN寫法"></a>多組JOIN寫法</h3><p>簡單來說就是可以依照你的目標去操作各種JOIN得到你要的結果。<br>大概畫一下圖:</p>
+<img src="/2021/09/10/sql-server-%E5%90%88%E4%BD%B5%E6%9F%A5%E8%A9%A2join/5.png" class="">
+<p>實作:我想得到訂單詳細資料打平的樣子<br>ps.這種多組JOIN可以用as簡短，以下是全部簡寫。如果為了求好讀可以多打寫字，可以不要用as。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Select * from order_details as a</span><br><span class="line">inner join orders  as b on a.order_number = b.number</span><br><span class="line">inner join customers as c on c.number = b.customer_number</span><br><span class="line">inner join products as d on a.product_number = d.number</span><br></pre></td></tr></table></figure>
+<p>結果:<br>其實就是把所有的主鍵、外來鍵拉起來而已R。就完全成為正規化前的模樣XDD</p>
+<img src="/2021/09/10/sql-server-%E5%90%88%E4%BD%B5%E6%9F%A5%E8%A9%A2join/N%20JOIN.PNG" class="">
+
+<h3 id="總結"><a href="#總結" class="headerlink" title="總結"></a>總結</h3><p>在這回中學習了合併查詢的用法JOIN，一般來說都是搭配主鍵、外來鍵去做這些事。<br>而平常自己實際習慣用INNER JOIN、LEFT JOIN，而FULL JOIN、CROSS JOIN則超少用到。<br>也許是不太直覺的關係吧XD?<br>且因為需求都是人想出來的，如果不是計算機專業，一般很少人會想出FULL JOIN、CROSS JOIN。</p>
+<p>然後預告一下，下回是子查詢。@@</p>
+<p><strong>參考資料:</strong><br><a target="_blank" rel="noopener" href="https://ithelp.ithome.com.tw/articles/10215741">https://ithelp.ithome.com.tw/articles/10215741</a><br><a target="_blank" rel="noopener" href="https://www.fooish.com/sql/cross-join.html">https://www.fooish.com/sql/cross-join.html</a><br><a target="_blank" rel="noopener" href="https://charleslin74.pixnet.net/blog/post/460066978">https://charleslin74.pixnet.net/blog/post/460066978</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://yuhsiang237.github.io/2021/09/10/sql-server-%E5%90%88%E4%BD%B5%E6%9F%A5%E8%A9%A2join/" data-id="cme6kwo390069galjfcfe9swt" data-title="[Day10] SQL server Select合併查詢JOIN用法 - SQL Server資料庫入門" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-sql-server查詢語法Select" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2021/09/09/sql-server%E6%9F%A5%E8%A9%A2%E8%AA%9E%E6%B3%95Select/" class="article-date">
+  <time class="dt-published" datetime="2021-09-08T16:54:08.000Z" itemprop="datePublished">2021-09-09</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Database/">Database</a>►<a class="article-category-link" href="/categories/Database/SQL-Server/">SQL Server</a>►<a class="article-category-link" href="/categories/Topic/">Topic</a>►<a class="article-category-link" href="/categories/Topic/2021-SQL-Server-Challenge/">2021 SQL Server Challenge</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2021/09/09/sql-server%E6%9F%A5%E8%A9%A2%E8%AA%9E%E6%B3%95Select/">[Day9] SQL server查詢語法Select - SQL Server資料庫入門</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>在上回我們手動對資料庫填充了一些基礎資料:<a href="/2021/09/08/SQL-server%E6%89%8B%E5%8B%95%E5%AF%AB%E5%85%A5%E8%B3%87%E6%96%99/" title="[Day8] SQL server手動寫入資料 - SQL Server資料庫入門">[Day8] SQL server手動寫入資料 - SQL Server資料庫入門</a><br>在這回中我們要利用建立好的資料庫來練習查詢語法。</p>
+<h3 id="目前表中資料"><a href="#目前表中資料" class="headerlink" title="目前表中資料"></a>目前表中資料</h3><p>先看一下資料庫中的資料:<br><strong>customers 顧客</strong></p>
+<img src="/2021/09/09/sql-server%E6%9F%A5%E8%A9%A2%E8%AA%9E%E6%B3%95Select/%E9%A1%A7%E5%AE%A2.png" class="">
+<p><strong>products 產品</strong></p>
+<img src="/2021/09/09/sql-server%E6%9F%A5%E8%A9%A2%E8%AA%9E%E6%B3%95Select/%E7%94%A2%E5%93%81.png" class="">
+<p><strong>orders 出貨單</strong></p>
+<img src="/2021/09/09/sql-server%E6%9F%A5%E8%A9%A2%E8%AA%9E%E6%B3%95Select/%E8%A8%82%E5%96%AE.png" class="">
+<p><strong>order_details 出貨單明細</strong></p>
+<img src="/2021/09/09/sql-server%E6%9F%A5%E8%A9%A2%E8%AA%9E%E6%B3%95Select/%E6%98%8E%E7%B4%B0.png" class="">
+
+<h3 id="SQL-SELECT-語法實踐"><a href="#SQL-SELECT-語法實踐" class="headerlink" title="SQL SELECT 語法實踐"></a>SQL SELECT 語法實踐</h3><p>select為資料庫查詢的語法，被用來選取資料表中的資料。<br>當語法執行後，資料會被儲存在一個結果表(result table)，即結果集(result-set)。</p>
+<p><strong>1.選擇表中的部分欄位</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">SELECT column1, column2, ...</span><br><span class="line">FROM table_name; </span><br></pre></td></tr></table></figure>
+<p>實作:查詢orders中的編號、寄送日、寄送地址</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Select number,shipping_date,shipping_address from orders</span><br></pre></td></tr></table></figure>
+<p>結果:</p>
+<img src="/2021/09/09/sql-server%E6%9F%A5%E8%A9%A2%E8%AA%9E%E6%B3%95Select/select01.png" class="">
+<p><strong>2.選擇表中的全部欄位</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SELECT * FROM table_name; </span><br></pre></td></tr></table></figure>
+<p>實作:查詢orders中所有欄位</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Select * from orders</span><br></pre></td></tr></table></figure>
+<p>結果:</p>
+<img src="/2021/09/09/sql-server%E6%9F%A5%E8%A9%A2%E8%AA%9E%E6%B3%95Select/select02.png" class="">
+
+<h3 id="SQL-SELECT-DISTINCT-語法實踐"><a href="#SQL-SELECT-DISTINCT-語法實踐" class="headerlink" title="SQL SELECT DISTINCT 語法實踐"></a>SQL SELECT DISTINCT 語法實踐</h3><p>被用來取得非重複列的集合。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">SELECT DISTINCT column1, column2, ...</span><br><span class="line">FROM table_name; </span><br></pre></td></tr></table></figure>
+<p>實作:查詢order_details的order_number，並回傳非重複的列</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Select DISTINCT order_number from order_details </span><br></pre></td></tr></table></figure>
+<p>結果:</p>
+<img src="/2021/09/09/sql-server%E6%9F%A5%E8%A9%A2%E8%AA%9E%E6%B3%95Select/select%20distinct01.PNG" class="">
+
+<p>實作:查詢order_details的order_number、id，並回傳非重複的列</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Select DISTINCT id,order_number from order_details </span><br></pre></td></tr></table></figure>
+<p>結果:<br>會發現跟上面的只搜尋order_number多增加一列，因為id與order_number這樣視為一列</p>
+<img src="/2021/09/09/sql-server%E6%9F%A5%E8%A9%A2%E8%AA%9E%E6%B3%95Select/select%20distinct02.PNG" class="">
+
+<h3 id="SQL-WHERE-語法"><a href="#SQL-WHERE-語法" class="headerlink" title="SQL WHERE 語法"></a>SQL WHERE 語法</h3><p>用可來限制Select的條件、過濾資料。<br>可使用的限制條件:</p>
+<table class="ws-table-all notranslate">
+  <tbody><tr>
+    <th style="width:20%">Operator</th>
+    <th style="width:70%">Description</th>
+  </tr>
+  <tr>
+    <td>=</td>
+    <td>Equal</td>
+  </tr>
+  <tr>
+    <td>&gt;</td>
+    <td>Greater than</td>
+  </tr>
+  <tr>
+    <td>&lt;</td>
+    <td>Less than</td>
+  </tr>
+  <tr>
+    <td>&gt;=</td>
+    <td>Greater than or equal</td>
+  </tr>
+  <tr>
+    <td>&lt;=</td>
+    <td>Less than or equal</td>
+  </tr>
+  <tr>
+    <td>&lt;&gt;</td>
+    <td>Not equal. <b>Note:</b> In some versions of SQL this operator may be written as !=</td>
+  </tr>
+  <tr>
+    <td>BETWEEN</td>
+    <td>Between a certain range</td>
+  </tr>
+  <tr>
+    <td>LIKE</td>
+    <td>Search for a pattern</td>
+  </tr>
+  <tr>
+    <td>IN</td>
+    <td>To specify multiple possible values for a column</td>
+ 
+  </tr>
+</tbody></table>
+
+<p>語法:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">SELECT column1, column2, ...</span><br><span class="line">FROM table_name</span><br><span class="line">WHERE condition; </span><br></pre></td></tr></table></figure>
+<p>實作:查詢order_details，並且限制單價為10000的資料</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Select * from order_details  where price = &#x27;10000&#x27;</span><br></pre></td></tr></table></figure>
+<p>結果:</p>
+<img src="/2021/09/09/sql-server%E6%9F%A5%E8%A9%A2%E8%AA%9E%E6%B3%95Select/where.PNG" class="">
+
+<p>實作:查詢order_details，並且限制產品編號為P001、P002的結果</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Select * from order_details  where product_number IN (&#x27;P001&#x27;,&#x27;P002&#x27;)</span><br></pre></td></tr></table></figure>
+
+<p>結果:</p>
+<img src="/2021/09/09/sql-server%E6%9F%A5%E8%A9%A2%E8%AA%9E%E6%B3%95Select/where2.PNG" class="">
+
+<h3 id="SQL-AND-OR-and-NOT-語法"><a href="#SQL-AND-OR-and-NOT-語法" class="headerlink" title="SQL AND, OR and NOT 語法"></a>SQL AND, OR and NOT 語法</h3><p>在使用where時，我們可以用AND、 OR、 NOT去組合我們理想的條件。<br>AND:組合多個條件，全為TURE回傳</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">SELECT column1, column2, ...</span><br><span class="line">FROM table_name</span><br><span class="line">WHERE condition1 AND condition2 AND condition3 ...; </span><br></pre></td></tr></table></figure>
+<p>OR:組合多個條件，符合其中一個條件都算在資料集中，最後回傳。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">SELECT column1, column2, ...</span><br><span class="line">FROM table_name</span><br><span class="line">WHERE condition1 OR condition2 OR condition3 ...; </span><br></pre></td></tr></table></figure>
+<p>NOT:想排除某條件</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">SELECT column1, column2, ...</span><br><span class="line">FROM table_name</span><br><span class="line">WHERE NOT condition; </span><br></pre></td></tr></table></figure>
+
+<p>實作:查詢order_details，並且限制amount為2或total為30000的結果</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Select * from order_details where amount = &#x27;2&#x27; or total = &#x27;30000&#x27;</span><br></pre></td></tr></table></figure>
+
+<p>結果:</p>
+<img src="/2021/09/09/sql-server%E6%9F%A5%E8%A9%A2%E8%AA%9E%E6%B3%95Select/or.PNG" class="">
+
+<p>實作:查詢order_details，並且限制amount為2或total為30000，且id不為2的結果</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Select * from order_details where amount = &#x27;2&#x27; or total = &#x27;30000&#x27; and NOT id = &#x27;2&#x27;</span><br></pre></td></tr></table></figure>
+
+
+<p>結果:</p>
+<img src="/2021/09/09/sql-server%E6%9F%A5%E8%A9%A2%E8%AA%9E%E6%B3%95Select/not.PNG" class="">
+
+<h3 id="SQL-ORDER-BY-語法"><a href="#SQL-ORDER-BY-語法" class="headerlink" title="SQL ORDER BY 語法"></a>SQL ORDER BY 語法</h3><p>可用來排序Select結果表的結果集合，透過欄位可以遞增、遞減。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">SELECT column1, column2, ...</span><br><span class="line">FROM table_name</span><br><span class="line">ORDER BY column1, column2, ... ASC|DESC; </span><br></pre></td></tr></table></figure>
+
+<p>實作:查詢order_details，並把id遞減排序</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Select * from order_details order by id desc</span><br></pre></td></tr></table></figure>
+
+<p>結果:</p>
+<img src="/2021/09/09/sql-server%E6%9F%A5%E8%A9%A2%E8%AA%9E%E6%B3%95Select/order.PNG" class="">
+
+<h3 id="SQL-TOP-語法"><a href="#SQL-TOP-語法" class="headerlink" title="SQL TOP 語法"></a>SQL TOP 語法</h3><p>取得前幾筆資料，在MSSQL中則是用TOP；MYSQL用LIMIT，似乎每個DB都有不同的標準。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">SELECT TOP number|percent column_name(s)</span><br><span class="line">FROM table_name</span><br><span class="line">WHERE condition; </span><br></pre></td></tr></table></figure>
+<p>實作:查詢order_details，前一筆資料</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Select TOP 1 * from order_details </span><br></pre></td></tr></table></figure>
+
+<p>結果:</p>
+<img src="/2021/09/09/sql-server%E6%9F%A5%E8%A9%A2%E8%AA%9E%E6%B3%95Select/top.PNG" class="">
+
+<h3 id="SQL-NULL-Values-語法"><a href="#SQL-NULL-Values-語法" class="headerlink" title="SQL NULL Values 語法"></a>SQL NULL Values 語法</h3><p>可以用來篩選欄位是否為空值(未填充)。<br>為空:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">SELECT column_names</span><br><span class="line">FROM table_name</span><br><span class="line">WHERE column_name IS NULL; </span><br></pre></td></tr></table></figure>
+<p>不為空:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">SELECT column_names</span><br><span class="line">FROM table_name</span><br><span class="line">WHERE column_name IS NOT NULL; </span><br></pre></td></tr></table></figure>
+
+<p>實作:查詢order_details，remarks不為空的結果</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Select * from order_details where remark IS NOT NULL</span><br></pre></td></tr></table></figure>
+
+<p>結果:</p>
+<img src="/2021/09/09/sql-server%E6%9F%A5%E8%A9%A2%E8%AA%9E%E6%B3%95Select/null.PNG" class="">
+
+
+<h3 id="小結"><a href="#小結" class="headerlink" title="小結"></a>小結</h3><p>在這回中大量練習了表單的查詢，發現其實還蠻單純的，並不會特別難或什麼。<br>在下回中會開始練習跨表的搜尋JOIN。</p>
+<p><strong>參考資料</strong><br><a target="_blank" rel="noopener" href="https://ithelp.ithome.com.tw/articles/10214938">https://ithelp.ithome.com.tw/articles/10214938</a><br><a target="_blank" rel="noopener" href="https://www.w3schools.com/sql/sql_select.asp">https://www.w3schools.com/sql/sql_select.asp</a><br><a target="_blank" rel="noopener" href="https://www.w3schools.com/sql/sql_where.asp">https://www.w3schools.com/sql/sql_where.asp</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://yuhsiang237.github.io/2021/09/09/sql-server%E6%9F%A5%E8%A9%A2%E8%AA%9E%E6%B3%95Select/" data-id="cme6kwo3i006tgaljetqycgu5" data-title="[Day9] SQL server查詢語法Select - SQL Server資料庫入門" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-SQL-server手動寫入資料" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2021/09/08/SQL-server%E6%89%8B%E5%8B%95%E5%AF%AB%E5%85%A5%E8%B3%87%E6%96%99/" class="article-date">
+  <time class="dt-published" datetime="2021-09-07T16:05:59.000Z" itemprop="datePublished">2021-09-08</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Database/">Database</a>►<a class="article-category-link" href="/categories/Database/SQL-Server/">SQL Server</a>►<a class="article-category-link" href="/categories/Topic/">Topic</a>►<a class="article-category-link" href="/categories/Topic/2021-SQL-Server-Challenge/">2021 SQL Server Challenge</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2021/09/08/SQL-server%E6%89%8B%E5%8B%95%E5%AF%AB%E5%85%A5%E8%B3%87%E6%96%99/">[Day8] SQL server手動寫入資料 - SQL Server資料庫入門</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>在上回 <a href="/2021/09/07/sql-server%E8%B3%87%E6%96%99%E5%BA%AB%E9%97%9C%E8%81%AF/" title="[Day7] SQL server資料庫關聯 - SQL Server資料庫入門">[Day7] SQL server資料庫關聯 - SQL Server資料庫入門</a> 中，我們拉完了訂單表單的資料庫關聯。<br>在這回就要實際的將資料寫入。</p>
+<h3 id="訂單圖"><a href="#訂單圖" class="headerlink" title="訂單圖"></a>訂單圖</h3><img src="/2021/09/08/SQL-server%E6%89%8B%E5%8B%95%E5%AF%AB%E5%85%A5%E8%B3%87%E6%96%99/%E8%A8%82%E5%96%AE.png" class="">
+<h3 id="資料表關聯圖"><a href="#資料表關聯圖" class="headerlink" title="資料表關聯圖"></a>資料表關聯圖</h3><img src="/2021/09/08/SQL-server%E6%89%8B%E5%8B%95%E5%AF%AB%E5%85%A5%E8%B3%87%E6%96%99/%E6%8B%89%E9%97%9C%E8%81%AF%E5%AE%8C%E6%88%90.png" class="">
+
+<p>(Ps.如果你想知道怎麼把訂單圖轉成那四張資料表可以看 <a href="/2021/09/05/SQL-server%E8%B3%87%E6%96%99%E5%BA%AB%E6%AD%A3%E8%A6%8F%E5%8C%96/" title="[Day5] 規劃資料表，透過資料庫正規化 - SQL Server資料庫入門">[Day5] 規劃資料表，透過資料庫正規化 - SQL Server資料庫入門</a> )</p>
+<p>我們預計將填入以下資料:</p>
+<img src="/2021/09/08/SQL-server%E6%89%8B%E5%8B%95%E5%AF%AB%E5%85%A5%E8%B3%87%E6%96%99/%E8%B3%87%E6%96%99%E8%A1%A8%E4%BF%AE%E6%AD%A3.png" class="">
+
+
+<h3 id="將資料手動寫入"><a href="#將資料手動寫入" class="headerlink" title="將資料手動寫入"></a>將資料手動寫入</h3><p>1.customers表 &gt; 右鍵 Edit Top 200 Rows 叫出編輯視窗</p>
+<img src="/2021/09/08/SQL-server%E6%89%8B%E5%8B%95%E5%AF%AB%E5%85%A5%E8%B3%87%E6%96%99/1%E9%BB%9E%E9%81%B8%E5%AE%A2%E6%88%B6%E8%A1%A8.png" class="">
+<p>2.將資料輸入即可，就像Excel那樣</p>
+<img src="/2021/09/08/SQL-server%E6%89%8B%E5%8B%95%E5%AF%AB%E5%85%A5%E8%B3%87%E6%96%99/2%E5%AF%AB%E5%85%A5.png" class="">
+<p>3.products表也一樣</p>
+<img src="/2021/09/08/SQL-server%E6%89%8B%E5%8B%95%E5%AF%AB%E5%85%A5%E8%B3%87%E6%96%99/3%E7%94%A2%E5%93%81.png" class="">
+<p>4.orders表也一樣</p>
+<img src="/2021/09/08/SQL-server%E6%89%8B%E5%8B%95%E5%AF%AB%E5%85%A5%E8%B3%87%E6%96%99/4%E8%A8%82%E5%96%AE%E8%A1%A8.png" class="">
+<p>5.order_details表也一樣，而id設定自動遞增，所以不用填寫會自動補。</p>
+<img src="/2021/09/08/SQL-server%E6%89%8B%E5%8B%95%E5%AF%AB%E5%85%A5%E8%B3%87%E6%96%99/5%E6%98%8E%E7%B4%B0.png" class="">
+<p>6.這樣就就完成把資料手動寫入了。</p>
+<h3 id="結語"><a href="#結語" class="headerlink" title="結語"></a>結語</h3><p>這回主要是練習將資料手動寫入，並看看是否會有問題。<br>再來就是SQL語法的撰寫了，會以比較常見&gt;進階&gt;特殊這樣去前進。<br>下回預計是用語法寫入的話該怎麼寫。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://yuhsiang237.github.io/2021/09/08/SQL-server%E6%89%8B%E5%8B%95%E5%AF%AB%E5%85%A5%E8%B3%87%E6%96%99/" data-id="cme6kwo2g004vgalj7gfl6dcq" data-title="[Day8] SQL server手動寫入資料 - SQL Server資料庫入門" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+
+
+  <nav id="page-nav">
+    
+    <a class="extend prev" rel="prev" href="/page/12/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/11/">11</a><a class="page-number" href="/page/12/">12</a><span class="page-number current">13</span><a class="page-number" href="/page/14/">14</a><a class="page-number" href="/page/15/">15</a><a class="page-number" href="/page/16/">16</a><a class="extend next" rel="next" href="/page/14/">Next &raquo;</a>
+  </nav>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Code/">Code</a><span class="category-list-count">76</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Code/C/">C#</a><span class="category-list-count">69</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Code/Javascript/">Javascript</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Code/Refactoring/">Refactoring</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Code/Typescript/">Typescript</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/">Computer Science</a><span class="category-list-count">5</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/Algorithm/">Algorithm</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/Data-structure/">Data structure</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/Electronic-Circuit/">Electronic Circuit</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Daily-Log/">Daily Log</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/">Database</a><span class="category-list-count">57</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Database/PostgreSQL/">PostgreSQL</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/SQL-Server/">SQL Server</a><span class="category-list-count">47</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/">Framework</a><span class="category-list-count">27</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/AspNetCore-API/">AspNetCore API</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/AspNetCore-MVC/">AspNetCore MVC</a><span class="category-list-count">21</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/">Topic</a><span class="category-list-count">76</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2021-C-AspNetCore-Challenge/">2021 C# AspNetCore Challenge</a><span class="category-list-count">30</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2021-SQL-Server-Challenge/">2021 SQL Server Challenge</a><span class="category-list-count">30</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2022-C-SyncAndAsync/">2022 C# SyncAndAsync</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2025-Typescript/">2025 Typescript</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/Big-Data/">Big Data</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/LeetCode/">LeetCode</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/SystemStructure/">SystemStructure</a><span class="category-list-count">1</span></li></ul></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/08/">August 2025</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/05/">May 2023</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/03/">March 2023</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/02/">February 2023</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/01/">January 2023</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/12/">December 2022</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/09/">September 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/07/">July 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/06/">June 2022</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/05/">May 2022</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/04/">April 2022</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/03/">March 2022</a><span class="archive-list-count">17</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/02/">February 2022</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/01/">January 2022</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">December 2021</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">October 2021</a><span class="archive-list-count">24</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">September 2021</a><span class="archive-list-count">46</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">August 2021</a><span class="archive-list-count">12</span></li></ul>
+    </div>
+  </div>
+
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2025 Yu Hsiang<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

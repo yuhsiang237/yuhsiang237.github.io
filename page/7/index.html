@@ -1,0 +1,755 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>UM&#39;s Coding Note</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="I record my coding experience at this place">
+<meta property="og:type" content="website">
+<meta property="og:title" content="UM&#39;s Coding Note">
+<meta property="og:url" content="https://yuhsiang237.github.io/page/7/index.html">
+<meta property="og:site_name" content="UM&#39;s Coding Note">
+<meta property="og:description" content="I record my coding experience at this place">
+<meta property="og:locale" content="en_US">
+<meta property="article:author" content="Yu Hsiang">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="UM's Coding Note" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">UM&#39;s Coding Note</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">I record my coding experience at this place🤙</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://yuhsiang237.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main">
+  
+    <article id="post-C-Properity-屬性-與-Field-欄位" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2022/01/13/C-Properity-%E5%B1%AC%E6%80%A7-%E8%88%87-Field-%E6%AC%84%E4%BD%8D/" class="article-date">
+  <time class="dt-published" datetime="2022-01-13T05:33:52.000Z" itemprop="datePublished">2022-01-13</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Code/">Code</a>►<a class="article-category-link" href="/categories/Code/C/">C#</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2022/01/13/C-Properity-%E5%B1%AC%E6%80%A7-%E8%88%87-Field-%E6%AC%84%E4%BD%8D/">C# Properity(屬性) 與 Field(欄位)</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>在這篇主要介紹Properity(屬性)、Field(欄位)在物件導向class中的差別。</p>
+<h3 id="Properity-屬性"><a href="#Properity-屬性" class="headerlink" title="Properity(屬性)"></a>Properity(屬性)</h3><p>1.以public為主，能夠讓外部能存取。<br>2.包含get、set訪問器(能要求欄位只能讀或只能寫)。<br>3.可以增加邏輯處理，在改變一個欄位的值的時候希望改變物件的其它一些狀態，舉例:更改某外部公開屬性值x為1時，另一個內部私有欄位y需要連動更改數值為2。<br>4.不佔有實際內存，主要為get;set;存取私有欄位資料。</p>
+<h3 id="Field-欄位"><a href="#Field-欄位" class="headerlink" title="Field(欄位)"></a>Field(欄位)</h3><p>1.以private為主(有時會以protected)，主要以class內部使用為主。<br>2.命名會加_在前面。<br>3.可能為靜態值所以設定為readonly<br>4.佔有實際內存、位址。</p>
+<h3 id="範例"><a href="#範例" class="headerlink" title="範例"></a>範例</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">public class User</span><br><span class="line">&#123;</span><br><span class="line">    private string _name;// _name為欄位</span><br><span class="line">    public string Name   // Name為屬性，它含有程式碼塊</span><br><span class="line">    &#123;</span><br><span class="line">        get</span><br><span class="line">        &#123;</span><br><span class="line">            // 可以在此添加額外會影響的私有變數</span><br><span class="line">            return _name;// 讀取（返回_name值）</span><br><span class="line">        &#125;</span><br><span class="line">        set </span><br><span class="line">        &#123;</span><br><span class="line">            _name = value;// 為_name賦值</span><br><span class="line">            // 可以在此添加額外會影響的私有變數</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="總結"><a href="#總結" class="headerlink" title="總結"></a>總結</h3><p>為什麼要使用屬性為什麼不用欄位就好?<br>因為能夠確保內部私有資料的安全性，並且能夠透過get;set;方式訪問時能夠增加邏輯處理、方便限制可讀、可寫。</p>
+<h3 id="參考資料"><a href="#參考資料" class="headerlink" title="參考資料"></a>參考資料</h3><p><a target="_blank" rel="noopener" href="https://kevintsengtw.blogspot.com/2011/09/property-field.html?m=1#:~:text=Field%EF%BC%9A_FullDescription%E7%82%BA%E7%89%A9%E4%BB%B6%E7%A7%81%E6%9C%89,%E4%BE%86%E5%AD%98%E6%94%BE%E5%B1%AC%E6%80%A7%E7%9A%84%E8%B3%87%E6%96%99%E3%80%82&amp;text=%E7%AF%80%E9%8C%84%E6%95%B4%E7%90%86%EF%BC%9A,%E9%9C%80%E8%A6%81%E5%AE%8C%E5%85%A8%E7%9B%B8%E5%90%8C%E7%9A%84%E8%AA%9E%E6%B3%95%E3%80%82">https://kevintsengtw.blogspot.com/2011/09/property-field.html?m=1#:~:text=Field%EF%BC%9A_FullDescription%E7%82%BA%E7%89%A9%E4%BB%B6%E7%A7%81%E6%9C%89,%E4%BE%86%E5%AD%98%E6%94%BE%E5%B1%AC%E6%80%A7%E7%9A%84%E8%B3%87%E6%96%99%E3%80%82&amp;text=%E7%AF%80%E9%8C%84%E6%95%B4%E7%90%86%EF%BC%9A,%E9%9C%80%E8%A6%81%E5%AE%8C%E5%85%A8%E7%9B%B8%E5%90%8C%E7%9A%84%E8%AA%9E%E6%B3%95%E3%80%82</a><br><a target="_blank" rel="noopener" href="https://www.itread01.com/content/1548110544.html">https://www.itread01.com/content/1548110544.html</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://yuhsiang237.github.io/2022/01/13/C-Properity-%E5%B1%AC%E6%80%A7-%E8%88%87-Field-%E6%AC%84%E4%BD%8D/" data-id="cme6kwo11002cgaljcflq1l9y" data-title="C# Properity(屬性) 與 Field(欄位)" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-C-同步非同步實作與介紹" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2022/01/12/C-%E5%90%8C%E6%AD%A5%E9%9D%9E%E5%90%8C%E6%AD%A5%E5%AF%A6%E4%BD%9C%E8%88%87%E4%BB%8B%E7%B4%B9/" class="article-date">
+  <time class="dt-published" datetime="2022-01-12T08:24:37.000Z" itemprop="datePublished">2022-01-12</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Code/">Code</a>►<a class="article-category-link" href="/categories/Code/C/">C#</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2022/01/12/C-%E5%90%8C%E6%AD%A5%E9%9D%9E%E5%90%8C%E6%AD%A5%E5%AF%A6%E4%BD%9C%E8%88%87%E4%BB%8B%E7%B4%B9/">C# 同步非同步實作與介紹</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>在這篇中簡易介紹C#同步與非同步的作法。<br>一般我們在做一些任務時有時需要:<br>1.等待上個任務完成<br>2.同時處理多個任務<br>這時就會需要用到非同步、同步的作法，可以節省時間(在同個時間內處理多個任務)。<br>可能用到Thead或是用Task作法<code>async</code>、<code>await</code>。在這篇中則以:<br><a target="_blank" rel="noopener" href="https://docs.microsoft.com/zh-tw/dotnet/csharp/programming-guide/concepts/async/">https://docs.microsoft.com/zh-tw/dotnet/csharp/programming-guide/concepts/async/</a><br>作為範例，簡易的操作一個需要處理同步/非同步的範例。</p>
+<h3 id="同步範例實作"><a href="#同步範例實作" class="headerlink" title="同步範例實作"></a>同步範例實作</h3><p>簡單來說，就是每個任務都是會等待上面的任務完成才依序執行。<br>下方以製作一份早餐的同步範例，1~7步驟都要等上面的步驟完成才會繼續。</p>
+<img src="/2022/01/12/C-%E5%90%8C%E6%AD%A5%E9%9D%9E%E5%90%8C%E6%AD%A5%E5%AF%A6%E4%BD%9C%E8%88%87%E4%BB%8B%E7%B4%B9/synchronous-breakfast.png" class="">
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br></pre></td><td class="code"><pre><span class="line">using System;</span><br><span class="line">using System.Threading.Tasks;</span><br><span class="line"></span><br><span class="line">namespace async</span><br><span class="line">&#123;</span><br><span class="line">    class Program</span><br><span class="line">    &#123;</span><br><span class="line">        static void Main(string[] args)</span><br><span class="line">        &#123;</span><br><span class="line">            Coffee cup = PourCoffee();</span><br><span class="line">            Console.WriteLine(&quot;coffee is ready&quot;);</span><br><span class="line"></span><br><span class="line">            Egg eggs = FryEggs(2);</span><br><span class="line">            Console.WriteLine(&quot;eggs are ready&quot;);</span><br><span class="line"></span><br><span class="line">            Bacon bacon = FryBacon(3);</span><br><span class="line">            Console.WriteLine(&quot;bacon is ready&quot;);</span><br><span class="line"></span><br><span class="line">            Toast toast = ToastBread(2);</span><br><span class="line">            ApplyButter(toast);</span><br><span class="line">            ApplyJam(toast);</span><br><span class="line">            Console.WriteLine(&quot;toast is ready&quot;);</span><br><span class="line"></span><br><span class="line">            Juice oj = PourOJ();</span><br><span class="line">            Console.WriteLine(&quot;oj is ready&quot;);</span><br><span class="line">            Console.WriteLine(&quot;Breakfast is ready!&quot;);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        private static Juice PourOJ()</span><br><span class="line">        &#123;</span><br><span class="line">            Console.WriteLine(&quot;Pouring orange juice&quot;);</span><br><span class="line">            return new Juice();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        private static void ApplyJam(Toast toast) =&gt;</span><br><span class="line">            Console.WriteLine(&quot;Putting jam on the toast&quot;);</span><br><span class="line"></span><br><span class="line">        private static void ApplyButter(Toast toast) =&gt;</span><br><span class="line">            Console.WriteLine(&quot;Putting butter on the toast&quot;);</span><br><span class="line"></span><br><span class="line">        private static Toast ToastBread(int slices)</span><br><span class="line">        &#123;</span><br><span class="line">            for (int slice = 0; slice &lt; slices; slice++)</span><br><span class="line">            &#123;</span><br><span class="line">                Console.WriteLine(&quot;Putting a slice of bread in the toaster&quot;);</span><br><span class="line">            &#125;</span><br><span class="line">            Console.WriteLine(&quot;Start toasting...&quot;);</span><br><span class="line">            Task.Delay(3000).Wait();</span><br><span class="line">            Console.WriteLine(&quot;Remove toast from toaster&quot;);</span><br><span class="line"></span><br><span class="line">            return new Toast();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        private static Bacon FryBacon(int slices)</span><br><span class="line">        &#123;</span><br><span class="line">            Console.WriteLine($&quot;putting &#123;slices&#125; slices of bacon in the pan&quot;);</span><br><span class="line">            Console.WriteLine(&quot;cooking first side of bacon...&quot;);</span><br><span class="line">            Task.Delay(3000).Wait();</span><br><span class="line">            for (int slice = 0; slice &lt; slices; slice++)</span><br><span class="line">            &#123;</span><br><span class="line">                Console.WriteLine(&quot;flipping a slice of bacon&quot;);</span><br><span class="line">            &#125;</span><br><span class="line">            Console.WriteLine(&quot;cooking the second side of bacon...&quot;);</span><br><span class="line">            Task.Delay(3000).Wait();</span><br><span class="line">            Console.WriteLine(&quot;Put bacon on plate&quot;);</span><br><span class="line"></span><br><span class="line">            return new Bacon();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        private static Egg FryEggs(int howMany)</span><br><span class="line">        &#123;</span><br><span class="line">            Console.WriteLine(&quot;Warming the egg pan...&quot;);</span><br><span class="line">            Task.Delay(3000).Wait();</span><br><span class="line">            Console.WriteLine($&quot;cracking &#123;howMany&#125; eggs&quot;);</span><br><span class="line">            Console.WriteLine(&quot;cooking the eggs ...&quot;);</span><br><span class="line">            Task.Delay(3000).Wait();</span><br><span class="line">            Console.WriteLine(&quot;Put eggs on plate&quot;);</span><br><span class="line"></span><br><span class="line">            return new Egg();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        private static Coffee PourCoffee()</span><br><span class="line">        &#123;</span><br><span class="line">            Console.WriteLine(&quot;Pouring coffee&quot;);</span><br><span class="line">            return new Coffee();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        private class Coffee</span><br><span class="line">        &#123;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        private class Egg</span><br><span class="line">        &#123;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        private class Toast</span><br><span class="line">        &#123;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        private class Juice</span><br><span class="line">        &#123;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        private class Bacon</span><br><span class="line">        &#123;</span><br><span class="line"></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>結果：</p>
+<img src="/2022/01/12/C-%E5%90%8C%E6%AD%A5%E9%9D%9E%E5%90%8C%E6%AD%A5%E5%AF%A6%E4%BD%9C%E8%88%87%E4%BB%8B%E7%B4%B9/1.gif" class="">
+<p>可以發現這樣很難節省時間，所以其實能把某些部分拆成異步來做，有助於節省時間。(雖然同時間可能記憶體耗能會加大)</p>
+<h3 id="異步範例實作"><a href="#異步範例實作" class="headerlink" title="異步範例實作"></a>異步範例實作</h3><p>準備早餐程式碼的簡單非同步版本看起來像下列程式碼片段：<br>FryEggsAsync、FryBaconAsync、MakeToastWithButterAndJamAsync更新為Task，函式使用<code>Async</code>。<br>這時會變成先做第一步，之後2、3、(4+5)步是併發執行，並使用while做判斷，依序把完成的Task移除List，仍需處理的Task數量為0就跳出，代表完成了!<br>再由下個任務6繼續。</p>
+<img src="/2022/01/12/C-%E5%90%8C%E6%AD%A5%E9%9D%9E%E5%90%8C%E6%AD%A5%E5%AF%A6%E4%BD%9C%E8%88%87%E4%BB%8B%E7%B4%B9/whenany-async-breakfast.png" class="">
+
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br></pre></td><td class="code"><pre><span class="line">using System;</span><br><span class="line">using System.Collections.Generic;</span><br><span class="line">using System.Threading.Tasks;</span><br><span class="line"></span><br><span class="line">namespace async</span><br><span class="line">&#123;</span><br><span class="line">    class Program</span><br><span class="line">    &#123;</span><br><span class="line">        static async Task Main(string[] args)</span><br><span class="line">        &#123;</span><br><span class="line">            Coffee cup = PourCoffee();</span><br><span class="line">            Console.WriteLine(&quot;coffee is ready&quot;);</span><br><span class="line"></span><br><span class="line">            var eggsTask = FryEggsAsync(2);</span><br><span class="line">            var baconTask = FryBaconAsync(3);</span><br><span class="line">            var toastTask = MakeToastWithButterAndJamAsync(2);</span><br><span class="line"></span><br><span class="line">            var breakfastTasks = new List&lt;Task&gt; &#123; eggsTask, baconTask, toastTask &#125;;</span><br><span class="line">            while (breakfastTasks.Count &gt; 0)</span><br><span class="line">            &#123;</span><br><span class="line">                Task finishedTask = await Task.WhenAny(breakfastTasks);</span><br><span class="line">                if (finishedTask == eggsTask)</span><br><span class="line">                &#123;</span><br><span class="line">                    Console.WriteLine(&quot;eggs are ready&quot;);</span><br><span class="line">                &#125;</span><br><span class="line">                else if (finishedTask == baconTask)</span><br><span class="line">                &#123;</span><br><span class="line">                    Console.WriteLine(&quot;bacon is ready&quot;);</span><br><span class="line">                &#125;</span><br><span class="line">                else if (finishedTask == toastTask)</span><br><span class="line">                &#123;</span><br><span class="line">                    Console.WriteLine(&quot;toast is ready&quot;);</span><br><span class="line">                &#125;</span><br><span class="line">                breakfastTasks.Remove(finishedTask);</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            Juice oj = PourOJ();</span><br><span class="line">            Console.WriteLine(&quot;oj is ready&quot;);</span><br><span class="line">            Console.WriteLine(&quot;Breakfast is ready!&quot;);</span><br><span class="line">        &#125;</span><br><span class="line">        static async Task&lt;Toast&gt; MakeToastWithButterAndJamAsync(int number)</span><br><span class="line">        &#123;</span><br><span class="line">            var toast = await ToastBreadAsync(number);</span><br><span class="line">            ApplyButter(toast);</span><br><span class="line">            ApplyJam(toast);</span><br><span class="line"></span><br><span class="line">            return toast;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        private static Juice PourOJ()</span><br><span class="line">        &#123;</span><br><span class="line">            Console.WriteLine(&quot;Pouring orange juice&quot;);</span><br><span class="line">            return new Juice();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        private static void ApplyJam(Toast toast) =&gt;</span><br><span class="line">            Console.WriteLine(&quot;Putting jam on the toast&quot;);</span><br><span class="line"></span><br><span class="line">        private static void ApplyButter(Toast toast) =&gt;</span><br><span class="line">            Console.WriteLine(&quot;Putting butter on the toast&quot;);</span><br><span class="line"></span><br><span class="line">        private static Toast ToastBread(int slices)</span><br><span class="line">        &#123;</span><br><span class="line">            for (int slice = 0; slice &lt; slices; slice++)</span><br><span class="line">            &#123;</span><br><span class="line">                Console.WriteLine(&quot;Putting a slice of bread in the toaster&quot;);</span><br><span class="line">            &#125;</span><br><span class="line">            Console.WriteLine(&quot;Start toasting...&quot;);</span><br><span class="line">            Task.Delay(3000).Wait();</span><br><span class="line">            Console.WriteLine(&quot;Remove toast from toaster&quot;);</span><br><span class="line"></span><br><span class="line">            return new Toast();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        private static async Task&lt;Bacon&gt; FryBaconAsync(int slices)</span><br><span class="line">        &#123;</span><br><span class="line">            Console.WriteLine($&quot;putting &#123;slices&#125; slices of bacon in the pan&quot;);</span><br><span class="line">            Console.WriteLine(&quot;cooking first side of bacon...&quot;);</span><br><span class="line">            await Task.Delay(3000);</span><br><span class="line">            for (int slice = 0; slice &lt; slices; slice++)</span><br><span class="line">            &#123;</span><br><span class="line">                Console.WriteLine(&quot;flipping a slice of bacon&quot;);</span><br><span class="line">            &#125;</span><br><span class="line">            Console.WriteLine(&quot;cooking the second side of bacon...&quot;);</span><br><span class="line">            await Task.Delay(3000);</span><br><span class="line">            Console.WriteLine(&quot;Put bacon on plate&quot;);</span><br><span class="line"></span><br><span class="line">            return new Bacon();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        private static async Task&lt;Egg&gt; FryEggsAsync(int howMany)</span><br><span class="line">        &#123;</span><br><span class="line">            Console.WriteLine(&quot;Warming the egg pan...&quot;);</span><br><span class="line">            await Task.Delay(3000);</span><br><span class="line">            Console.WriteLine($&quot;cracking &#123;howMany&#125; eggs&quot;);</span><br><span class="line">            Console.WriteLine(&quot;cooking the eggs ...&quot;);</span><br><span class="line">            await Task.Delay(3000);</span><br><span class="line">            Console.WriteLine(&quot;Put eggs on plate&quot;);</span><br><span class="line"></span><br><span class="line">            return new Egg();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        private static Coffee PourCoffee()</span><br><span class="line">        &#123;</span><br><span class="line">            Console.WriteLine(&quot;Pouring coffee&quot;);</span><br><span class="line">            return new Coffee();</span><br><span class="line">        &#125;</span><br><span class="line">        private static async Task&lt;Toast&gt; ToastBreadAsync(int slices)</span><br><span class="line">        &#123;</span><br><span class="line">            for (int slice = 0; slice &lt; slices; slice++)</span><br><span class="line">            &#123;</span><br><span class="line">                Console.WriteLine(&quot;Putting a slice of bread in the toaster&quot;);</span><br><span class="line">            &#125;</span><br><span class="line">            Console.WriteLine(&quot;Start toasting...&quot;);</span><br><span class="line">            await Task.Delay(3000);</span><br><span class="line">            Console.WriteLine(&quot;Remove toast from toaster&quot;);</span><br><span class="line"></span><br><span class="line">            return new Toast();</span><br><span class="line">        &#125;</span><br><span class="line">        private class Coffee</span><br><span class="line">        &#123;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        private class Egg</span><br><span class="line">        &#123;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        private class Toast</span><br><span class="line">        &#123;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        private class Juice</span><br><span class="line">        &#123;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        private class Bacon</span><br><span class="line">        &#123;</span><br><span class="line"></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>結果:<br>可以發現為異步執行!<br>FryEggsAsync:原本需6秒<br>FryBaconAsync:原本需6秒<br>MakeToastWithButterAndJamAsync:原本需3秒<br>以同步執行的話需要:15秒<br>在異步執行只需取其中最大的秒數:6秒<br>大幅度的減省時間花費。</p>
+<p>TaskAPI 包含兩種方法， Task.WhenAll 和 Task.WhenAny 撰寫非同步程式碼，能在多個背景工作上執行非封鎖等候。<br><code>await Task.WhenAny</code><br><code>await Task.WhenAll</code><br>更多可參考:<br><a target="_blank" rel="noopener" href="https://gist.github.com/relyky/52b4abf32b44d5d00a674b9cd34ca3a3">https://gist.github.com/relyky/52b4abf32b44d5d00a674b9cd34ca3a3</a></p>
+<img src="/2022/01/12/C-%E5%90%8C%E6%AD%A5%E9%9D%9E%E5%90%8C%E6%AD%A5%E5%AF%A6%E4%BD%9C%E8%88%87%E4%BB%8B%E7%B4%B9/2.gif" class="">
+<p>用紅筆畫起來部分，表示其併發執行。</p>
+<img src="/2022/01/12/C-%E5%90%8C%E6%AD%A5%E9%9D%9E%E5%90%8C%E6%AD%A5%E5%AF%A6%E4%BD%9C%E8%88%87%E4%BB%8B%E7%B4%B9/3.PNG" class="">
+
+<h3 id="結論"><a href="#結論" class="headerlink" title="結論"></a>結論</h3><p>以Async為開頭的函數內步才能夠進行併發的操作。<br>並且搭配可以搭配await做Task的停頓。<br>即讓每個可Async的Task充分利用時間。</p>
+<p>在工作上可能遇到需要併發、可同時執行時會使用，如有N個迴圈任務且沒有順序性，則可以寫入Task，或是需要用後端呼叫HTTP請求，可以一次併發，增加系統效率。或是有順序性執行的任務就很適合採用Task拆成子項目。</p>
+<p>如果要再深入探討可以參考官方:<br><a target="_blank" rel="noopener" href="https://docs.microsoft.com/zh-tw/dotnet/csharp/async">https://docs.microsoft.com/zh-tw/dotnet/csharp/async</a></p>
+<h3 id="參考資料"><a href="#參考資料" class="headerlink" title="參考資料"></a>參考資料</h3><p><a target="_blank" rel="noopener" href="https://docs.microsoft.com/zh-tw/dotnet/csharp/programming-guide/concepts/async/">https://docs.microsoft.com/zh-tw/dotnet/csharp/programming-guide/concepts/async/</a><br><a target="_blank" rel="noopener" href="https://gist.github.com/relyky/52b4abf32b44d5d00a674b9cd34ca3a3">https://gist.github.com/relyky/52b4abf32b44d5d00a674b9cd34ca3a3</a><br><a target="_blank" rel="noopener" href="https://docs.microsoft.com/zh-tw/dotnet/csharp/async">https://docs.microsoft.com/zh-tw/dotnet/csharp/async</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://yuhsiang237.github.io/2022/01/12/C-%E5%90%8C%E6%AD%A5%E9%9D%9E%E5%90%8C%E6%AD%A5%E5%AF%A6%E4%BD%9C%E8%88%87%E4%BB%8B%E7%B4%B9/" data-id="cme6kwo1b002ugalj6tgrg5e4" data-title="C# 同步非同步實作與介紹" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-SQL-Server-Stored-Procedure實作範例" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2022/01/10/SQL-Server-Stored-Procedure%E5%AF%A6%E4%BD%9C%E7%AF%84%E4%BE%8B/" class="article-date">
+  <time class="dt-published" datetime="2022-01-10T04:18:54.000Z" itemprop="datePublished">2022-01-10</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Database/">Database</a>►<a class="article-category-link" href="/categories/Database/SQL-Server/">SQL Server</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2022/01/10/SQL-Server-Stored-Procedure%E5%AF%A6%E4%BD%9C%E7%AF%84%E4%BE%8B/">SQL Server Stored Procedure 介紹&amp;實作</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>在這篇文章中簡易的介紹Stored Procedure。</p>
+<h3 id="Stored-Procedure-預存程序"><a href="#Stored-Procedure-預存程序" class="headerlink" title="Stored Procedure(預存程序)"></a>Stored Procedure(預存程序)</h3><p>A stored procedure is a prepared SQL code that you can save, so the code can be reused over and over again.</p>
+<p>So if you have an SQL query that you write over and over again, save it as a stored procedure, and then just call it to execute it.</p>
+<p>You can also pass parameters to a stored procedure, so that the stored procedure can act based on the parameter value(s) that is passed.</p>
+<p>簡單來說就是一種預存程序，寫在資料庫裡面，可以藉由外部傳入參數去呼叫數值，而得到結果。</p>
+<h3 id="優點"><a href="#優點" class="headerlink" title="優點"></a>優點</h3><p>1.能夠讓不同應用程式直接呼叫，核心邏輯不用分散。<br>(但目前有微服務架構能改用API了，因此除非是特別有必要，否則還是很少碰到)</p>
+<h3 id="缺點"><a href="#缺點" class="headerlink" title="缺點"></a>缺點</h3><p>1.撰寫因為沒辦法中斷點Debug所以除錯困難。</p>
+<h3 id="簡易寫一個Stored-Procedure"><a href="#簡易寫一個Stored-Procedure" class="headerlink" title="簡易寫一個Stored Procedure"></a>簡易寫一個Stored Procedure</h3><p>1.建立一段searchProduct的Stored Procedure。用來查詢特定Id的商品。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">CREATE PROCEDURE searchProduct </span><br><span class="line">    @productId int</span><br><span class="line">AS </span><br><span class="line">	SELECT * from Products </span><br><span class="line">	where Id = @productId</span><br></pre></td></tr></table></figure>
+
+<p>2.執行後可以在資料庫的「資料庫&gt;Programmability&gt;Stored Procedures」裡面找到</p>
+<img src="/2022/01/10/SQL-Server-Stored-Procedure%E5%AF%A6%E4%BD%9C%E7%AF%84%E4%BE%8B/1.png" class="">
+<p>3.執行</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">exec searchProduct 6</span><br></pre></td></tr></table></figure>
+<p>即可得到結果:</p>
+<img src="/2022/01/10/SQL-Server-Stored-Procedure%E5%AF%A6%E4%BD%9C%E7%AF%84%E4%BE%8B/2.png" class="">
+
+<p>4.這樣就完成了一段最簡單的Stored Procedure。<br>但在實作上主要維護時會很花時間，如果是千行T-SQL，無法使用中斷點會像是天書那樣。</p>
+<h3 id="總結"><a href="#總結" class="headerlink" title="總結"></a>總結</h3><p>以目前寫過系統來說都是在後端程式裡面寫，而Stored Procedure算是一個新的體驗。<br>除非，真的有必要需求，否則還是用API式輕量化，因為比較好DEBUG。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://yuhsiang237.github.io/2022/01/10/SQL-Server-Stored-Procedure%E5%AF%A6%E4%BD%9C%E7%AF%84%E4%BE%8B/" data-id="cme6kwo2a004jgaljbakl3qq5" data-title="SQL Server Stored Procedure 介紹&amp;實作" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-SQL常見用法筆記" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2022/01/05/SQL%E5%B8%B8%E8%A6%8B%E7%94%A8%E6%B3%95%E7%AD%86%E8%A8%98/" class="article-date">
+  <time class="dt-published" datetime="2022-01-04T23:54:08.000Z" itemprop="datePublished">2022-01-05</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Database/">Database</a>►<a class="article-category-link" href="/categories/Database/SQL-Server/">SQL Server</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2022/01/05/SQL%E5%B8%B8%E8%A6%8B%E7%94%A8%E6%B3%95%E7%AD%86%E8%A8%98/">SQL Server 常見SQL語法筆記</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>在這裡整理一些專案常用的SQL語法。</p>
+<h3 id="語法"><a href="#語法" class="headerlink" title="語法"></a>語法</h3><p>1.新增一筆資料</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">insert into Todos (Name) Values (&#x27;123&#x27;)</span><br></pre></td></tr></table></figure>
+<p>2.更新一筆資料</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">update Todos set Name = &#x27;4123&#x27;,IsComplete = 1 where Name = &#x27;123&#x27;</span><br></pre></td></tr></table></figure>
+<p>3.刪除一筆資料</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">delete from Todos where id = 17</span><br></pre></td></tr></table></figure>
+<p>4.查詢該表所有資料</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select * from Todos;</span><br></pre></td></tr></table></figure>
+<p>5.使用查詢結果新增資料</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">insert into Todos (Name) select Name from Todos where Name = &#x27;4123&#x27;</span><br></pre></td></tr></table></figure>
+<p>6.INNER JOIN 主表跟次要表都有相同的值才撈出</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">select * from ShipmentOrderDetails as a </span><br><span class="line">join Products as b on a.ProductId = b.Id</span><br></pre></td></tr></table></figure>
+<p>7.LEFT JOIN 主表值為主嘗試撈取次要表值，次要表有值就撈，沒值就NULL</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">select * from ShipmentOrderDetails as a </span><br><span class="line">left join Products as b on a.ProductId = b.Id</span><br></pre></td></tr></table></figure>
+<p>8.GROUP BY 取得以哪個欄位作為群，並且操作該群的集合資料</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">select OrderId,sum(ProductPrice * ProductUnit) sum from ShipmentOrderDetails </span><br><span class="line">group by OrderId</span><br></pre></td></tr></table></figure>
+<p>9.多對多資料處理(即使用left join/join的組合技)</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">select a.Id,a.Name,c.Id as ProductCategoryId,c.Name as ProductCategoryName from Products as a</span><br><span class="line">left join ProductProductCategoryRelationships as b on a.Id = b.ProductId</span><br><span class="line">left join ProductCategory as c on c.Id = b.ProductCategoryId</span><br></pre></td></tr></table></figure>
+<h3 id="總結"><a href="#總結" class="headerlink" title="總結"></a>總結</h3><p>這裡整理SQL常見用法。<br>因為在寫C#時其實內部會使用LINQ，所以就會對不常用的原生SQL生疏，因此在此整理在專案上常見的使用方法，有需要時就能節省再熟悉的時間。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://yuhsiang237.github.io/2022/01/05/SQL%E5%B8%B8%E8%A6%8B%E7%94%A8%E6%B3%95%E7%AD%86%E8%A8%98/" data-id="cme6kwo2l0051galjd3ogetvw" data-title="SQL Server 常見SQL語法筆記" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-C-MVC-實際撰寫後之我的想法" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2021/12/28/C-MVC-%E5%AF%A6%E9%9A%9B%E6%92%B0%E5%AF%AB%E5%BE%8C%E4%B9%8B%E6%88%91%E7%9A%84%E6%83%B3%E6%B3%95/" class="article-date">
+  <time class="dt-published" datetime="2021-12-28T12:23:52.000Z" itemprop="datePublished">2021-12-28</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Code/">Code</a>►<a class="article-category-link" href="/categories/Code/C/">C#</a>►<a class="article-category-link" href="/categories/Framework/">Framework</a>►<a class="article-category-link" href="/categories/Framework/AspNetCore-MVC/">AspNetCore MVC</a>►<a class="article-category-link" href="/categories/Topic/">Topic</a>►<a class="article-category-link" href="/categories/Topic/2021-C-AspNetCore-Challenge/">2021 C# AspNetCore Challenge</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2021/12/28/C-MVC-%E5%AF%A6%E9%9A%9B%E6%92%B0%E5%AF%AB%E5%BE%8C%E4%B9%8B%E6%88%91%E7%9A%84%E6%83%B3%E6%B3%95/">[Day30] C# MVC 實際撰寫後之我的想法 - C#&amp;AspNetCore</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>在此先說明一下，大概花了一個月製作了了一套<strong>商品出貨訂單系統</strong>的Side Project。<br>儲存庫:<a target="_blank" rel="noopener" href="https://github.com/yuhsiang237/Order-System">https://github.com/yuhsiang237/Order-System</a><br>影片網址:<a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=nSk6OZjhDMY">https://www.youtube.com/watch?v=nSk6OZjhDMY</a></p>
+<p>所以這文章內容會包含很多我與之前的製作系統經驗的分享。</p>
+<p>首先，MVC現在已經算是很主流的網站架構了，我在之前有使用過Laravel、ASP.NET Core MVC這兩套框架來設計系統，因此在整體的觀感上因為<strong>設計模式</strong>是有共同的出發點，所以上手難度是差不多，甚至說是無痛換上的感覺。因此，依照這個推論，如果仍有下個世代的框架出來，也是標榜MVC那也夠無痛接手，頂多就是學一些基礎語法糖而已。</p>
+<p>而專案內通常有少部分會寫到演算法，我目前處理過最複雜演算法就是BFS，主要是要產生訂單的子代、父代，並且將畫圖產生出來，就是一張圖論的圖。這算是我在專案裡面處理過最複雜的結構。<br>這是我的演算法筆記用的存庫，遇到一些算法需求會整理上去。<br><a target="_blank" rel="noopener" href="https://github.com/yuhsiang237/AlgorithmStudy">https://github.com/yuhsiang237/AlgorithmStudy</a></p>
+<p>而MVC基本上跟演算法無關。他只是給你一套共同認知的地基，讓你能夠跟其他人有共同基礎去打造事物，這有什麼好處呢?能夠增加維護性，因為在沒基礎下，需要知道整體脈絡怎麼寫必須去翻舊的程式碼，算是一部分技術債，而MVC則把這技術債降低，讓你能夠比較無痛的降低學習成本，有點像是一套彼此知道的內功，學會就能打天下。</p>
+<p>再來我說說Laravel與ASP.NET Core MVC的差異。</p>
+<p>在除錯上，C#有著地表最強IDE Visual Studio撐腰，所以除錯非常容易，只要中斷點下去跑一次八成就知道要改哪裡了。Laravel則需要肉眼DEBUG，或是自己插Return返回點。</p>
+<p>在撰寫速度上，C#需要編譯時間，Laravel是直譯語言則不需要所以會快一些。但如果考量到C#便利的中斷點，那最後把時間拉長我認為是C#會是優勝。</p>
+<p>在型別上，C#屬於強型別，每屬性有特定的類型，能夠讓自己很清楚知道要塞什麼數值。而Laravel則是弱型別，宣告是用$var所以大專案下來可能會不知道哪個是哪個變數，可能會造成數值塞錯報錯。</p>
+<p>在直譯與編譯上，C#需要編譯才能知道撰寫成功與否，Laravel則是要當場跑才知道。如果C#可以成功編譯，那可能上線只會有邏輯錯誤；Laravel則是需要當場去試錯才比較可能知道問題。</p>
+<p>在開發速度上，C# MVC有一套框架給你但並不給你便利的內建系統，如Seed塞值、資料庫遷移、內建Redius、等等。而Laravel則是全都給你了，所以你就只要寫邏輯就好。</p>
+<p>在版本升級上，C# MVC基礎就View Model Controller所以升級版本只要考量套件問題，相容就沒問題，而現在ASP.NET Core仍然是用基礎寫法寫就能無痛升級。Laravel則是要考量目錄變動，因為它幫你內建很多功能，每個版本的寫法也不太相同。</p>
+<p>在資料結構上，C#內建超多的資料結構，如List、Array、Directory、Hashset…幾乎是C++的STL演算法有的他都全包還擴增，而Laravel則是沒有，需要自己找套件包或自己寫，在處理複雜資料時就會稍微辛苦一點。</p>
+<p>在其他領域應用上，C#能夠開發網頁、桌面程式、library、windows、linux(asp.net core)。而Laravel則是只能開發網頁。</p>
+<h3 id="總結"><a href="#總結" class="headerlink" title="總結"></a>總結</h3><p>這是我對於這兩套MVC的差異理解，但總體來說還是看自己需求，以目前來看未來我會選擇C# MVC，因為在維護上方便許多、在台灣工作環境相對友善(?)。而更重要的是需求分析、設計模式、演算法方面，因此目前可能會往這邊走XD。<br>總之，哪種方法能夠讓我花最少成本大概就是它了，畢竟寫程式某種意義就是避免浪費時間。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://yuhsiang237.github.io/2021/12/28/C-MVC-%E5%AF%A6%E9%9A%9B%E6%92%B0%E5%AF%AB%E5%BE%8C%E4%B9%8B%E6%88%91%E7%9A%84%E6%83%B3%E6%B3%95/" data-id="cme6kwo0q001ogalj8wq447wg" data-title="[Day30] C# MVC 實際撰寫後之我的想法 - C#&amp;AspNetCore" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-C-MVC-實際被使用在那些地方" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2021/12/28/C-MVC-%E5%AF%A6%E9%9A%9B%E8%A2%AB%E4%BD%BF%E7%94%A8%E5%9C%A8%E9%82%A3%E4%BA%9B%E5%9C%B0%E6%96%B9/" class="article-date">
+  <time class="dt-published" datetime="2021-12-27T16:24:17.000Z" itemprop="datePublished">2021-12-28</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Code/">Code</a>►<a class="article-category-link" href="/categories/Code/C/">C#</a>►<a class="article-category-link" href="/categories/Framework/">Framework</a>►<a class="article-category-link" href="/categories/Framework/AspNetCore-MVC/">AspNetCore MVC</a>►<a class="article-category-link" href="/categories/Topic/">Topic</a>►<a class="article-category-link" href="/categories/Topic/2021-C-AspNetCore-Challenge/">2021 C# AspNetCore Challenge</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2021/12/28/C-MVC-%E5%AF%A6%E9%9A%9B%E8%A2%AB%E4%BD%BF%E7%94%A8%E5%9C%A8%E9%82%A3%E4%BA%9B%E5%9C%B0%E6%96%B9/">[Day29] C# MVC 被使用在哪些地方 - C#&amp;AspNetCore</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>先以C#語言實際用在那些地方開始講好了，可以製作遊戲Unity、命令列程式、跨平台(ASP.NET Core)、手機(但很少)、桌面應用、資料分析。唯一缺點大概就是嵌入式，因為通常嵌入式有記憶體限制，會壓的很低，會用純C，但是C#基本上語法跟C也很相像。</p>
+<p>而ASP.NET的MVC則是在處理網頁為多數，如現在普遍在台灣看到的政府機構網頁、大型服務網頁都可以用這套MVC去實現，算是處理大量資料已經有認證過可以實踐的框架了。</p>
+<p>簡言之，就是沒什麼框架能與之抗衡，光是Visual Studio的除錯能力就能減少很多開發者的時間。以及背後的支持微軟，是自己家目前產品。而Linux則是偏向雜湊派，東加西加拼湊，整合度比較低。因此，目前首選還是微軟。</p>
+<h3 id="結論"><a href="#結論" class="headerlink" title="結論"></a>結論</h3><p>總而言之，除了嵌入式、手機外，一些後端API、網頁程式基本上都可以看到它的蹤影。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://yuhsiang237.github.io/2021/12/28/C-MVC-%E5%AF%A6%E9%9A%9B%E8%A2%AB%E4%BD%BF%E7%94%A8%E5%9C%A8%E9%82%A3%E4%BA%9B%E5%9C%B0%E6%96%B9/" data-id="cme6kwo0r001qgaljeoei88ac" data-title="[Day29] C# MVC 被使用在哪些地方 - C#&amp;AspNetCore" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-C-MVC-FluentValidation-好用的驗證格式套件" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2021/12/27/C-MVC-FluentValidation-%E5%A5%BD%E7%94%A8%E7%9A%84%E9%A9%97%E8%AD%89%E6%A0%BC%E5%BC%8F%E5%A5%97%E4%BB%B6/" class="article-date">
+  <time class="dt-published" datetime="2021-12-27T15:19:59.000Z" itemprop="datePublished">2021-12-27</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Code/">Code</a>►<a class="article-category-link" href="/categories/Code/C/">C#</a>►<a class="article-category-link" href="/categories/Framework/">Framework</a>►<a class="article-category-link" href="/categories/Framework/AspNetCore-MVC/">AspNetCore MVC</a>►<a class="article-category-link" href="/categories/Topic/">Topic</a>►<a class="article-category-link" href="/categories/Topic/2021-C-AspNetCore-Challenge/">2021 C# AspNetCore Challenge</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2021/12/27/C-MVC-FluentValidation-%E5%A5%BD%E7%94%A8%E7%9A%84%E9%A9%97%E8%AD%89%E6%A0%BC%E5%BC%8F%E5%A5%97%E4%BB%B6/">[Day28] C# MVC FluentValidation 好用的驗證格式套件 - C#&amp;AspNetCore</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>這回介紹一個必用的驗證神器FluentValidation，在處理驗證時會比原本Model驗證好上很多。因為他能適應不同的條件變化。</p>
+<p>首先先看一張DEMO圖，就是類似表單驗證什麼都可以使用。</p>
+<img src="/2021/12/27/C-MVC-FluentValidation-%E5%A5%BD%E7%94%A8%E7%9A%84%E9%A9%97%E8%AD%89%E6%A0%BC%E5%BC%8F%E5%A5%97%E4%BB%B6/rundebug2.gif" class="">
+<h2 id="安裝"><a href="#安裝" class="headerlink" title="安裝"></a>安裝</h2><p>1.開啟NuGet管理畫面</p>
+<img src="/2021/12/27/C-MVC-FluentValidation-%E5%A5%BD%E7%94%A8%E7%9A%84%E9%A9%97%E8%AD%89%E6%A0%BC%E5%BC%8F%E5%A5%97%E4%BB%B6/1.png" class="">
+<p>2.因為我是.net core專案所以安裝FluentValidation.AspNetCore，如果不是就裝第一個</p>
+<img src="/2021/12/27/C-MVC-FluentValidation-%E5%A5%BD%E7%94%A8%E7%9A%84%E9%A9%97%E8%AD%89%E6%A0%BC%E5%BC%8F%E5%A5%97%E4%BB%B6/2.png" class="">
+
+<h2 id="撰寫一個簡單驗證"><a href="#撰寫一個簡單驗證" class="headerlink" title="撰寫一個簡單驗證"></a>撰寫一個簡單驗證</h2><p>在此以帳密登入為範例</p>
+<p>1.先建立一個Model<br><strong>Models/LoginViewModel.cs</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">using System;</span><br><span class="line">using System.Collections.Generic;</span><br><span class="line">using System.Linq;</span><br><span class="line">using System.Threading.Tasks;</span><br><span class="line"></span><br><span class="line">namespace FluentValidationExample.Models</span><br><span class="line">&#123;</span><br><span class="line">    public class LoginViewModel</span><br><span class="line">    &#123;</span><br><span class="line">        public string Account &#123; get; set; &#125;</span><br><span class="line">        public string Password &#123; get; set; &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>2.撰寫該Model驗證<br><strong>Models/Validator/LoginViewModel.cs</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">using System;</span><br><span class="line">using System.Collections.Generic;</span><br><span class="line">using System.Linq;</span><br><span class="line">using System.Threading.Tasks;</span><br><span class="line">using FluentValidation;</span><br><span class="line"></span><br><span class="line">namespace FluentValidationExample.Models.Validator</span><br><span class="line">&#123;</span><br><span class="line">    public class LoginValidator : AbstractValidator&lt;LoginViewModel&gt;</span><br><span class="line">    &#123;</span><br><span class="line">        public LoginValidator()</span><br><span class="line">        &#123;</span><br><span class="line">            RuleFor(x =&gt; x.Account).NotNull().WithMessage(&quot;名稱不可為空&quot;);</span><br><span class="line">            RuleFor(x =&gt; x).Custom((x, c) =&gt;</span><br><span class="line">            &#123;</span><br><span class="line">                if (x.Password == &quot;&quot; || x.Password == null)</span><br><span class="line">                &#123;</span><br><span class="line">                    c.AddFailure(&quot;Password&quot;, &quot;密碼不可為空&quot;);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>最主要是繼承抽象的AbstractValidator，而裡面傳進去的多型是LoginViewModel，即要驗證的Model。<br>再來就是用RuleFor去驗證。<br>我寫了一個內建、一個客製的。<br>此外，如果有連結資料庫也能從外面把Context傳進來。</p>
+<p>3.再來撰寫登入的Post事件<br><strong>Controllers/HomeController.cs</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">[HttpPost]</span><br><span class="line">public IActionResult Index(LoginViewModel model)</span><br><span class="line">&#123;</span><br><span class="line">    LoginValidator validator = new LoginValidator();</span><br><span class="line">    ValidationResult result = validator.Validate(model);</span><br><span class="line">    if (!result.IsValid)</span><br><span class="line">    &#123;</span><br><span class="line">        foreach (ValidationFailure failer in result.Errors)</span><br><span class="line">        &#123;</span><br><span class="line">            ModelState.AddModelError(failer.PropertyName, failer.ErrorMessage);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    return View();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>基本上就是套用剛剛完成的validator。<br>當!result.IsValid時將錯誤訊息塞給ModelState，在前台就能顯示。</p>
+<p>4.前台畫面cshtml撰寫。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">@model FluentValidationExample.Models.LoginViewModel;</span><br><span class="line"></span><br><span class="line">&lt;div class=&quot;text-center&quot;&gt;</span><br><span class="line">    &lt;h1 class=&quot;display-4&quot;&gt;Welcome&lt;/h1&gt;</span><br><span class="line">    &lt;p&gt;Learn about &lt;a href=&quot;https://docs.microsoft.com/aspnet/core&quot;&gt;building Web apps with ASP.NET Core&lt;/a&gt;.&lt;/p&gt;</span><br><span class="line">&lt;/div&gt;</span><br><span class="line">&lt;div asp-validation-summary=&quot;ModelOnly&quot;&gt;&lt;/div&gt;</span><br><span class="line"></span><br><span class="line">&lt;form asp-action=&quot;Index&quot;&gt;</span><br><span class="line">    Account &lt;input asp-for=&quot;Account&quot; /&gt; &lt;span asp-validation-for=&quot;Account&quot;&gt;&lt;/span&gt;</span><br><span class="line">    &lt;br /&gt;</span><br><span class="line">    Password &lt;input asp-for=&quot;Password&quot; /&gt; &lt;span asp-validation-for=&quot;Password&quot;&gt;&lt;/span&gt;</span><br><span class="line">    &lt;br /&gt;</span><br><span class="line">    &lt;input type=&quot;submit&quot; value=&quot;submtit&quot; /&gt;</span><br><span class="line">&lt;/form&gt;</span><br></pre></td></tr></table></figure>
+<p>主要就塞入asp-validation-for，他會與ModelState匹配，剛剛增加的錯誤訊息就能收到並顯示在畫面上了。</p>
+<p>6.完成，然後嘗試用Debug跑一次</p>
+<img src="/2021/12/27/C-MVC-FluentValidation-%E5%A5%BD%E7%94%A8%E7%9A%84%E9%A9%97%E8%AD%89%E6%A0%BC%E5%BC%8F%E5%A5%97%E4%BB%B6/rundebug.gif" class="">
+
+
+<h3 id="總結"><a href="#總結" class="headerlink" title="總結"></a>總結</h3><p>為什麼不用Model驗證呢?<br>因為不同情況如某些時候欄位必填，有時不是，這時就會有問題。<br>而FluentValidation則完整破除這問題，並且能以邏輯方式條列撰寫，在釐清數據正確與否非常有幫助。<br>因此建議還再使用Model驗證的人可以快點換成FluentValidation，複雜的條件也能迎刃而解。</p>
+<p>在此附上專案連結:<br><a target="_blank" rel="noopener" href="https://github.com/yuhsiang237/FluentValidation-Project">https://github.com/yuhsiang237/FluentValidation-Project</a></p>
+<p>更多範例可以參考官方:<br><a target="_blank" rel="noopener" href="https://docs.fluentvalidation.net/en/latest/aspnet.html">https://docs.fluentvalidation.net/en/latest/aspnet.html</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://yuhsiang237.github.io/2021/12/27/C-MVC-FluentValidation-%E5%A5%BD%E7%94%A8%E7%9A%84%E9%A9%97%E8%AD%89%E6%A0%BC%E5%BC%8F%E5%A5%97%E4%BB%B6/" data-id="cme6kwo0c000vgaljd6mh69hr" data-title="[Day28] C# MVC FluentValidation 好用的驗證格式套件 - C#&amp;AspNetCore" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-C-MVC-回傳獨立頁面或整體頁面" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2021/12/27/C-MVC-%E5%9B%9E%E5%82%B3%E7%8D%A8%E7%AB%8B%E9%A0%81%E9%9D%A2%E6%88%96%E6%95%B4%E9%AB%94%E9%A0%81%E9%9D%A2/" class="article-date">
+  <time class="dt-published" datetime="2021-12-27T12:20:46.000Z" itemprop="datePublished">2021-12-27</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Code/">Code</a>►<a class="article-category-link" href="/categories/Code/C/">C#</a>►<a class="article-category-link" href="/categories/Framework/">Framework</a>►<a class="article-category-link" href="/categories/Framework/AspNetCore-MVC/">AspNetCore MVC</a>►<a class="article-category-link" href="/categories/Topic/">Topic</a>►<a class="article-category-link" href="/categories/Topic/2021-C-AspNetCore-Challenge/">2021 C# AspNetCore Challenge</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2021/12/27/C-MVC-%E5%9B%9E%E5%82%B3%E7%8D%A8%E7%AB%8B%E9%A0%81%E9%9D%A2%E6%88%96%E6%95%B4%E9%AB%94%E9%A0%81%E9%9D%A2/">[Day27] C# MVC 回傳獨立頁面或整體頁面 - C#&amp;AspNetCore</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>在此介紹如何讓某些頁面不套用原本預設的_Layout.cshtml。</p>
+<p>如常見的登入頁面，常常是一個獨立畫面，這時只要回傳PartialView。<br><strong>UserController.cs</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">public IActionResult SignIn()</span><br><span class="line">&#123;</span><br><span class="line">    return PartialView();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>而預設會套用_Layout.cshtml的則是回傳View。<br><strong>HomeController.cs</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">public IActionResult Hone()</span><br><span class="line">&#123;</span><br><span class="line">    return View();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="結論"><a href="#結論" class="headerlink" title="結論"></a>結論</h3><p>簡單介紹一下，此外如果要控制預設吃什麼Layout可以從以下檔案設定:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">\Views\_ViewStart.cshtml</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://yuhsiang237.github.io/2021/12/27/C-MVC-%E5%9B%9E%E5%82%B3%E7%8D%A8%E7%AB%8B%E9%A0%81%E9%9D%A2%E6%88%96%E6%95%B4%E9%AB%94%E9%A0%81%E9%9D%A2/" data-id="cme6kwo0p001lgaljccwd5pmi" data-title="[Day27] C# MVC 回傳獨立頁面或整體頁面 - C#&amp;AspNetCore" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-C-MVC-LINQ實作常見用法" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2021/12/27/C-MVC-LINQ%E5%AF%A6%E4%BD%9C%E5%B8%B8%E8%A6%8B%E7%94%A8%E6%B3%95/" class="article-date">
+  <time class="dt-published" datetime="2021-12-27T11:20:46.000Z" itemprop="datePublished">2021-12-27</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Code/">Code</a>►<a class="article-category-link" href="/categories/Code/C/">C#</a>►<a class="article-category-link" href="/categories/Framework/">Framework</a>►<a class="article-category-link" href="/categories/Framework/AspNetCore-MVC/">AspNetCore MVC</a>►<a class="article-category-link" href="/categories/Topic/">Topic</a>►<a class="article-category-link" href="/categories/Topic/2021-C-AspNetCore-Challenge/">2021 C# AspNetCore Challenge</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2021/12/27/C-MVC-LINQ%E5%AF%A6%E4%BD%9C%E5%B8%B8%E8%A6%8B%E7%94%A8%E6%B3%95/">[Day26] C# MVC LINQ實作常見用法 - C#&amp;AspNetCore</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>在這篇中主要紀錄一些常見的C# LINQ寫法，通常搭配資料庫EF Core使用。</p>
+<p>1.簡單取得匹配某ID的”複數”筆資料列</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">var query = </span><br><span class="line">from a in _context.Roles</span><br><span class="line">where a.Id == user.RoleId</span><br><span class="line">select a;</span><br></pre></td></tr></table></figure>
+
+<p>2.取得某”單筆”物件資料</p>
+<p>作法1:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">var query = (from a in _context.Users</span><br><span class="line">where a.Account == userAccount</span><br><span class="line">select new</span><br><span class="line">&#123;</span><br><span class="line">    Id = a.Id,</span><br><span class="line">    Account = a.Account,</span><br><span class="line">    RoleId = a.RoleId,</span><br><span class="line">    Name = a.Name,</span><br><span class="line">    Email = a.Email</span><br><span class="line">&#125;).FirstOrDefault()</span><br></pre></td></tr></table></figure>
+<p>作法2:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">var query =  _context.Products.FirstOrDefault(x =&gt; x.Id == shipmentOrderDetail.ProductId);</span><br></pre></td></tr></table></figure>
+
+<p>差別在一個全是用.的方式寫。</p>
+<p>3.群組資料結果。此例將日期變成群組，統計每日期具有的資料筆數。<br>且使用匿名class建立搜尋結果。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">var query = from a in _context.ShipmentOrders</span><br><span class="line">where a.IsDeleted != true</span><br><span class="line">where a.DeliveryDate.Value.Month == DateTime.Now.Month</span><br><span class="line">group a by a.DeliveryDate.Value.Date into g</span><br><span class="line">select new &#123; DeliveryDate = g.Key, Count = g.Count() &#125;</span><br></pre></td></tr></table></figure>
+
+<p>4.主表a之後inner join b表的資料。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">var query = from a in _context.ReturnShipmentOrders</span><br><span class="line">join b in _context.ShipmentOrders</span><br><span class="line">on a.ShipmentOrderId equals b.Id</span><br><span class="line">where a.IsDeleted != true</span><br><span class="line">select new ReturnShipmentOrderViewModel</span><br><span class="line">&#123;</span><br><span class="line">Id = a.Id,</span><br><span class="line">Number = a.Number,</span><br><span class="line">ShipmentOrderNumber = b.Number,</span><br><span class="line">Total = a.Total,</span><br><span class="line">ReturnDate = a.ReturnDate</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>5.LINQ子查詢，Category表資料在另一個多對多表上，使用子查詢去取得結果。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">var query = from a in _context.Products</span><br><span class="line">where a.IsDeleted != true</span><br><span class="line">select new ProductIndexViewModel</span><br><span class="line">&#123;</span><br><span class="line">    Id = a.Id,</span><br><span class="line">    Number = a.Number,</span><br><span class="line">    Name = a.Name,</span><br><span class="line">    CurrentUnit = a.CurrentUnit,</span><br><span class="line">    Price = a.Price,</span><br><span class="line">    Description = a.Description,</span><br><span class="line">    Category = (from b in _context.ProductProductCategoryRelationships</span><br><span class="line">                    join c in category</span><br><span class="line">                    on b.ProductCategoryId equals c.Id</span><br><span class="line">                    where b.ProductId == a.Id</span><br><span class="line">                    select new ProductCategory</span><br><span class="line">                    &#123; </span><br><span class="line">                        Id = c.Id,</span><br><span class="line">                        Name = c.Name</span><br><span class="line">                    &#125;).ToList()</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>6.取得總數統計，在此例以取得某年的Total加總。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">var query = (from a in _context.ShipmentOrders</span><br><span class="line">where a.IsDeleted != true</span><br><span class="line">where a.FinishDate.Value.Year == DateTime.Now.Year</span><br><span class="line">select a.Total).Sum()</span><br></pre></td></tr></table></figure>
+
+<p>7.取得查詢的結果數量</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">var query = (int)(from a in _context.Products</span><br><span class="line">where a.IsDeleted != true</span><br><span class="line">select a.Id).Count();</span><br></pre></td></tr></table></figure>
+
+<h3 id="結論"><a href="#結論" class="headerlink" title="結論"></a>結論</h3><p>主要在這篇中紀錄實作常見會寫到的作法。<br>此外，如果熟悉LINQ後反而會造成原生SQL語法淡忘，所以還是要加減注意一下原生作法。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://yuhsiang237.github.io/2021/12/27/C-MVC-LINQ%E5%AF%A6%E4%BD%9C%E5%B8%B8%E8%A6%8B%E7%94%A8%E6%B3%95/" data-id="cme6kwo0f0012galjg3vga3au" data-title="[Day26] C# MVC LINQ實作常見用法 - C#&amp;AspNetCore" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-Arduino-LED與Button控制" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2021/10/29/Arduino-LED%E8%88%87Button%E6%8E%A7%E5%88%B6/" class="article-date">
+  <time class="dt-published" datetime="2021-10-29T09:04:44.000Z" itemprop="datePublished">2021-10-29</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Computer-Science/">Computer Science</a>►<a class="article-category-link" href="/categories/Computer-Science/Electronic-Circuit/">Electronic Circuit</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2021/10/29/Arduino-LED%E8%88%87Button%E6%8E%A7%E5%88%B6/">Arduino LED與Button控制</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>想以僅有的材料做個LED與按鈕控制實驗。<br>並且藉由撰寫程式來監控按鈕，並控制LED明暗。</p>
+<h3 id="材料"><a href="#材料" class="headerlink" title="材料"></a>材料</h3><ol>
+<li>LED 3MM 紅色 x 1 :發光二極體 (1.8V～2.2V，5mA～20mA)</li>
+<li>Arduino版  x 1:任意一塊都可 (UNO)</li>
+<li>220歐姆電阻(5%)  x 1:紅紅棕金</li>
+<li>2.2k歐姆電阻(5%)  x 5:紅紅紅金</li>
+</ol>
+<p>首先是LED的線路，要讓LED能夠穩定且不燒壞的亮燈，要先計算電阻多少。<br>OUTPUT會給予5V，因此用歐姆定律</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">V = IR</span><br></pre></td></tr></table></figure>
+<p>(5-2)=0.02R<br>R=150ohm</p>
+<p>但是LED其實可以低於20mA，規格是5mA～20mA<br>因此嘗試串聯一顆220歐姆電阻算看看:<br>(5-2)=I*220<br>I=3/220<br>=0.013A<br>=13mA<br>還在範圍內!所以就用220歐姆電阻了!</p>
+<p>再來是按鈕部分，這時要扯到一個新概念就是上拉電阻<br>上拉電阻:<br>在數位電路中，上拉電阻（英語：Pull-up resistors）是當某輸入埠未連接設備或處於高阻抗的情況下，一種用於保證輸入訊號為預期邏輯電平的電阻元件。他們通常在不同的邏輯裝置之間工作，提供一定的電壓訊號。</p>
+<p>主要用上拉電阻協助我們按鈕提供穩定的訊號。</p>
+<img src="/2021/10/29/Arduino-LED%E8%88%87Button%E6%8E%A7%E5%88%B6/Pullup_Resistor.png" class="">
+<p>當開關斷開的時候，邏輯閘的輸入訊號被上拉到Vin；當開關閉合的時候，邏輯閘的輸入端與地面相連，輸入訊號接近0伏特。</p>
+<p>通常上拉電阻都會接10K電阻，但我手邊只有2.2k所以串個5顆。</p>
+<p>V=IR<br>5 = I*(2200*5)<br>I=0.0004A=0.4mA</p>
+<img src="/2021/10/29/Arduino-LED%E8%88%87Button%E6%8E%A7%E5%88%B6/LEDWithButton_%E6%9E%B6%E6%A7%8B%E5%9C%96.png" class="">
+
+<img src="/2021/10/29/Arduino-LED%E8%88%87Button%E6%8E%A7%E5%88%B6/LEDWithButton_bb.png" class="">
+
+
+<p><strong>Code.ino</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">const int BUTTON_PIN = 7;  // 按鍵的接腳</span><br><span class="line">const int LED_PIN =  8;   // LED燈的接腳</span><br><span class="line"></span><br><span class="line">int buttonState = 0;   // 按鈕的狀態</span><br><span class="line"></span><br><span class="line">void setup() &#123;</span><br><span class="line">  Serial.begin(115200);</span><br><span class="line">  pinMode(LED_PIN, OUTPUT);   //設定LED的PIN腳為輸出</span><br><span class="line">  pinMode(BUTTON_PIN, INPUT); //設定按鈕的接腳為輸入，因為我們要讀取它的狀態</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">void loop() &#123;</span><br><span class="line">  buttonState = digitalRead(BUTTON_PIN);  //讀取按鍵的狀態</span><br><span class="line"> </span><br><span class="line">  if(buttonState == LOW)&#123;          //如果按鍵按了</span><br><span class="line">    Serial.print(buttonState);</span><br><span class="line">    digitalWrite(LED_PIN, HIGH);   //LED就亮了 </span><br><span class="line">  &#125;else&#123;                           //如果按鍵是未按下</span><br><span class="line">    Serial.print(buttonState);</span><br><span class="line">    digitalWrite(LED_PIN, LOW);    //LED就不亮</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<img src="/2021/10/29/Arduino-LED%E8%88%87Button%E6%8E%A7%E5%88%B6/Screen%20Shot%202021-10-19%20at%2011.02.02%20PM.png" class="">
+
+<img src="/2021/10/29/Arduino-LED%E8%88%87Button%E6%8E%A7%E5%88%B6/demo.gif" class="">
+
+
+<h3 id="總結"><a href="#總結" class="headerlink" title="總結"></a>總結</h3><p>發現電路需要理論部分的加強，否則接出來的線路會有問題。<br>以此來說就是上拉電阻，如果不知道他的原理，會覺得接個5V出來是要做什麼。</p>
+<p><strong>參考資料</strong><br><a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E4%B8%8A%E6%8B%89%E7%94%B5%E9%98%BB">https://zh.wikipedia.org/wiki/%E4%B8%8A%E6%8B%89%E7%94%B5%E9%98%BB</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://yuhsiang237.github.io/2021/10/29/Arduino-LED%E8%88%87Button%E6%8E%A7%E5%88%B6/" data-id="cme6kwnzu0006galj54il14h6" data-title="Arduino LED與Button控制" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+
+
+  <nav id="page-nav">
+    
+    <a class="extend prev" rel="prev" href="/page/6/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><a class="page-number" href="/page/6/">6</a><span class="page-number current">7</span><a class="page-number" href="/page/8/">8</a><a class="page-number" href="/page/9/">9</a><span class="space">&hellip;</span><a class="page-number" href="/page/16/">16</a><a class="extend next" rel="next" href="/page/8/">Next &raquo;</a>
+  </nav>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Code/">Code</a><span class="category-list-count">76</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Code/C/">C#</a><span class="category-list-count">69</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Code/Javascript/">Javascript</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Code/Refactoring/">Refactoring</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Code/Typescript/">Typescript</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/">Computer Science</a><span class="category-list-count">5</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/Algorithm/">Algorithm</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/Data-structure/">Data structure</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/Electronic-Circuit/">Electronic Circuit</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Daily-Log/">Daily Log</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/">Database</a><span class="category-list-count">57</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Database/PostgreSQL/">PostgreSQL</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/SQL-Server/">SQL Server</a><span class="category-list-count">47</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/">Framework</a><span class="category-list-count">27</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/AspNetCore-API/">AspNetCore API</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/AspNetCore-MVC/">AspNetCore MVC</a><span class="category-list-count">21</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/">Topic</a><span class="category-list-count">76</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2021-C-AspNetCore-Challenge/">2021 C# AspNetCore Challenge</a><span class="category-list-count">30</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2021-SQL-Server-Challenge/">2021 SQL Server Challenge</a><span class="category-list-count">30</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2022-C-SyncAndAsync/">2022 C# SyncAndAsync</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2025-Typescript/">2025 Typescript</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/Big-Data/">Big Data</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/LeetCode/">LeetCode</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/SystemStructure/">SystemStructure</a><span class="category-list-count">1</span></li></ul></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/08/">August 2025</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/05/">May 2023</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/03/">March 2023</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/02/">February 2023</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/01/">January 2023</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/12/">December 2022</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/09/">September 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/07/">July 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/06/">June 2022</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/05/">May 2022</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/04/">April 2022</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/03/">March 2022</a><span class="archive-list-count">17</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/02/">February 2022</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/01/">January 2022</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">December 2021</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">October 2021</a><span class="archive-list-count">24</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">September 2021</a><span class="archive-list-count">46</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">August 2021</a><span class="archive-list-count">12</span></li></ul>
+    </div>
+  </div>
+
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2025 Yu Hsiang<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

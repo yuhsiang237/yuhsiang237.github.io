@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>SQL Server Left Join只取第一筆做法Outer Apply | UM&#39;s Coding Note</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="前言最近剛好有要在SQL Server中Left Join N筆結果排序後只取得第一筆的需求。發現Left Join資料結果會有問題，所以發現了Outer Apply作法能夠達到，因此筆記一下。 實作需求:撈出每位使用者還沒完成的最早一筆任務。並以Priority做排序，如果遇到相同層級則以最早新建的資料為主。 Todos資料表:   Users資料表:   sql: 12345678910111">
+<meta property="og:type" content="article">
+<meta property="og:title" content="SQL Server Left Join只取第一筆做法Outer Apply">
+<meta property="og:url" content="https://yuhsiang237.github.io/2022/03/03/SQL-Server-Outer-Apply%E5%8F%A6%E4%B8%80%E7%A8%AELeft-Join%E4%BD%9C%E6%B3%95/index.html">
+<meta property="og:site_name" content="UM&#39;s Coding Note">
+<meta property="og:description" content="前言最近剛好有要在SQL Server中Left Join N筆結果排序後只取得第一筆的需求。發現Left Join資料結果會有問題，所以發現了Outer Apply作法能夠達到，因此筆記一下。 實作需求:撈出每位使用者還沒完成的最早一筆任務。並以Priority做排序，如果遇到相同層級則以最早新建的資料為主。 Todos資料表:   Users資料表:   sql: 12345678910111">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://yuhsiang237.github.io/2022/03/03/SQL-Server-Outer-Apply%E5%8F%A6%E4%B8%80%E7%A8%AELeft-Join%E4%BD%9C%E6%B3%95/2.PNG">
+<meta property="og:image" content="https://yuhsiang237.github.io/2022/03/03/SQL-Server-Outer-Apply%E5%8F%A6%E4%B8%80%E7%A8%AELeft-Join%E4%BD%9C%E6%B3%95/3.PNG">
+<meta property="og:image" content="https://yuhsiang237.github.io/2022/03/03/SQL-Server-Outer-Apply%E5%8F%A6%E4%B8%80%E7%A8%AELeft-Join%E4%BD%9C%E6%B3%95/1.PNG">
+<meta property="article:published_time" content="2022-03-03T07:08:51.000Z">
+<meta property="article:modified_time" content="2025-08-11T03:49:08.554Z">
+<meta property="article:author" content="Yu Hsiang">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://yuhsiang237.github.io/2022/03/03/SQL-Server-Outer-Apply%E5%8F%A6%E4%B8%80%E7%A8%AELeft-Join%E4%BD%9C%E6%B3%95/2.PNG">
+  
+    <link rel="alternate" href="/atom.xml" title="UM's Coding Note" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">UM&#39;s Coding Note</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">I record my coding experience at this place🤙</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://yuhsiang237.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-SQL-Server-Outer-Apply另一種Left-Join作法" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2022/03/03/SQL-Server-Outer-Apply%E5%8F%A6%E4%B8%80%E7%A8%AELeft-Join%E4%BD%9C%E6%B3%95/" class="article-date">
+  <time class="dt-published" datetime="2022-03-03T07:08:51.000Z" itemprop="datePublished">2022-03-03</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Database/">Database</a>►<a class="article-category-link" href="/categories/Database/SQL-Server/">SQL Server</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      SQL Server Left Join只取第一筆做法Outer Apply
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>最近剛好有要在SQL Server中Left Join N筆結果排序後只取得第一筆的需求。<br>發現Left Join資料結果會有問題，所以發現了Outer Apply作法能夠達到，因此筆記一下。</p>
+<h3 id="實作"><a href="#實作" class="headerlink" title="實作"></a>實作</h3><p>需求:<br>撈出每位使用者還沒完成的最早一筆任務。<br>並以Priority做排序，如果遇到相同層級則以最早新建的資料為主。</p>
+<p>Todos資料表:</p>
+<img src="/2022/03/03/SQL-Server-Outer-Apply%E5%8F%A6%E4%B8%80%E7%A8%AELeft-Join%E4%BD%9C%E6%B3%95/2.PNG" class="">
+
+<p>Users資料表:</p>
+<img src="/2022/03/03/SQL-Server-Outer-Apply%E5%8F%A6%E4%B8%80%E7%A8%AELeft-Join%E4%BD%9C%E6%B3%95/3.PNG" class="">
+
+<p>sql:</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> </span><br><span class="line">	A.UserName,</span><br><span class="line">	B.Name TaskName,</span><br><span class="line">	B.Id TaskId,</span><br><span class="line">	B.Priority</span><br><span class="line"><span class="keyword">FROM</span> Users A</span><br><span class="line">	<span class="keyword">OUTER</span> APPLY</span><br><span class="line">	(</span><br><span class="line">		<span class="keyword">SELECT</span> TOP <span class="number">1</span> </span><br><span class="line">			Name,Priority,Id</span><br><span class="line">		<span class="keyword">FROM</span> Todos </span><br><span class="line">		<span class="keyword">WHERE</span> </span><br><span class="line">			A.Id <span class="operator">=</span> UserId </span><br><span class="line">			<span class="keyword">AND</span> Todos.IsValid <span class="operator">=</span> <span class="number">1</span> </span><br><span class="line">			<span class="keyword">AND</span> IsComplete <span class="operator">=</span> <span class="number">0</span></span><br><span class="line">		<span class="keyword">ORDER</span> <span class="keyword">BY</span> Priority <span class="keyword">ASC</span>,Id <span class="keyword">ASC</span> </span><br><span class="line">	) B</span><br><span class="line"><span class="keyword">WHERE</span></span><br><span class="line">	A.IsValid <span class="operator">=</span> <span class="number">1</span></span><br></pre></td></tr></table></figure>
+<p>執行結果:</p>
+<img src="/2022/03/03/SQL-Server-Outer-Apply%E5%8F%A6%E4%B8%80%E7%A8%AELeft-Join%E4%BD%9C%E6%B3%95/1.PNG" class="">
+
+<h3 id="總結"><a href="#總結" class="headerlink" title="總結"></a>總結</h3><p>SQL Server有些特殊語法，有時真的得在實作時才會真的碰到。(坑)</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://yuhsiang237.github.io/2022/03/03/SQL-Server-Outer-Apply%E5%8F%A6%E4%B8%80%E7%A8%AELeft-Join%E4%BD%9C%E6%B3%95/" data-id="cme6kwo28004fgalj557c7wx3" data-title="SQL Server Left Join只取第一筆做法Outer Apply" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2022/03/04/PostgreSQL%E6%92%B0%E5%AF%ABstored-procedure%E7%AF%84%E4%BE%8B/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          PostgreSQL撰寫stored procedure範例
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2022/03/03/PostgreSQL%E8%B3%87%E6%96%99%E5%9E%8B%E5%88%A5/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">PostgreSQL資料型別</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Code/">Code</a><span class="category-list-count">76</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Code/C/">C#</a><span class="category-list-count">69</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Code/Javascript/">Javascript</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Code/Refactoring/">Refactoring</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Code/Typescript/">Typescript</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/">Computer Science</a><span class="category-list-count">5</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/Algorithm/">Algorithm</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/Data-structure/">Data structure</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/Electronic-Circuit/">Electronic Circuit</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Daily-Log/">Daily Log</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/">Database</a><span class="category-list-count">57</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Database/PostgreSQL/">PostgreSQL</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/SQL-Server/">SQL Server</a><span class="category-list-count">47</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/">Framework</a><span class="category-list-count">27</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/AspNetCore-API/">AspNetCore API</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/AspNetCore-MVC/">AspNetCore MVC</a><span class="category-list-count">21</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/">Topic</a><span class="category-list-count">76</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2021-C-AspNetCore-Challenge/">2021 C# AspNetCore Challenge</a><span class="category-list-count">30</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2021-SQL-Server-Challenge/">2021 SQL Server Challenge</a><span class="category-list-count">30</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2022-C-SyncAndAsync/">2022 C# SyncAndAsync</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2025-Typescript/">2025 Typescript</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/Big-Data/">Big Data</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/LeetCode/">LeetCode</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/SystemStructure/">SystemStructure</a><span class="category-list-count">1</span></li></ul></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/08/">August 2025</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/05/">May 2023</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/03/">March 2023</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/02/">February 2023</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/01/">January 2023</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/12/">December 2022</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/09/">September 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/07/">July 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/06/">June 2022</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/05/">May 2022</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/04/">April 2022</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/03/">March 2022</a><span class="archive-list-count">17</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/02/">February 2022</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/01/">January 2022</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">December 2021</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">October 2021</a><span class="archive-list-count">24</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">September 2021</a><span class="archive-list-count">46</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">August 2021</a><span class="archive-list-count">12</span></li></ul>
+    </div>
+  </div>
+
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2025 Yu Hsiang<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

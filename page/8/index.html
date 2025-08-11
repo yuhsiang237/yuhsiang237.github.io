@@ -1,0 +1,1113 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>UM&#39;s Coding Note</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="I record my coding experience at this place">
+<meta property="og:type" content="website">
+<meta property="og:title" content="UM&#39;s Coding Note">
+<meta property="og:url" content="https://yuhsiang237.github.io/page/8/index.html">
+<meta property="og:site_name" content="UM&#39;s Coding Note">
+<meta property="og:description" content="I record my coding experience at this place">
+<meta property="og:locale" content="en_US">
+<meta property="article:author" content="Yu Hsiang">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="UM's Coding Note" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">UM&#39;s Coding Note</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">I record my coding experience at this place🤙</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://yuhsiang237.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main">
+  
+    <article id="post-C-MVC-API-Bearer-Token實作" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2021/10/28/C-MVC-API-Bearer-Token%E5%AF%A6%E4%BD%9C/" class="article-date">
+  <time class="dt-published" datetime="2021-10-28T13:57:47.000Z" itemprop="datePublished">2021-10-28</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Code/">Code</a>►<a class="article-category-link" href="/categories/Code/C/">C#</a>►<a class="article-category-link" href="/categories/Framework/">Framework</a>►<a class="article-category-link" href="/categories/Framework/AspNetCore-API/">AspNetCore API</a>►<a class="article-category-link" href="/categories/Topic/">Topic</a>►<a class="article-category-link" href="/categories/Topic/2021-C-AspNetCore-Challenge/">2021 C# AspNetCore Challenge</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2021/10/28/C-MVC-API-Bearer-Token%E5%AF%A6%E4%BD%9C/">[Day25] C# MVC API JWT Token驗證 (下) JWT實作 - C#&amp;AspNetCore</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>在這篇中主要實作JWT的登入認證，取得Token、透過Token對有權限的API進行存取。</p>
+<h3 id="安裝"><a href="#安裝" class="headerlink" title="安裝"></a>安裝</h3><p>1.先安裝JWT套件，因為我是用AspNetCore所以用<br>Microsoft.AspNetCore.Authentication.JwtBearer</p>
+<img src="/2021/10/28/C-MVC-API-Bearer-Token%E5%AF%A6%E4%BD%9C/1.png" class="">
+
+<h3 id="撰寫"><a href="#撰寫" class="headerlink" title="撰寫"></a>撰寫</h3><p>1.撰寫產生JWT Token的程式碼。<br><strong>TokenController.cs</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">[HttpPost(&quot;GenerateToken&quot;)]</span><br><span class="line">[AllowAnonymous]</span><br><span class="line">public ActionResult&lt;string&gt; GenerateToken()</span><br><span class="line">&#123;</span><br><span class="line">    string issuer = &quot;JwtAuthDemo&quot;;</span><br><span class="line">    string signKey = &quot;ASASA1@AAASASASASA1@AAASAS&quot;; // 需要大於16字元</span><br><span class="line">    string Account = &quot;TestAccount&quot;;</span><br><span class="line">  </span><br><span class="line">    var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(signKey));</span><br><span class="line">    var signingCredentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256Signature);</span><br><span class="line"></span><br><span class="line">    // 建立 SecurityTokenDescriptor</span><br><span class="line">    var tokenDescriptor = new SecurityTokenDescriptor</span><br><span class="line">    &#123;</span><br><span class="line">        Issuer = issuer,</span><br><span class="line">        Subject = new ClaimsIdentity(new[]</span><br><span class="line">                &#123;</span><br><span class="line">                  new Claim(JwtRegisteredClaimNames.Sub, Account), // User.Identity.Name</span><br><span class="line">                  new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()), // JWT ID</span><br><span class="line">                  new Claim(&quot;test&quot;, &quot;123&quot;) // 可加入自訂內容在聲明裡</span><br><span class="line">                &#125;),</span><br><span class="line">        Expires = DateTime.Now.AddMinutes(60),</span><br><span class="line">        SigningCredentials = signingCredentials</span><br><span class="line">    &#125;;</span><br><span class="line">    var tokenHandler = new JwtSecurityTokenHandler();</span><br><span class="line">    var securityToken = tokenHandler.CreateToken(tokenDescriptor);</span><br><span class="line">    var serializeToken = tokenHandler.WriteToken(securityToken);</span><br><span class="line">    return serializeToken;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>2.撰寫測試JWT請求的程式碼<br>在此撰寫兩個一個是取得所有聲明，一個是取得該Token得獨立識別值。<br><strong>TokenController.cs</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">[Authorize]</span><br><span class="line">[HttpGet(&quot;GetClaims&quot;)]</span><br><span class="line">public IActionResult GetClaims()</span><br><span class="line">&#123;</span><br><span class="line">    return Ok(User.Claims.Select(p =&gt; new &#123; p.Type, p.Value &#125;));</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">[Authorize]</span><br><span class="line">[HttpGet(&quot;GetTokenID&quot;)]</span><br><span class="line">public IActionResult GetTokenID()</span><br><span class="line">&#123;</span><br><span class="line">    var jti = User.Claims.FirstOrDefault(p =&gt; p.Type == &quot;jti&quot;);//每個token的識別值，如果要禁用某token就可以把識別值存到資料庫當黑名單</span><br><span class="line">    return Ok(jti.Value);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>3.增加服務<br>Startup.cs</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">public void ConfigureServices(IServiceCollection services)&#123;</span><br><span class="line">  </span><br><span class="line"></span><br><span class="line">  services</span><br><span class="line">  .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)</span><br><span class="line">  .AddJwtBearer(options =&gt;</span><br><span class="line">  &#123;</span><br><span class="line">  // 當驗證失敗時，回應標頭會包含 WWW-Authenticate 標頭，這裡會顯示失敗的詳細錯誤原因</span><br><span class="line">  options.IncludeErrorDetails = true; // 預設值為 true，有時會特別關閉</span><br><span class="line"></span><br><span class="line">  options.TokenValidationParameters = new TokenValidationParameters</span><br><span class="line">  &#123;</span><br><span class="line"></span><br><span class="line">    // 一般我們都會驗證 Issuer</span><br><span class="line">    ValidateIssuer = true,</span><br><span class="line">    ValidIssuer = &quot;JwtAuthDemo&quot;,</span><br><span class="line"></span><br><span class="line">    // 通常不太需要驗證 Audience</span><br><span class="line">    ValidateAudience = false,</span><br><span class="line">    //ValidAudience = &quot;JwtAuthDemo&quot;, // 不驗證就不需要填寫</span><br><span class="line"></span><br><span class="line">    // 一般我們都會驗證 Token 的有效期間</span><br><span class="line">    ValidateLifetime = true,</span><br><span class="line"></span><br><span class="line">    // 如果 Token 中包含 key 才需要驗證，一般都只有簽章而已</span><br><span class="line">    ValidateIssuerSigningKey = false,</span><br><span class="line"></span><br><span class="line">    // JWT簽證密要，之後可自行設定在appsettings.json</span><br><span class="line">    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(&quot;ASASA1@AAASASASASA1@AAASAS&quot;))</span><br><span class="line">    &#125;;</span><br><span class="line">  &#125;);</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>4.添加授權</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IApiVersionDescriptionProvider provider)</span><br><span class="line">&#123;</span><br><span class="line">        app.UseAuthentication(); </span><br><span class="line">        app.UseAuthorization();</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>5.完成測試結果:<br>取得Token</p>
+<img src="/2021/10/28/C-MVC-API-Bearer-Token%E5%AF%A6%E4%BD%9C/2.png" class="">
+<p>用剛剛產生的JWT Token取得聲明</p>
+<img src="/2021/10/28/C-MVC-API-Bearer-Token%E5%AF%A6%E4%BD%9C/3.png" class="">
+<p>用剛剛產生的JWT Token取得Token識別值</p>
+<img src="/2021/10/28/C-MVC-API-Bearer-Token%E5%AF%A6%E4%BD%9C/4.png" class="">
+
+
+<h3 id="總結"><a href="#總結" class="headerlink" title="總結"></a>總結</h3><p>C#在處理JWT上算是蠻簡潔的，不用寫太多行，主要複雜點就在Startup.cs增加服務、產生Token這兩個步驟。<br>專案存庫位置:<a target="_blank" rel="noopener" href="https://github.com/yuhsiang237/ASP.NET-Core-RESTfulAPI-JWT">https://github.com/yuhsiang237/ASP.NET-Core-RESTfulAPI-JWT</a></p>
+<p>然後附上DEMO影片一個是用Postman測試，一個是程式碼跑起的時的Swagger<br>swagger demo:</p>
+<img src="/2021/10/28/C-MVC-API-Bearer-Token%E5%AF%A6%E4%BD%9C/demo.gif" class="">
+<p>postman demo:</p>
+<img src="/2021/10/28/C-MVC-API-Bearer-Token%E5%AF%A6%E4%BD%9C/postmandemo.gif" class="">
+
+
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://yuhsiang237.github.io/2021/10/28/C-MVC-API-Bearer-Token%E5%AF%A6%E4%BD%9C/" data-id="cme6kwo08000qgalj1p42cx2z" data-title="[Day25] C# MVC API JWT Token驗證 (下) JWT實作 - C#&amp;AspNetCore" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-Arduino-LED亮燈" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2021/10/28/Arduino-LED%E4%BA%AE%E7%87%88/" class="article-date">
+  <time class="dt-published" datetime="2021-10-28T09:04:44.000Z" itemprop="datePublished">2021-10-28</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Computer-Science/">Computer Science</a>►<a class="article-category-link" href="/categories/Computer-Science/Electronic-Circuit/">Electronic Circuit</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2021/10/28/Arduino-LED%E4%BA%AE%E7%87%88/">Arduino限流LED實驗</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>想以僅有的材料做個LED限流的實驗，並使用電路公式算出理論數值實作。</p>
+<h3 id="材料"><a href="#材料" class="headerlink" title="材料"></a>材料</h3><ol>
+<li>LED 3MM 紅色 x 1 :發光二極體</li>
+<li>Arduino版  x 1:任意一塊都可</li>
+<li>220歐姆電阻  x 3:紅紅棕金</li>
+</ol>
+<h3 id="理論部分"><a href="#理論部分" class="headerlink" title="理論部分"></a>理論部分</h3><p>首先我們Arduino電源接3.3V，而LED紅的電流需要0.02A(20mA)電壓則是2.0-2.2V，姑且算2.0電壓。</p>
+<p>這時3.3V怎樣降到2.0V?就是使用電阻<br>那要多少歐姆的電阻值呢?<br>透過歐姆定律<br>在電路學裏，歐姆定律（英語：Ohm’s law）表明，導電體兩端的電壓與通過導電體的電流成正比，以方程式表示。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">V=IR</span><br></pre></td></tr></table></figure>
+<p>(3.3-2.0) = 0.02 * R<br>1.3 = 0.02R<br>R = 1.3/0.02<br>R = 65<br>所以我們需要65Ω(Ohm)的電阻<br>但天殺的= =肯定不會這麼剛好有65歐姆的電阻，這時就要用現有的電阻兜出來。<br>並聯電阻可以降低歐姆。<br>依照克希荷夫電路定律推倒後得到以下公式:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Rt = 1/(1/R1+1/R2+1/R3+...+1/Rn)</span><br></pre></td></tr></table></figure>
+<p>以現有的220歐姆電阻要降到65就要稍微計算一下</p>
+<p>3顆:<br>1/(1/220+1/220+1/220) = 73<br>4顆:<br>1/(1/220+1/220+1/220+1/220) = 55</p>
+<p>發現3顆電阻約可以到73很接近65了，第4顆則是會低過65。<br>我們使用電阻是為了降低電壓、限流，讓IC能夠正常啟用下避免過熱燒毀、穩定運作，所以差不多就使用3顆電阻並聯。</p>
+<p>電路圖</p>
+<img src="/2021/10/28/Arduino-LED%E4%BA%AE%E7%87%88/%E9%9B%BB%E8%B7%AF%E5%9C%96_fx.png" class="">
+
+<p>接線圖</p>
+<img src="/2021/10/28/Arduino-LED%E4%BA%AE%E7%87%88/%E5%AF%A6%E9%9A%9B%E6%8E%A5%E7%B7%9A%E5%9C%96_fx.png" class="">
+
+<p>現實:</p>
+<img src="/2021/10/28/Arduino-LED%E4%BA%AE%E7%87%88/real_fx.png" class="">
+
+<h3 id="總結"><a href="#總結" class="headerlink" title="總結"></a>總結</h3><p>用理論公式推後就可以用任意的電壓、電阻來兜<br>避免IC燒壞、延長使用時間</p>
+<p>((ps.懂了後會覺得一些範例書上只給一個電阻然後不告訴你為什麼、怎麼算實在太黑了。</p>
+<p><strong>參考資料</strong><br>電阻色碼計算<br><a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E9%9B%BB%E9%98%BB%E8%89%B2%E7%A2%BC">https://zh.wikipedia.org/wiki/%E9%9B%BB%E9%98%BB%E8%89%B2%E7%A2%BC</a><br>電阻放置<br><a target="_blank" rel="noopener" href="https://zhidao.baidu.com/question/1610875004126323107.html">https://zhidao.baidu.com/question/1610875004126323107.html</a><br>限流電阻計算器<br><a target="_blank" rel="noopener" href="https://gc.digitw.com/Program/Resistor4LED/Resistor4LED.htm">https://gc.digitw.com/Program/Resistor4LED/Resistor4LED.htm</a><br>為什麼LED要加上電阻<br><a target="_blank" rel="noopener" href="http://yehnan.blogspot.com/2012/03/arduinoled220-ohm.html">http://yehnan.blogspot.com/2012/03/arduinoled220-ohm.html</a><br>控制LED<br><a target="_blank" rel="noopener" href="https://blog.jmaker.com.tw/arduino-tutorials-3/">https://blog.jmaker.com.tw/arduino-tutorials-3/</a><br>歐姆定律<br><a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E6%AC%A7%E5%A7%86%E5%AE%9A%E5%BE%8B">https://zh.wikipedia.org/wiki/%E6%AC%A7%E5%A7%86%E5%AE%9A%E5%BE%8B</a><br>並聯電路<br><a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E4%B8%A6%E8%81%AF%E9%9B%BB%E8%B7%AF#%E9%9B%BB%E9%98%BB%E5%99%A8">https://zh.wikipedia.org/wiki/%E4%B8%A6%E8%81%AF%E9%9B%BB%E8%B7%AF#%E9%9B%BB%E9%98%BB%E5%99%A8</a><br>克希荷夫電路定律<br><a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E5%9F%BA%E7%88%BE%E9%9C%8D%E5%A4%AB%E9%9B%BB%E8%B7%AF%E5%AE%9A%E5%BE%8B#%E5%9F%BA%E7%88%BE%E9%9C%8D%E5%A4%AB%E9%9B%BB%E6%B5%81%E5%AE%9A%E5%BE%8B%EF%BC%88KCL%EF%BC%89">https://zh.wikipedia.org/wiki/%E5%9F%BA%E7%88%BE%E9%9C%8D%E5%A4%AB%E9%9B%BB%E8%B7%AF%E5%AE%9A%E5%BE%8B#%E5%9F%BA%E7%88%BE%E9%9C%8D%E5%A4%AB%E9%9B%BB%E6%B5%81%E5%AE%9A%E5%BE%8B%EF%BC%88KCL%EF%BC%89</a><br>歐姆定律<br><a target="_blank" rel="noopener" href="https://physcourse.thu.edu.tw/mengwen/%E6%99%AE%E7%89%A9%E5%AF%A6%E9%A9%97/%E5%AF%A6%E9%A9%97%E9%A0%85%E7%9B%AE/%E6%AD%90%E5%A7%86%E5%AE%9A%E5%BE%8B/">https://physcourse.thu.edu.tw/mengwen/%E6%99%AE%E7%89%A9%E5%AF%A6%E9%A9%97/%E5%AF%A6%E9%A9%97%E9%A0%85%E7%9B%AE/%E6%AD%90%E5%A7%86%E5%AE%9A%E5%BE%8B/</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://yuhsiang237.github.io/2021/10/28/Arduino-LED%E4%BA%AE%E7%87%88/" data-id="cme6kwnzt0005galj0n4z4n80" data-title="Arduino限流LED實驗" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-C-MVC-API-Bearer-Token驗證" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2021/10/27/C-MVC-API-Bearer-Token%E9%A9%97%E8%AD%89/" class="article-date">
+  <time class="dt-published" datetime="2021-10-27T13:57:47.000Z" itemprop="datePublished">2021-10-27</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Code/">Code</a>►<a class="article-category-link" href="/categories/Code/C/">C#</a>►<a class="article-category-link" href="/categories/Framework/">Framework</a>►<a class="article-category-link" href="/categories/Framework/AspNetCore-API/">AspNetCore API</a>►<a class="article-category-link" href="/categories/Topic/">Topic</a>►<a class="article-category-link" href="/categories/Topic/2021-C-AspNetCore-Challenge/">2021 C# AspNetCore Challenge</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2021/10/27/C-MVC-API-Bearer-Token%E9%A9%97%E8%AD%89/">[Day24] C# MVC API JWT Token驗證 (上) JWT基礎知識 - C#&amp;AspNetCore</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>在先前有介紹過Cookie-Based驗證於MVC專案裡。</p>
+<a href="/2021/10/07/C-MVC-%E9%A9%97%E8%AD%89%E8%88%87%E6%8E%88%E6%AC%8A%E7%99%BB%E5%85%A5%E8%88%87%E7%99%BB%E5%87%BA/" title="[Day12] C# MVC 驗證與授權，登入與登出 - C#&amp;AspNetCore">[Day12] C# MVC 驗證與授權，登入與登出 - C#&amp;AspNetCore</a>
+
+<p>而這回主要探討的是Token-Based驗證，也就是API常用的JWT (Json Web Token)。</p>
+<h3 id="什麼是JWT"><a href="#什麼是JWT" class="headerlink" title="什麼是JWT"></a>什麼是JWT</h3><p>JSON Web Token (JWT) is a proposed Internet standard for creating data with optional signature and/or optional encryption whose payload holds JSON that asserts some number of claims. </p>
+<p>為JSON Web Token，是一個建議的網路標準，用來建立簽名，且在其中可以視需求加入自訂的JSON內容。</p>
+<p>簡言之，就是令牌(Token)，你可以拿這令牌去要資料。</p>
+<h3 id="JWT優點"><a href="#JWT優點" class="headerlink" title="JWT優點"></a>JWT優點</h3><p>跨域: 不受網域限制，可用來串接第三方應用，如 OAuth。<br>安全性: 不使用 Cookie 因此不會受到 CSRF 攻擊，不過 Token 並不能防護 XSS 攻擊，還是需要特別注意。<br>行動端: 可用於不支援 Cookie 的裝置上，且現在網站和 APP 串接普遍使用 Token 授權。</p>
+<h3 id="JWT格式"><a href="#JWT格式" class="headerlink" title="JWT格式"></a>JWT格式</h3><p>主要由三個部分組成:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">header.payload.signature</span><br></pre></td></tr></table></figure>
+
+
+<p><strong>Header</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;alg&quot;: &quot;HS256&quot;,</span><br><span class="line">  &quot;typ&quot;: &quot;JWT&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>alg:定義加密的方式產生signature，如上是HS256表示使用是HMAC-SHA256.<br>typ:Token類型</p>
+<p>常被使用的header如:typ、cty、alg、kid、x5c、x5u、crit<br>可自行添加參考:<a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/JSON_Web_Token">https://en.wikipedia.org/wiki/JSON_Web_Token</a></p>
+<p><strong>Payload</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;loggedInAs&quot;: &quot;admin&quot;,</span><br><span class="line">  &quot;iat&quot;: 1422779638</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>loggedInAs:這是客製化claim，以此來說是管理員。<br>iat:這是標準的claim，表示此JWT發布的時間。</p>
+<p>標準的claim如:iss、sub、aud、exp、nbf、iat、jti<br>可自行添加參考:<a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/JSON_Web_Token">https://en.wikipedia.org/wiki/JSON_Web_Token</a></p>
+<p>通常為了讓前端或後端好存取多加上一些識別值。</p>
+<p><strong>Signature</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">HMAC_SHA256(</span><br><span class="line">  secret,</span><br><span class="line">  base64urlEncoding(header) + &#x27;.&#x27; +</span><br><span class="line">  base64urlEncoding(payload)</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+<p>簽名，確保資料完整性的雜湊簽章。</p>
+<p>將以上三者用Base64url Encoding結果即為JWT</p>
+<p>生成:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">const token = base64urlEncoding(header) + &#x27;.&#x27; + base64urlEncoding(payload) + &#x27;.&#x27; + base64urlEncoding(signature)</span><br></pre></td></tr></table></figure>
+<p>結果:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJsb2dnZWRJbkFzIjoiYWRtaW4iLCJpYXQiOjE0MjI3Nzk2Mzh9.gzSraSYS8EXBxLN_oWnFSRgCzcmJmMjLiuyu5CSpyHI</span><br></pre></td></tr></table></figure>
+
+<h3 id="使用情境"><a href="#使用情境" class="headerlink" title="使用情境"></a>使用情境</h3><p>將此Token放置於API請求的Header中:<br>例如:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJsb2dnZWRJbkFzIjoiYWRtaW4iLCJpYXQiOjE0MjI3Nzk2Mzh9.gzSraSYS8EXBxLN_oWnFSRgCzcmJmMjLiuyu5CSpyHI</span><br></pre></td></tr></table></figure>
+<p>傳送給後端</p>
+<h3 id="JWT衍伸問題"><a href="#JWT衍伸問題" class="headerlink" title="JWT衍伸問題"></a>JWT衍伸問題</h3><p>Token的竊取問題，因為JWT發出去就不能銷毀，只能自己等待過期。<br>所以有了<code>Refresh Token</code>的出現。</p>
+<p>使用Refresh Token後:<br>縮短每個Token時間，過期時再重新索取。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;access_token&quot;:&quot;l0XG52TQx&quot;,    //Token</span><br><span class="line">  &quot;refresh_token&quot;:&quot;KWI3JOkFA&quot;,   //Refresh Token</span><br><span class="line">  &quot;expires_in&quot;:3600              //幾秒過期</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>當Token過期後，使用refresh_token呼叫一個API要取一個新Token。<br>refresh_token是存在自己資料庫內的，所以被盜用可以馬上刪除掉!</p>
+<p>在寫程式碼時可以在某API發現過期後立即呼叫更換。<br>或是用Token裡面帶入的payload去確認更換時機也可以，但可能會有時區問題。</p>
+<p>此外，如果用Refresh Token仍會有一些安全疑慮，就是發出的token還是要等到時間自己逾期。<br>(不如自己建表記Token還比較安全，所以在下面我寫了額外補充)</p>
+<h3 id="額外補充"><a href="#額外補充" class="headerlink" title="額外補充"></a>額外補充</h3><p>除了JWT外也有一些自訂的做法能用來驗證APP手機端。<br>如DB自建Token表，可能像是這樣:</p>
+<p>每次操作API都帶入Token，DB檢驗一次。<br>被盜用時想刪隨時能刪、能強制登出。</p>
+<p><strong>Tokens資料表</strong></p>
+<table>
+<tr>
+<th>UserID</th>
+<th>Token</th>
+<th>Expires_In</th>
+</tr>
+<tr>
+<td>1</td>
+<td>AJIASOIASssarJ</td>
+<td>2021-10-16</td>
+</tr>
+<tr>
+<td>2</td>
+<td>AASKOPASKOAPaS</td>
+<td>2021-10-17</td>
+</tr>
+<tr>
+<td>3</td>
+<td>AASK45as4daaS</td>
+<td>2021-10-14</td>
+</tr>
+</table>
+
+<p>流程大概像這樣:<br>API&gt;撈DB檢查&gt;大於時間，刪除Token&gt;回傳授權失敗</p>
+<p>雖然比較耗資料庫資源但我覺得是最安全的方式XD。<br>而且沒有發出要等到時間到才會逾期的問題</p>
+<h3 id="總結"><a href="#總結" class="headerlink" title="總結"></a>總結</h3><p>在這回中主要探討JWT是什麼、前置的知識理論。<br>發現了JWT的一些好處與壞處。</p>
+<p>因此如果有疑慮好像自己建立Token表還是最安全的XD</p>
+<p>而在下篇中將會實作JWT的機制。</p>
+<p><strong>參考資料</strong><br><a target="_blank" rel="noopener" href="https://ithelp.ithome.com.tw/articles/10199102">https://ithelp.ithome.com.tw/articles/10199102</a><br><a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/JSON_Web_Token">https://en.wikipedia.org/wiki/JSON_Web_Token</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://yuhsiang237.github.io/2021/10/27/C-MVC-API-Bearer-Token%E9%A9%97%E8%AD%89/" data-id="cme6kwo07000ngalja1kjdumx" data-title="[Day24] C# MVC API JWT Token驗證 (上) JWT基礎知識 - C#&amp;AspNetCore" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-C-MVC-Web-API增加Swagger" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2021/10/26/C-MVC-Web-API%E5%A2%9E%E5%8A%A0Swagger/" class="article-date">
+  <time class="dt-published" datetime="2021-10-26T11:59:32.000Z" itemprop="datePublished">2021-10-26</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Code/">Code</a>►<a class="article-category-link" href="/categories/Code/C/">C#</a>►<a class="article-category-link" href="/categories/Topic/">Topic</a>►<a class="article-category-link" href="/categories/Topic/2021-C-AspNetCore-Challenge/">2021 C# AspNetCore Challenge</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2021/10/26/C-MVC-Web-API%E5%A2%9E%E5%8A%A0Swagger/">[Day23] C# MVC Web API版本增加Swagger - C#&amp;AspNetCore</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>在上回中我們介紹了 <a href="/2021/10/19/C-MVC-API%E7%89%88%E6%9C%AC%E6%8E%A7%E5%88%B6/" title="[Day22] C# MVC API版本控制 - C#&amp;AspNetCore">[Day22] C# MVC API版本控制 - C#&amp;AspNetCore</a> ，實作了RESTful API的版控。</p>
+<p>而這回將要進行API的部屬，使用Swagger UI。</p>
+<p>找了很多篇算是找到一篇<br><a target="_blank" rel="noopener" href="https://codingfreaks.de/dotnet-core-api-versioning/">https://codingfreaks.de/dotnet-core-api-versioning/</a><br>可以同時使用API Versioning跟Swagger套件的範例</p>
+<p>在這篇中主要配置API並且切版本</p>
+<p>1.先用Nuget安裝以下套件:<br>Swashbuckle.AspNetCore<br>Swashbuckle.AspNetCore.Annotations<br>Swashbuckle.AspNetCore.Swagger<br>Swashbuckle.AspNetCore.SwaggerGen<br>Swashbuckle.AspNetCore.SwaggerUI</p>
+<img src="/2021/10/26/C-MVC-Web-API%E5%A2%9E%E5%8A%A0Swagger/4.png" class="">
+
+<p>2.再來是我們要修改的檔案</p>
+<img src="/2021/10/26/C-MVC-Web-API%E5%A2%9E%E5%8A%A0Swagger/5.png" class="">
+
+<p>首先是Swagger的定義類別</p>
+<p><strong>~/ConfigureSwaggerOptions.cs</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br></pre></td><td class="code"><pre><span class="line">namespace ApiVersioningSample</span><br><span class="line">&#123;</span><br><span class="line">    using System;</span><br><span class="line">    using System.Linq;</span><br><span class="line"></span><br><span class="line">    using Microsoft.AspNetCore.Mvc.ApiExplorer;</span><br><span class="line">    using Microsoft.Extensions.DependencyInjection;</span><br><span class="line">    using Microsoft.Extensions.Options;</span><br><span class="line">    using Microsoft.OpenApi.Models;</span><br><span class="line"></span><br><span class="line">    using Swashbuckle.AspNetCore.SwaggerGen;</span><br><span class="line"></span><br><span class="line">    /// &lt;summary&gt;</span><br><span class="line">    /// Configures the Swagger generation options.</span><br><span class="line">    /// &lt;/summary&gt;</span><br><span class="line">    /// &lt;remarks&gt;</span><br><span class="line">    /// &lt;para&gt;</span><br><span class="line">    /// This allows API versioning to define a Swagger document per API version after the</span><br><span class="line">    /// &lt;see cref=&quot;IApiVersionDescriptionProvider&quot; /&gt; service has been resolved from the service container.</span><br><span class="line">    /// &lt;/para&gt;</span><br><span class="line">    /// &lt;para&gt;Taken from https://github.com/microsoft/aspnet-api-versioning.&lt;/para&gt;</span><br><span class="line">    /// &lt;/remarks&gt;</span><br><span class="line">    public class ConfigureSwaggerOptions : IConfigureOptions&lt;SwaggerGenOptions&gt;</span><br><span class="line">    &#123;</span><br><span class="line">        #region member vars</span><br><span class="line"></span><br><span class="line">        private readonly IApiVersionDescriptionProvider _provider;</span><br><span class="line"></span><br><span class="line">        #endregion</span><br><span class="line"></span><br><span class="line">        #region constructors and destructors</span><br><span class="line"></span><br><span class="line">        /// &lt;summary&gt;</span><br><span class="line">        /// Initializes a new instance of the &lt;see cref=&quot;ConfigureSwaggerOptions&quot; /&gt; class.</span><br><span class="line">        /// &lt;/summary&gt;</span><br><span class="line">        /// &lt;param name=&quot;provider&quot;&gt;</span><br><span class="line">        /// The &lt;see cref=&quot;IApiVersionDescriptionProvider&quot;&gt;provider&lt;/see&gt; used to generate Swagger</span><br><span class="line">        /// documents.</span><br><span class="line">        /// &lt;/param&gt;</span><br><span class="line">        public ConfigureSwaggerOptions(IApiVersionDescriptionProvider provider)</span><br><span class="line">        &#123;</span><br><span class="line">            _provider = provider;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        #endregion</span><br><span class="line"></span><br><span class="line">        #region explicit interfaces</span><br><span class="line"></span><br><span class="line">        /// &lt;inheritdoc /&gt;</span><br><span class="line">        public void Configure(SwaggerGenOptions options)</span><br><span class="line">        &#123;</span><br><span class="line">            // add a swagger document for each discovered API version</span><br><span class="line">            // note: you might choose to skip or document deprecated API versions differently</span><br><span class="line">            foreach (var description in _provider.ApiVersionDescriptions)</span><br><span class="line">            &#123;</span><br><span class="line">                options.SwaggerDoc(description.GroupName, CreateInfoForApiVersion(description));</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        #endregion</span><br><span class="line"></span><br><span class="line">        #region methods</span><br><span class="line"></span><br><span class="line">        /// &lt;summary&gt;</span><br><span class="line">        /// Internal implementation for building the Swagger basic config.</span><br><span class="line">        /// &lt;/summary&gt;</span><br><span class="line">        /// &lt;param name=&quot;description&quot;&gt;The description object containing the.&lt;/param&gt;</span><br><span class="line">        /// &lt;returns&gt;The generated Open API info.&lt;/returns&gt;</span><br><span class="line">        private static OpenApiInfo CreateInfoForApiVersion(ApiVersionDescription description)</span><br><span class="line">        &#123;</span><br><span class="line">            var info = new OpenApiInfo</span><br><span class="line">            &#123;</span><br><span class="line">                Title = &quot;Sample API&quot;,</span><br><span class="line">                Version = description.ApiVersion.ToString(),</span><br><span class="line">                Description = @&quot;&lt;p&gt;Sample API with versioning including Swagger.&lt;/p&gt;&lt;p&gt;Partly taken from &lt;a href=&quot;&quot;https://github.com/microsoft/aspnet-api-versioning&quot;&quot;&gt;this repository&lt;/a&gt;.&lt;/p&gt;&quot;,</span><br><span class="line">                Contact = new OpenApiContact</span><br><span class="line">                &#123;</span><br><span class="line">                    Name = &quot;Yu Hsiang&quot;,</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;;</span><br><span class="line">            if (description.IsDeprecated)</span><br><span class="line">            &#123;</span><br><span class="line">                info.Description += @&quot;&lt;p&gt;&lt;strong&gt;&lt;span style=&quot;&quot;color:white;background-color:red&quot;&quot;&gt;VERSION IS DEPRECATED&lt;/span&gt;&lt;/strong&gt;&lt;/p&gt;&quot;;</span><br><span class="line">            &#125;</span><br><span class="line">            return info;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        #endregion</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>這類別主要用來放Swagger客製化的數值</p>
+<p>再來是啟用Swagger</p>
+<p><strong>~/Startup.cs</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br></pre></td><td class="code"><pre><span class="line">using Microsoft.AspNetCore.Builder;</span><br><span class="line">using Microsoft.AspNetCore.Hosting;</span><br><span class="line">using Microsoft.AspNetCore.HttpsPolicy;</span><br><span class="line">using Microsoft.AspNetCore.Mvc;</span><br><span class="line">using Microsoft.Extensions.Configuration;</span><br><span class="line">using Microsoft.Extensions.DependencyInjection;</span><br><span class="line">using Microsoft.Extensions.Hosting;</span><br><span class="line">using Microsoft.Extensions.Logging;</span><br><span class="line">using System;</span><br><span class="line">using System.Collections.Generic;</span><br><span class="line">using System.Linq;</span><br><span class="line">using System.Threading.Tasks;</span><br><span class="line">using Microsoft.EntityFrameworkCore;</span><br><span class="line">using TodoAPI.Models;</span><br><span class="line">using Microsoft.OpenApi.Models;</span><br><span class="line">using Swashbuckle.AspNetCore.SwaggerGen;</span><br><span class="line">using Microsoft.Extensions.Options;</span><br><span class="line">using ApiVersioningSample;</span><br><span class="line">using Microsoft.AspNetCore.Mvc.ApiExplorer;</span><br><span class="line"></span><br><span class="line">namespace TodoAPI</span><br><span class="line">&#123;</span><br><span class="line">    public class Startup</span><br><span class="line">    &#123;</span><br><span class="line">        public Startup(IConfiguration configuration)</span><br><span class="line">        &#123;</span><br><span class="line">            Configuration = configuration;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        public IConfiguration Configuration &#123; get; &#125;</span><br><span class="line"></span><br><span class="line">        // This method gets called by the runtime. Use this method to add services to the container.</span><br><span class="line">        public void ConfigureServices(IServiceCollection services)</span><br><span class="line">        &#123;</span><br><span class="line">            services.AddControllers();</span><br><span class="line">            // 資料庫配置</span><br><span class="line">            var connection = @&quot;Server=.\SQLExpress;Database=TodoDB;Trusted_Connection=True;ConnectRetryCount=0&quot;;</span><br><span class="line">            services.AddDbContext&lt;TodoDBContext&gt;(options =&gt; options.UseSqlServer(connection));</span><br><span class="line"></span><br><span class="line">            // 啟用API版控功能</span><br><span class="line">            services.AddApiVersioning(</span><br><span class="line">              options =&gt;</span><br><span class="line">              &#123;</span><br><span class="line">                    // reporting api versions will return the headers &quot;api-supported-versions&quot; and &quot;api-deprecated-versions&quot;</span><br><span class="line">                    options.ReportApiVersions = true;</span><br><span class="line">              &#125;);</span><br><span class="line"></span><br><span class="line">            // swagger 配置</span><br><span class="line">            services.AddVersionedApiExplorer(</span><br><span class="line">                options =&gt;</span><br><span class="line">                &#123;</span><br><span class="line">                    // add the versioned api explorer, which also adds IApiVersionDescriptionProvider service</span><br><span class="line">                    // note: the specified format code will format the version as &quot;&#x27;v&#x27;major[.minor][-status]&quot;</span><br><span class="line">                    options.GroupNameFormat = &quot;&#x27;v&#x27;VVV&quot;;</span><br><span class="line">                    // note: this option is only necessary when versioning by url segment. the SubstitutionFormat</span><br><span class="line">                    // can also be used to control the format of the API version in route templates</span><br><span class="line">                    options.SubstituteApiVersionInUrl = true;</span><br><span class="line">                &#125;);</span><br><span class="line">            services.AddTransient&lt;IConfigureOptions&lt;SwaggerGenOptions&gt;, ConfigureSwaggerOptions&gt;();</span><br><span class="line">            services.AddSwaggerGen();</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.</span><br><span class="line">        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IApiVersionDescriptionProvider provider)</span><br><span class="line">        &#123;</span><br><span class="line">            if (env.IsDevelopment())</span><br><span class="line">            &#123;</span><br><span class="line">                app.UseDeveloperExceptionPage();</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            app.UseHttpsRedirection();</span><br><span class="line"></span><br><span class="line">            app.UseRouting();</span><br><span class="line"></span><br><span class="line">            app.UseAuthorization();</span><br><span class="line">            </span><br><span class="line">            // swagger 配置</span><br><span class="line">            app.UseSwagger();</span><br><span class="line">            app.UseSwaggerUI(</span><br><span class="line">                options =&gt;</span><br><span class="line">                &#123;</span><br><span class="line">                    // build a swagger endpoint for each discovered API version</span><br><span class="line">                    foreach (var description in provider.ApiVersionDescriptions)</span><br><span class="line">                    &#123;</span><br><span class="line">                        options.SwaggerEndpoint($&quot;/swagger/&#123;description.GroupName&#125;/swagger.json&quot;, description.GroupName.ToUpperInvariant());</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">            app.UseEndpoints(endpoints =&gt;</span><br><span class="line">            &#123;</span><br><span class="line">                endpoints.MapControllers();</span><br><span class="line"></span><br><span class="line">            &#125;);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>第48～60行:swagger 配置<br>第79～89行:swagger 配置</p>
+<p>4.版本的類別撰寫:</p>
+<p><strong>~/Controllers/V1_1/VersionController.cs</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">using System.Collections.Generic;</span><br><span class="line">using Microsoft.AspNetCore.Mvc;</span><br><span class="line"></span><br><span class="line">namespace TodoAPI.Controllers.V1_1</span><br><span class="line">&#123;</span><br><span class="line">    [ApiVersion(&quot;1.1&quot;)]</span><br><span class="line">    [Route(&quot;api/v&#123;version:apiVersion&#125;/[controller]&quot;)]</span><br><span class="line">    [ApiController]</span><br><span class="line">    public class VersionController : ControllerBase</span><br><span class="line">    &#123;</span><br><span class="line">        [HttpGet]</span><br><span class="line">        public IEnumerable&lt;string&gt; Get()</span><br><span class="line">        &#123;</span><br><span class="line">            return new string[] &#123; &quot;api v1.1&quot; &#125;;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>~/Controllers/V1_1/VersionController.cs</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">using System.Collections.Generic;</span><br><span class="line">using Microsoft.AspNetCore.Mvc;</span><br><span class="line"></span><br><span class="line">namespace TodoAPI.Controllers.V1_1</span><br><span class="line">&#123;</span><br><span class="line">    [ApiVersion(&quot;1.1&quot;)]</span><br><span class="line">    [Route(&quot;api/v&#123;version:apiVersion&#125;/[controller]&quot;)]</span><br><span class="line">    [ApiController]</span><br><span class="line">    public class VersionController : ControllerBase</span><br><span class="line">    &#123;</span><br><span class="line">        [HttpGet]</span><br><span class="line">        public IEnumerable&lt;string&gt; Get()</span><br><span class="line">        &#123;</span><br><span class="line">            return new string[] &#123; &quot;api v1.1&quot; &#125;;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p><strong>~/Controllers/V2_0/VersionController.cs</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">using System.Collections.Generic;</span><br><span class="line">using Microsoft.AspNetCore.Mvc;</span><br><span class="line"></span><br><span class="line">namespace TodoAPI.Controllers.V2_0</span><br><span class="line">&#123;</span><br><span class="line">    [ApiVersion(&quot;2.0&quot;)]</span><br><span class="line">    [Route(&quot;api/v&#123;version:apiVersion&#125;/[controller]&quot;)]</span><br><span class="line">    [ApiController]</span><br><span class="line">    public class VersionController : ControllerBase</span><br><span class="line">    &#123;</span><br><span class="line">        [HttpGet]</span><br><span class="line">        public IEnumerable&lt;string&gt; Get()</span><br><span class="line">        &#123;</span><br><span class="line">            return new string[] &#123; &quot;api v2.0&quot; &#125;;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>基本上就是改<br>第4行資料夾:V1_0 至 V1_1 至 V2_0<br>第6行ApiVersion:1.0 至 1.1 至 2.0<br>其他的Controller也是一樣，這邊就舉例VersionController.cs</p>
+<p>5.啟用後範例:</p>
+<img src="/2021/10/26/C-MVC-Web-API%E5%A2%9E%E5%8A%A0Swagger/demo.gif" class="">
+
+<h3 id="專案連結"><a href="#專案連結" class="headerlink" title="專案連結"></a>專案連結</h3><p><a target="_blank" rel="noopener" href="https://github.com/yuhsiang237/ASP.NET-Core-RESTfulAPI-Swagger">https://github.com/yuhsiang237/ASP.NET-Core-RESTfulAPI-Swagger</a></p>
+<h3 id="總覽"><a href="#總覽" class="headerlink" title="總覽"></a>總覽</h3><p>Swagger UI搭配版控，而在.net Core官方是沒有提供版本+Swagger配置的，所以踩很多雷。<br>這回參考了 <a target="_blank" rel="noopener" href="https://codingfreaks.de/dotnet-core-api-versioning/">https://codingfreaks.de/dotnet-core-api-versioning/</a> 的文章。<br>花了不少時間在除錯，最後終於把Swagger搭建起來。</p>
+<p><strong>參考資料</strong><br><a target="_blank" rel="noopener" href="https://codingfreaks.de/dotnet-core-api-versioning/">https://codingfreaks.de/dotnet-core-api-versioning/</a><br><a target="_blank" rel="noopener" href="https://docs.microsoft.com/zh-tw/aspnet/core/tutorials/getting-started-with-swashbuckle?view=aspnetcore-3.1&amp;tabs=visual-studio">https://docs.microsoft.com/zh-tw/aspnet/core/tutorials/getting-started-with-swashbuckle?view=aspnetcore-3.1&amp;tabs=visual-studio</a><br><a target="_blank" rel="noopener" href="https://medium.com/wenchin-rolls-around/%E8%BB%9F%E9%AB%94%E7%89%88%E6%9C%AC%E8%99%9F-ee446e1ad543">https://medium.com/wenchin-rolls-around/%E8%BB%9F%E9%AB%94%E7%89%88%E6%9C%AC%E8%99%9F-ee446e1ad543</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://yuhsiang237.github.io/2021/10/26/C-MVC-Web-API%E5%A2%9E%E5%8A%A0Swagger/" data-id="cme6kwo0n001ggalj7ckk47m9" data-title="[Day23] C# MVC Web API版本增加Swagger - C#&amp;AspNetCore" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-C-MVC-API版本控制" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2021/10/19/C-MVC-API%E7%89%88%E6%9C%AC%E6%8E%A7%E5%88%B6/" class="article-date">
+  <time class="dt-published" datetime="2021-10-19T11:59:32.000Z" itemprop="datePublished">2021-10-19</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Code/">Code</a>►<a class="article-category-link" href="/categories/Code/C/">C#</a>►<a class="article-category-link" href="/categories/Framework/">Framework</a>►<a class="article-category-link" href="/categories/Framework/AspNetCore-API/">AspNetCore API</a>►<a class="article-category-link" href="/categories/Topic/">Topic</a>►<a class="article-category-link" href="/categories/Topic/2021-C-AspNetCore-Challenge/">2021 C# AspNetCore Challenge</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2021/10/19/C-MVC-API%E7%89%88%E6%9C%AC%E6%8E%A7%E5%88%B6/">[Day22] C# MVC API版本控制 - C#&amp;AspNetCore</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>在上回中我們介紹了 <a href="/2021/10/18/C-MVC-RESTful-API-%E4%B8%8B-%E5%AF%A6%E4%BD%9CRESTful-API/" title="[Day21] C# MVC RESTful API (下) 實作RESTful API - C#&amp;AspNetCore">[Day21] C# MVC RESTful API (下) 實作RESTful API - C#&amp;AspNetCore</a> ，實作了RESTful API。</p>
+<p>而這回將要進行API版本控制!<br>能處理前端(React/Vue)或APP(iOS/Android)不能馬上更新的最佳手段，有錯可以馬上先還原上一版本、達到向下相容。</p>
+<h3 id="API規格"><a href="#API規格" class="headerlink" title="API規格"></a>API規格</h3><p>可修改apiVersion調用不同版本API，如:v1.0、v2.0</p>
+<table>
+<tbody><tr><th>方法</th>
+<th>網址</th>
+<th>描述</th>
+<th>要求文本</th>
+<th>回應文本</th>
+</tr><tr>
+<td>GET</td>
+<td><code>&#123;apiVersion&#125;/api/todo</code></td>
+<td>取得所有待辦事項</td>
+<td>無</td>
+<td>待辦事項陣列</td>
+</tr>
+<tr>
+<td>GET</td>
+<td><code>&#123;apiVersion&#125;/api/todo/&#123;id&#125;</code></td>
+<td>依識別碼取得待辦事項</td>
+<td>無</td>
+<td>待辦事項</td>
+</tr>
+<tr>
+<td>POST</td>
+<td><code>&#123;apiVersion&#125;/api/todo</code></td>
+<td>新增待辦事項</td>
+<td>待辦事項</td>
+<td>待辦事項</td>
+</tr>
+<tr>
+<td>PUT</td>
+<td><code>&#123;apiVersion&#125;/api/todo/&#123;id&#125;</code></td>
+<td>更新現有的待辦事項</td>
+<td>待辦事項</td>
+<td>待辦事項</td>
+</tr>
+<tr>
+<td>DELETE</td>
+<td><code>&#123;apiVersion&#125;/api/todo/&#123;id&#125;</code></td>
+<td>刪除待辦事項</td>
+<td>無</td>
+<td>待辦事項</td>
+</tr>
+<tr>
+<td>GET</td>
+<td><code>&#123;apiVersion&#125;/api/version</code></td>
+<td>取得API版本</td>
+<td>無</td>
+<td>API版本</td>
+</tr>
+</tbody></table>
+
+
+<h3 id="實作API版控"><a href="#實作API版控" class="headerlink" title="實作API版控"></a>實作API版控</h3><p>先列出我們要改的檔案隻數:</p>
+<img src="/2021/10/19/C-MVC-API%E7%89%88%E6%9C%AC%E6%8E%A7%E5%88%B6/2.png" class="">
+
+<p>1.安裝Microsoft.AspNetCore.Mvc.Versioning</p>
+<img src="/2021/10/19/C-MVC-API%E7%89%88%E6%9C%AC%E6%8E%A7%E5%88%B6/1.png" class="">
+
+<p>2.再來更新Startup.cs，服務增加一行啟用API功能services.AddApiVersioning()</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">// This method gets called by the runtime. Use this method to add services to the container.</span><br><span class="line">public void ConfigureServices(IServiceCollection services)</span><br><span class="line">&#123;</span><br><span class="line">    services.AddControllers();</span><br><span class="line">    // 資料庫配置</span><br><span class="line">    var connection = @&quot;Server=.\SQLExpress;Database=TodoDB;Trusted_Connection=True;ConnectRetryCount=0&quot;;</span><br><span class="line">    services.AddDbContext&lt;TodoDBContext&gt;(options =&gt; options.UseSqlServer(connection));</span><br><span class="line">    </span><br><span class="line">    // 啟用API版控功能</span><br><span class="line">    services.AddApiVersioning();</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>3.以資料夾分版本層，就是把原本的Controller複製至版本資料夾</p>
+<p>如1.0版:<br><strong>~/Controllers/V1/VersionController.cs</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">using System.Collections.Generic;</span><br><span class="line">using Microsoft.AspNetCore.Mvc;</span><br><span class="line"></span><br><span class="line">namespace TodoAPI.Controllers.V1</span><br><span class="line">&#123;</span><br><span class="line">    [ApiVersion(&quot;1.0&quot;)]</span><br><span class="line">    [Route(&quot;api/v&#123;version:apiVersion&#125;/[controller]&quot;)]</span><br><span class="line">    [ApiController]</span><br><span class="line">    public class VersionController : ControllerBase</span><br><span class="line">    &#123;</span><br><span class="line">        [HttpGet]</span><br><span class="line">        public IEnumerable&lt;string&gt; Get()</span><br><span class="line">        &#123;</span><br><span class="line">            return new string[] &#123; &quot;api v1&quot; &#125;;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>如2.0版:</p>
+<p><strong>~/Controllers/V2/VersionController.cs</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">using System.Collections.Generic;</span><br><span class="line">using Microsoft.AspNetCore.Mvc;</span><br><span class="line"></span><br><span class="line">namespace TodoAPI.Controllers.V2</span><br><span class="line">&#123;</span><br><span class="line">    [ApiVersion(&quot;2.0&quot;)]</span><br><span class="line">    [Route(&quot;api/v&#123;version:apiVersion&#125;/[controller]&quot;)]</span><br><span class="line">    [ApiController]</span><br><span class="line">    public class VersionController : ControllerBase</span><br><span class="line">    &#123;</span><br><span class="line">        [HttpGet]</span><br><span class="line">        public IEnumerable&lt;string&gt; Get()</span><br><span class="line">        &#123;</span><br><span class="line">            return new string[] &#123; &quot;api v2&quot; &#125;;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>只要在每個Controller修改以下的地方即可</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">namespace TodoAPI.Controllers.V1 </span><br></pre></td></tr></table></figure>
+<p>改成</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">namespace TodoAPI.Controllers.V2</span><br></pre></td></tr></table></figure>
+<p>以及</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[ApiVersion(&quot;1.0&quot;)]</span><br></pre></td></tr></table></figure>
+<p>改成</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[ApiVersion(&quot;2.0&quot;)]</span><br></pre></td></tr></table></figure>
+<p>TodoController.cs也是一樣喔，就不示範了。</p>
+<p>4.嘗試看看</p>
+<img src="/2021/10/19/C-MVC-API%E7%89%88%E6%9C%AC%E6%8E%A7%E5%88%B6/demo.gif" class="">
+
+
+<h3 id="總結"><a href="#總結" class="headerlink" title="總結"></a>總結</h3><p>原本很難的事情，竟然可以如此簡單解決!感動!<br>再來就是考驗DB規劃了，因為如果要向下兼容變成只能增不能刪。<br>但通常我們能在上與下版間先除錯，所以基本上不會有太大問題。</p>
+<p>而LINQ強型別好處就來了，因為是透過Model存取的關係，所以能夠有效避免規格錯誤。</p>
+<p>而網址用v1.0、v2.0…原因在Get時瀏覽器只能用網址，所以是最方便的方式。<br>當然也能夠改放在header、或用?api=1.0的做法。</p>
+<p>最後附上完整程式碼:<br><a target="_blank" rel="noopener" href="https://github.com/yuhsiang237/ASP.NET-Core-RESTfulAPI-API-Version-Control">https://github.com/yuhsiang237/ASP.NET-Core-RESTfulAPI-API-Version-Control</a></p>
+<p>再來就是添加Swagger:<br> <a href="/2021/10/26/C-MVC-Web-API%E5%A2%9E%E5%8A%A0Swagger/" title="[Day23] C# MVC Web API版本增加Swagger - C#&amp;AspNetCore">[Day23] C# MVC Web API版本增加Swagger - C#&amp;AspNetCore</a></p>
+<p>額外補充:<br>至於Controller多版本那Model呢?<br>因為向下兼容，可能會回傳不同版的Model<br>這時就可以使用繼承跟覆寫!<br>如1.1繼承1.0:ModelV1_1:ModelV1_0<br>之後添加屬性跟覆寫方法<br>而主要就是避免資料庫異動太大，就可以避免break change造成不相容。</p>
+<p><strong>參考資料</strong><br><a target="_blank" rel="noopener" href="https://dotblogs.com.tw/rainmaker/2017/03/12/130759">https://dotblogs.com.tw/rainmaker/2017/03/12/130759</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://yuhsiang237.github.io/2021/10/19/C-MVC-API%E7%89%88%E6%9C%AC%E6%8E%A7%E5%88%B6/" data-id="cme6kwo09000rgalj7kq5fv2s" data-title="[Day22] C# MVC API版本控制 - C#&amp;AspNetCore" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-C-MVC-RESTful-API-下-實作RESTful-API" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2021/10/18/C-MVC-RESTful-API-%E4%B8%8B-%E5%AF%A6%E4%BD%9CRESTful-API/" class="article-date">
+  <time class="dt-published" datetime="2021-10-18T11:59:32.000Z" itemprop="datePublished">2021-10-18</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Code/">Code</a>►<a class="article-category-link" href="/categories/Code/C/">C#</a>►<a class="article-category-link" href="/categories/Framework/">Framework</a>►<a class="article-category-link" href="/categories/Framework/AspNetCore-API/">AspNetCore API</a>►<a class="article-category-link" href="/categories/Topic/">Topic</a>►<a class="article-category-link" href="/categories/Topic/2021-C-AspNetCore-Challenge/">2021 C# AspNetCore Challenge</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2021/10/18/C-MVC-RESTful-API-%E4%B8%8B-%E5%AF%A6%E4%BD%9CRESTful-API/">[Day21] C# MVC RESTful API (下) 實作RESTful API - C#&amp;AspNetCore</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>在上回中我們介紹了 <a href="/2021/10/17/C-MVC-RESTful-API-%E4%B8%AD-%E5%BB%BA%E7%AB%8BAPI%E5%B0%88%E6%A1%88/" title="[Day20] C# MVC RESTful API (中) 建立API專案 - C#&amp;AspNetCore">[Day20] C# MVC RESTful API (中) 建立API專案 - C#&amp;AspNetCore</a> ，我們在原本的MVC專案中加入了WEB API專案。</p>
+<p>而這回將會撰寫RESTful API!<br>本文會以:<a target="_blank" rel="noopener" href="https://docs.microsoft.com/zh-tw/aspnet/core/tutorials/first-web-api?view=aspnetcore-3.1&amp;tabs=visual-studio">https://docs.microsoft.com/zh-tw/aspnet/core/tutorials/first-web-api?view=aspnetcore-3.1&amp;tabs=visual-studio</a> 提供的範例作為實作依據。</p>
+<h3 id="RESTful-API規格"><a href="#RESTful-API規格" class="headerlink" title="RESTful API規格"></a>RESTful API規格</h3><table>
+<th>方法</th>
+<th>網址</th>
+<th>描述</th>
+<th>要求文本</th>
+<th>回應文本</th>
+<tr>
+<td>GET</td>
+<td><code>/api/todo</code></td>
+<td>取得所有待辦事項</td>
+<td>無</td>
+<td>待辦事項陣列</td>
+</tr>
+<tr>
+<td>GET</td>
+<td><code>/api/todo/&#123;id&#125;</code></td>
+<td>依識別碼取得待辦事項</td>
+<td>無</td>
+<td>待辦事項</td>
+</tr>
+<tr>
+<td>POST</td>
+<td><code>/api/todo</code></td>
+<td>新增待辦事項</td>
+<td>待辦事項</td>
+<td>待辦事項</td>
+</tr>
+<tr>
+<td>PUT</td>
+<td><code>/api/todo/&#123;id&#125;</code></td>
+<td>更新現有的待辦事項</td>
+<td>待辦事項</td>
+<td>待辦事項</td>
+</tr>
+<tr>
+<td>DELETE</td>
+<td><code>/api/todo/&#123;id&#125;</code></td>
+<td>刪除待辦事項</td>
+<td>無</td>
+<td>待辦事項</td>
+</tr>
+<!-- <tr>
+<td>POST</td>
+<td><code>/api/todo/batch</code></td>
+<td>批次處理待辦事項，可批次新增、刪除、編輯</td>
+<td>批次動作、待辦事項陣列</td>
+<td>批次動作、待辦事項陣列</td>
+</tr> -->
+<tr>
+</table>
+
+
+<h3 id="實作RESTful-API"><a href="#實作RESTful-API" class="headerlink" title="實作RESTful API"></a>實作RESTful API</h3><p>先安裝基本資料庫套件<br>1.Microsoft.EntityFrameworkCore</p>
+<img src="/2021/10/18/C-MVC-RESTful-API-%E4%B8%8B-%E5%AF%A6%E4%BD%9CRESTful-API/1.png" class="">
+<p>2.Microsoft.EntityFrameworkCore.SqlServer</p>
+<img src="/2021/10/18/C-MVC-RESTful-API-%E4%B8%8B-%E5%AF%A6%E4%BD%9CRESTful-API/2.png" class="">
+<p>3.Microsoft.EntityFrameworkCore.Tools</p>
+<img src="/2021/10/18/C-MVC-RESTful-API-%E4%B8%8B-%E5%AF%A6%E4%BD%9CRESTful-API/3.png" class="">
+<p>4.使用DB First</p>
+<img src="/2021/10/18/C-MVC-RESTful-API-%E4%B8%8B-%E5%AF%A6%E4%BD%9CRESTful-API/4.png" class="">
+
+<img src="/2021/10/18/C-MVC-RESTful-API-%E4%B8%8B-%E5%AF%A6%E4%BD%9CRESTful-API/5.png" class="">
+
+<p>用<code>Scaffold-DbContext</code>指令，來還原TodoDB資料庫的Models</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Scaffold-DbContext &quot;Server=.\SQLExpress;Database=TodoDB;Trusted_Connection=True;&quot; Microsoft.EntityFrameworkCore.SqlServer -OutputDir Models</span><br></pre></td></tr></table></figure>
+<p>執行畫面:</p>
+<img src="/2021/10/18/C-MVC-RESTful-API-%E4%B8%8B-%E5%AF%A6%E4%BD%9CRESTful-API/6.png" class="">
+<p>執行後:</p>
+<img src="/2021/10/18/C-MVC-RESTful-API-%E4%B8%8B-%E5%AF%A6%E4%BD%9CRESTful-API/7.png" class="">
+
+<p>5.Startup.cs增加資料庫配置</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">// This method gets called by the runtime. Use this method to add services to the container.</span><br><span class="line">    public void ConfigureServices(IServiceCollection services)</span><br><span class="line">    &#123;</span><br><span class="line">        services.AddControllers();</span><br><span class="line">        // 資料庫配置</span><br><span class="line">        var connection = @&quot;Server=.\SQLExpress;Database=TodoDB;Trusted_Connection=True;ConnectRetryCount=0&quot;;</span><br><span class="line">        services.AddDbContext&lt;TodoDBContext&gt;(options =&gt; options.UseSqlServer(connection));</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<p>6.撰寫RESTful API</p>
+<p><strong>~/Controllers/TodoController.cs</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br></pre></td><td class="code"><pre><span class="line">using System.Collections.Generic;</span><br><span class="line">using System.Linq;</span><br><span class="line">using System.Threading.Tasks;</span><br><span class="line">using Microsoft.AspNetCore.Mvc;</span><br><span class="line">using Microsoft.EntityFrameworkCore;</span><br><span class="line">using TodoAPI.Models;</span><br><span class="line"></span><br><span class="line">namespace TodoAPI.Controllers</span><br><span class="line">&#123;</span><br><span class="line"></span><br><span class="line">    [Route(&quot;api/[controller]&quot;)]</span><br><span class="line">    [ApiController]</span><br><span class="line">    public class TodoController : ControllerBase</span><br><span class="line">    &#123;</span><br><span class="line">        private readonly TodoDBContext _context;</span><br><span class="line">        public TodoController(TodoDBContext context)</span><br><span class="line">        &#123;</span><br><span class="line">            _context = context;</span><br><span class="line">        &#125;</span><br><span class="line">        [HttpGet]</span><br><span class="line">        public async Task&lt;ActionResult&lt;IEnumerable&lt;Todo&gt;&gt;&gt; GetTodos()</span><br><span class="line">        &#123;</span><br><span class="line">            return await _context.Todos.Where(x=&gt;x.IsDeleted != 1).ToListAsync();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        [HttpGet(&quot;&#123;id&#125;&quot;)]</span><br><span class="line">        public async Task&lt;ActionResult&lt;Todo&gt;&gt; GetTodo(int id)</span><br><span class="line">        &#123;</span><br><span class="line">            var obj = await _context.Todos.FindAsync(id);</span><br><span class="line"></span><br><span class="line">            if (obj.IsDeleted == 1)</span><br><span class="line">            &#123;</span><br><span class="line">                return NotFound();</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            return obj;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        [HttpPut(&quot;&#123;id&#125;&quot;)]</span><br><span class="line">        public async Task&lt;ActionResult&lt;Todo&gt;&gt; PutTodo(int id, Todo newObj)</span><br><span class="line">        &#123;</span><br><span class="line">            if (id != newObj.Id)</span><br><span class="line">            &#123;</span><br><span class="line">                return BadRequest();</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            var obj = await _context.Todos.FindAsync(id);</span><br><span class="line"></span><br><span class="line">            if(obj.IsDeleted == 1)</span><br><span class="line">            &#123;</span><br><span class="line">                return NotFound();</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            obj.IsComplete = newObj.IsComplete;</span><br><span class="line">            obj.Name = newObj.Name;</span><br><span class="line"></span><br><span class="line">            try</span><br><span class="line">            &#123;</span><br><span class="line">                await _context.SaveChangesAsync();</span><br><span class="line">            &#125;</span><br><span class="line">            catch (DbUpdateConcurrencyException)</span><br><span class="line">            &#123;</span><br><span class="line">                if (!TodoExists(id))</span><br><span class="line">                &#123;</span><br><span class="line">                    return NotFound();</span><br><span class="line">                &#125;</span><br><span class="line">                else</span><br><span class="line">                &#123;</span><br><span class="line">                    throw;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            return obj;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        [HttpPost]</span><br><span class="line">        public async Task&lt;ActionResult&lt;Todo&gt;&gt; PostTodo(Todo newObj)</span><br><span class="line">        &#123;</span><br><span class="line">            var obj = new Todo</span><br><span class="line">            &#123;</span><br><span class="line">                Name = newObj.Name,</span><br><span class="line">                IsComplete = 0,</span><br><span class="line">                IsDeleted = 0</span><br><span class="line">            &#125;;</span><br><span class="line">            _context.Todos.Add(obj); </span><br><span class="line">            await _context.SaveChangesAsync();</span><br><span class="line"></span><br><span class="line">            return CreatedAtAction(nameof(GetTodo), new &#123; id = obj.Id &#125;, obj);</span><br><span class="line">        &#125;</span><br><span class="line">        [HttpDelete(&quot;&#123;id&#125;&quot;)]</span><br><span class="line">        public async Task&lt;ActionResult&lt;Todo&gt;&gt; DeleteTodo(int id)</span><br><span class="line">        &#123;</span><br><span class="line">            var obj = await _context.Todos.FindAsync(id);</span><br><span class="line">            obj.IsDeleted = 1;</span><br><span class="line"></span><br><span class="line">            if (obj == null)</span><br><span class="line">            &#123;</span><br><span class="line">                return NotFound();</span><br><span class="line">            &#125;</span><br><span class="line">            try</span><br><span class="line">            &#123;</span><br><span class="line">                await _context.SaveChangesAsync();</span><br><span class="line">            &#125;</span><br><span class="line">            catch (DbUpdateConcurrencyException)</span><br><span class="line">            &#123;</span><br><span class="line">                if (!TodoExists(id))</span><br><span class="line">                &#123;</span><br><span class="line">                    return NotFound();</span><br><span class="line">                &#125;</span><br><span class="line">                else</span><br><span class="line">                &#123;</span><br><span class="line">                    throw;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            return obj;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        private bool TodoExists(int id)</span><br><span class="line">        &#123;</span><br><span class="line">            return _context.Todos.Any(e =&gt; e.Id == id);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>7.用postman測試</p>
+<img src="/2021/10/18/C-MVC-RESTful-API-%E4%B8%8B-%E5%AF%A6%E4%BD%9CRESTful-API/demo.gif" class="">
+
+
+<p>專案程式碼:<br><a target="_blank" rel="noopener" href="https://github.com/yuhsiang237/ASP.NET-Core-RESTfulAPI">https://github.com/yuhsiang237/ASP.NET-Core-RESTfulAPI</a></p>
+<h3 id="總結"><a href="#總結" class="headerlink" title="總結"></a>總結</h3><p>這樣就完成了RESTful API了!</p>
+<p><strong>參考資料</strong><br><a target="_blank" rel="noopener" href="https://docs.microsoft.com/zh-tw/aspnet/core/tutorials/first-web-api?view=aspnetcore-3.1&amp;tabs=visual-studio">https://docs.microsoft.com/zh-tw/aspnet/core/tutorials/first-web-api?view=aspnetcore-3.1&amp;tabs=visual-studio</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://yuhsiang237.github.io/2021/10/18/C-MVC-RESTful-API-%E4%B8%8B-%E5%AF%A6%E4%BD%9CRESTful-API/" data-id="cme6kwo0l001dgalj34bk9aax" data-title="[Day21] C# MVC RESTful API (下) 實作RESTful API - C#&amp;AspNetCore" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-C-MVC-RESTful-API-中-建立API專案" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2021/10/17/C-MVC-RESTful-API-%E4%B8%AD-%E5%BB%BA%E7%AB%8BAPI%E5%B0%88%E6%A1%88/" class="article-date">
+  <time class="dt-published" datetime="2021-10-17T02:16:48.000Z" itemprop="datePublished">2021-10-17</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Code/">Code</a>►<a class="article-category-link" href="/categories/Code/C/">C#</a>►<a class="article-category-link" href="/categories/Framework/">Framework</a>►<a class="article-category-link" href="/categories/Framework/AspNetCore-API/">AspNetCore API</a>►<a class="article-category-link" href="/categories/Topic/">Topic</a>►<a class="article-category-link" href="/categories/Topic/2021-C-AspNetCore-Challenge/">2021 C# AspNetCore Challenge</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2021/10/17/C-MVC-RESTful-API-%E4%B8%AD-%E5%BB%BA%E7%AB%8BAPI%E5%B0%88%E6%A1%88/">[Day20] C# MVC RESTful API (中) 建立API專案 - C#&amp;AspNetCore</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>在上回中我們介紹了 <a href="/2021/10/16/C-MVC-RESTful-API-%E4%B8%8A-RESTful-%E5%9F%BA%E7%A4%8E%E7%9F%A5%E8%AD%98/" title="[Day19] C# MVC RESTful API (上) RESTful 基礎知識 - C#&amp;AspNetCore">[Day19] C# MVC RESTful API (上) RESTful 基礎知識 - C#&amp;AspNetCore</a> ，知道了RESTful API的基礎知識。</p>
+<p>這回先了解如何在現有的MVC專案中加入API專案吧!</p>
+<h3 id="MVC專案加入WEB-API專案"><a href="#MVC專案加入WEB-API專案" class="headerlink" title="MVC專案加入WEB API專案"></a>MVC專案加入WEB API專案</h3><p>1.這是一個原本的MVC專案</p>
+<img src="/2021/10/17/C-MVC-RESTful-API-%E4%B8%AD-%E5%BB%BA%E7%AB%8BAPI%E5%B0%88%E6%A1%88/1.png" class="">
+<p>2.對Solution點右鍵&gt;New Project</p>
+<img src="/2021/10/17/C-MVC-RESTful-API-%E4%B8%AD-%E5%BB%BA%E7%AB%8BAPI%E5%B0%88%E6%A1%88/2.png" class="">
+<p>3.選ASP.NET Core Web API</p>
+<img src="/2021/10/17/C-MVC-RESTful-API-%E4%B8%AD-%E5%BB%BA%E7%AB%8BAPI%E5%B0%88%E6%A1%88/3.png" class="">
+<p>4.建立API專案名稱，這取名TodoAPI</p>
+<img src="/2021/10/17/C-MVC-RESTful-API-%E4%B8%AD-%E5%BB%BA%E7%AB%8BAPI%E5%B0%88%E6%A1%88/4.png" class="">
+<p>5.版本我選.net core 3.1長期穩定版本</p>
+<img src="/2021/10/17/C-MVC-RESTful-API-%E4%B8%AD-%E5%BB%BA%E7%AB%8BAPI%E5%B0%88%E6%A1%88/5.png" class="">
+<p>6.這時就會有一個專案TodoAPI加入現有的Solution了。</p>
+<img src="/2021/10/17/C-MVC-RESTful-API-%E4%B8%AD-%E5%BB%BA%E7%AB%8BAPI%E5%B0%88%E6%A1%88/6.png" class="">
+<p>7.切換運行的專案</p>
+<img src="/2021/10/17/C-MVC-RESTful-API-%E4%B8%AD-%E5%BB%BA%E7%AB%8BAPI%E5%B0%88%E6%A1%88/7.png" class="">
+<p>8.執行，可出現預設的範例API結果</p>
+<img src="/2021/10/17/C-MVC-RESTful-API-%E4%B8%AD-%E5%BB%BA%E7%AB%8BAPI%E5%B0%88%E6%A1%88/8.png" class="">
+
+<h3 id="總結"><a href="#總結" class="headerlink" title="總結"></a>總結</h3><p>在這篇中主要是探討如何在一個有MVC專案的狀況下再去加一個Web API服務。<br>而在下篇我們就要用這範例實作RESTful API。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://yuhsiang237.github.io/2021/10/17/C-MVC-RESTful-API-%E4%B8%AD-%E5%BB%BA%E7%AB%8BAPI%E5%B0%88%E6%A1%88/" data-id="cme6kwo0m001fgalj2xc94n0m" data-title="[Day20] C# MVC RESTful API (中) 建立API專案 - C#&amp;AspNetCore" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-C-MVC-RESTful-API-上-RESTful-基礎知識" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2021/10/16/C-MVC-RESTful-API-%E4%B8%8A-RESTful-%E5%9F%BA%E7%A4%8E%E7%9F%A5%E8%AD%98/" class="article-date">
+  <time class="dt-published" datetime="2021-10-16T02:16:48.000Z" itemprop="datePublished">2021-10-16</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Code/">Code</a>►<a class="article-category-link" href="/categories/Code/C/">C#</a>►<a class="article-category-link" href="/categories/Framework/">Framework</a>►<a class="article-category-link" href="/categories/Framework/AspNetCore-API/">AspNetCore API</a>►<a class="article-category-link" href="/categories/Topic/">Topic</a>►<a class="article-category-link" href="/categories/Topic/2021-C-AspNetCore-Challenge/">2021 C# AspNetCore Challenge</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2021/10/16/C-MVC-RESTful-API-%E4%B8%8A-RESTful-%E5%9F%BA%E7%A4%8E%E7%9F%A5%E8%AD%98/">[Day19] C# MVC RESTful API (上) RESTful 基礎知識 - C#&amp;AspNetCore</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>在上回中我們介紹了 <a href="/2021/10/15/C-MVC%E5%B0%88%E6%A1%88%E4%B8%AD%E6%92%B0%E5%AF%ABAPI/" title="[Day18] C# MVC專案中撰寫API - C#&amp;AspNetCore">[Day18] C# MVC專案中撰寫API - C#&amp;AspNetCore</a> ，能在MVC專案中撰寫API了。</p>
+<p>而這回，探討Web API，他會開給APP(iOS或Android)、前端網站(React或Vue)這種主從式分離的架構。<br>為了能開出比較公版的API，就必須先了解RESTful的核心概念。<br>(這次嘗試以翻原文的方式撰寫，往後都盡可能以原文為主)</p>
+<h3 id="RESTful-介紹"><a href="#RESTful-介紹" class="headerlink" title="RESTful 介紹"></a>RESTful 介紹</h3><p>Representational state transfer (REST) is a software architectural style that was created to guide the design and development of the architecture for the World Wide Web.REST defines a set of constraints for how the architecture of an Internet-scale distributed hypermedia system, such as the Web, should behave.The REST architectural style emphasises the scalability of interactions between components, uniform interfaces, independent deployment of components, and the creation of a layered architecture to facilitate caching components to reduce user-perceived latency, enforce security, and encapsulate legacy systems.</p>
+<p>REST是一種軟體架構的風格，被創立來引導網站設計、開發架構。並且定義了約束架構，像是在網站上的行為。<br>架構上強調在組件間的可擴展性、統一的接口、獨立部署的組建、創建分層架構以建立快取減少用戶延遲、強化安全性、封裝老舊系統。</p>
+<p>The REST architectural style is designed for network-based applications, specifically client-server applications. But more than that, it is designed for Internet-scale usage, so the coupling between the user agent (client) and the origin server must be as lightweight (loose) as possible to facilitate large-scale adoption. </p>
+<p>被用來處理網路基礎的應用，具體來說在主從式架構的應用。但不止如此，也被用來作為互聯網的使用而設計，因此客戶端、主機端耦合度盡可能可能輕量級，以使在大規模時容易採用。</p>
+<p>耦合度(Coupling):coupling is the degree of interdependence between software modules。Coupling is usually contrasted with cohesion. Low coupling often correlates with high cohesion,<br>耦合度表示模組間相互依賴的程度。<br>耦合通常與內聚相關，低耦合通常與高內聚相關。<br>如下的(a)就是比較好的結構，盡量封裝好，開簡單的接口出來，但現實情況下不可能做到理想。<br>以我自身經驗，曾維護那種(b)的狀況，要搞懂A還得先去搞懂B在幹嘛，追了8層之多。此外，精簡的程式碼不等於高內聚，有時更多的是<a target="_blank" rel="noopener" href="https://lenchen.medium.com/%E5%BF%8D%E8%80%85%E7%A8%8B%E5%BC%8F%E7%A2%BC-ninja-code-cc5e4a70bafc">忍者程式碼（Ninja Code）</a>。</p>
+<img src="/2021/10/16/C-MVC-RESTful-API-%E4%B8%8A-RESTful-%E5%9F%BA%E7%A4%8E%E7%9F%A5%E8%AD%98/1.png" class="">
+
+<h3 id="RESTful-6個限制"><a href="#RESTful-6個限制" class="headerlink" title="RESTful 6個限制"></a>RESTful 6個限制</h3><ol>
+<li><p><strong>主從式架構(Client–server architecture)</strong><br> The client-server design pattern enforces the principle of separation of concerns<br>主從式設計模式強制關注點分離的原則<br>separating the user interface concerns from the data storage concerns. Portability of the user interface is thus improved.<br>分離用戶介面與資料儲存問題。用戶介面的可攜性因此被改善。</p>
+</li>
+<li><p><strong>無狀態(Statelessness)</strong><br> In computing, a stateless protocol is a communications protocol in which no session information is retained by the receiver, usually a server. Relevant session data is sent to the receiver by the client in such a way that every packet of information transferred can be understood in isolation, without context information from previous packets in the session.<br> 無狀態是種溝通的協定，沒有session被接收者保留，通常接收者是伺服器端。客戶端將資訊送給接收者，每個資訊可以獨立離解，不用藉由理解上下文才能知道訊息。</p>
+</li>
+<li><p><strong>快取(Cacheability)</strong><br> As on the World Wide Web, clients and intermediaries can cache responses. Responses must, implicitly or explicitly, define themselves as either cacheable or non-cacheable to prevent clients from providing stale or inappropriate data in response to further requests. Well-managed caching partially or completely eliminates some client–server interactions, further improving scalability and performance.<br> 在網路上客戶、中間人可以快取結果，可自行定義是否該緩存的資料。良好的快取能改善效能。</p>
+</li>
+</ol>
+<ol start="4">
+<li><p><strong>分層系統(Layered system)</strong><br> A client cannot ordinarily tell whether it is connected directly to the end server or to an intermediary along the way.Adding security as a separate layer enforces security policies.<br> 客戶端不能判斷是連結到終端還是中介。能增加安全性在特別的層級強制特定的安全政策。</p>
+</li>
+<li><p><strong>按需求編碼(Code on demand) 可選</strong><br> Servers can temporarily extend or customize the functionality of a client by transferring executable code: for example, compiled components such as Java applets, or client-side scripts such as JavaScript.<br> 伺服器端可臨時擴充或可執行代碼給客戶端，如：客戶端代碼JavaScript、編譯後元件Java小程式。</p>
+</li>
+<li><p><strong>統一接口(Uniform interface)</strong><br> The uniform interface constraint is fundamental to the design of any RESTful system<br> 統一接口約束是restful系統的基礎。<br> 為以下四點:</p>
+<ol>
+<li><strong>請求中包含資源的 ID（Resource identification in requests）</strong><br> 求中包含了各種獨立資源的標識，例如，在Web服務中的URI。資源本身和傳送給客戶端的標識是獨立。例如，伺服器可以將自身的資料庫資訊以HTML、XML或者JSON的方式傳送給客戶端，但是這些可能都不是伺服器的內部記錄方式。</li>
+<li><strong>資源通過標識來操作（Resource manipulation through representations）</strong><br>當客戶端擁有一個資源的標識，包括附帶的元資料，則它就有足夠的資訊來刪除這個資源。</li>
+<li><strong>訊息的自我描述性（Self-descriptive messages）</strong><br> 每個訊息包含足夠資訊描述如何處理訊息。</li>
+<li><strong>用超媒體驅動應用狀態（Hypermedia as the engine of application state (HATEOAS)</strong><br> 同使用者存取Web伺服器的Home頁面相似，當一個 REST 客戶端存取了最初的REST應用的URI之後，REST 客戶端應該可以使用伺服器端提供的連結，動態的發現所有的可用的資源和可執行的操作。</li>
+</ol>
+</li>
+</ol>
+<h3 id="RESTful優點"><a href="#RESTful優點" class="headerlink" title="RESTful優點"></a>RESTful優點</h3><ul>
+<li>可更高效利用快取來提高回應速度</li>
+<li>通訊本身的無狀態性可以讓不同的伺服器的處理一系列請求中的不同請求，提高伺服器的擴充性</li>
+<li>瀏覽器即可作為客戶端，簡化軟體需求</li>
+<li>相對於其他疊加在HTTP協定之上的機制，REST的軟體相依性更小<br>不需要額外的資源發現機制</li>
+<li>在軟體技術演進中的長期的相容性更好</li>
+</ul>
+<h3 id="HTTP請求方法在RESTful-API中的典型應用"><a href="#HTTP請求方法在RESTful-API中的典型應用" class="headerlink" title="HTTP請求方法在RESTful API中的典型應用"></a>HTTP請求方法在RESTful API中的典型應用</h3><table class="wikitable" border="1">
+<tbody><tr>
+<th>資源</th>
+<th>GET</th>
+<th>PUT</th>
+<th>POST</th>
+<th>DELETE
+</th></tr>
+<tr>
+<th>一組資源的URI，比如<code>https://example.com/resources</code>
+</th>
+<td><b>列出</b>URI，以及該資源組中每個資源的詳細資訊（後者可選）。
+</td>
+<td>使用給定的一組資源<b>替換</b>當前整組資源。
+</td>
+<td>在本組資源中<b>建立/追加</b>一個新的資源。該操作往往返回新資源的URL。
+</td>
+<td><b>刪除</b>整組資源。
+</td></tr>
+<tr>
+<th>單個資源的URI，比如<code>https://example.com/resources/142</code>
+</th>
+<td><b>取得</b>指定的資源的詳細資訊，格式可以自選一個合適的網路媒體類型（比如：XML、JSON等）
+</td>
+<td><b>替換/建立</b>指定的資源。並將其追加到相應的資源組中。
+</td>
+<td>把指定的資源當做一個資源組，並在其下<b>建立/追加</b>一個新的元素，使其隸屬於當前資源。
+</td>
+<td><b>刪除</b>指定的元素。
+</td></tr></tbody></table>
+
+<h3 id="RESTful衍伸問題"><a href="#RESTful衍伸問題" class="headerlink" title="RESTful衍伸問題"></a>RESTful衍伸問題</h3><ol>
+<li><strong>RESTful的批量處理問題，要一次處理多筆資料</strong><br> RESTful給出了處理單筆資料的方式，卻沒多介紹多筆，因此參考以下文件後發現可以用<code>example.com/resources/batch</code>的方式處理<br> <a target="_blank" rel="noopener" href="https://www.npmjs.com/package/restful-api">https://www.npmjs.com/package/restful-api</a><br> <a target="_blank" rel="noopener" href="https://cloud.tencent.com/developer/article/1575071">https://cloud.tencent.com/developer/article/1575071</a></li>
+<li><strong>RESTful的權限規劃問題，以資源式不好管理</strong><br> 後台通常以Role Based Access Control (RBAC) 去規劃權限。<br> 而RESTful是以資源(Resources)為底，這時判斷哪個API具有某權限就必須特別判斷或添加。如沒限制好可能造成資料多給的漏洞。<br> 如果是我會以敏感資訊為大方向去限制。</li>
+<li><strong>RESTful的客戶端邏輯，錯在誰身上</strong><br> 因為關注點分離，所以難知道客戶端如Android/iOS的程式有問題時是落在API人員身上還是前端身上。<br> 有點我資料都給你了，你自己處理的感覺。</li>
+</ol>
+<h3 id="總結"><a href="#總結" class="headerlink" title="總結"></a>總結</h3><p>在這篇中我們主要探討RESTful的核心理論部分，也發現RESTful在現實使用上的問題。<br>在我的看法上，使用RESTful的原因在於:</p>
+<ol>
+<li>API統一的風格設計</li>
+<li>有特定設計模式利於維護性</li>
+<li>能減少開發成本、開發時間</li>
+</ol>
+<p>如果沒法達成以上幾點，那額外使用自訂的API也無妨。<br>比如Google真有做到全RESTful嗎?<br>稍微查看Google Drive、Gmail就會發現沒有，還是用一些getXXX的API。只有開給其他開發者才用RESTful API。</p>
+<p>因此，直覺上比較適合開給外部的其他人而使用。</p>
+<p>最後，實作將在下篇開始進行。</p>
+<p><strong>參考資料</strong><br><a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Coupling_(computer_programming)#/media/File:CouplingVsCohesion.svg">https://en.wikipedia.org/wiki/Coupling_(computer_programming)#/media/File:CouplingVsCohesion.svg</a><br><a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Coupling_(computer_programming)">https://en.wikipedia.org/wiki/Coupling_(computer_programming)</a><br><a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E8%A1%A8%E7%8E%B0%E5%B1%82%E7%8A%B6%E6%80%81%E8%BD%AC%E6%8D%A2">https://zh.wikipedia.org/wiki/%E8%A1%A8%E7%8E%B0%E5%B1%82%E7%8A%B6%E6%80%81%E8%BD%AC%E6%8D%A2</a><br><a target="_blank" rel="noopener" href="https://cloud.tencent.com/developer/article/1497547">https://cloud.tencent.com/developer/article/1497547</a><br><a target="_blank" rel="noopener" href="https://cloud.tencent.com/developer/article/1575071">https://cloud.tencent.com/developer/article/1575071</a><br><a target="_blank" rel="noopener" href="https://www.restapitutorial.com/httpstatuscodes.html#google_vignette">https://www.restapitutorial.com/httpstatuscodes.html#google_vignette</a><br><a target="_blank" rel="noopener" href="https://noob.tw/restful-api/">https://noob.tw/restful-api/</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://yuhsiang237.github.io/2021/10/16/C-MVC-RESTful-API-%E4%B8%8A-RESTful-%E5%9F%BA%E7%A4%8E%E7%9F%A5%E8%AD%98/" data-id="cme6kwo0j001bgalj5gq29ycj" data-title="[Day19] C# MVC RESTful API (上) RESTful 基礎知識 - C#&amp;AspNetCore" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-C-MVC專案中撰寫API" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2021/10/15/C-MVC%E5%B0%88%E6%A1%88%E4%B8%AD%E6%92%B0%E5%AF%ABAPI/" class="article-date">
+  <time class="dt-published" datetime="2021-10-15T02:16:48.000Z" itemprop="datePublished">2021-10-15</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Code/">Code</a>►<a class="article-category-link" href="/categories/Code/C/">C#</a>►<a class="article-category-link" href="/categories/Framework/">Framework</a>►<a class="article-category-link" href="/categories/Framework/AspNetCore-MVC/">AspNetCore MVC</a>►<a class="article-category-link" href="/categories/Topic/">Topic</a>►<a class="article-category-link" href="/categories/Topic/2021-C-AspNetCore-Challenge/">2021 C# AspNetCore Challenge</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2021/10/15/C-MVC%E5%B0%88%E6%A1%88%E4%B8%AD%E6%92%B0%E5%AF%ABAPI/">[Day18] C# MVC專案中撰寫API - C#&amp;AspNetCore</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>在上回中我們介紹了 <a href="/2021/10/14/C-MVC-%E6%8E%92%E5%BA%8F%E7%AF%A9%E9%81%B8%E5%92%8C%E5%88%86%E9%A0%81%E5%AF%A6%E4%BD%9C/" title="[Day17] C# MVC 排序、篩選和分頁實作 - C#&amp;AspNetCore">[Day17] C# MVC 排序、篩選和分頁實作 - C#&amp;AspNetCore</a> ，能呈現出列表了。</p>
+<p>而這回就要講能讓事情比較省事的API。</p>
+<h3 id="API"><a href="#API" class="headerlink" title="API"></a>API</h3><p>應用程式介面（英語：Application Programming Interface），縮寫為API，是一種計算介面，它定義多個軟體中介之間的互動，以及可以進行的呼叫（call）或請求（request）的種類，如何進行呼叫或發出請求，應使用的資料格式，應遵循的慣例等。</p>
+<p>簡單來說就是:程式的接口，可以傳送參數給後端處理的函式，之後會把所需的資料回傳你。</p>
+<h3 id="實作API"><a href="#實作API" class="headerlink" title="實作API"></a>實作API</h3><p>這回先介紹任意命名的API。</p>
+<p>1.在Controller撰寫API，第37~45行</p>
+<p><strong>~/Controller/HomeController.cs</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line">using Microsoft.AspNetCore.Mvc;</span><br><span class="line">using Microsoft.Extensions.Logging;</span><br><span class="line">using MVC_With_API.Models;</span><br><span class="line">using System;</span><br><span class="line">using System.Collections.Generic;</span><br><span class="line">using System.Diagnostics;</span><br><span class="line">using System.Linq;</span><br><span class="line">using System.Threading.Tasks;</span><br><span class="line"></span><br><span class="line">namespace MVC_With_API.Controllers</span><br><span class="line">&#123;</span><br><span class="line">    public class HomeController : Controller</span><br><span class="line">    &#123;</span><br><span class="line">        private readonly ILogger&lt;HomeController&gt; _logger;</span><br><span class="line"></span><br><span class="line">        public HomeController(ILogger&lt;HomeController&gt; logger)</span><br><span class="line">        &#123;</span><br><span class="line">            _logger = logger;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        public IActionResult Index()</span><br><span class="line">        &#123;</span><br><span class="line">            return View();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        public IActionResult Privacy()</span><br><span class="line">        &#123;</span><br><span class="line">            return View();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]</span><br><span class="line">        public IActionResult Error()</span><br><span class="line">        &#123;</span><br><span class="line">            return View(new ErrorViewModel &#123; RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier &#125;);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        [HttpPost]</span><br><span class="line">        public JsonResult getSum(int num)</span><br><span class="line">        &#123;</span><br><span class="line">            int sum = 0;</span><br><span class="line">            for(int i = 0; i &lt; num; i++)</span><br><span class="line">            &#123;</span><br><span class="line">                sum += i;</span><br><span class="line">            &#125;</span><br><span class="line">            return Json(new &#123; result = sum &#125;);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>說明:<br>如上第37~45行就是一個API了，外界可以用POST方式Request，然後經由裡面的計算去得到一個結果，並回傳Response。<br>這種隨意風格的API大概僅適合在特定Controller底下使用。</p>
+<p>2.再來我們用測試工具PostMan查看結果<br><a target="_blank" rel="noopener" href="https://www.postman.com/downloads/">https://www.postman.com/downloads/</a><br>說明:我們用body傳送了參數num，並設定為10，會從1+2+3…+10=45得到45，可從Response接到值。</p>
+<img src="/2021/10/15/C-MVC%E5%B0%88%E6%A1%88%E4%B8%AD%E6%92%B0%E5%AF%ABAPI/1.png" class="">
+
+<p>3.嘗試在頁面上呼叫</p>
+<p><strong>~/Views/Home/Index.cshtml</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">@&#123;</span><br><span class="line">    ViewData[&quot;Title&quot;] = &quot;Home Page&quot;;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">&lt;div class=&quot;text-center&quot;&gt;</span><br><span class="line">    &lt;h1 class=&quot;display-4&quot;&gt;Welcome&lt;/h1&gt;</span><br><span class="line">    &lt;p&gt;Learn about &lt;a href=&quot;https://docs.microsoft.com/aspnet/core&quot;&gt;building Web apps with ASP.NET Core&lt;/a&gt;.&lt;/p&gt;</span><br><span class="line">&lt;/div&gt;</span><br><span class="line"></span><br><span class="line">&lt;div id=&quot;result&quot;&gt;&lt;/div&gt;</span><br><span class="line"></span><br><span class="line">@section Scripts&#123;</span><br><span class="line">    &lt;script type=&quot;text/javascript&quot;&gt;</span><br><span class="line">    $.post(&quot;Home/getSum&quot;,</span><br><span class="line">        &#123;</span><br><span class="line">            num: &quot;10&quot;,</span><br><span class="line">        &#125;,</span><br><span class="line">        function (data, status) &#123;</span><br><span class="line">            $(&#x27;#result&#x27;).html(data.result)</span><br><span class="line">        &#125;);</span><br><span class="line">    &lt;/script&gt;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>說明:第95~105行就是呼叫的AJAX了!<br>並把結果印到html上。</p>
+<p>結果:</p>
+<img src="/2021/10/15/C-MVC%E5%B0%88%E6%A1%88%E4%B8%AD%E6%92%B0%E5%AF%ABAPI/2.png" class="">
+<h3 id="總結"><a href="#總結" class="headerlink" title="總結"></a>總結</h3><p>這種簡易無規範的API比較適合只在Controller底下寫。<br>如果要開給外界比較推薦用RESTful API。</p>
+<p>至於為什麼RESTful呢?<br>因為各種getPeopleData、updatePeople、getPeopleList…會造成維護上不好掌控，沒有固定格式，不好直覺知道結果。<br>但如果專案內部有風格統一API，且偏向自用，那其實也不需要RESTful。</p>
+<p>下回會嘗試使用RESTful API的方式撰寫。</p>
+<p>然後相較於之前Laravel開發的經驗，感覺.net core MVC切路由方式不太直覺@@。</p>
+<p><strong>參考資料</strong><br><a target="_blank" rel="noopener" href="https://docs.microsoft.com/zh-tw/aspnet/core/web-api/?view=aspnetcore-3.1">https://docs.microsoft.com/zh-tw/aspnet/core/web-api/?view=aspnetcore-3.1</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://yuhsiang237.github.io/2021/10/15/C-MVC%E5%B0%88%E6%A1%88%E4%B8%AD%E6%92%B0%E5%AF%ABAPI/" data-id="cme6kwo0y0024galj02ycbp22" data-title="[Day18] C# MVC專案中撰寫API - C#&amp;AspNetCore" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-C-MVC-排序篩選和分頁實作" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2021/10/14/C-MVC-%E6%8E%92%E5%BA%8F%E7%AF%A9%E9%81%B8%E5%92%8C%E5%88%86%E9%A0%81%E5%AF%A6%E4%BD%9C/" class="article-date">
+  <time class="dt-published" datetime="2021-10-14T02:16:48.000Z" itemprop="datePublished">2021-10-14</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Code/">Code</a>►<a class="article-category-link" href="/categories/Code/C/">C#</a>►<a class="article-category-link" href="/categories/Framework/">Framework</a>►<a class="article-category-link" href="/categories/Framework/AspNetCore-MVC/">AspNetCore MVC</a>►<a class="article-category-link" href="/categories/Topic/">Topic</a>►<a class="article-category-link" href="/categories/Topic/2021-C-AspNetCore-Challenge/">2021 C# AspNetCore Challenge</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2021/10/14/C-MVC-%E6%8E%92%E5%BA%8F%E7%AF%A9%E9%81%B8%E5%92%8C%E5%88%86%E9%A0%81%E5%AF%A6%E4%BD%9C/">[Day17] C# MVC 排序、篩選和分頁實作 - C#&amp;AspNetCore</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>對於資料庫的操作我們介紹了兩種做法:</p>
+<ul>
+<li><a href="/2021/10/12/C-MVC-Dapper%E7%94%A8%E6%B3%95/" title="[Day16] C# MVC Dapper用法與連結資料庫 - C#&amp;AspNetCore">[Day16] C# MVC Dapper用法與連結資料庫 - C#&amp;AspNetCore</a> </li>
+<li><a href="/2021/10/02/C-MVC-Model%E8%88%87%E8%B3%87%E6%96%99%E5%BA%AB%E9%80%A3%E7%B5%90/" title="[Day7] C# MVC Model模型連結資料庫，使用Entity Framework - C#&amp;AspNetCore">[Day7] C# MVC Model模型連結資料庫，使用Entity Framework - C#&amp;AspNetCore</a></li>
+</ul>
+<p>而在上方兩篇文中我們都是撈頁面呈現單一資料。<br>因此這回來談談列表吧!</p>
+<h3 id="目標"><a href="#目標" class="headerlink" title="目標"></a>目標</h3><p>以下是整體的目標:</p>
+<ul>
+<li>可搜尋過濾</li>
+<li>可排序</li>
+<li>可分頁</li>
+</ul>
+<p>基本上有這三種功能，就是一個強大的列表了。<br>而剛好官方就有提供這方面的實作教學，因此就參考官方作法:<br><a target="_blank" rel="noopener" href="https://docs.microsoft.com/zh-tw/aspnet/core/data/ef-mvc/sort-filter-page?view=aspnetcore-3.1">https://docs.microsoft.com/zh-tw/aspnet/core/data/ef-mvc/sort-filter-page?view=aspnetcore-3.1</a></p>
+<h3 id="實作"><a href="#實作" class="headerlink" title="實作"></a>實作</h3><p>在此範例使用Entity Framework  Core作為示範。</p>
+<p>先附上完成後結果:</p>
+<img src="/2021/10/14/C-MVC-%E6%8E%92%E5%BA%8F%E7%AF%A9%E9%81%B8%E5%92%8C%E5%88%86%E9%A0%81%E5%AF%A6%E4%BD%9C/1.png" class="">
+
+<p>修改檔案:</p>
+<ul>
+<li>~/Commons/PaginatedList.cs:分頁列表類別檔案，協助我們製作分頁。</li>
+<li>~/Controllers/OrderController.cs:訂單列表的控制器，負責整張列表的邏輯，如排序、分頁、搜尋。</li>
+<li>~/Models/ViewModels/OrderIndexViewModel.cs:用來呈現列表規格的ViewModel。</li>
+<li>~/Views/Order/Index.cshtml:列表畫面程式碼。</li>
+</ul>
+<img src="/2021/10/14/C-MVC-%E6%8E%92%E5%BA%8F%E7%AF%A9%E9%81%B8%E5%92%8C%E5%88%86%E9%A0%81%E5%AF%A6%E4%BD%9C/4.png" class="">
+
+<p>1.首先先建立列表分頁的類別</p>
+<p><strong>~/Commons/PaginatedList.cs</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line">using System;</span><br><span class="line">using System.Collections.Generic;</span><br><span class="line">using System.Linq;</span><br><span class="line">using System.Threading.Tasks;</span><br><span class="line">using Microsoft.EntityFrameworkCore;</span><br><span class="line"></span><br><span class="line">namespace ListExample</span><br><span class="line">&#123;</span><br><span class="line">    public class PaginatedList&lt;T&gt; : List&lt;T&gt;</span><br><span class="line">    &#123;</span><br><span class="line">        public int PageIndex &#123; get; private set; &#125;</span><br><span class="line">        public int TotalPages &#123; get; private set; &#125;</span><br><span class="line"></span><br><span class="line">        public PaginatedList(List&lt;T&gt; items, int count, int pageIndex, int pageSize)</span><br><span class="line">        &#123;</span><br><span class="line">            PageIndex = pageIndex;</span><br><span class="line">            TotalPages = (int)Math.Ceiling(count / (double)pageSize);</span><br><span class="line"></span><br><span class="line">            this.AddRange(items);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        public bool HasPreviousPage</span><br><span class="line">        &#123;</span><br><span class="line">            get</span><br><span class="line">            &#123;</span><br><span class="line">                return (PageIndex &gt; 1);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        public bool HasNextPage</span><br><span class="line">        &#123;</span><br><span class="line">            get</span><br><span class="line">            &#123;</span><br><span class="line">                return (PageIndex &lt; TotalPages);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        public static async Task&lt;PaginatedList&lt;T&gt;&gt; CreateAsync(IQueryable&lt;T&gt; source, int pageIndex, int pageSize)</span><br><span class="line">        &#123;</span><br><span class="line">            var count = await source.CountAsync();</span><br><span class="line">            var items = await source.Skip((pageIndex - 1) * pageSize).Take(pageSize).ToListAsync();</span><br><span class="line">            return new PaginatedList&lt;T&gt;(items, count, pageIndex, pageSize);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>說明:這是官方提供的類別，不需要動。</p>
+<ul>
+<li>CreateAsync:主要讓我們把資料以PaginatedList的方式傳給View。</li>
+<li>HasPreviousPage:判斷上一頁面是否存在，用來啟動跟關閉上一頁按鈕。</li>
+<li>HasNextPage:判斷下一頁面，用來啟動跟關閉下一頁按鈕。</li>
+</ul>
+<p>2.再來是資料規格，因為我們的資料有使用到兩張資料表(顧客、訂單)，因此會需要用到ViewModel。</p>
+<p><strong>~/Models/ViewModels/OrderIndexViewModel.cs</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">using System;</span><br><span class="line">using System.ComponentModel.DataAnnotations;</span><br><span class="line">namespace ListExample.Models.ViewModels</span><br><span class="line">&#123;</span><br><span class="line">    public class OrderIndexViewModel</span><br><span class="line">    &#123;</span><br><span class="line">        [Display(Name = &quot;訂單編號&quot;)]</span><br><span class="line"></span><br><span class="line">        public string Number &#123; get; set; &#125;</span><br><span class="line">        [Display(Name = &quot;寄送日期&quot;)]</span><br><span class="line"></span><br><span class="line">        public DateTime ShippingDate &#123; get; set; &#125;</span><br><span class="line">        [Display(Name = &quot;寄送地址&quot;)]</span><br><span class="line"></span><br><span class="line">        public string ShippingAddress &#123; get; set; &#125;</span><br><span class="line">        [Display(Name = &quot;客戶簽收&quot;)]</span><br><span class="line"></span><br><span class="line">        public string CustomerSignature &#123; get; set; &#125;</span><br><span class="line">        [Display(Name = &quot;客戶編號&quot;)]</span><br><span class="line"></span><br><span class="line">        public string CustomerNumber &#123; get; set; &#125;</span><br><span class="line">        [Display(Name = &quot;總額&quot;)]</span><br><span class="line"></span><br><span class="line">        public decimal Total &#123; get; set; &#125;</span><br><span class="line">        [Display(Name = &quot;客戶名稱&quot;)]</span><br><span class="line"></span><br><span class="line">        public string CustomerName &#123; get; set; &#125;</span><br><span class="line">        [Display(Name = &quot;客戶電話&quot;)]</span><br><span class="line"></span><br><span class="line">        public string CustomerTel &#123; get; set; &#125;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>3.之後是Controller，負責我們分頁、查詢、排序的主要商業邏輯。<br><strong>~/Controllers/OrderController.cs</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br></pre></td><td class="code"><pre><span class="line">using ListExample.Models;</span><br><span class="line">using Microsoft.AspNetCore.Mvc;</span><br><span class="line">using Microsoft.EntityFrameworkCore;</span><br><span class="line">using System;</span><br><span class="line">using System.Threading.Tasks;</span><br><span class="line">using System.Linq;</span><br><span class="line">using ListExample.Models.ViewModels;</span><br><span class="line"></span><br><span class="line">namespace ListExample.Controllers</span><br><span class="line">&#123;</span><br><span class="line">    public class OrderController : Controller</span><br><span class="line">    &#123;</span><br><span class="line"></span><br><span class="line">        private readonly OrdersContext _context;</span><br><span class="line"></span><br><span class="line">        public OrderController(OrdersContext context)</span><br><span class="line">        &#123;</span><br><span class="line">            _context = context;</span><br><span class="line">        &#125;</span><br><span class="line">        public async Task&lt;IActionResult&gt; Index(</span><br><span class="line">      string sortOrder,</span><br><span class="line">      string currentFilterCustomer,</span><br><span class="line">      string currentFilterNumber,</span><br><span class="line">      string searchStringCustomer,</span><br><span class="line">      string searchStringNumber,</span><br><span class="line">      int? goToPageNumber,</span><br><span class="line">      int pageSize,</span><br><span class="line">      int? pageNumber)</span><br><span class="line">        &#123;</span><br><span class="line">            // 1.搜尋邏輯</span><br><span class="line">            var query = from a in _context.Orders</span><br><span class="line">                        join b in _context.Customers on a.CustomerNumber equals b.Number</span><br><span class="line">                        into result1</span><br><span class="line">                        from ab in result1.DefaultIfEmpty()</span><br><span class="line">                        select new OrderIndexViewModel</span><br><span class="line">                        &#123;</span><br><span class="line">                            Number = a.Number,</span><br><span class="line">                            ShippingAddress = a.ShippingAddress,</span><br><span class="line">                            ShippingDate = a.ShippingDate,</span><br><span class="line">                            CustomerSignature = a.CustomerSignature,</span><br><span class="line">                            Total = a.Total,</span><br><span class="line">                            CustomerNumber = a.CustomerNumber,</span><br><span class="line">                            CustomerName = ab.Name,</span><br><span class="line">                            CustomerTel = ab.Tel</span><br><span class="line">                        &#125;;</span><br><span class="line"></span><br><span class="line">            // 2.條件過濾</span><br><span class="line">            if (searchStringCustomer != null || searchStringNumber != null)</span><br><span class="line">            &#123;</span><br><span class="line">                pageNumber = 1;</span><br><span class="line">            &#125;</span><br><span class="line">            else</span><br><span class="line">            &#123;</span><br><span class="line">                searchStringCustomer = currentFilterCustomer;</span><br><span class="line">                searchStringNumber = currentFilterNumber;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            ViewData[&quot;CurrentFilterCustomer&quot;] = searchStringCustomer;</span><br><span class="line">            ViewData[&quot;CurrentFilterNumber&quot;] = searchStringNumber;</span><br><span class="line"></span><br><span class="line">            if (!String.IsNullOrEmpty(searchStringCustomer))</span><br><span class="line">            &#123;</span><br><span class="line">                query = query.Where(s =&gt; s.CustomerName.Contains(searchStringCustomer));</span><br><span class="line">            &#125;</span><br><span class="line">            if (!String.IsNullOrEmpty(searchStringNumber))</span><br><span class="line">            &#123;</span><br><span class="line">                query = query.Where(s =&gt; s.Number.Contains(searchStringNumber));</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            // 3.排序依據</span><br><span class="line">            ViewData[&quot;CurrentSort&quot;] = sortOrder;</span><br><span class="line"></span><br><span class="line">            switch (sortOrder)</span><br><span class="line">            &#123;</span><br><span class="line">                case &quot;1&quot;:</span><br><span class="line">                    query = query.OrderByDescending(s =&gt; s.ShippingDate);</span><br><span class="line">                    break;</span><br><span class="line">                case &quot;2&quot;:</span><br><span class="line">                    query = query.OrderBy(s =&gt; s.ShippingDate);</span><br><span class="line">                    break;</span><br><span class="line">                case &quot;3&quot;:</span><br><span class="line">                    query = query.OrderByDescending(s =&gt; s.Total);</span><br><span class="line">                    break;</span><br><span class="line">                case &quot;4&quot;:</span><br><span class="line">                    query = query.OrderBy(s =&gt; s.Total);</span><br><span class="line">                    break;</span><br><span class="line">                default:</span><br><span class="line">                    query = query.OrderByDescending(s =&gt; s.ShippingDate);</span><br><span class="line">                    break;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            // 4.前往頁數</span><br><span class="line">            if (goToPageNumber != null)</span><br><span class="line">            &#123;</span><br><span class="line">                pageNumber = goToPageNumber;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            // 5.每頁筆數</span><br><span class="line">            if (pageSize == 0)</span><br><span class="line">            &#123;</span><br><span class="line">                pageSize = 10;</span><br><span class="line">            &#125;</span><br><span class="line">            ViewData[&quot;pageSize&quot;] = pageSize;</span><br><span class="line">            </span><br><span class="line">            // 6.返回結果</span><br><span class="line">            return View(await PaginatedList&lt;OrderIndexViewModel&gt;.CreateAsync(query.AsNoTracking(), pageNumber ?? 1, pageSize));</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>說明:這範例也是由官方改造而成。</p>
+<ul>
+<li>Index的參數:<ul>
+<li>sortOrder:排序的參數。</li>
+<li>currentFilterCustomer:過濾Customer(客戶名稱)搜尋框的參數，暫存需要。</li>
+<li>currentFilterNumber:過濾Number(訂單編號)搜尋框的參數，暫存需要。</li>
+<li>searchStringCustomer:過濾Customer(客戶名稱)搜尋框的參數。</li>
+<li>searchStringNumber:過濾Number(訂單編號)搜尋框的參數。</li>
+<li>goToPageNumber:跳到某頁的參數。</li>
+<li>pageSize:每頁筆數。</li>
+<li>pageNumber:目前在第幾頁面。</li>
+</ul>
+</li>
+</ul>
+<p>主要流程為:建立查詢&gt;過濾&gt;排序&gt;分頁。</p>
+<ul>
+<li>第31～45行:建立LINQ搜尋。</li>
+<li>第47～68行:用LINQ過濾，因為可能會有很多搜尋參數，在這範例中就有兩個，但要增加N個改法都一樣。算是:KISS (Keep It Simple, Stupid)。</li>
+<li>第71～90行:用LINQ排序。</li>
+<li>第92～103行:每頁筆數限制、跳至指定頁。</li>
+<li>第105行:回傳結果。</li>
+</ul>
+<p>而使用ViewData是因為一些字串還需要留在頁面上，如:分頁、搜尋字串、排序。</p>
+<p>4.前台畫面呈現</p>
+<p><strong>~/Views/Order/Index.cshtml</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br></pre></td><td class="code"><pre><span class="line">@model PaginatedList&lt;ListExample.Models.ViewModels.OrderIndexViewModel&gt;</span><br><span class="line">@*</span><br><span class="line">    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860</span><br><span class="line">*@</span><br><span class="line">@&#123;</span><br><span class="line">&#125;</span><br><span class="line">&lt;h1&gt;Order&lt;/h1&gt;</span><br><span class="line"></span><br><span class="line">&lt;form asp-action=&quot;Index&quot; class=&quot;mt-3&quot; id=&quot;form_search&quot;&gt;</span><br><span class="line">    &lt;div class=&quot;row&quot;&gt;</span><br><span class="line">        &lt;div class=&quot;col-sm col-md-6 col-lg-3 col-xl-3&quot;&gt;</span><br><span class="line">            &lt;label class=&quot;custom-label&quot;&gt;客戶名稱&lt;/label&gt;</span><br><span class="line">            &lt;div class=&quot;form-group form-row&quot;&gt;</span><br><span class="line">                &lt;div class=&quot;col&quot;&gt;</span><br><span class="line">                    &lt;input id=&quot;input_customer&quot; type=&quot;text&quot; class=&quot;form-control mr-2&quot; name=&quot;searchStringCustomer&quot; value=&quot;@ViewData[&quot;CurrentFilterCustomer&quot;]&quot; /&gt;</span><br><span class="line">                &lt;/div&gt;</span><br><span class="line">            &lt;/div&gt;</span><br><span class="line">        &lt;/div&gt;</span><br><span class="line">        &lt;div class=&quot;col-sm col-md-6 col-lg-3 col-xl-3&quot;&gt;</span><br><span class="line">            &lt;label class=&quot;custom-label&quot;&gt;訂單編號&lt;/label&gt;</span><br><span class="line">            &lt;div class=&quot;form-group form-row&quot;&gt;</span><br><span class="line">                &lt;div class=&quot;col&quot;&gt;</span><br><span class="line">                    &lt;input id=&quot;input_number&quot; type=&quot;text&quot; class=&quot;form-control mr-2&quot; name=&quot;searchStringNumber&quot; value=&quot;@ViewData[&quot;CurrentFilterNumber&quot;]&quot; /&gt;</span><br><span class="line">                &lt;/div&gt;</span><br><span class="line">            &lt;/div&gt;</span><br><span class="line">        &lt;/div&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">    &lt;div class=&quot;text-right&quot;&gt;</span><br><span class="line">        &lt;button type=&quot;submit&quot; class=&quot;btn btn-secondary mb-2&quot;&gt;查詢資料&lt;/button&gt;</span><br><span class="line">        &lt;button class=&quot;btn btn-outline-secondary mb-2&quot; onclick=&quot;clearSearch();&quot;&gt;清空查詢&lt;/button&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">    &lt;hr class=&quot;mt-0&quot;&gt;</span><br><span class="line">    &lt;div class=&quot;d-flex justify-content-end&quot;&gt;</span><br><span class="line">        &lt;div class=&quot;col-2 px-0&quot;&gt;</span><br><span class="line">            &lt;div class=&quot;form-group&quot;&gt;</span><br><span class="line">                &lt;select class=&quot;form-control&quot; name=&quot;sortOrder&quot; onchange=&quot;this.form.submit()&quot;&gt;</span><br><span class="line">                    &lt;option value=&quot;0&quot; selected=&quot;@((string)ViewData[&quot;CurrentSort&quot;] == &quot;0&quot;)&quot;&gt;預設排序&lt;/option&gt;</span><br><span class="line">                    &lt;option value=&quot;1&quot; selected=&quot;@((string)ViewData[&quot;CurrentSort&quot;] == &quot;1&quot;)&quot;&gt;出貨日期 高→低&lt;/option&gt;</span><br><span class="line">                    &lt;option value=&quot;2&quot; selected=&quot;@((string)ViewData[&quot;CurrentSort&quot;] == &quot;2&quot;)&quot;&gt;出貨日期 低→高&lt;/option&gt;</span><br><span class="line">                    &lt;option value=&quot;3&quot; selected=&quot;@((string)ViewData[&quot;CurrentSort&quot;] == &quot;3&quot;)&quot;&gt;訂單總額 高→低&lt;/option&gt;</span><br><span class="line">                    &lt;option value=&quot;4&quot; selected=&quot;@((string)ViewData[&quot;CurrentSort&quot;] == &quot;4&quot;)&quot;&gt;訂單總額 低→高&lt;/option&gt;</span><br><span class="line">                &lt;/select&gt;</span><br><span class="line">            &lt;/div&gt;</span><br><span class="line">        &lt;/div&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    &lt;div class=&quot;table-responsive&quot;&gt;</span><br><span class="line"></span><br><span class="line">        &lt;table class=&quot;table table-bordered&quot;&gt;</span><br><span class="line">            &lt;thead&gt;</span><br><span class="line">                &lt;tr&gt;</span><br><span class="line">                    &lt;th&gt;</span><br><span class="line">                        訂單編號</span><br><span class="line">                    &lt;/th&gt;</span><br><span class="line">                    &lt;th&gt;</span><br><span class="line">                        出貨日期</span><br><span class="line">                    &lt;/th&gt;</span><br><span class="line">                    &lt;th&gt;</span><br><span class="line">                        寄送地址</span><br><span class="line">                    &lt;/th&gt;</span><br><span class="line">                    &lt;th&gt;</span><br><span class="line">                        客戶編號</span><br><span class="line">                    &lt;/th&gt;</span><br><span class="line">                    &lt;th&gt;</span><br><span class="line">                        客戶名稱</span><br><span class="line">                    &lt;/th&gt;</span><br><span class="line">                    &lt;th&gt;</span><br><span class="line">                        客戶電話</span><br><span class="line">                    &lt;/th&gt;</span><br><span class="line">                    &lt;th&gt;</span><br><span class="line">                        客戶簽收人</span><br><span class="line">                    &lt;/th&gt;</span><br><span class="line">                    &lt;th&gt;</span><br><span class="line">                        訂單總額</span><br><span class="line">                    &lt;/th&gt;</span><br><span class="line">                &lt;/tr&gt;</span><br><span class="line">            &lt;/thead&gt;</span><br><span class="line">            &lt;tbody&gt;</span><br><span class="line">                @foreach (var item in Model)</span><br><span class="line">                &#123;</span><br><span class="line">                    &lt;tr&gt;</span><br><span class="line">                        &lt;td&gt;</span><br><span class="line">                            @Html.DisplayFor(modelItem =&gt; item.Number)</span><br><span class="line">                        &lt;/td&gt;</span><br><span class="line"></span><br><span class="line">                        &lt;td&gt;</span><br><span class="line">                            @Convert.ToDateTime(item.ShippingDate).ToString(&quot;yyyy-MM-dd&quot;)</span><br><span class="line">                        &lt;/td&gt;</span><br><span class="line">                        &lt;td&gt;</span><br><span class="line">                            @Html.DisplayFor(modelItem =&gt; item.ShippingAddress)</span><br><span class="line">                        &lt;/td&gt;</span><br><span class="line">                        &lt;td&gt;</span><br><span class="line">                            @Html.DisplayFor(modelItem =&gt; item.CustomerNumber)</span><br><span class="line">                        &lt;/td&gt;</span><br><span class="line">                        &lt;td&gt;</span><br><span class="line">                            @Html.DisplayFor(modelItem =&gt; item.CustomerName)</span><br><span class="line">                        &lt;/td&gt;</span><br><span class="line">                        &lt;td&gt;</span><br><span class="line">                            @Html.DisplayFor(modelItem =&gt; item.CustomerTel)</span><br><span class="line">                        &lt;/td&gt;</span><br><span class="line">                        &lt;td&gt;</span><br><span class="line">                            @if (item.CustomerSignature != &quot;&quot; &amp;&amp; item.CustomerSignature != null)</span><br><span class="line">                            &#123;</span><br><span class="line">                                @Html.DisplayFor(modelItem =&gt; item.CustomerSignature)</span><br><span class="line">                            &#125;</span><br><span class="line">                            else</span><br><span class="line">                            &#123;</span><br><span class="line">                                &lt;span&gt;-&lt;/span&gt;</span><br><span class="line">                            &#125;</span><br><span class="line">                        &lt;/td&gt;</span><br><span class="line">                        &lt;td&gt;</span><br><span class="line">                            @Html.DisplayFor(modelItem =&gt; item.Total)</span><br><span class="line">                        &lt;/td&gt;</span><br><span class="line">                    &lt;/tr&gt;</span><br><span class="line">                &#125;</span><br><span class="line">            &lt;/tbody&gt;</span><br><span class="line">        &lt;/table&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">    @&#123;</span><br><span class="line">        var prevDisabled = !Model.HasPreviousPage ? &quot;disabled&quot; : &quot;&quot;;</span><br><span class="line">        var nextDisabled = !Model.HasNextPage ? &quot;disabled&quot; : &quot;&quot;;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    &lt;div class=&quot;list-pagination mt-3&quot;&gt;</span><br><span class="line">        &lt;div class=&quot;form-inline text-center&quot;&gt;</span><br><span class="line">            &lt;div class=&quot;mx-auto&quot;&gt;</span><br><span class="line">                每頁</span><br><span class="line">                &lt;select class=&quot;custom-select&quot; name=&quot;pageSize&quot; onchange=&quot;changePageSize()&quot;&gt;</span><br><span class="line">                    &lt;option value=&quot;5&quot; selected=&quot;@((int)ViewData[&quot;pageSize&quot;]==5)&quot;&gt;5&lt;/option&gt;</span><br><span class="line">                    &lt;option value=&quot;10&quot; selected=&quot;@((int)ViewData[&quot;pageSize&quot;]==10)&quot;&gt;10&lt;/option&gt;</span><br><span class="line">                    &lt;option value=&quot;30&quot; selected=&quot;@((int)ViewData[&quot;pageSize&quot;]==30)&quot;&gt;30&lt;/option&gt;</span><br><span class="line">                    &lt;option value=&quot;50&quot; selected=&quot;@((int)ViewData[&quot;pageSize&quot;]==50)&quot;&gt;50&lt;/option&gt;</span><br><span class="line">                &lt;/select&gt;，第 &lt;span&gt;@(Model.TotalPages &lt; Model.PageIndex ? 0 : Model.PageIndex) / @Model.TotalPages&lt;/span&gt; 頁，共 &lt;span&gt;@Model.TotalPages&lt;/span&gt; 頁，</span><br><span class="line">                &lt;a asp-action=&quot;Index&quot;</span><br><span class="line">                    asp-route-sortOrder=&quot;@ViewData[&quot;CurrentSort&quot;]&quot;</span><br><span class="line">                    asp-route-pageNumber=&quot;@(Model.PageIndex - 1)&quot;</span><br><span class="line">                    asp-route-currentFilterNumber=&quot;@ViewData[&quot;CurrentFilterNumber&quot;]&quot;</span><br><span class="line">                    asp-route-CurrentFilterCustomer=&quot;@ViewData[&quot;CurrentFilterCustomer&quot;]&quot;</span><br><span class="line">                    asp-route-pageSize=&quot;@ViewData[&quot;PageSize&quot;]&quot;</span><br><span class="line">                    class=&quot;btn btn-outline-secondary btn-sm @prevDisabled&quot;&gt;</span><br><span class="line">                    上一頁</span><br><span class="line">                &lt;/a&gt;｜跳至第</span><br><span class="line">                &lt;select id=&quot;select_goToPage&quot; class=&quot;custom-select&quot; name=&quot;goToPageNumber&quot; onchange=&quot;goToPage();&quot;&gt;</span><br><span class="line">                    &lt;option&gt;</span><br><span class="line">                        選擇</span><br><span class="line">                    &lt;/option&gt;</span><br><span class="line">                    @for (var i = 1; i &lt;= Model.TotalPages; i++)</span><br><span class="line">                    &#123;</span><br><span class="line">                        &lt;option value=&quot;@i&quot; selected=&quot;@(Model.PageIndex == i)&quot;&gt;</span><br><span class="line">                            @i</span><br><span class="line">                        &lt;/option&gt;</span><br><span class="line">                    &#125;</span><br><span class="line">                &lt;/select&gt;</span><br><span class="line">                頁｜</span><br><span class="line">                &lt;a asp-action=&quot;Index&quot;</span><br><span class="line">                   asp-route-sortOrder=&quot;@ViewData[&quot;CurrentSort&quot;]&quot;</span><br><span class="line">                   asp-route-pageNumber=&quot;@(Model.PageIndex + 1)&quot;</span><br><span class="line">                   asp-route-currentFilterNumber=&quot;@ViewData[&quot;CurrentFilterNumber&quot;]&quot;</span><br><span class="line">                   asp-route-CurrentFilterCustomer=&quot;@ViewData[&quot;CurrentFilterCustomer&quot;]&quot;</span><br><span class="line">                   asp-route-pageSize=&quot;@ViewData[&quot;PageSize&quot;]&quot;</span><br><span class="line">                   class=&quot;btn btn-outline-secondary btn-sm @nextDisabled&quot;&gt;</span><br><span class="line">                    下一頁</span><br><span class="line">                &lt;/a&gt;</span><br><span class="line"></span><br><span class="line">            &lt;/div&gt;</span><br><span class="line">        &lt;/div&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">&lt;/form&gt;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">@section Scripts&#123;</span><br><span class="line">    &lt;script type=&quot;text/javascript&quot;&gt;</span><br><span class="line">        function clearSearch() &#123;</span><br><span class="line">            $(&#x27;#input_customer&#x27;).val(&#x27;&#x27;)</span><br><span class="line">            $(&#x27;#input_number&#x27;).val(&#x27;&#x27;)</span><br><span class="line">            $(&#x27;#form_search&#x27;).submit()</span><br><span class="line">        &#125;</span><br><span class="line">        function goToPage() &#123;</span><br><span class="line">            $(&#x27;#form_search&#x27;).submit()</span><br><span class="line">        &#125;</span><br><span class="line">        function changePageSize() &#123;</span><br><span class="line">            $(&#x27;#form_search&#x27;).submit()</span><br><span class="line">        &#125;</span><br><span class="line">    &lt;/script&gt;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>關鍵在把整個表都包進form裡面，共用一個Action。<br>第10～45行:為查詢、排序<br>第50～119行:為列表<br>第125～168行:為分頁區塊<br>第173～184行:讓一些操作可以再改變時自動執行form的Action。</p>
+<p>5.完成後執行畫面:</p>
+<img src="/2021/10/14/C-MVC-%E6%8E%92%E5%BA%8F%E7%AF%A9%E9%81%B8%E5%92%8C%E5%88%86%E9%A0%81%E5%AF%A6%E4%BD%9C/3.gif" class="">
+
+
+<h3 id="總結"><a href="#總結" class="headerlink" title="總結"></a>總結</h3><p>這種要貼程式碼的很難去解釋，只能說照著做就能弄出一個列表。<br>官方 <a target="_blank" rel="noopener" href="https://docs.microsoft.com/zh-tw/aspnet/core/data/ef-mvc/sort-filter-page?view=aspnetcore-3.1">https://docs.microsoft.com/zh-tw/aspnet/core/data/ef-mvc/sort-filter-page?view=aspnetcore-3.1</a> 也是這樣提供。<br>我跟官方作法差異在於:排序可以排多個、過濾可以過濾多個、有分頁前往的方式。<br>總之就是大方向是對的:建立查詢&gt;過濾&gt;排序&gt;分頁。細節再修正成自己需求。</p>
+<p>然後，其實用API套個前端列表會比較簡單，撈出全部然後交給前端表格元件。<br>但後端這種則比較穩定一些，因為編譯時就能知道錯誤，需要比較多程式碼才能達到。</p>
+<p>最後，讓我比較訝異的是竟然找不到現成的非官方範例可以參考…。</p>
+<p>完整程式碼:<a target="_blank" rel="noopener" href="https://github.com/yuhsiang237/ASP.NET-Core-MVC-PaginatedList">https://github.com/yuhsiang237/ASP.NET-Core-MVC-PaginatedList</a></p>
+<p><strong>參考資料</strong><br><a target="_blank" rel="noopener" href="https://docs.microsoft.com/zh-tw/aspnet/core/data/ef-mvc/sort-filter-page?view=aspnetcore-3.1">https://docs.microsoft.com/zh-tw/aspnet/core/data/ef-mvc/sort-filter-page?view=aspnetcore-3.1</a><br><a target="_blank" rel="noopener" href="https://blog.csdn.net/mzl87/article/details/102924701">https://blog.csdn.net/mzl87/article/details/102924701</a><br><a target="_blank" rel="noopener" href="https://jscinin.medium.com/asp-net-core-mvc-part-12-%E7%82%BA%E9%99%B3%E5%88%97%E7%9A%84%E8%B3%87%E6%96%99%E8%A3%BD%E4%BD%9C%E5%88%86%E9%A0%81%E6%95%88%E6%9E%9C-%E5%A5%97%E4%BB%B6x-pagedlist-core-mvc-a2191d86317d">https://jscinin.medium.com/asp-net-core-mvc-part-12-%E7%82%BA%E9%99%B3%E5%88%97%E7%9A%84%E8%B3%87%E6%96%99%E8%A3%BD%E4%BD%9C%E5%88%86%E9%A0%81%E6%95%88%E6%9E%9C-%E5%A5%97%E4%BB%B6x-pagedlist-core-mvc-a2191d86317d</a><br><a target="_blank" rel="noopener" href="https://docs.microsoft.com/zh-tw/aspnet/mvc/overview/getting-started/getting-started-with-ef-using-mvc/sorting-filtering-and-paging-with-the-entity-framework-in-an-asp-net-mvc-application">https://docs.microsoft.com/zh-tw/aspnet/mvc/overview/getting-started/getting-started-with-ef-using-mvc/sorting-filtering-and-paging-with-the-entity-framework-in-an-asp-net-mvc-application</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://yuhsiang237.github.io/2021/10/14/C-MVC-%E6%8E%92%E5%BA%8F%E7%AF%A9%E9%81%B8%E5%92%8C%E5%88%86%E9%A0%81%E5%AF%A6%E4%BD%9C/" data-id="cme6kwo0t001sgaljenera8bo" data-title="[Day17] C# MVC 排序、篩選和分頁實作 - C#&amp;AspNetCore" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+
+
+  <nav id="page-nav">
+    
+    <a class="extend prev" rel="prev" href="/page/7/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/6/">6</a><a class="page-number" href="/page/7/">7</a><span class="page-number current">8</span><a class="page-number" href="/page/9/">9</a><a class="page-number" href="/page/10/">10</a><span class="space">&hellip;</span><a class="page-number" href="/page/16/">16</a><a class="extend next" rel="next" href="/page/9/">Next &raquo;</a>
+  </nav>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Code/">Code</a><span class="category-list-count">76</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Code/C/">C#</a><span class="category-list-count">69</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Code/Javascript/">Javascript</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Code/Refactoring/">Refactoring</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Code/Typescript/">Typescript</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/">Computer Science</a><span class="category-list-count">5</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/Algorithm/">Algorithm</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/Data-structure/">Data structure</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/Electronic-Circuit/">Electronic Circuit</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Daily-Log/">Daily Log</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/">Database</a><span class="category-list-count">57</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Database/PostgreSQL/">PostgreSQL</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/SQL-Server/">SQL Server</a><span class="category-list-count">47</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/">Framework</a><span class="category-list-count">27</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/AspNetCore-API/">AspNetCore API</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/AspNetCore-MVC/">AspNetCore MVC</a><span class="category-list-count">21</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/">Topic</a><span class="category-list-count">76</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2021-C-AspNetCore-Challenge/">2021 C# AspNetCore Challenge</a><span class="category-list-count">30</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2021-SQL-Server-Challenge/">2021 SQL Server Challenge</a><span class="category-list-count">30</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2022-C-SyncAndAsync/">2022 C# SyncAndAsync</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2025-Typescript/">2025 Typescript</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/Big-Data/">Big Data</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/LeetCode/">LeetCode</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/SystemStructure/">SystemStructure</a><span class="category-list-count">1</span></li></ul></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/08/">August 2025</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/05/">May 2023</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/03/">March 2023</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/02/">February 2023</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/01/">January 2023</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/12/">December 2022</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/09/">September 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/07/">July 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/06/">June 2022</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/05/">May 2022</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/04/">April 2022</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/03/">March 2022</a><span class="archive-list-count">17</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/02/">February 2022</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/01/">January 2022</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">December 2021</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">October 2021</a><span class="archive-list-count">24</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">September 2021</a><span class="archive-list-count">46</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">August 2021</a><span class="archive-list-count">12</span></li></ul>
+    </div>
+  </div>
+
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2025 Yu Hsiang<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

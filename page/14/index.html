@@ -1,0 +1,1013 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>UM&#39;s Coding Note</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="I record my coding experience at this place">
+<meta property="og:type" content="website">
+<meta property="og:title" content="UM&#39;s Coding Note">
+<meta property="og:url" content="https://yuhsiang237.github.io/page/14/index.html">
+<meta property="og:site_name" content="UM&#39;s Coding Note">
+<meta property="og:description" content="I record my coding experience at this place">
+<meta property="og:locale" content="en_US">
+<meta property="article:author" content="Yu Hsiang">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="UM's Coding Note" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">UM&#39;s Coding Note</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">I record my coding experience at this place🤙</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://yuhsiang237.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main">
+  
+    <article id="post-sql-server資料庫關聯" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2021/09/07/sql-server%E8%B3%87%E6%96%99%E5%BA%AB%E9%97%9C%E8%81%AF/" class="article-date">
+  <time class="dt-published" datetime="2021-09-07T15:07:26.000Z" itemprop="datePublished">2021-09-07</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Database/">Database</a>►<a class="article-category-link" href="/categories/Database/SQL-Server/">SQL Server</a>►<a class="article-category-link" href="/categories/Topic/">Topic</a>►<a class="article-category-link" href="/categories/Topic/2021-SQL-Server-Challenge/">2021 SQL Server Challenge</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2021/09/07/sql-server%E8%B3%87%E6%96%99%E5%BA%AB%E9%97%9C%E8%81%AF/">[Day7] SQL server資料庫關聯 - SQL Server資料庫入門</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>在上回中 <a href="/2021/09/06/SQL-server%E8%B3%87%E6%96%99%E8%A1%A8%E5%BB%BA%E7%AB%8B/" title="[Day6] SQL server資料表建立 - SQL Server資料庫入門">[Day6] SQL server資料表建立 - SQL Server資料庫入門</a> 我們建立了正規化後的資料表進資料庫。<br>在這回中我們要知道資料庫中的關聯關係，並且拉好SQL server中表的主鍵、外來鍵關聯。</p>
+<h3 id="一對一（One-to-One）"><a href="#一對一（One-to-One）" class="headerlink" title="一對一（One to One）:"></a>一對一（One to One）:</h3><p>有A、B兩個table裡面各自存在一筆記錄，可以使用其主鍵，對應至另一個table的一筆記錄。<br>如下圖，students_public裡的sid 107000001 在students_private只會出現1筆；students_private裡的sid 107000001在students_public也只會出現1筆。</p>
+<img src="/2021/09/07/sql-server%E8%B3%87%E6%96%99%E5%BA%AB%E9%97%9C%E8%81%AF/%E4%B8%80%E5%B0%8D%E4%B8%80%E7%AF%84%E4%BE%8B.png" class="" title="一對一範例">
+
+<h3 id="一對多（One-to-Many）"><a href="#一對多（One-to-Many）" class="headerlink" title="一對多（One to Many）:"></a>一對多（One to Many）:</h3><p>如depdepartments的一筆id可以對應到students多筆的dept_id。<br>所以depdepartments對students是一對多。<br>相對的，students多筆的dept_id可以對應到depdepartments的一筆id。<br>所以students對depdepartments是多對一。</p>
+<img src="/2021/09/07/sql-server%E8%B3%87%E6%96%99%E5%BA%AB%E9%97%9C%E8%81%AF/%E4%B8%80%E5%B0%8D%E5%A4%9A%E7%AF%84%E4%BE%8B.png" class="" title="一對多範例">
+
+<h3 id="多對多（Many-to-Many）"><a href="#多對多（Many-to-Many）" class="headerlink" title="多對多（Many to Many）:"></a>多對多（Many to Many）:</h3><p>一個 A 是否會有多個 B？<br>一個 B 是否會有多個 A？<br>兩者皆是，就是多對多</p>
+<p>以下面例子，<br>一個文章是否有多個標籤?ANS:是<br>一個標籤是否有多個文章?ANS:是</p>
+<p>這邊稍微解講一下，多對多可能會呈現以下的圖表情況。<br>posts透過一張中介的表(intermediary table)對應到tags<br>tags透過一張中介的表(intermediary table)對應到posts<br>則post與tags為多對多。</p>
+<p>(PS.基本上在2NF、3NF時就會不自覺得做出這種表。)</p>
+<p>可以參考 <a href="/2021/09/05/SQL-server%E8%B3%87%E6%96%99%E5%BA%AB%E6%AD%A3%E8%A6%8F%E5%8C%96/" title="[Day5] 規劃資料表，透過資料庫正規化 - SQL Server資料庫入門">[Day5] 規劃資料表，透過資料庫正規化 - SQL Server資料庫入門</a> </p>
+<img src="/2021/09/07/sql-server%E8%B3%87%E6%96%99%E5%BA%AB%E9%97%9C%E8%81%AF/%E5%A4%9A%E5%B0%8D%E5%A4%9A%E7%AF%84%E4%BE%8B.png" class="" title="多對多範例">
+
+
+<p>ps.圖片來源參考自參考資料。</p>
+<h3 id="拉資料表關聯"><a href="#拉資料表關聯" class="headerlink" title="拉資料表關聯"></a>拉資料表關聯</h3><p>1.建立資料表視圖</p>
+<img src="/2021/09/07/sql-server%E8%B3%87%E6%96%99%E5%BA%AB%E9%97%9C%E8%81%AF/all1.PNG" class="">
+<p>2.選取要呈現的表</p>
+<img src="/2021/09/07/sql-server%E8%B3%87%E6%96%99%E5%BA%AB%E9%97%9C%E8%81%AF/all2.PNG" class="">
+<p>3.顯示我們剛剛建立的4張表</p>
+<img src="/2021/09/07/sql-server%E8%B3%87%E6%96%99%E5%BA%AB%E9%97%9C%E8%81%AF/all3.PNG" class="">
+<p>4.拉關聯<br>對order_details來說，product_number是外來鍵，而主鍵則是指向products的number。<br>從products的number拖曳到order_details的product_number即可完成關聯，會跳出視窗點確認後點確定即可。</p>
+<img src="/2021/09/07/sql-server%E8%B3%87%E6%96%99%E5%BA%AB%E9%97%9C%E8%81%AF/%E6%8B%89%E9%97%9C%E8%81%AF1.png" class="">
+<p>5.把剩下的也拉完<br>對orders來說，customer_number是外來鍵，而主鍵則是指向customers的number。<br>對order_details來說，order_number是外來鍵，而主鍵則是指向orders的number。<br>如此一來就完成手動關聯了。</p>
+<img src="/2021/09/07/sql-server%E8%B3%87%E6%96%99%E5%BA%AB%E9%97%9C%E8%81%AF/%E6%8B%89%E9%97%9C%E8%81%AF%E5%AE%8C%E6%88%90.png" class="">
+<p>6.分析一下資料庫中的表的關聯性</p>
+<p>customers、orders<br>一個顧客有多個訂單?是<br>一個訂單是否有多個顧客?否<br>所以customers對orders是一對多</p>
+<p>orders、order_details<br>一個訂單是否有多個訂單明細?是<br>一個明細是否有多個訂單?否<br>所以orders對order_details是一對多</p>
+<p>orders與products，中間媒介order_details<br>一個訂單是否有多個產品?是<br>一個產品是否有多個訂單?是<br>所以orders對products是多對多</p>
+<h3 id="結語"><a href="#結語" class="headerlink" title="結語"></a>結語</h3><p>在一對一、一對多，我們可以很直覺的知道。<br>而多對多時可能需要想:<br>一個 A 是否會有多個 B？<br>一個 B 是否會有多個 A？<br>如果回答都是”是”那就是多對多，少一個就是一對多或多對一。</p>
+<p>此外，我覺得在規劃時好像不太需要知道一對一、一對多、多對多，只是如果知道在拆表上可能會更快。<br>因為在2NF、3NF時會不自覺完成，只要知道主鍵、外來鍵即可。</p>
+<p>在下回預計會將資料填入資料庫中。</p>
+<p><strong>參考資料:</strong><br><a target="_blank" rel="noopener" href="https://medium.com/pierceshih/%E7%AD%86%E8%A8%98-%E8%B3%87%E6%96%99%E9%97%9C%E8%81%AF%E7%9A%84%E4%B8%89%E7%A8%AE%E9%97%9C%E4%BF%82-245152c093da">https://medium.com/pierceshih/%E7%AD%86%E8%A8%98-%E8%B3%87%E6%96%99%E9%97%9C%E8%81%AF%E7%9A%84%E4%B8%89%E7%A8%AE%E9%97%9C%E4%BF%82-245152c093da</a><br><a target="_blank" rel="noopener" href="https://notes.andywu.tw/2018/%E8%B3%87%E6%96%99%E5%BA%AB-%E9%97%9C%E8%81%AF%E4%BB%8B%E7%B4%B9-%E4%B8%80%E5%B0%8D%E4%B8%80%E3%80%81%E4%B8%80%E5%B0%8D%E5%A4%9A%E3%80%81%E5%A4%9A%E5%B0%8D%E5%A4%9A/">https://notes.andywu.tw/2018/%E8%B3%87%E6%96%99%E5%BA%AB-%E9%97%9C%E8%81%AF%E4%BB%8B%E7%B4%B9-%E4%B8%80%E5%B0%8D%E4%B8%80%E3%80%81%E4%B8%80%E5%B0%8D%E5%A4%9A%E3%80%81%E5%A4%9A%E5%B0%8D%E5%A4%9A/</a><br><a target="_blank" rel="noopener" href="https://ithelp.ithome.com.tw/articles/10214381">https://ithelp.ithome.com.tw/articles/10214381</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://yuhsiang237.github.io/2021/09/07/sql-server%E8%B3%87%E6%96%99%E5%BA%AB%E9%97%9C%E8%81%AF/" data-id="cme6kwo3k006xgaljcab31nhr" data-title="[Day7] SQL server資料庫關聯 - SQL Server資料庫入門" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-SQL-server資料表建立" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2021/09/06/SQL-server%E8%B3%87%E6%96%99%E8%A1%A8%E5%BB%BA%E7%AB%8B/" class="article-date">
+  <time class="dt-published" datetime="2021-09-05T16:00:17.000Z" itemprop="datePublished">2021-09-06</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Database/">Database</a>►<a class="article-category-link" href="/categories/Database/SQL-Server/">SQL Server</a>►<a class="article-category-link" href="/categories/Topic/">Topic</a>►<a class="article-category-link" href="/categories/Topic/2021-SQL-Server-Challenge/">2021 SQL Server Challenge</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2021/09/06/SQL-server%E8%B3%87%E6%96%99%E8%A1%A8%E5%BB%BA%E7%AB%8B/">[Day6] SQL server資料表建立 - SQL Server資料庫入門</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>在上回 <a href="/2021/09/05/SQL-server%E8%B3%87%E6%96%99%E5%BA%AB%E6%AD%A3%E8%A6%8F%E5%8C%96/" title="[Day5] 規劃資料表，透過資料庫正規化 - SQL Server資料庫入門">[Day5] 規劃資料表，透過資料庫正規化 - SQL Server資料庫入門</a> 中，我們經由資料庫正規化1NF-&gt;2NF-&gt;3NF將訂單表單正規化，再來我們就要使用SSMS(Microsoft SQL Server Management Studio)協助我們在資料庫中建立資料表。</p>
+<p><strong>在這篇中，主要涵蓋內容為:</strong><br>1.如何在SQL server中建立資料表<br>2.如何設定自動遞增<br>3.欄位型別選擇</p>
+<p><strong>訂單示意圖:</strong></p>
+<img src="/2021/09/06/SQL-server%E8%B3%87%E6%96%99%E8%A1%A8%E5%BB%BA%E7%AB%8B/%E8%A8%82%E5%96%AE.png" class="" title="訂單">
+
+<p><strong>3NF正規化後:</strong></p>
+<img src="/2021/09/06/SQL-server%E8%B3%87%E6%96%99%E8%A1%A8%E5%BB%BA%E7%AB%8B/%E8%B3%87%E6%96%99%E8%A1%A8%E4%BF%AE%E6%AD%A3.png" class="" title="資料表">
+
+
+
+
+<h3 id="建立資料表orders"><a href="#建立資料表orders" class="headerlink" title="建立資料表orders"></a>建立資料表orders</h3><p>1.對table點右鍵&gt;new table</p>
+<img src="/2021/09/06/SQL-server%E8%B3%87%E6%96%99%E8%A1%A8%E5%BB%BA%E7%AB%8B/%E5%BB%BA%E7%AB%8B%E8%B3%87%E6%96%99%E8%A1%A81.png" class="" title="建立資料表1">
+<p>2.接著會出現設計的框框</p>
+<img src="/2021/09/06/SQL-server%E8%B3%87%E6%96%99%E8%A1%A8%E5%BB%BA%E7%AB%8B/%E5%BB%BA%E7%AB%8B%E8%B3%87%E6%96%99%E8%A1%A82.png" class="" title="建立資料表2">
+<p>3.填入欄位與型別<br>在此，補充一點，金額使用decimal，不要使用float，因為以下原因:<br>因為float表示近似數值，存在精度損失，存有小數的值可能會造成誤差，因此使用decimal。<br>decimal(p,s) 需要分別指定小數的最大位數（p）和小數位的數量（s）。<br>p (precision) ：指定小數的最大位數，小數點的左側和右側的數字的總數量不能超過p，p的取值範圍是從1到38，默認值爲18。<br>s (scale)：指定在小數點右側的小數位數，p-s是小數點左邊的最大位數。s必須是從0到p的值，只有在指定了精度的情況下才能指定s，s的默認值是0，因此，0 &lt;= s &lt;= p。 </p>
+<img src="/2021/09/06/SQL-server%E8%B3%87%E6%96%99%E8%A1%A8%E5%BB%BA%E7%AB%8B/decimal.png" class="" title="decimal">
+
+<p>延伸閱讀: <a href="/2021/09/03/sql-server%E8%B3%87%E6%96%99%E5%9E%8B%E6%85%8B/" title="[Day3] SQL Server資料型態 - SQL Server資料庫入門">[Day3] SQL Server資料型態 - SQL Server資料庫入門</a> 可以多加參考。</p>
+<img src="/2021/09/06/SQL-server%E8%B3%87%E6%96%99%E8%A1%A8%E5%BB%BA%E7%AB%8B/%E5%BB%BA%E7%AB%8B%E8%B3%87%E6%96%99%E8%A1%A83.png" class="" title="建立資料表3">
+<p>4.設定主鍵(PK)</p>
+<img src="/2021/09/06/SQL-server%E8%B3%87%E6%96%99%E8%A1%A8%E5%BB%BA%E7%AB%8B/%E5%BB%BA%E7%AB%8B%E8%B3%87%E6%96%99%E8%A1%A84.png" class="" title="建立資料表4">
+<p>5.儲存Ctrl+S，並命名為orders</p>
+<img src="/2021/09/06/SQL-server%E8%B3%87%E6%96%99%E8%A1%A8%E5%BB%BA%E7%AB%8B/%E5%BB%BA%E7%AB%8B%E8%B3%87%E6%96%99%E8%A1%A85.png" class="" title="建立資料表5">
+<p>6.重新整理，左方會出現orders資料表，代表成功建立</p>
+<img src="/2021/09/06/SQL-server%E8%B3%87%E6%96%99%E8%A1%A8%E5%BB%BA%E7%AB%8B/%E5%BB%BA%E7%AB%8B%E8%B3%87%E6%96%99%E8%A1%A86.png" class="" title="建立資料表6">
+
+
+<h3 id="建立資料表customers"><a href="#建立資料表customers" class="headerlink" title="建立資料表customers"></a>建立資料表customers</h3><p>基本上可以照前面做法建立即可。</p>
+<img src="/2021/09/06/SQL-server%E8%B3%87%E6%96%99%E8%A1%A8%E5%BB%BA%E7%AB%8B/customerstable.PNG" class="" title="customers">
+
+<h3 id="建立資料表products"><a href="#建立資料表products" class="headerlink" title="建立資料表products"></a>建立資料表products</h3><p>基本上可以照前面做法建立即可。</p>
+<img src="/2021/09/06/SQL-server%E8%B3%87%E6%96%99%E8%A1%A8%E5%BB%BA%E7%AB%8B/producttable.PNG" class="" title="customers">
+
+<h3 id="建立資料表order-details"><a href="#建立資料表order-details" class="headerlink" title="建立資料表order_details"></a>建立資料表order_details</h3><p>1.建構表<br>這邊我把amount數量設為整數。</p>
+<img src="/2021/09/06/SQL-server%E8%B3%87%E6%96%99%E8%A1%A8%E5%BB%BA%E7%AB%8B/orderdetailstable1.PNG" class="" title="customers">
+<p>2.這邊注意，要把id設定為主鍵，之後設定「自動遞增」，作法是identify設定成YES</p>
+<img src="/2021/09/06/SQL-server%E8%B3%87%E6%96%99%E8%A1%A8%E5%BB%BA%E7%AB%8B/orderdetailstable2.PNG" class="" title="customers">
+<p>3.刷新出現order_details</p>
+<img src="/2021/09/06/SQL-server%E8%B3%87%E6%96%99%E8%A1%A8%E5%BB%BA%E7%AB%8B/orderdetailstable3.PNG" class="" title="customers">
+
+
+
+<h3 id="資料表視圖，總覽資料表"><a href="#資料表視圖，總覽資料表" class="headerlink" title="資料表視圖，總覽資料表"></a>資料表視圖，總覽資料表</h3><p>1.建立資料表視圖</p>
+<img src="/2021/09/06/SQL-server%E8%B3%87%E6%96%99%E8%A1%A8%E5%BB%BA%E7%AB%8B/all1.PNG" class="">
+<p>2.選取要呈現的表</p>
+<img src="/2021/09/06/SQL-server%E8%B3%87%E6%96%99%E8%A1%A8%E5%BB%BA%E7%AB%8B/all2.PNG" class="">
+<p>3.顯示我們剛剛建立的4張表</p>
+<img src="/2021/09/06/SQL-server%E8%B3%87%E6%96%99%E8%A1%A8%E5%BB%BA%E7%AB%8B/all3.PNG" class="">
+
+<p>在跟我們在先前規劃的對照</p>
+<img src="/2021/09/06/SQL-server%E8%B3%87%E6%96%99%E8%A1%A8%E5%BB%BA%E7%AB%8B/%E8%B3%87%E6%96%99%E8%A1%A8%E4%BF%AE%E6%AD%A3.png" class="" title="資料表">
+
+<h3 id="總結"><a href="#總結" class="headerlink" title="總結"></a>總結</h3><p>如果在先前正規化好的話，那建表時真的會很輕鬆XD，就只要考慮型別即可。</p>
+<p>欄位命名規則上，我使用「全小寫，搭配底線」的規則(參考Laravel&amp;MySQL)，如果專案有統一就用專案內的，重點是整份是一樣規則就好。ps.此外，我發現用google翻譯翻出來的英文都怪怪的，有些是形容詞、名詞等等，可能要找天弄清楚。</p>
+<p>欄位型態上，可參考先前寫的 <a href="/2021/09/03/sql-server%E8%B3%87%E6%96%99%E5%9E%8B%E6%85%8B/" title="[Day3] SQL Server資料型態 - SQL Server資料庫入門">[Day3] SQL Server資料型態 - SQL Server資料庫入門</a> 。<br>在這回中發現了float與decimal的差別，因此在存有小數的金額請使用decimal，避免造成誤差、不準確。</p>
+<p>特殊規則上，如某些欄位是流水號id需要「自動遞增」，作法是identify設定成YES。</p>
+<p>在下回，我們將開始關聯這些表。</p>
+<p><strong>參考資料:</strong><br><a target="_blank" rel="noopener" href="https://ithelp.ithome.com.tw/articles/10214381">https://ithelp.ithome.com.tw/articles/10214381</a><br><a target="_blank" rel="noopener" href="https://ithelp.ithome.com.tw/articles/10214308">https://ithelp.ithome.com.tw/articles/10214308</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://yuhsiang237.github.io/2021/09/06/SQL-server%E8%B3%87%E6%96%99%E8%A1%A8%E5%BB%BA%E7%AB%8B/" data-id="cme6kwo2k004ygalj2kws34ll" data-title="[Day6] SQL server資料表建立 - SQL Server資料庫入門" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-SQL-server資料庫正規化" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2021/09/05/SQL-server%E8%B3%87%E6%96%99%E5%BA%AB%E6%AD%A3%E8%A6%8F%E5%8C%96/" class="article-date">
+  <time class="dt-published" datetime="2021-09-04T16:54:08.000Z" itemprop="datePublished">2021-09-05</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Database/">Database</a>►<a class="article-category-link" href="/categories/Database/SQL-Server/">SQL Server</a>►<a class="article-category-link" href="/categories/Topic/">Topic</a>►<a class="article-category-link" href="/categories/Topic/2021-SQL-Server-Challenge/">2021 SQL Server Challenge</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2021/09/05/SQL-server%E8%B3%87%E6%96%99%E5%BA%AB%E6%AD%A3%E8%A6%8F%E5%8C%96/">[Day5] 規劃資料表，透過資料庫正規化 - SQL Server資料庫入門</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>這回主要淺談一下資料庫正規化，並且規劃我們的訂單資料表。</p>
+<h3 id="資料庫正規化"><a href="#資料庫正規化" class="headerlink" title="資料庫正規化"></a>資料庫正規化</h3><p>正規化的目的:</p>
+<ol>
+<li>避免資料重複或相互矛盾的情形。</li>
+<li>使資料庫在使用時能更有效率、更容易維護。</li>
+</ol>
+<p>正規化:</p>
+<ol>
+<li><p>資料庫的正規化共可分為1NF (Normal Form)、2NF、3NF、BCNF (Boyce-Codd Normal Form)、4NF、5NF 等多個階段, 不過對於一般資料庫設計來說, <strong>通常只需要執行到BCNF即可</strong>, 而其他更高階的正規化只有在特殊的情況下才用得到。</p>
+</li>
+<li><p>在資料表正規化的過程(1NF 到BCNF) 中, 每個階段都是以<strong>欄位的相依性</strong>, 做為分割資料表的依據之一。</p>
+</li>
+</ol>
+<p>什麼是相依性?<br>欄位相依:就是在資料表中，乙欄位的值必須搭配甲欄位才有意義，則我們說『乙欄位相依於甲欄位』。</p>
+<h3 id="第一正規化規則-1NF"><a href="#第一正規化規則-1NF" class="headerlink" title="第一正規化規則(1NF):"></a>第一正規化規則(1NF):</h3><p>1.決定主鍵:資料表中有主鍵, 而其他所有的欄位都相依於主鍵。<br>2.一個欄位只能有單一值:每個欄位中都只有儲存單一值,例如: 姓名欄位中不能存放2 個人的姓名。<br>3.消除意義上重複的欄位:資料表中沒有意義相同的多個欄位, 例如: 姓名1、姓名2…等重複的欄位。</p>
+<p>如果不符合一階可能會造成:存取效率低、資料長度無法確定</p>
+<h3 id="第二正規化規則-2NF"><a href="#第二正規化規則-2NF" class="headerlink" title="第二正規化規則(2NF):"></a>第二正規化規則(2NF):</h3><p>1.符合1NF 的格式<br>2.去除『部分相依性』:各欄位與主鍵間沒有部分相依的關係。</p>
+<p><strong>部分相依:</strong> 只有在主鍵是由多個欄位組成時才會發生，部分相依的欄位只與主鍵中的部分欄位有相依性，而與另一部份的欄位沒有相依性。</p>
+<p>要除去資料表中的部分相依性, 只需將部份相依的欄位分割成另外的資料表即可。<br>因為完成第一階時容易會有資料重複問題，因此要執行第二階。</p>
+<h3 id="第三正規化規則-3NF"><a href="#第三正規化規則-3NF" class="headerlink" title="第三正規化規則(3NF):"></a>第三正規化規則(3NF):</h3><p>1.符合2NF 的格式。<br>2.去除『間接相依性』:各欄位與主鍵間沒有間接相依的關係。</p>
+<p><strong>間接(遞移)相依:</strong> 是指二個欄位並非直接相依，而是藉助其他欄位來達成資料相依的關係。例如A與B相依且B與C相依，則我們說A與C為間接相依。</p>
+<p>消除遞移相依：非主鍵屬性的欄位都只能和候選鍵相關，非主鍵屬性的欄位彼此間應該要是獨立無關的</p>
+<p>候選鍵：欄位組合讓資料能是唯一的，並且是最小唯一</p>
+<p>要除去資料表中的間接相依性, 其方法和除去部分相依性完全相同。例如:可再分割成N個資料表。</p>
+<h3 id="Boyce-Codd-正規化-BCNF"><a href="#Boyce-Codd-正規化-BCNF" class="headerlink" title="Boyce-Codd 正規化(BCNF)"></a>Boyce-Codd 正規化(BCNF)</h3><p>對於大部分資料庫來說, 通常只需要執行到第三階段的正規化即足夠了。如果資料表的主鍵是由多個欄位組成的, 則必須再執行Boyce-Codd 正規化</p>
+<p>1.符合2NF 的格式。<br>2.各欄位與主鍵沒有間接相依的關係。<br>3.主鍵中的各欄位不可以相依於其他非主鍵的欄位。</p>
+<h3 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h3><p>正規化的另類思考:<br>1.不必要的分割:正規化的工作有時候不必做的太徹底, 因為過多的資料表可能會降低系統執行的效能。<br>2.人工的分割:有時為了增加資料處理的效率, 我們可以將已經符合BCNF 的資料表再做分割。一個資料表擁有很多欄位, 而其中又有<br>很多欄位根本很少用到。那麼, 我們就可以將這些很少用到的欄位分離出來, 存放到另外一個資料表中。</p>
+<h3 id="正規化實作－訂單"><a href="#正規化實作－訂單" class="headerlink" title="正規化實作－訂單"></a>正規化實作－訂單</h3><img src="/2021/09/05/SQL-server%E8%B3%87%E6%96%99%E5%BA%AB%E6%AD%A3%E8%A6%8F%E5%8C%96/%E8%A8%82%E5%96%AE.png" class="" title="訂單範例">
+
+<p><strong>步驟1:正規化前</strong></p>
+<img src="/2021/09/05/SQL-server%E8%B3%87%E6%96%99%E5%BA%AB%E6%AD%A3%E8%A6%8F%E5%8C%96/UNDO.png" class="" title="正規化前">
+
+<p><strong>步驟2:1NF後</strong></p>
+<p>1.決定主鍵:資料表中有主鍵, 而其他所有的欄位都相依於主鍵。<br>2.一個欄位只能有單一值:每個欄位中都只有儲存單一值,例如: 姓名欄位中不能存放2 個人的姓名。<br>3.消除意義上重複的欄位:資料表中沒有意義相同的多個欄位, 例如: 姓名1、姓名2…等重複的欄位。</p>
+<p>把因欄位單一值的欄位獨立成另一個表、決定主鍵，因為沒有重複欄位所以不用消除。</p>
+<img src="/2021/09/05/SQL-server%E8%B3%87%E6%96%99%E5%BA%AB%E6%AD%A3%E8%A6%8F%E5%8C%96/1NF.png" class="" title="1NF">
+
+<p><strong>步驟3:經過2NF &amp; 3NF 後</strong></p>
+<p>2NF:<br>1.符合1NF 的格式<br>2.去除『部分相依性』:各欄位與主鍵間沒有部分相依的關係。<br>3NF:<br>1.符合2NF 的格式<br>2.去除『間接相依性』:各欄位與主鍵間沒有間接相依的關係。</p>
+<p>不斷比較各個欄位與該列表的主鍵關係，把表拆出。</p>
+<p>*出貨單號、出貨日期、運送地址、客戶簽名、總計，有部分相依性<br>客戶姓名、客戶電話，有部分相依性<br>所以各自拆成兩張表</p>
+<p>*明細流水號、出貨單號、數量、金額、備註，有部分相依性<br>產品、單價，有部分相依性<br>所以各自拆成兩張表</p>
+<p>出貨單表的總計容易因為出貨單明細的數量*金額而變動，因此可考慮刪掉，但有時實際上又會因廠商變動而實際上硬壓上一個金額，所以還是先留著。</p>
+<p>我在處理時覺得2跟3很難分開做，所以做完已經3階。</p>
+<img src="/2021/09/05/SQL-server%E8%B3%87%E6%96%99%E5%BA%AB%E6%AD%A3%E8%A6%8F%E5%8C%96/2NF&3NF.png" class="" title="2NF&amp;3NF">
+
+<p>然後關聯</p>
+<img src="/2021/09/05/SQL-server%E8%B3%87%E6%96%99%E5%BA%AB%E6%AD%A3%E8%A6%8F%E5%8C%96/2NF&3NF%E9%97%9C%E8%81%AF.png" class="" title="2NF&amp;3NF關聯">
+
+<p><strong>20210905修正</strong><br>為了避免未來產品單價變動，造成日後撈訂單時價格改變，因此在訂單明細增加單價</p>
+<img src="/2021/09/05/SQL-server%E8%B3%87%E6%96%99%E5%BA%AB%E6%AD%A3%E8%A6%8F%E5%8C%96/%E8%B3%87%E6%96%99%E8%A1%A8%E4%BF%AE%E6%AD%A3.png" class="" title="資料表修正">
+
+
+<h3 id="結語"><a href="#結語" class="headerlink" title="結語"></a>結語</h3><p>第一正規化做好後，第二正規化、第三正規要注意一點去做，讓結構拆開來，日後擴充會比較容易。<br>我自己在2~3階時有點對定義模糊，就是不斷把不相關跟主鍵去比，然後拆出來、拉關聯。(日後如果發覺錯誤會回來改正。)<br>此外補充一下，我覺得這種抽象的理論比實作重要，因為他沒辦法直接複製貼上，要透過動腦去分析，是累積功力的一個好方法。</p>
+<p>Q1:我有一點疑問在＂單價＂比如往後需要調用歷史資料，而商品的單價改動，會接連造成訂單對不上，所以是否該把明細流水號增加單價?<br>ANS:20210905補上，針對這種日後可能會調度欄位、有糾紛問題的數值，存當時寫入的值比較穩定。因為是”歷史資料”，通常會限制成不可改，只能把整筆訂單刪除。<br>後來看了:<a target="_blank" rel="noopener" href="https://ithelp.ithome.com.tw/m/questions/10197039?fbclid=IwAR1sdXPCl2JtFvhauc76aUcEuNIEtfcvH2TzodALPmC08HL8R-7mp74eLZc">https://ithelp.ithome.com.tw/m/questions/10197039?fbclid=IwAR1sdXPCl2JtFvhauc76aUcEuNIEtfcvH2TzodALPmC08HL8R-7mp74eLZc</a><br>這個問題是「需求」問題，看PM或SA想怎麼呈現<br>簡單的答案:沒必要<br>複雜的答案:要看資料欄位的「變化性」</p>
+<p><strong>參考資料</strong><br><a target="_blank" rel="noopener" href="http://140.118.9.79/UML-SASD/%E6%AD%A3%E8%A6%8F%E5%8C%96.pdf">http://140.118.9.79/UML-SASD/%E6%AD%A3%E8%A6%8F%E5%8C%96.pdf</a><br><a target="_blank" rel="noopener" href="http://9715109.blogspot.com/2010/10/12.html">http://9715109.blogspot.com/2010/10/12.html</a><br><a target="_blank" rel="noopener" href="https://ithelp.ithome.com.tw/articles/10229472">https://ithelp.ithome.com.tw/articles/10229472</a><br><a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=FgQ4QrwVNk0">https://www.youtube.com/watch?v=FgQ4QrwVNk0</a><br><a target="_blank" rel="noopener" href="http://spaces.isu.edu.tw/upload/19225/0/news/postfile_349.pdf">http://spaces.isu.edu.tw/upload/19225/0/news/postfile_349.pdf</a><br><a target="_blank" rel="noopener" href="https://www.ptt.cc/bbs/Soft_Job/M.1623612131.A.33C.html">https://www.ptt.cc/bbs/Soft_Job/M.1623612131.A.33C.html</a><br><a target="_blank" rel="noopener" href="https://ithelp.ithome.com.tw/m/questions/10197039?fbclid=IwAR1sdXPCl2JtFvhauc76aUcEuNIEtfcvH2TzodALPmC08HL8R-7mp74eLZc">https://ithelp.ithome.com.tw/m/questions/10197039?fbclid=IwAR1sdXPCl2JtFvhauc76aUcEuNIEtfcvH2TzodALPmC08HL8R-7mp74eLZc</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://yuhsiang237.github.io/2021/09/05/SQL-server%E8%B3%87%E6%96%99%E5%BA%AB%E6%AD%A3%E8%A6%8F%E5%8C%96/" data-id="cme6kwo2j004wgalj71znbkrq" data-title="[Day5] 規劃資料表，透過資料庫正規化 - SQL Server資料庫入門" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-SQL-server資料表規劃" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2021/09/04/SQL-server%E8%B3%87%E6%96%99%E8%A1%A8%E8%A6%8F%E5%8A%83/" class="article-date">
+  <time class="dt-published" datetime="2021-09-04T08:06:08.000Z" itemprop="datePublished">2021-09-04</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Database/">Database</a>►<a class="article-category-link" href="/categories/Database/SQL-Server/">SQL Server</a>►<a class="article-category-link" href="/categories/Topic/">Topic</a>►<a class="article-category-link" href="/categories/Topic/2021-SQL-Server-Challenge/">2021 SQL Server Challenge</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2021/09/04/SQL-server%E8%B3%87%E6%96%99%E8%A1%A8%E8%A6%8F%E5%8A%83/">[Day4] SQL Server資料庫建立 - SQL Server資料庫入門</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>這回我們利用SQL Server建立訂單的資料庫。<br>並給出一個例子，模擬PM或SA給你的訂單表格，要你把它轉成資料庫型態。</p>
+<h3 id="訂單表單"><a href="#訂單表單" class="headerlink" title="訂單表單"></a>訂單表單</h3><p>如下:(ps.這訂單來自參考資料的內容)</p>
+<img src="/2021/09/04/SQL-server%E8%B3%87%E6%96%99%E8%A1%A8%E8%A6%8F%E5%8A%83/%E8%A8%82%E5%96%AE.png" class="" title="訂單">
+
+<h3 id="建立資料庫"><a href="#建立資料庫" class="headerlink" title="建立資料庫"></a>建立資料庫</h3><p>Database&gt;New Database</p>
+<img src="/2021/09/04/SQL-server%E8%B3%87%E6%96%99%E8%A1%A8%E8%A6%8F%E5%8A%83/Screenshot%202021-09-04%20162949.png" class="" title="建立資料庫步驟1">
+<p>Database&gt;New Database<br>輸出資料庫名稱Orders</p>
+<img src="/2021/09/04/SQL-server%E8%B3%87%E6%96%99%E8%A1%A8%E8%A6%8F%E5%8A%83/Screenshot%202021-09-04%20163147.png" class="" title="建立資料庫步驟2">
+<p>可以見到左方出現了Orders資料庫</p>
+<img src="/2021/09/04/SQL-server%E8%B3%87%E6%96%99%E8%A1%A8%E8%A6%8F%E5%8A%83/Screenshot%202021-09-04%20163420.png" class="" title="建立資料庫步驟3">
+
+
+<h3 id="結語"><a href="#結語" class="headerlink" title="結語"></a>結語</h3><p>在這回中，我們建立了一個訂單資料庫。<br>在下回中，會把資料庫正規化拿出來談一下，並且設計這張訂單的資料表。</p>
+<p><strong>參考資料</strong><br><a target="_blank" rel="noopener" href="https://ithelp.ithome.com.tw/articles/10214308">https://ithelp.ithome.com.tw/articles/10214308</a><br><a target="_blank" rel="noopener" href="http://cc.cust.edu.tw/~ccchen/doc/db_04.pdf">http://cc.cust.edu.tw/~ccchen/doc/db_04.pdf</a><br><a target="_blank" rel="noopener" href="https://ithelp.ithome.com.tw/articles/10229472">https://ithelp.ithome.com.tw/articles/10229472</a><br><a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E6%95%B0%E6%8D%AE%E5%BA%93%E8%A7%84%E8%8C%83%E5%8C%96">https://zh.wikipedia.org/wiki/%E6%95%B0%E6%8D%AE%E5%BA%93%E8%A7%84%E8%8C%83%E5%8C%96</a><br><a target="_blank" rel="noopener" href="http://140.118.9.79/UML-SASD/%E6%AD%A3%E8%A6%8F%E5%8C%96.pdf">http://140.118.9.79/UML-SASD/%E6%AD%A3%E8%A6%8F%E5%8C%96.pdf</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://yuhsiang237.github.io/2021/09/04/SQL-server%E8%B3%87%E6%96%99%E8%A1%A8%E8%A6%8F%E5%8A%83/" data-id="cme6kwo2k004zgalj21x525kc" data-title="[Day4] SQL Server資料庫建立 - SQL Server資料庫入門" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-sql-server資料型態" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2021/09/03/sql-server%E8%B3%87%E6%96%99%E5%9E%8B%E6%85%8B/" class="article-date">
+  <time class="dt-published" datetime="2021-09-03T10:33:36.000Z" itemprop="datePublished">2021-09-03</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Database/">Database</a>►<a class="article-category-link" href="/categories/Database/SQL-Server/">SQL Server</a>►<a class="article-category-link" href="/categories/Topic/">Topic</a>►<a class="article-category-link" href="/categories/Topic/2021-SQL-Server-Challenge/">2021 SQL Server Challenge</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2021/09/03/sql-server%E8%B3%87%E6%96%99%E5%9E%8B%E6%85%8B/">[Day3] SQL Server資料型態 - SQL Server資料庫入門</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>為了能夠讓每種資料有比較好的儲存方式，所以這回來看一下SQL server內建哪些資料型態。<br>我們平常常見資料可能會有日期、數字、文字等等。<br>爬了很多文後發現SQL Server的資料型態真的爆多，所以先列舉，未來如果有用到會陸續回來修補這篇文(X)。</p>
+<h3 id="整數"><a href="#整數" class="headerlink" title="整數"></a>整數</h3><table style="text-align: left; height: 113px;" width="550" border="1">
+<tbody>
+<tr>
+<th><span style="font-size: 12pt;">資料型別</span></th>
+<th><span style="font-size: 12pt;">位元數</span></th>
+<th><span style="font-size: 12pt;">資料範圍</span></th>
+</tr>
+<tr>
+<td><span style="font-size: 12pt;">tinyint</span></td>
+<td><span style="font-size: 12pt;">&nbsp;1 Byte</span></td>
+<td><span style="font-size: 12pt;">0 ~ 2^8 -1<br>( 0 ~ 255 )</span></td>
+</tr>
+<tr>
+<td><span style="font-size: 12pt;">smallint</span></td>
+<td><span style="font-size: 12pt;">&nbsp;2 Bytes</span></td>
+<td><span style="font-size: 12pt;">-2^15 ~ 2^15-1<br>( -32738 ~ 32767 )</span></td>
+</tr>
+<tr>
+<td><span style="font-size: 12pt;">int</span></td>
+<td><span style="font-size: 12pt;">&nbsp;4 Bytes</span></td>
+<td>
+<p><span style="font-size: 12pt;">-2^31 ~ 2^31 -1<br>( -2147483648 ~ 2147483467)</span></p>
+</td>
+</tr>
+<tr>
+<td><span style="font-size: 12pt;">bigint</span></td>
+<td><span style="font-size: 12pt;">&nbsp;8 Bytes</span></td>
+<td><span style="font-size: 12pt;">-2^63~2^63 -1<br>
+<span style="font-size: 10pt;">(-9223372036854775808 ~ 9223372036854776807 )</span></span></td>
+</tr>
+<tr>
+<td><span style="font-size: 12pt;">bit</span></td>
+<td><span style="font-size: 12pt;">&nbsp;1 Byte</span></td>
+<td><span style="font-size: 12pt;">&nbsp;0 , 1 , Null</span></td>
+</tr>
+</tbody>
+</table>
+
+<h3 id="精確位數與浮點數"><a href="#精確位數與浮點數" class="headerlink" title="精確位數與浮點數"></a>精確位數與浮點數</h3><table style="height: 94px;" width="550" border="1">
+<tbody>
+<tr>
+<th><span style="font-size: 12pt;">資料型別</span></th>
+<th><span style="font-size: 12pt;">位元數</span></th>
+<th><span style="font-size: 12pt;">資料範圍</span></th>
+<th><span style="font-size: 12pt;">備註</span></th>
+</tr>
+<tr>
+<td><span style="font-size: 12pt;">numeric</span></td>
+<td><span style="font-size: 12pt;">視精確度而定</span></td>
+<td><span style="font-size: 12pt;">-10^38 +1 ~ 10^38 -1<br></span></td>
+<td></td>
+</tr>
+<tr>
+<td><span style="font-size: 12pt;">decimal</span></td>
+<td><span style="font-size: 12pt;">視精確度而定</span></td>
+<td><span style="font-size: 12pt;">-10^38 +1 ~ 10^38 -1</span></td>
+<td>如果要存有小數點的錢、金額請使用decimal，不要使用float，避免造成誤差<br/>
+decimal(p,s) 需要分別指定小數的最大位數（p）和小數位的數量（s）。
+p (precision) ：指定小數的最大位數，小數點的左側和右側的數字的總數量不能超過p，p的取值範圍是從1到38，默認值爲18。
+s (scale)：指定在小數點右側的小數位數，p-s是小數點左邊的最大位數。s必須是從0到p的值，只有在指定了精度的情況下才能指定s，s的默認值是0，因此，0 <= s <= p。 
+<img src="/2021/09/03/sql-server%E8%B3%87%E6%96%99%E5%9E%8B%E6%85%8B/decimal.png" class="" title="decimal">
+
+</td>
+</tr>
+<tr>
+<td><span style="font-size: 12pt;">float</span></td>
+<td><span style="font-size: 12pt;">&nbsp;8 Bytes</span></td>
+<td><span style="font-size: 12pt;">&nbsp;-1.79E+308 ~ 1.79E+308<br>15 位數<br></span></td>
+<td>不要使用float存小數點的錢，避免造成誤差。他適合儲存科學用的數字。</td>
+</tr>
+<tr>
+<td><span style="font-size: 12pt;">real</span></td>
+<td><span style="font-size: 12pt;">&nbsp;4 Bytes<br></span></td>
+<td><span style="font-size: 12pt;">-3.40E+38 ~ 3.40E+38<br>&nbsp;
+7 位數</span></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+
+<h3 id="字串-Unicode-字串-Binary-字串"><a href="#字串-Unicode-字串-Binary-字串" class="headerlink" title="字串 - Unicode 字串 - Binary 字串"></a>字串 - Unicode 字串 - Binary 字串</h3><table style="height: 166px;" width="550" border="1">
+<tbody>
+<tr>
+<th><span style="font-size: 12pt;">資料型別</span></th>
+<th><span style="font-size: 12pt;">位元數</span></th>
+<th><span style="font-size: 12pt;">資料範圍</span></th>
+<th><span style="font-size: 12pt;">備註</span></th>
+</tr>
+<tr>
+<td><span style="font-size: 12pt;">&nbsp;char(n)</span></td>
+<td><span style="font-size: 12pt;">1字元 1Byte</span></td>
+<td><span style="font-size: 12pt;">&nbsp;1 ~ 8000 字元</span></td>
+<td>輸入的數據長度沒有達到指定的長度時將自動以英文空格在其後面填充，讓長度達到相對應的長度。</td>
+</tr>
+<tr>
+<td><span style="font-size: 12pt;">&nbsp;varchar(n)</span></td>
+<td><span style="font-size: 12pt;">1字元 1Byte</span></td>
+<td><span style="font-size: 12pt;">&nbsp;1 ~ 8000 字元</span></td>
+<td><br>輸入的數據長度沒有達到指定的長度時不會在後面填充空格。</td>
+</tr>
+<tr>
+<td><span style="font-size: 12pt;">&nbsp;varchar(max)</span></td>
+<td><span style="font-size: 12pt;">變動長度 max=2GB</span></td>
+<td><span style="font-size: 12pt;">&nbsp;1 ~ 2^31 -1 字元<br/></span></td>
+<td>輸入的數據長度沒有達到指定的長度時不會在後面填充空格。</td>
+</tr>
+<tr>
+<td><span style="font-size: 12pt;">&nbsp;text</span></td>
+<td><span style="font-size: 12pt;">變動長度 max=2GB</span></td>
+<td><span style="font-size: 12pt;">&nbsp;1 ~ 2^31 -1 字元</span></td>
+<td></td>
+
+</tr>
+<tr>
+<td><span style="font-size: 12pt;">&nbsp;nchar(n)</span></td>
+<td><span style="font-size: 12pt;">1字元 2Byte</span></td>
+<td><span style="font-size: 12pt;">&nbsp;1 ~ 4000 字元</span></td>
+<td>所有的文字都用2 Byte來儲存<br>輸入的數據長度沒有達到指定的長度時將自動以英文空格在其後面填充，讓長度達到相對應的長度。</td>
+
+</tr>
+<tr>
+<td><span style="font-size: 12pt;">&nbsp;nvarchar(n)</span></td>
+<td><span style="font-size: 12pt;">1字元 2Byte</span></td>
+<td><span style="font-size: 12pt;">&nbsp;1 ~ 4000 字元</span></td>
+<td>所有的文字都用2 Byte來儲存<br>輸入的數據長度沒有達到指定的長度時不會在後面填充空格。</td>
+</tr>
+<tr>
+<td><span style="font-size: 12pt;">&nbsp;nvarchar(max)</span></td>
+<td><span style="font-size: 12pt;">1字元 2Byte</span><br><span style="font-size: 12pt;">變動長度 max=2GB</span></td>
+<td><span style="font-size: 12pt;">&nbsp;1 ~ 2^30 -1 字元</span></td>
+<td>所有的文字都用2 Byte來儲存<br>輸入的數據長度沒有達到指定的長度時不會在後面填充空格。</td>
+
+</tr>
+<tr>
+<td><span style="font-size: 12pt;">&nbsp;ntext</span></td>
+<td><span style="font-size: 12pt;">1字元 2Byte</span><br><span style="font-size: 12pt;">變動長度 max=2GB</span></td>
+<td><span style="font-size: 12pt;">&nbsp;1 ~ 2^30 -1 字元</span></td>
+<td></td>
+</tr>
+<tr>
+<td><span style="font-size: 12pt;">&nbsp;binary(n)</span></td>
+<td><span style="font-size: 12pt;">固定長度 8000 Bytes,不足自動補上 0x00<br></span></td>
+<td><span style="font-size: 12pt;">&nbsp;1 ~ 8000 Bytes</span></td>
+<td></td>
+
+</tr>
+<tr>
+<td><span style="font-size: 12pt;">&nbsp;varbinary(n)</span></td>
+<td><span style="font-size: 12pt;">變動長度</span></td>
+<td><span style="font-size: 12pt;">&nbsp;1 ~ 8000 Bytes</span></td>
+<td></td>
+
+</tr>
+<tr>
+<td><span style="font-size: 12pt;">&nbsp;varbinary(max)</span></td>
+<td><span style="font-size: 12pt;">變動長度 max=2GB</span></td>
+<td><span style="font-size: 12pt;">&nbsp;1 ~ 2^31 -1 Bytes</span></td>
+<td></td>
+
+</tr>
+<tr>
+<td><span style="font-size: 12pt;">&nbsp;image</span></td>
+<td><span style="font-size: 12pt;">變動長度 max=2GB</span></td>
+<td><span style="font-size: 12pt;">&nbsp;1 ~ 2^31 -1 Bytes</span></td>
+<td></td>
+
+</tr>
+</tbody>
+</table>
+
+<h3 id="日期-時間-貨幣-Timestamp"><a href="#日期-時間-貨幣-Timestamp" class="headerlink" title="日期 - 時間 - 貨幣 - Timestamp"></a>日期 - 時間 - 貨幣 - Timestamp</h3><table style="height: 94px;" width="550" border="1">
+<tbody>
+<tr>
+<th><span style="font-size: 12pt;">資料型別</span></th>
+<th><span style="font-size: 12pt;">位元數</span></th>
+<th><span style="font-size: 12pt;">資料範圍</span></th>
+</tr>
+<tr>
+<td><span style="font-size: 12pt;">datatime</span></td>
+<td><span style="font-size: 12pt;">&nbsp;8 Bytes</span></td>
+<td><span style="font-size: 12pt;">1753/1/1 ~ 9999/12/31<br>ex: 2008-11-27 08:08:08.888<br></span></td>
+</tr>
+<tr>
+<td><span style="font-size: 12pt;">datatime2</span></td>
+<td><span style="font-size: 12pt;">6 bytes for precision less than 3.<br>
+7 bytes for precision 3 or 4.<br>
+All other precision require 8 bytes.2<br></span></td>
+<td><span style="font-size: 12pt;">0001-01-01 ~ 9999-12-31</span></td>
+</tr>
+<tr>
+<td><span style="font-size: 12pt;">smalldatatime</span></td>
+<td><span style="font-size: 12pt;">&nbsp;4 Bytes<br></span></td>
+<td><span style="font-size: 12pt;">1900/1/1 ~ 2079/6/6<br>ex: 2008-11-24 15:11<br></span></td>
+</tr>
+<tr>
+<td><span style="font-size: 12pt;">money</span></td>
+<td><span style="font-size: 12pt;">&nbsp;8 Bytes</span></td>
+<td><span style="font-size: 12pt;">&nbsp;-2^63 ~ 2^63 -1 </span><span style="font-size: 12pt;">小數4位</span><br><span style="font-size: 12pt;">( -922337203685477.5808 ~ 922337203685477.5807)<br></span></td>
+</tr>
+<tr>
+<td><span style="font-size: 12pt;">smallmoney</span></td>
+<td><span style="font-size: 12pt;">&nbsp;4 Bytes<br></span></td>
+<td><span style="font-size: 12pt;">-2^31 ~ 2^31 -1 小數4位&nbsp; <br>( -214748.3648 ~ 214748.3647)&nbsp;</span></td>
+</tr>
+<tr>
+<td><span style="font-size: 12pt;">timestamp</span></td>
+<td><span style="font-size: 12pt;">&nbsp;8 Bytes</span></td>
+<td><span style="font-size: 12pt;">8 Bytes 的&nbsp; 16 進位值</span><span style="font-size: 12pt;"><br></span></td>
+</tr>
+<tr>
+<td><span style="font-size: 12pt;">uniqueidentifier</span></td>
+<td><span style="font-size: 12pt;">&nbsp;16 Bytes<br></span></td>
+<td><span style="font-size: 12pt;">16 Bytes 的 16 進位值</span></td>
+</tr>
+</tbody>
+</table>
+
+<h3 id="結語"><a href="#結語" class="headerlink" title="結語"></a>結語</h3><p>這回以SQL Server的資料型別列舉出資料範圍，對於日後再選擇時就能稍微留意空間大小、資料的範圍等規劃問題。<br>自己在使用上則是字串nvarchar，整數int、科學數字用浮點數float、有小數的金額用decimal避免誤差、日期datetime2，就能解決大多問題。<br>而SQL Server沒有MySQL的boolean型態，要改用0、1去存，可以考慮tinyint。<br>而在不同時區的資料則是統一都用一個標準去儲存日期UTC時間，如果有機會未來會在寫一篇跨國時間可能會遇到的問題。</p>
+<p><strong>參考資料</strong><br><a target="_blank" rel="noopener" href="https://docs.microsoft.com/zh-tw/sql/t-sql/data-types/data-types-transact-sql?view=sql-server-ver15">https://docs.microsoft.com/zh-tw/sql/t-sql/data-types/data-types-transact-sql?view=sql-server-ver15</a><br><a target="_blank" rel="noopener" href="https://ithelp.ithome.com.tw/articles/10203456">https://ithelp.ithome.com.tw/articles/10203456</a><br><a target="_blank" rel="noopener" href="https://blog.xuite.net/tolarku/blog/20968398-SQL+Data+Type+%E8%B3%87%E6%96%99%E5%9E%8B%E5%88%A5">https://blog.xuite.net/tolarku/blog/20968398-SQL+Data+Type+%E8%B3%87%E6%96%99%E5%9E%8B%E5%88%A5</a><br><a target="_blank" rel="noopener" href="https://docs.microsoft.com/en-us/sql/t-sql/data-types/datetime2-transact-sql?view=sql-server-ver15">https://docs.microsoft.com/en-us/sql/t-sql/data-types/datetime2-transact-sql?view=sql-server-ver15</a><br><a target="_blank" rel="noopener" href="https://ithelp.ithome.com.tw/articles/10213922">https://ithelp.ithome.com.tw/articles/10213922</a><br><a target="_blank" rel="noopener" href="https://ithelp.ithome.com.tw/articles/10203456?sc=iThelpR">https://ithelp.ithome.com.tw/articles/10203456?sc=iThelpR</a><br><a target="_blank" rel="noopener" href="https://malagege.github.io/blog/2018/11/09/DB%E5%88%B0%E5%BA%95%E6%9C%89%E6%B2%92%E6%9C%89boolean%E5%9E%8B%E6%85%8B%E5%91%A2/">https://malagege.github.io/blog/2018/11/09/DB%E5%88%B0%E5%BA%95%E6%9C%89%E6%B2%92%E6%9C%89boolean%E5%9E%8B%E6%85%8B%E5%91%A2/</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://yuhsiang237.github.io/2021/09/03/sql-server%E8%B3%87%E6%96%99%E5%9E%8B%E6%85%8B/" data-id="cme6kwo3j006vgalj17mc6i7x" data-title="[Day3] SQL Server資料型態 - SQL Server資料庫入門" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-C-Dictionary字典操作" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2021/09/03/C-Dictionary%E5%AD%97%E5%85%B8%E6%93%8D%E4%BD%9C/" class="article-date">
+  <time class="dt-published" datetime="2021-09-03T10:16:52.000Z" itemprop="datePublished">2021-09-03</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Code/">Code</a>►<a class="article-category-link" href="/categories/Code/C/">C#</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2021/09/03/C-Dictionary%E5%AD%97%E5%85%B8%E6%93%8D%E4%BD%9C/">C# Dictionary字典操作</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>這次練習使用C#的字典資料結構。</p>
+<h3 id="Dictionary"><a href="#Dictionary" class="headerlink" title="Dictionary"></a>Dictionary</h3><p>字典型別，一個Key對上一個Value，一對一關係。<br>像是查字典，你查某個單字，會給你他的解釋。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">using System;</span><br><span class="line">using System.Collections.Generic;</span><br><span class="line"></span><br><span class="line">public class Program</span><br><span class="line">&#123;</span><br><span class="line">	</span><br><span class="line">	public static void Main()</span><br><span class="line">	&#123;</span><br><span class="line">		Dictionary&lt;string, string&gt; dictionary = new Dictionary&lt;string, string&gt;( ); // 建立字典key:string,value:string</span><br><span class="line">		dictionary.Add(&quot;LastName&quot;,&quot;Lin&quot;);</span><br><span class="line">		dictionary.Add(&quot;FirstName&quot;,&quot;Yu-Hsiang&quot;);</span><br><span class="line">			</span><br><span class="line">		// 從字典中取出對應值</span><br><span class="line">		Console.WriteLine(&quot;FirstName:&quot; + dictionary[&quot;FirstName&quot;]);</span><br><span class="line">		Console.WriteLine(&quot;LastName:&quot; + dictionary[&quot;LastName&quot;]);</span><br><span class="line">		</span><br><span class="line">		// 遍歷字典</span><br><span class="line">		foreach ( var item in dictionary )</span><br><span class="line">		&#123;</span><br><span class="line">			Console.WriteLine( &quot;Key = &quot; + item.Key + &quot;, Value = &quot; + item.Value );</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>輸出</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">FirstName:Yu-Hsiang</span><br><span class="line">LastName:Lin</span><br><span class="line">Key = LastName, Value = Lin</span><br><span class="line">Key = FirstName, Value = Yu-Hsiang</span><br></pre></td></tr></table></figure>
+<h3 id="結語"><a href="#結語" class="headerlink" title="結語"></a>結語</h3><p>有一對一關係的資料，可以利用字典去整理，就能不用二維陣列去做，資料也比較清楚。<br>如果有重複的Key值，在添加時也會跳出例外事件。例:An item with the same key has already been added.</p>
+<p><strong>參考資料</strong><br><a target="_blank" rel="noopener" href="http://code2study.blogspot.com/2012/01/c-dictionary.html">http://code2study.blogspot.com/2012/01/c-dictionary.html</a><br><a target="_blank" rel="noopener" href="https://ithelp.ithome.com.tw/articles/10234391">https://ithelp.ithome.com.tw/articles/10234391</a><br><a target="_blank" rel="noopener" href="https://docs.microsoft.com/en-us/dotnet/api/system.collections.generic.dictionary-2?view=net-5.0">https://docs.microsoft.com/en-us/dotnet/api/system.collections.generic.dictionary-2?view=net-5.0</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://yuhsiang237.github.io/2021/09/03/C-Dictionary%E5%AD%97%E5%85%B8%E6%93%8D%E4%BD%9C/" data-id="cme6kwnzx000agaljcqgjd66b" data-title="C# Dictionary字典操作" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-C-的class宣告與使用" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2021/09/02/C-%E7%9A%84class%E5%AE%A3%E5%91%8A%E8%88%87%E4%BD%BF%E7%94%A8/" class="article-date">
+  <time class="dt-published" datetime="2021-09-02T15:30:39.000Z" itemprop="datePublished">2021-09-02</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Code/">Code</a>►<a class="article-category-link" href="/categories/Code/C/">C#</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2021/09/02/C-%E7%9A%84class%E5%AE%A3%E5%91%8A%E8%88%87%E4%BD%BF%E7%94%A8/">C# class宣告及使用</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>在C++後有很多物件導向(Object-oriented programming，OOP)的語言竄起，如JAVA、VB、C#等等。<br>未來可能會以C#為主要語言，所以就來練習一下C#的類別宣告吧。</p>
+<h3 id="物件導向程式設計"><a href="#物件導向程式設計" class="headerlink" title="物件導向程式設計"></a>物件導向程式設計</h3><p>是種具有物件概念的程式設計典範，同時也是一種程式開發的抽象方針。它可能包含資料、特性、程式碼與方法。物件則指的是類別（class）的實例。物件導向程式設計可以看作一種在程式中包含各種獨立而又互相呼叫的物件的思想，這與傳統的思想剛好相反：傳統的程式設計主張將程式看作一系列函式的集合，或者直接就是一系列對電腦下達的指令。</p>
+<p>物件導向程式語言包含Common Lisp、Python、C++、Objective-C、Smalltalk、Delphi、Java、Swift、C#、Perl、Ruby、JavaScript(雖然javascript通常都用function在寫，但ES6有class) 與 PHP等。 </p>
+<h3 id="C-class宣告及使用"><a href="#C-class宣告及使用" class="headerlink" title="C# class宣告及使用"></a>C# class宣告及使用</h3><p>透過人(Person)的類別class，宣告一個人的實例。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">using System;</span><br><span class="line">					</span><br><span class="line">public class Program</span><br><span class="line">&#123;</span><br><span class="line">	public class Person&#123;</span><br><span class="line">		</span><br><span class="line">		private string name; // 內部私有的name變數</span><br><span class="line">		</span><br><span class="line">		public string Name &#123;</span><br><span class="line">			get&#123;return name;&#125; // getter 取出私有的name變數</span><br><span class="line">			set&#123;this.name = value;&#125; // setter 將value設定到私有的name變數</span><br><span class="line">		&#125;</span><br><span class="line">		</span><br><span class="line">		public Person()&#123; // 建構子</span><br><span class="line">			this.name = &quot;沒有名子&quot;;</span><br><span class="line">		&#125;</span><br><span class="line">		</span><br><span class="line">		public Person(string name)&#123; // 多載(Overload)的建構子，可初始化name</span><br><span class="line">			this.name = name;</span><br><span class="line">		&#125;</span><br><span class="line">	</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	public static void Main()</span><br><span class="line">	&#123;</span><br><span class="line">		Person person= new Person();// 宣告一個人的實例</span><br><span class="line">		Console.WriteLine(person.Name);// 透過getter取出變數</span><br><span class="line">		person.Name = &quot;Yu Hsiang&quot;; // 透過setter設定變數</span><br><span class="line">		Console.WriteLine(person.Name); // 透過getter取出變數</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>輸出</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">沒有名子</span><br><span class="line">Yu Hsiang</span><br></pre></td></tr></table></figure>
+
+<h3 id="結語"><a href="#結語" class="headerlink" title="結語"></a>結語</h3><p>為什麼要用getter、setter?<br>為了避免誤改到變數及維護性的需求。<br>比如，未來想要加一個*在每個人名前面，這時如果沒有setter、getter，就得改每一行的程式碼。<br>如果有setter、getter就像有一個緩衝的函式，可以讓我們直接在這裏面修正好值再存入。<br>當然，也有人不寫getter或setter，也是能運作，見仁見智，符合本身團隊需求就可以了。</p>
+<p>C#有點簡化了getter、setter，以前在寫C++時都會寫成setName、getName，再回傳本身指標，就能無限點下去。<br><a target="_blank" rel="noopener" href="https://github.com/yuhsiang237/C-plusplus-homework/blob/master/HomeworkBoss/final/2/2/Place.cpp">https://github.com/yuhsiang237/C-plusplus-homework/blob/master/HomeworkBoss/final/2/2/Place.cpp</a></p>
+<p>這練習想起了大學的C++作業:<br><a target="_blank" rel="noopener" href="https://github.com/yuhsiang237/C-plusplus-homework">https://github.com/yuhsiang237/C-plusplus-homework</a></p>
+<p><strong>參考資料</strong><br><a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1">https://zh.wikipedia.org/wiki/%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1</a><br><a target="_blank" rel="noopener" href="https://docs.microsoft.com/zh-tw/dotnet/csharp/fundamentals/types/classes">https://docs.microsoft.com/zh-tw/dotnet/csharp/fundamentals/types/classes</a><br><a target="_blank" rel="noopener" href="https://www.w3schools.com/cs/cs_properties.php">https://www.w3schools.com/cs/cs_properties.php</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://yuhsiang237.github.io/2021/09/02/C-%E7%9A%84class%E5%AE%A3%E5%91%8A%E8%88%87%E4%BD%BF%E7%94%A8/" data-id="cme6kwo1d002xgaljai6y65dd" data-title="C# class宣告及使用" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-主索引鍵與外部索引鍵" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2021/09/02/%E4%B8%BB%E7%B4%A2%E5%BC%95%E9%8D%B5%E8%88%87%E5%A4%96%E9%83%A8%E7%B4%A2%E5%BC%95%E9%8D%B5/" class="article-date">
+  <time class="dt-published" datetime="2021-09-02T06:30:12.000Z" itemprop="datePublished">2021-09-02</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Database/">Database</a>►<a class="article-category-link" href="/categories/Database/SQL-Server/">SQL Server</a>►<a class="article-category-link" href="/categories/Topic/">Topic</a>►<a class="article-category-link" href="/categories/Topic/2021-SQL-Server-Challenge/">2021 SQL Server Challenge</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2021/09/02/%E4%B8%BB%E7%B4%A2%E5%BC%95%E9%8D%B5%E8%88%87%E5%A4%96%E9%83%A8%E7%B4%A2%E5%BC%95%E9%8D%B5/">[Day2] 主索引鍵與外部索引鍵，及其他關係鍵 - SQL Server資料庫入門</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>在資料庫的資料表中，我們常藉「主索引鍵(Primary Key，PK，主鍵)、外部索引鍵（Foreign Key，FK，外來鍵）」，對不同的表進行關聯，最後串起整個資料庫。</p>
+<h3 id="主索引鍵-Primary-Key"><a href="#主索引鍵-Primary-Key" class="headerlink" title="主索引鍵(Primary Key)"></a>主索引鍵(Primary Key)</h3><p>在一張資料表中，<br>唯一性且不允許重複。</p>
+<h3 id="外部索引鍵-Foreign-Key"><a href="#外部索引鍵-Foreign-Key" class="headerlink" title="外部索引鍵(Foreign Key)"></a>外部索引鍵(Foreign Key)</h3><p>在一張資料表中，<br>外部索引鍵並不一定要唯一。<br>外部索引鍵是另一個資料表的主索引鍵。</p>
+<h3 id="範例"><a href="#範例" class="headerlink" title="範例"></a>範例</h3><img src="/2021/09/02/%E4%B8%BB%E7%B4%A2%E5%BC%95%E9%8D%B5%E8%88%87%E5%A4%96%E9%83%A8%E7%B4%A2%E5%BC%95%E9%8D%B5/20119925MvOyMbX3Cd.png" class="" title="資料表主鍵、外來鍵關係">
+<p>以上是資料表主鍵、外來鍵的關係。</p>
+<p>在客戶資料表中，id是主鍵。<br>在產品資料表中，id是主鍵。<br>在訂單詳情資料表中，id是主鍵；客戶id、產品id分別是外來鍵，他們各自是客戶資料表中的主鍵、產品資料表中的主鍵。</p>
+<p>舉例:<br>如我想找某筆訂單中的客戶是誰，就能夠用訂單裡的客戶id去客戶資料表中找到對應的客戶。</p>
+<h2 id="補充"><a href="#補充" class="headerlink" title="補充"></a>補充</h2><h3 id="超鍵-superkey"><a href="#超鍵-superkey" class="headerlink" title="超鍵(superkey)"></a>超鍵(superkey)</h3><p>是指在一個資料表中，選出兩個或兩個以上的欄位組合起來，以作為唯一識別資料的欄位。</p>
+<h3 id="候選鍵-candidate-key"><a href="#候選鍵-candidate-key" class="headerlink" title="候選鍵(candidate key)"></a>候選鍵(candidate key)</h3><p>這個屬性集合始終能夠確保在關係中能唯一標識元組<br>在這個屬性集合中找不出真子集能夠滿足條件。</p>
+<h3 id="代理鍵-surrogate-key"><a href="#代理鍵-surrogate-key" class="headerlink" title="代理鍵(surrogate key)"></a>代理鍵(surrogate key)</h3><p>是在當資料表中的候選鍵都不適合當主鍵時，例如資料太長，或是意義層面太多，就會請一個無意義的但唯一的欄位來代為作主鍵。</p>
+<h3 id="次要鍵-Secondary-Key"><a href="#次要鍵-Secondary-Key" class="headerlink" title="次要鍵(Secondary Key)"></a>次要鍵(Secondary Key)</h3><p>主要的功能是提供資料索引。資料庫系統中，除了主鍵這個唯一的識別值，可以用做索引外，也可以設定其他欄位用作資料索引，這類的鍵值並不是主鍵，但因為資料內容並不會重複，所以也可作為資料索引，這就是次要鍵。在員工資料表中，員工姓名、到職日期等欄位都沒有重複，就可以做為次要鍵，提供不同於主鍵的資料索引。</p>
+<h3 id="複合鍵-Composite-Key"><a href="#複合鍵-Composite-Key" class="headerlink" title="複合鍵(Composite Key)"></a>複合鍵(Composite Key)</h3><p>是指資料表中的主鍵，是由兩個或兩個欄位以上所組成，這種主鍵稱為複合鍵(Composite Key)。<br>當表格中某一欄位的值無法區分資料記錄時可以使用此方法。</p>
+<h3 id="結語"><a href="#結語" class="headerlink" title="結語"></a>結語</h3><p>在整理過各種鍵後，理解到各種鍵的使用時機。(未來可能在資料庫正規化方面能夠更加順手。)<br>而以自身經驗來說，實際設計過的資料表中通常只會用到主鍵、外來鍵居多，其餘的特殊鍵則比較少，甚至沒有用到的情況。</p>
+<p><strong>參考資料:</strong><br><a target="_blank" rel="noopener" href="https://ithelp.ithome.com.tw/articles/10213896">https://ithelp.ithome.com.tw/articles/10213896</a><br><a target="_blank" rel="noopener" href="https://rileylin91.github.io/2020/05/29/MSSQL-9-Primary-Foreign-Key/">https://rileylin91.github.io/2020/05/29/MSSQL-9-Primary-Foreign-Key/</a><br><a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E5%85%B3%E7%B3%BB%E9%94%AE">https://zh.wikipedia.org/wiki/%E5%85%B3%E7%B3%BB%E9%94%AE</a><br><a target="_blank" rel="noopener" href="https://www.1keydata.com/tw/sql/sql-foreign-key.html">https://www.1keydata.com/tw/sql/sql-foreign-key.html</a><br><a target="_blank" rel="noopener" href="https://www.ithome.com.tw/node/46156">https://www.ithome.com.tw/node/46156</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://yuhsiang237.github.io/2021/09/02/%E4%B8%BB%E7%B4%A2%E5%BC%95%E9%8D%B5%E8%88%87%E5%A4%96%E9%83%A8%E7%B4%A2%E5%BC%95%E9%8D%B5/" data-id="cme6kwo3o0075galjdk5l043i" data-title="[Day2] 主索引鍵與外部索引鍵，及其他關係鍵 - SQL Server資料庫入門" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-sql-server安裝" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2021/09/01/sql-server%E5%AE%89%E8%A3%9D/" class="article-date">
+  <time class="dt-published" datetime="2021-09-01T15:49:25.000Z" itemprop="datePublished">2021-09-01</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Database/">Database</a>►<a class="article-category-link" href="/categories/Database/SQL-Server/">SQL Server</a>►<a class="article-category-link" href="/categories/Topic/">Topic</a>►<a class="article-category-link" href="/categories/Topic/2021-SQL-Server-Challenge/">2021 SQL Server Challenge</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2021/09/01/sql-server%E5%AE%89%E8%A3%9D/">[Day1] SQL Server 安裝 - SQL Server資料庫入門</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>因為工作與後端有關連，不免需要操作資料，而這些資料的儲存體就是資料庫。<br>網路上有不同種的SQL，如MySQL、MongoDB、SQL Server、Oracle、PostgreSQL…等等。<br>在未來工作上可能以關聯式資料庫(RDBMS)居多，因此以SQL Server當作練習的修練場。</p>
+<p><strong>在此之前需要下載:</strong></p>
+<ol>
+<li>SQL Server Express:微軟的資料庫，沒有介面。<br><a target="_blank" rel="noopener" href="https://www.microsoft.com/en-us/sql-server/sql-server-downloads">https://www.microsoft.com/en-us/sql-server/sql-server-downloads</a></li>
+<li>SQL Server Management Studio:透過介面式管理SQL Server Express資料庫的工具。(約6G空間)<br><a target="_blank" rel="noopener" href="https://docs.microsoft.com/en-us/sql/ssms/download-sql-server-management-studio-ssms?view=sql-server-ver15">https://docs.microsoft.com/en-us/sql/ssms/download-sql-server-management-studio-ssms?view=sql-server-ver15</a></li>
+</ol>
+<p>下載安裝後:</p>
+<img src="/2021/09/01/sql-server%E5%AE%89%E8%A3%9D/sql%20server%E9%A0%90%E8%A6%BD%E5%9C%96.PNG" class="" title="SQL Server Management Studio">
+
+<h3 id="結語"><a href="#結語" class="headerlink" title="結語"></a>結語</h3><p>這系列預計會從<strong>「資料表建立&gt;SQL語法&gt;進階語法」</strong>這樣前進。</p>
+<p>目標:是練過一輪基礎SQL語法、SQL進階用法、釐清資料表設計的方式。</p>
+<p>基本上會跟這篇 Challenge參考資料雷同，但是會加一些自己不同的見解XD。<br><a target="_blank" rel="noopener" href="https://ithelp.ithome.com.tw/articles/10219497">https://ithelp.ithome.com.tw/articles/10219497</a></p>
+<p>然後，也會藉由這些主題，逐漸擴充實戰經驗累積的資料。</p>
+<p><strong>參考資料</strong><br><a target="_blank" rel="noopener" href="https://ithelp.ithome.com.tw/articles/10219497">https://ithelp.ithome.com.tw/articles/10219497</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://yuhsiang237.github.io/2021/09/01/sql-server%E5%AE%89%E8%A3%9D/" data-id="cme6kwo3i006sgalj7l7nbbdj" data-title="[Day1] SQL Server 安裝 - SQL Server資料庫入門" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-C-亂數" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2021/08/30/C-%E4%BA%82%E6%95%B8/" class="article-date">
+  <time class="dt-published" datetime="2021-08-30T12:53:06.000Z" itemprop="datePublished">2021-08-30</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Code/">Code</a>►<a class="article-category-link" href="/categories/Code/C/">C#</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2021/08/30/C-%E4%BA%82%E6%95%B8/">C#亂數</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>亂數(Random)是在程式語言中常見的內建類別。<br>如陣列洗牌、模擬骰子等等都會常用到，所以就來寫一下他的用法。</p>
+<h3 id="Random"><a href="#Random" class="headerlink" title="Random"></a>Random</h3><p>1.Next用法<br>32 位元帶正負號的整數大於或等於 0，並且小於 MaxValue。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">using System;</span><br><span class="line"></span><br><span class="line">public class Program</span><br><span class="line">&#123;</span><br><span class="line">	public static void Main()</span><br><span class="line">	&#123;</span><br><span class="line">		Random r = new Random(); //宣告亂數種子</span><br><span class="line">		int result = r.Next(1,7); // 可能回傳1~6的整數數字，因為Next第二個參數是小於，以此例為小於7</span><br><span class="line">		Console.WriteLine(result); // 可能回傳1~6的整數數字</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>輸出結果</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">2</span><br></pre></td></tr></table></figure>
+
+<p>2.Random洗亂陣列<br>以array長度洗牌，隨意骰出符合陣列的兩個index，比較是否相同，不相同就將其交換。<br>最後得到一個洗牌後陣列。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">using System;</span><br><span class="line"></span><br><span class="line">public class Program</span><br><span class="line">&#123;</span><br><span class="line">	public static void Main()</span><br><span class="line">	&#123;</span><br><span class="line">		Random r = new Random(); //宣告亂數種子	</span><br><span class="line">		</span><br><span class="line">		int [] array = new int[5]&#123;1,2,3,4,5&#125;; // 宣告陣列並初始化</span><br><span class="line">		</span><br><span class="line">		for(int i=0;i&lt;array.Length;i++)&#123;</span><br><span class="line">			int index1 = r.Next(0,array.Length); </span><br><span class="line">			int index2 = r.Next(0,array.Length); </span><br><span class="line">			if(index1 != index2)&#123; // 交換陣列內容</span><br><span class="line">				int temp = array[index1];</span><br><span class="line">				array[index1] = array[index2];</span><br><span class="line">				array[index2] = temp;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">		Console.WriteLine(&quot;陣列洗牌後結果:&quot;);</span><br><span class="line">		foreach(int item in array)&#123;</span><br><span class="line">			Console.WriteLine(item);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>輸出結果</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">陣列洗牌後結果:</span><br><span class="line">2</span><br><span class="line">4</span><br><span class="line">1</span><br><span class="line">3</span><br><span class="line">5</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://yuhsiang237.github.io/2021/08/30/C-%E4%BA%82%E6%95%B8/" data-id="cme6kwo19002pgalje9p19wre" data-title="C#亂數" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+
+
+  <nav id="page-nav">
+    
+    <a class="extend prev" rel="prev" href="/page/13/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/12/">12</a><a class="page-number" href="/page/13/">13</a><span class="page-number current">14</span><a class="page-number" href="/page/15/">15</a><a class="page-number" href="/page/16/">16</a><a class="extend next" rel="next" href="/page/15/">Next &raquo;</a>
+  </nav>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Code/">Code</a><span class="category-list-count">76</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Code/C/">C#</a><span class="category-list-count">69</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Code/Javascript/">Javascript</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Code/Refactoring/">Refactoring</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Code/Typescript/">Typescript</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/">Computer Science</a><span class="category-list-count">5</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/Algorithm/">Algorithm</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/Data-structure/">Data structure</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/Electronic-Circuit/">Electronic Circuit</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Daily-Log/">Daily Log</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/">Database</a><span class="category-list-count">57</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Database/PostgreSQL/">PostgreSQL</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/SQL-Server/">SQL Server</a><span class="category-list-count">47</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/">Framework</a><span class="category-list-count">27</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/AspNetCore-API/">AspNetCore API</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/AspNetCore-MVC/">AspNetCore MVC</a><span class="category-list-count">21</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/">Topic</a><span class="category-list-count">76</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2021-C-AspNetCore-Challenge/">2021 C# AspNetCore Challenge</a><span class="category-list-count">30</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2021-SQL-Server-Challenge/">2021 SQL Server Challenge</a><span class="category-list-count">30</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2022-C-SyncAndAsync/">2022 C# SyncAndAsync</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2025-Typescript/">2025 Typescript</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/Big-Data/">Big Data</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/LeetCode/">LeetCode</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/SystemStructure/">SystemStructure</a><span class="category-list-count">1</span></li></ul></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/08/">August 2025</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/05/">May 2023</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/03/">March 2023</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/02/">February 2023</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/01/">January 2023</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/12/">December 2022</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/09/">September 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/07/">July 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/06/">June 2022</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/05/">May 2022</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/04/">April 2022</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/03/">March 2022</a><span class="archive-list-count">17</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/02/">February 2022</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/01/">January 2022</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">December 2021</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">October 2021</a><span class="archive-list-count">24</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">September 2021</a><span class="archive-list-count">46</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">August 2021</a><span class="archive-list-count">12</span></li></ul>
+    </div>
+  </div>
+
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2025 Yu Hsiang<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

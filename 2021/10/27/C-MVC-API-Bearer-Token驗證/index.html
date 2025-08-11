@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>[Day24] C# MVC API JWT Token驗證 (上) JWT基礎知識 - C#&amp;AspNetCore | UM&#39;s Coding Note</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="在先前有介紹過Cookie-Based驗證於MVC專案裡。 [Day12] C# MVC 驗證與授權，登入與登出 - C#&amp;AspNetCore  而這回主要探討的是Token-Based驗證，也就是API常用的JWT (Json Web Token)。 什麼是JWTJSON Web Token (JWT) is a proposed Internet standard for creat">
+<meta property="og:type" content="article">
+<meta property="og:title" content="[Day24] C# MVC API JWT Token驗證 (上) JWT基礎知識 - C#&amp;AspNetCore">
+<meta property="og:url" content="https://yuhsiang237.github.io/2021/10/27/C-MVC-API-Bearer-Token%E9%A9%97%E8%AD%89/index.html">
+<meta property="og:site_name" content="UM&#39;s Coding Note">
+<meta property="og:description" content="在先前有介紹過Cookie-Based驗證於MVC專案裡。 [Day12] C# MVC 驗證與授權，登入與登出 - C#&amp;AspNetCore  而這回主要探討的是Token-Based驗證，也就是API常用的JWT (Json Web Token)。 什麼是JWTJSON Web Token (JWT) is a proposed Internet standard for creat">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2021-10-27T13:57:47.000Z">
+<meta property="article:modified_time" content="2025-08-11T03:49:08.109Z">
+<meta property="article:author" content="Yu Hsiang">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="UM's Coding Note" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">UM&#39;s Coding Note</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">I record my coding experience at this place🤙</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://yuhsiang237.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-C-MVC-API-Bearer-Token驗證" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2021/10/27/C-MVC-API-Bearer-Token%E9%A9%97%E8%AD%89/" class="article-date">
+  <time class="dt-published" datetime="2021-10-27T13:57:47.000Z" itemprop="datePublished">2021-10-27</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Code/">Code</a>►<a class="article-category-link" href="/categories/Code/C/">C#</a>►<a class="article-category-link" href="/categories/Framework/">Framework</a>►<a class="article-category-link" href="/categories/Framework/AspNetCore-API/">AspNetCore API</a>►<a class="article-category-link" href="/categories/Topic/">Topic</a>►<a class="article-category-link" href="/categories/Topic/2021-C-AspNetCore-Challenge/">2021 C# AspNetCore Challenge</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      [Day24] C# MVC API JWT Token驗證 (上) JWT基礎知識 - C#&amp;AspNetCore
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>在先前有介紹過Cookie-Based驗證於MVC專案裡。</p>
+<a href="/2021/10/07/C-MVC-%E9%A9%97%E8%AD%89%E8%88%87%E6%8E%88%E6%AC%8A%E7%99%BB%E5%85%A5%E8%88%87%E7%99%BB%E5%87%BA/" title="[Day12] C# MVC 驗證與授權，登入與登出 - C#&amp;AspNetCore">[Day12] C# MVC 驗證與授權，登入與登出 - C#&amp;AspNetCore</a>
+
+<p>而這回主要探討的是Token-Based驗證，也就是API常用的JWT (Json Web Token)。</p>
+<h3 id="什麼是JWT"><a href="#什麼是JWT" class="headerlink" title="什麼是JWT"></a>什麼是JWT</h3><p>JSON Web Token (JWT) is a proposed Internet standard for creating data with optional signature and/or optional encryption whose payload holds JSON that asserts some number of claims. </p>
+<p>為JSON Web Token，是一個建議的網路標準，用來建立簽名，且在其中可以視需求加入自訂的JSON內容。</p>
+<p>簡言之，就是令牌(Token)，你可以拿這令牌去要資料。</p>
+<h3 id="JWT優點"><a href="#JWT優點" class="headerlink" title="JWT優點"></a>JWT優點</h3><p>跨域: 不受網域限制，可用來串接第三方應用，如 OAuth。<br>安全性: 不使用 Cookie 因此不會受到 CSRF 攻擊，不過 Token 並不能防護 XSS 攻擊，還是需要特別注意。<br>行動端: 可用於不支援 Cookie 的裝置上，且現在網站和 APP 串接普遍使用 Token 授權。</p>
+<h3 id="JWT格式"><a href="#JWT格式" class="headerlink" title="JWT格式"></a>JWT格式</h3><p>主要由三個部分組成:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">header.payload.signature</span><br></pre></td></tr></table></figure>
+
+
+<p><strong>Header</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;alg&quot;: &quot;HS256&quot;,</span><br><span class="line">  &quot;typ&quot;: &quot;JWT&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>alg:定義加密的方式產生signature，如上是HS256表示使用是HMAC-SHA256.<br>typ:Token類型</p>
+<p>常被使用的header如:typ、cty、alg、kid、x5c、x5u、crit<br>可自行添加參考:<a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/JSON_Web_Token">https://en.wikipedia.org/wiki/JSON_Web_Token</a></p>
+<p><strong>Payload</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;loggedInAs&quot;: &quot;admin&quot;,</span><br><span class="line">  &quot;iat&quot;: 1422779638</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>loggedInAs:這是客製化claim，以此來說是管理員。<br>iat:這是標準的claim，表示此JWT發布的時間。</p>
+<p>標準的claim如:iss、sub、aud、exp、nbf、iat、jti<br>可自行添加參考:<a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/JSON_Web_Token">https://en.wikipedia.org/wiki/JSON_Web_Token</a></p>
+<p>通常為了讓前端或後端好存取多加上一些識別值。</p>
+<p><strong>Signature</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">HMAC_SHA256(</span><br><span class="line">  secret,</span><br><span class="line">  base64urlEncoding(header) + &#x27;.&#x27; +</span><br><span class="line">  base64urlEncoding(payload)</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+<p>簽名，確保資料完整性的雜湊簽章。</p>
+<p>將以上三者用Base64url Encoding結果即為JWT</p>
+<p>生成:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">const token = base64urlEncoding(header) + &#x27;.&#x27; + base64urlEncoding(payload) + &#x27;.&#x27; + base64urlEncoding(signature)</span><br></pre></td></tr></table></figure>
+<p>結果:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJsb2dnZWRJbkFzIjoiYWRtaW4iLCJpYXQiOjE0MjI3Nzk2Mzh9.gzSraSYS8EXBxLN_oWnFSRgCzcmJmMjLiuyu5CSpyHI</span><br></pre></td></tr></table></figure>
+
+<h3 id="使用情境"><a href="#使用情境" class="headerlink" title="使用情境"></a>使用情境</h3><p>將此Token放置於API請求的Header中:<br>例如:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJsb2dnZWRJbkFzIjoiYWRtaW4iLCJpYXQiOjE0MjI3Nzk2Mzh9.gzSraSYS8EXBxLN_oWnFSRgCzcmJmMjLiuyu5CSpyHI</span><br></pre></td></tr></table></figure>
+<p>傳送給後端</p>
+<h3 id="JWT衍伸問題"><a href="#JWT衍伸問題" class="headerlink" title="JWT衍伸問題"></a>JWT衍伸問題</h3><p>Token的竊取問題，因為JWT發出去就不能銷毀，只能自己等待過期。<br>所以有了<code>Refresh Token</code>的出現。</p>
+<p>使用Refresh Token後:<br>縮短每個Token時間，過期時再重新索取。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;access_token&quot;:&quot;l0XG52TQx&quot;,    //Token</span><br><span class="line">  &quot;refresh_token&quot;:&quot;KWI3JOkFA&quot;,   //Refresh Token</span><br><span class="line">  &quot;expires_in&quot;:3600              //幾秒過期</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>當Token過期後，使用refresh_token呼叫一個API要取一個新Token。<br>refresh_token是存在自己資料庫內的，所以被盜用可以馬上刪除掉!</p>
+<p>在寫程式碼時可以在某API發現過期後立即呼叫更換。<br>或是用Token裡面帶入的payload去確認更換時機也可以，但可能會有時區問題。</p>
+<p>此外，如果用Refresh Token仍會有一些安全疑慮，就是發出的token還是要等到時間自己逾期。<br>(不如自己建表記Token還比較安全，所以在下面我寫了額外補充)</p>
+<h3 id="額外補充"><a href="#額外補充" class="headerlink" title="額外補充"></a>額外補充</h3><p>除了JWT外也有一些自訂的做法能用來驗證APP手機端。<br>如DB自建Token表，可能像是這樣:</p>
+<p>每次操作API都帶入Token，DB檢驗一次。<br>被盜用時想刪隨時能刪、能強制登出。</p>
+<p><strong>Tokens資料表</strong></p>
+<table>
+<tr>
+<th>UserID</th>
+<th>Token</th>
+<th>Expires_In</th>
+</tr>
+<tr>
+<td>1</td>
+<td>AJIASOIASssarJ</td>
+<td>2021-10-16</td>
+</tr>
+<tr>
+<td>2</td>
+<td>AASKOPASKOAPaS</td>
+<td>2021-10-17</td>
+</tr>
+<tr>
+<td>3</td>
+<td>AASK45as4daaS</td>
+<td>2021-10-14</td>
+</tr>
+</table>
+
+<p>流程大概像這樣:<br>API&gt;撈DB檢查&gt;大於時間，刪除Token&gt;回傳授權失敗</p>
+<p>雖然比較耗資料庫資源但我覺得是最安全的方式XD。<br>而且沒有發出要等到時間到才會逾期的問題</p>
+<h3 id="總結"><a href="#總結" class="headerlink" title="總結"></a>總結</h3><p>在這回中主要探討JWT是什麼、前置的知識理論。<br>發現了JWT的一些好處與壞處。</p>
+<p>因此如果有疑慮好像自己建立Token表還是最安全的XD</p>
+<p>而在下篇中將會實作JWT的機制。</p>
+<p><strong>參考資料</strong><br><a target="_blank" rel="noopener" href="https://ithelp.ithome.com.tw/articles/10199102">https://ithelp.ithome.com.tw/articles/10199102</a><br><a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/JSON_Web_Token">https://en.wikipedia.org/wiki/JSON_Web_Token</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://yuhsiang237.github.io/2021/10/27/C-MVC-API-Bearer-Token%E9%A9%97%E8%AD%89/" data-id="cme6kwo07000ngalja1kjdumx" data-title="[Day24] C# MVC API JWT Token驗證 (上) JWT基礎知識 - C#&amp;AspNetCore" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2021/10/28/Arduino-LED%E4%BA%AE%E7%87%88/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Arduino限流LED實驗
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2021/10/26/C-MVC-Web-API%E5%A2%9E%E5%8A%A0Swagger/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">[Day23] C# MVC Web API版本增加Swagger - C#&amp;AspNetCore</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Code/">Code</a><span class="category-list-count">76</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Code/C/">C#</a><span class="category-list-count">69</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Code/Javascript/">Javascript</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Code/Refactoring/">Refactoring</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Code/Typescript/">Typescript</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/">Computer Science</a><span class="category-list-count">5</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/Algorithm/">Algorithm</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/Data-structure/">Data structure</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/Electronic-Circuit/">Electronic Circuit</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Daily-Log/">Daily Log</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/">Database</a><span class="category-list-count">57</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Database/PostgreSQL/">PostgreSQL</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/SQL-Server/">SQL Server</a><span class="category-list-count">47</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/">Framework</a><span class="category-list-count">27</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/AspNetCore-API/">AspNetCore API</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/AspNetCore-MVC/">AspNetCore MVC</a><span class="category-list-count">21</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/">Topic</a><span class="category-list-count">76</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2021-C-AspNetCore-Challenge/">2021 C# AspNetCore Challenge</a><span class="category-list-count">30</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2021-SQL-Server-Challenge/">2021 SQL Server Challenge</a><span class="category-list-count">30</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2022-C-SyncAndAsync/">2022 C# SyncAndAsync</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2025-Typescript/">2025 Typescript</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/Big-Data/">Big Data</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/LeetCode/">LeetCode</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/SystemStructure/">SystemStructure</a><span class="category-list-count">1</span></li></ul></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/08/">August 2025</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/05/">May 2023</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/03/">March 2023</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/02/">February 2023</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/01/">January 2023</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/12/">December 2022</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/09/">September 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/07/">July 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/06/">June 2022</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/05/">May 2022</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/04/">April 2022</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/03/">March 2022</a><span class="archive-list-count">17</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/02/">February 2022</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/01/">January 2022</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">December 2021</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">October 2021</a><span class="archive-list-count">24</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">September 2021</a><span class="archive-list-count">46</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">August 2021</a><span class="archive-list-count">12</span></li></ul>
+    </div>
+  </div>
+
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2025 Yu Hsiang<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

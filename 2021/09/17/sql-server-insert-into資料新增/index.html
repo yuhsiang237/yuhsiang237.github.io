@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>[Day19] SQL server insert into 資料新增 - SQL Server資料庫入門 | UM&#39;s Coding Note</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="在前面已經把大量的常見查詢語法做過一次實踐了。接下來就是比較簡單的語法了，這回講的是insert into用來在表中插入資料。 INSERT INTO語法: 12INSERT INTO table_name (column1, column2, column3, ...)VALUES (value1, value2, value3, ...);   測試資料還是一樣，先放上資料表: custome">
+<meta property="og:type" content="article">
+<meta property="og:title" content="[Day19] SQL server insert into 資料新增 - SQL Server資料庫入門">
+<meta property="og:url" content="https://yuhsiang237.github.io/2021/09/17/sql-server-insert-into%E8%B3%87%E6%96%99%E6%96%B0%E5%A2%9E/index.html">
+<meta property="og:site_name" content="UM&#39;s Coding Note">
+<meta property="og:description" content="在前面已經把大量的常見查詢語法做過一次實踐了。接下來就是比較簡單的語法了，這回講的是insert into用來在表中插入資料。 INSERT INTO語法: 12INSERT INTO table_name (column1, column2, column3, ...)VALUES (value1, value2, value3, ...);   測試資料還是一樣，先放上資料表: custome">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://yuhsiang237.github.io/2021/09/17/sql-server-insert-into%E8%B3%87%E6%96%99%E6%96%B0%E5%A2%9E/%E9%A1%A7%E5%AE%A2.png">
+<meta property="og:image" content="https://yuhsiang237.github.io/2021/09/17/sql-server-insert-into%E8%B3%87%E6%96%99%E6%96%B0%E5%A2%9E/%E7%94%A2%E5%93%81.png">
+<meta property="og:image" content="https://yuhsiang237.github.io/2021/09/17/sql-server-insert-into%E8%B3%87%E6%96%99%E6%96%B0%E5%A2%9E/%E8%A8%82%E5%96%AE.png">
+<meta property="og:image" content="https://yuhsiang237.github.io/2021/09/17/sql-server-insert-into%E8%B3%87%E6%96%99%E6%96%B0%E5%A2%9E/%E6%98%8E%E7%B4%B0.png">
+<meta property="og:image" content="https://yuhsiang237.github.io/2021/09/17/sql-server-insert-into%E8%B3%87%E6%96%99%E6%96%B0%E5%A2%9E/1.png">
+<meta property="og:image" content="https://yuhsiang237.github.io/2021/09/17/sql-server-insert-into%E8%B3%87%E6%96%99%E6%96%B0%E5%A2%9E/2.png">
+<meta property="article:published_time" content="2021-09-17T00:38:56.000Z">
+<meta property="article:modified_time" content="2025-08-11T03:49:08.801Z">
+<meta property="article:author" content="Yu Hsiang">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://yuhsiang237.github.io/2021/09/17/sql-server-insert-into%E8%B3%87%E6%96%99%E6%96%B0%E5%A2%9E/%E9%A1%A7%E5%AE%A2.png">
+  
+    <link rel="alternate" href="/atom.xml" title="UM's Coding Note" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">UM&#39;s Coding Note</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">I record my coding experience at this place🤙</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://yuhsiang237.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-sql-server-insert-into資料新增" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2021/09/17/sql-server-insert-into%E8%B3%87%E6%96%99%E6%96%B0%E5%A2%9E/" class="article-date">
+  <time class="dt-published" datetime="2021-09-17T00:38:56.000Z" itemprop="datePublished">2021-09-17</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Database/">Database</a>►<a class="article-category-link" href="/categories/Database/SQL-Server/">SQL Server</a>►<a class="article-category-link" href="/categories/Topic/">Topic</a>►<a class="article-category-link" href="/categories/Topic/2021-SQL-Server-Challenge/">2021 SQL Server Challenge</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      [Day19] SQL server insert into 資料新增 - SQL Server資料庫入門
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>在前面已經把大量的常見查詢語法做過一次實踐了。<br>接下來就是比較簡單的語法了，這回講的是insert into用來在表中插入資料。</p>
+<h3 id="INSERT-INTO"><a href="#INSERT-INTO" class="headerlink" title="INSERT INTO"></a>INSERT INTO</h3><p>語法:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">INSERT INTO table_name (column1, column2, column3, ...)</span><br><span class="line">VALUES (value1, value2, value3, ...); </span><br></pre></td></tr></table></figure>
+
+<h3 id="測試資料"><a href="#測試資料" class="headerlink" title="測試資料"></a>測試資料</h3><p>還是一樣，先放上資料表:</p>
+<p><strong>customers 顧客</strong></p>
+<img src="/2021/09/17/sql-server-insert-into%E8%B3%87%E6%96%99%E6%96%B0%E5%A2%9E/%E9%A1%A7%E5%AE%A2.png" class="">
+<p><strong>products 產品</strong></p>
+<img src="/2021/09/17/sql-server-insert-into%E8%B3%87%E6%96%99%E6%96%B0%E5%A2%9E/%E7%94%A2%E5%93%81.png" class="">
+<p><strong>orders 出貨單</strong></p>
+<img src="/2021/09/17/sql-server-insert-into%E8%B3%87%E6%96%99%E6%96%B0%E5%A2%9E/%E8%A8%82%E5%96%AE.png" class="">
+<p><strong>order_details 出貨單明細</strong></p>
+<img src="/2021/09/17/sql-server-insert-into%E8%B3%87%E6%96%99%E6%96%B0%E5%A2%9E/%E6%98%8E%E7%B4%B0.png" class="">
+
+
+<p>實作:想要新增一筆客戶資料。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">insert into customers (number,name,tel) values(&#x27;U003&#x27;,&#x27;Tom&#x27;,&#x27;09-15965423&#x27;)</span><br></pre></td></tr></table></figure>
+<p>結果:</p>
+<img src="/2021/09/17/sql-server-insert-into%E8%B3%87%E6%96%99%E6%96%B0%E5%A2%9E/1.png" class="">
+
+<h3 id="透過子查詢新增資料"><a href="#透過子查詢新增資料" class="headerlink" title="透過子查詢新增資料"></a>透過子查詢新增資料</h3><p>算是另一種少見的做法，就是數值的部分是使用查詢來的數值。<br>雖然很少用，但就稍微嘗試一下這種寫法:</p>
+<p>實作:我想把products的number、name、price添加到customers將他們視為number、name、tel。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">insert into customers (number,name,tel) </span><br><span class="line">select number,name,price from products </span><br></pre></td></tr></table></figure>
+<p>結果:<br>就把products的資料加到customers了。(為了示範需求，因為真的超怪。</p>
+<img src="/2021/09/17/sql-server-insert-into%E8%B3%87%E6%96%99%E6%96%B0%E5%A2%9E/2.png" class="">
+
+<h3 id="總結"><a href="#總結" class="headerlink" title="總結"></a>總結</h3><p>簡易的操作了資料插入的語法。<br>下回就是更新update。</p>
+<p><strong>參考資料</strong><br><a target="_blank" rel="noopener" href="https://ithelp.ithome.com.tw/articles/10220002">https://ithelp.ithome.com.tw/articles/10220002</a><br><a target="_blank" rel="noopener" href="https://www.w3schools.com/sql/sql_insert.asp">https://www.w3schools.com/sql/sql_insert.asp</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://yuhsiang237.github.io/2021/09/17/sql-server-insert-into%E8%B3%87%E6%96%99%E6%96%B0%E5%A2%9E/" data-id="cme6kwo350062galjfygkh9aq" data-title="[Day19] SQL server insert into 資料新增 - SQL Server資料庫入門" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2021/09/17/sql-server-update%E8%B3%87%E6%96%99%E6%9B%B4%E6%96%B0/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          [Day20] SQL server update 資料更新 - SQL Server資料庫入門
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2021/09/16/sql-server-any%E8%88%87all%E7%94%A8%E6%B3%95/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">[Day18] SQL server ANY與ALL用法 - SQL Server資料庫入門</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Code/">Code</a><span class="category-list-count">76</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Code/C/">C#</a><span class="category-list-count">69</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Code/Javascript/">Javascript</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Code/Refactoring/">Refactoring</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Code/Typescript/">Typescript</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/">Computer Science</a><span class="category-list-count">5</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/Algorithm/">Algorithm</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/Data-structure/">Data structure</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/Electronic-Circuit/">Electronic Circuit</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Daily-Log/">Daily Log</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/">Database</a><span class="category-list-count">57</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Database/PostgreSQL/">PostgreSQL</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/SQL-Server/">SQL Server</a><span class="category-list-count">47</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/">Framework</a><span class="category-list-count">27</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/AspNetCore-API/">AspNetCore API</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/AspNetCore-MVC/">AspNetCore MVC</a><span class="category-list-count">21</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/">Topic</a><span class="category-list-count">76</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2021-C-AspNetCore-Challenge/">2021 C# AspNetCore Challenge</a><span class="category-list-count">30</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2021-SQL-Server-Challenge/">2021 SQL Server Challenge</a><span class="category-list-count">30</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2022-C-SyncAndAsync/">2022 C# SyncAndAsync</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2025-Typescript/">2025 Typescript</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/Big-Data/">Big Data</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/LeetCode/">LeetCode</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/SystemStructure/">SystemStructure</a><span class="category-list-count">1</span></li></ul></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/08/">August 2025</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/05/">May 2023</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/03/">March 2023</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/02/">February 2023</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/01/">January 2023</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/12/">December 2022</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/09/">September 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/07/">July 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/06/">June 2022</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/05/">May 2022</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/04/">April 2022</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/03/">March 2022</a><span class="archive-list-count">17</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/02/">February 2022</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/01/">January 2022</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">December 2021</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">October 2021</a><span class="archive-list-count">24</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">September 2021</a><span class="archive-list-count">46</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">August 2021</a><span class="archive-list-count">12</span></li></ul>
+    </div>
+  </div>
+
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2025 Yu Hsiang<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

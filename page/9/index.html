@@ -1,0 +1,941 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>UM&#39;s Coding Note</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="I record my coding experience at this place">
+<meta property="og:type" content="website">
+<meta property="og:title" content="UM&#39;s Coding Note">
+<meta property="og:url" content="https://yuhsiang237.github.io/page/9/index.html">
+<meta property="og:site_name" content="UM&#39;s Coding Note">
+<meta property="og:description" content="I record my coding experience at this place">
+<meta property="og:locale" content="en_US">
+<meta property="article:author" content="Yu Hsiang">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="UM's Coding Note" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">UM&#39;s Coding Note</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">I record my coding experience at this place🤙</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://yuhsiang237.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main">
+  
+    <article id="post-C-MVC-Dapper用法" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2021/10/12/C-MVC-Dapper%E7%94%A8%E6%B3%95/" class="article-date">
+  <time class="dt-published" datetime="2021-10-12T03:44:45.000Z" itemprop="datePublished">2021-10-12</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Code/">Code</a>►<a class="article-category-link" href="/categories/Code/C/">C#</a>►<a class="article-category-link" href="/categories/Framework/">Framework</a>►<a class="article-category-link" href="/categories/Framework/AspNetCore-MVC/">AspNetCore MVC</a>►<a class="article-category-link" href="/categories/Topic/">Topic</a>►<a class="article-category-link" href="/categories/Topic/2021-C-AspNetCore-Challenge/">2021 C# AspNetCore Challenge</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2021/10/12/C-MVC-Dapper%E7%94%A8%E6%B3%95/">[Day16] C# MVC Dapper用法與連結資料庫 - C#&amp;AspNetCore</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>在上回 <a href="/2021/10/11/C-MVC-LINQ-%E5%B8%B8%E8%A6%8B%E7%94%A8%E6%B3%95/" title="[Day15] C# MVC LINQ常見用法 - C#&amp;AspNetCore">[Day15] C# MVC LINQ常見用法 - C#&amp;AspNetCore</a>  ，我們介紹了LINQ常見用法。</p>
+<p>發現LINQ在組合複雜的查詢比較困難，為了解決這困難通常會用原生寫法替代。<br>因此，這回我們用另一種方式連結資料庫，Dapper。</p>
+<p>此外，如果是用Entity Framework core可以參考之前寫的這篇喔:<a href="/2021/10/02/C-MVC-Model%E8%88%87%E8%B3%87%E6%96%99%E5%BA%AB%E9%80%A3%E7%B5%90/" title="[Day7] C# MVC Model模型連結資料庫 - C#&amp;AspNetCore">[Day7] C# MVC Model模型連結資料庫 - C#&amp;AspNetCore</a></p>
+<h3 id="Dapper"><a href="#Dapper" class="headerlink" title="Dapper"></a>Dapper</h3><p>Dapper是適用於Microsoft .NET平台的對象關係映射產品：它提供了將面向對象的域模型映射到傳統關係數據庫的框架。其目的是將開發人員從大部分與關係數據持久性相關的編程任務中解放出來。</p>
+<h3 id="安裝"><a href="#安裝" class="headerlink" title="安裝"></a>安裝</h3><p>1.用Nutget</p>
+<img src="/2021/10/12/C-MVC-Dapper%E7%94%A8%E6%B3%95/1.png" class="">
+<p>2.搜尋Dapper安裝</p>
+<img src="/2021/10/12/C-MVC-Dapper%E7%94%A8%E6%B3%95/2.png" class="">
+
+<h3 id="實作"><a href="#實作" class="headerlink" title="實作"></a>實作</h3><p>先列出異動的檔案目錄，黃色為我們會改的檔案:</p>
+<img src="/2021/10/12/C-MVC-Dapper%E7%94%A8%E6%B3%95/3.png" class="">
+
+<p>1.首先就是要建立Dapper連結資料庫的類別</p>
+<p><strong>~/Dapper/DataControl.cs</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line">using Dapper;</span><br><span class="line">using System;</span><br><span class="line">using System.Collections.Generic;</span><br><span class="line">using System.Data;</span><br><span class="line">using System.Data.SqlClient;</span><br><span class="line">using System.Linq;</span><br><span class="line">using System.Threading.Tasks;</span><br><span class="line"></span><br><span class="line">namespace DapperExample.Dapper</span><br><span class="line">&#123;</span><br><span class="line">    public class DataControl : IDisposable</span><br><span class="line">    &#123;</span><br><span class="line">        private IDbConnection db = null;</span><br><span class="line">        private string _connectStr;</span><br><span class="line"></span><br><span class="line">        //建構子初始化連線字串/DB連接</span><br><span class="line">        public DataControl()</span><br><span class="line">        &#123;</span><br><span class="line">            // 自行替換資料庫連結字串</span><br><span class="line">            string connectionStr = @&quot;Server=.\SQLExpress;Database=Orders;Trusted_Connection=True;ConnectRetryCount=0&quot;;</span><br><span class="line">            _connectStr = connectionStr;</span><br><span class="line">            db = new SqlConnection(_connectStr);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        //共用查詢方法</span><br><span class="line">        public IEnumerable&lt;T&gt; Query&lt;T&gt;(string sql, object param)</span><br><span class="line">        &#123;</span><br><span class="line">            return db.Query&lt;T&gt;(sql, param).ToList();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        //共用新增刪除修改方法</span><br><span class="line">        public int Execute(string sql, object param)</span><br><span class="line">        &#123;</span><br><span class="line">            return db.Execute(sql, param);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        //釋放連接</span><br><span class="line">        public void Dispose()</span><br><span class="line">        &#123;</span><br><span class="line">            db.Dispose();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>說明:<br>唯一要改的在20行要套入自己的資料庫連結字串。</p>
+<p>2.再來建立對應的資料表Model</p>
+<p><strong>~/Models/Customer.cs</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">using System.ComponentModel.DataAnnotations;</span><br><span class="line">namespace DapperExample.Models</span><br><span class="line">&#123;</span><br><span class="line">    public class Customer</span><br><span class="line">    &#123;</span><br><span class="line">        [Display(Name = &quot;編號&quot;)]</span><br><span class="line">        public string Number &#123; get; set; &#125;</span><br><span class="line">       </span><br><span class="line">        [Display(Name = &quot;名子&quot;)]</span><br><span class="line">        [Required(ErrorMessage = &quot;名字不可為空&quot;)]</span><br><span class="line">        public string Name &#123; get; set; &#125;</span><br><span class="line">       </span><br><span class="line">        [Display(Name = &quot;電話&quot;)]</span><br><span class="line">        public string Tel &#123; get; set; &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>說明:依照資料表去訂定自己的Model。</p>
+<p>3.在Controller使用</p>
+<p><strong>~/Controllers/HomeController.cs</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line">using DapperExample.Dapper;</span><br><span class="line">using DapperExample.Models;</span><br><span class="line">using Microsoft.AspNetCore.Mvc;</span><br><span class="line">using Microsoft.Extensions.Logging;</span><br><span class="line">using System;</span><br><span class="line">using System.Collections.Generic;</span><br><span class="line">using System.Diagnostics;</span><br><span class="line">using System.Linq;</span><br><span class="line">using System.Threading.Tasks;</span><br><span class="line"></span><br><span class="line">namespace DapperExample.Controllers</span><br><span class="line">&#123;</span><br><span class="line">    public class HomeController : Controller</span><br><span class="line">    &#123;</span><br><span class="line">        private readonly ILogger&lt;HomeController&gt; _logger;</span><br><span class="line"></span><br><span class="line">        public HomeController(ILogger&lt;HomeController&gt; logger)</span><br><span class="line">        &#123;</span><br><span class="line">            _logger = logger;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        public IActionResult Index()</span><br><span class="line">        &#123;</span><br><span class="line">            Customer customer;</span><br><span class="line">            // 使用using，區塊結束後會自動執行Dispose</span><br><span class="line">            using (DataControl dc = new DataControl())</span><br><span class="line">            &#123;</span><br><span class="line">                string number = &quot;U001&quot;;</span><br><span class="line">                string sql = @&quot;SELECT * FROM Customers WHERE number = @number&quot;;</span><br><span class="line">                var result = dc.Query&lt;Customer&gt;(sql, new &#123; number &#125;);//執行DataControl的Query方法</span><br><span class="line">                customer = result.First();</span><br><span class="line">            &#125;</span><br><span class="line">            return View(customer);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        public IActionResult Privacy()</span><br><span class="line">        &#123;</span><br><span class="line">            return View();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]</span><br><span class="line">        public IActionResult Error()</span><br><span class="line">        &#123;</span><br><span class="line">            return View(new ErrorViewModel &#123; RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier &#125;);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>說明:<br>在26~32行使用using是Dapper的作用區域，離開後Dapper會自己Dispose。<br>注意:只有用using才會自動Dispose<br>我們把資料查出來後抓第一筆，設定到Customer Model，並傳給View。</p>
+<p>4.呈現在畫面上<br>~/Views/Home/Index.cshtml</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">@model DapperExample.Models.Customer;</span><br><span class="line">@&#123;</span><br><span class="line">    ViewData[&quot;Title&quot;] = &quot;Home Page&quot;;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">&lt;div class=&quot;text-center&quot;&gt;</span><br><span class="line">    &lt;h1 class=&quot;display-4&quot;&gt;Welcome&lt;/h1&gt;</span><br><span class="line">    &lt;p&gt;Learn about &lt;a href=&quot;https://docs.microsoft.com/aspnet/core&quot;&gt;building Web apps with ASP.NET Core&lt;/a&gt;.&lt;/p&gt;</span><br><span class="line">&lt;/div&gt;</span><br><span class="line">&lt;ul&gt;</span><br><span class="line">    &lt;li&gt;@Model.Number&lt;/li&gt;</span><br><span class="line">    &lt;li&gt;@Model.Name&lt;/li&gt;</span><br><span class="line">    &lt;li&gt;@Model.Tel&lt;/li&gt;</span><br><span class="line">&lt;/ul&gt;</span><br></pre></td></tr></table></figure>
+<p>5.完成，網頁上結果如下:</p>
+<img src="/2021/10/12/C-MVC-Dapper%E7%94%A8%E6%B3%95/4.png" class="">
+<p>資料庫資料:</p>
+<img src="/2021/10/12/C-MVC-Dapper%E7%94%A8%E6%B3%95/5.png" class="">
+
+
+<h3 id="結論"><a href="#結論" class="headerlink" title="結論"></a>結論</h3><p>Dapper配置非常簡單!整體安裝到撰寫連線不用15分鐘。<br>更多的文件可以參考:<a target="_blank" rel="noopener" href="https://dapper-tutorial.net/dapper">https://dapper-tutorial.net/dapper</a><br>主要在複雜查詢、提升效能可以用，而普通的新/刪/修/查還是用Entity Framework core強型別會好一些。</p>
+<p>如果是用Entity Framework core可以參考之前寫的這篇:<a href="/2021/10/02/C-MVC-Model%E8%88%87%E8%B3%87%E6%96%99%E5%BA%AB%E9%80%A3%E7%B5%90/" title="[Day7] C# MVC Model模型連結資料庫 - C#&amp;AspNetCore">[Day7] C# MVC Model模型連結資料庫 - C#&amp;AspNetCore</a></p>
+<p><strong>參考資料</strong><br><a target="_blank" rel="noopener" href="https://blog.darkthread.net/blog/dapper/">https://blog.darkthread.net/blog/dapper/</a><br><a target="_blank" rel="noopener" href="https://ithelp.ithome.com.tw/articles/10240341">https://ithelp.ithome.com.tw/articles/10240341</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://yuhsiang237.github.io/2021/10/12/C-MVC-Dapper%E7%94%A8%E6%B3%95/" data-id="cme6kwo0b000ugalj1cz993kp" data-title="[Day16] C# MVC Dapper用法與連結資料庫 - C#&amp;AspNetCore" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-C-MVC-LINQ-常見用法" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2021/10/11/C-MVC-LINQ-%E5%B8%B8%E8%A6%8B%E7%94%A8%E6%B3%95/" class="article-date">
+  <time class="dt-published" datetime="2021-10-11T02:17:57.000Z" itemprop="datePublished">2021-10-11</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Code/">Code</a>►<a class="article-category-link" href="/categories/Code/C/">C#</a>►<a class="article-category-link" href="/categories/Framework/">Framework</a>►<a class="article-category-link" href="/categories/Framework/AspNetCore-MVC/">AspNetCore MVC</a>►<a class="article-category-link" href="/categories/Topic/">Topic</a>►<a class="article-category-link" href="/categories/Topic/2021-C-AspNetCore-Challenge/">2021 C# AspNetCore Challenge</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2021/10/11/C-MVC-LINQ-%E5%B8%B8%E8%A6%8B%E7%94%A8%E6%B3%95/">[Day15] C# MVC LINQ常見用法 - C#&amp;AspNetCore</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>在上回 <a href="/2021/10/10/C-MVC-LINQ%E5%9F%BA%E7%A4%8E%E7%94%A8%E6%B3%95/" title="[Day14] C# MVC LINQ基礎用法 - C#&amp;AspNetCore">[Day14] C# MVC LINQ基礎用法 - C#&amp;AspNetCore</a>  ，我們介紹了LINQ基本用法。</p>
+<p>而這回就要介紹LINQ常用的幾個JOIN、LEFT JOIN作法。</p>
+<h3 id="實作"><a href="#實作" class="headerlink" title="實作"></a>實作</h3><p>先附上測試資料:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">//　產品</span><br><span class="line">Product[] products = new Product[] &#123;</span><br><span class="line">  new Product &#123; Id = 1 ,Name = &quot;PS4&quot;,Price =11000   &#125; ,</span><br><span class="line">  new Product &#123; Id = 2 ,Name = &quot;PS5&quot;,Price =15000   &#125;,</span><br><span class="line">  new Product &#123; Id = 3 ,Name = &quot;Switch&quot;,Price=9900 &#125;,</span><br><span class="line">  new Product&#123; Id= 4 ,Name=&quot;XBOX Series X&quot;,Price=15000   &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">//　分類</span><br><span class="line">ProductType[] productTypes = new ProductType[] &#123;</span><br><span class="line">  new ProductType &#123;Id = 1 ,Name = &quot;Game&quot;&#125; ,</span><br><span class="line">  new ProductType &#123; Id = 2 ,Name = &quot;nintendo&quot; &#125; ,</span><br><span class="line">  new ProductType &#123; Id =3 ,Name = &quot;Sony&quot; &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">//　產品與分類關系表</span><br><span class="line">Product_ProductTypeRelationship[] product_ProductTypeRelationships = new Product_ProductTypeRelationship[] &#123;</span><br><span class="line">  new Product_ProductTypeRelationship &#123;</span><br><span class="line">      ProductID = 1 ,ProductTypeID = 1</span><br><span class="line">  &#125; ,</span><br><span class="line">  new Product_ProductTypeRelationship &#123;</span><br><span class="line">      ProductID = 1 ,ProductTypeID = 3</span><br><span class="line">  &#125; ,</span><br><span class="line">  new Product_ProductTypeRelationship &#123;</span><br><span class="line">      ProductID = 2 ,ProductTypeID = 1</span><br><span class="line">  &#125; ,</span><br><span class="line">  new Product_ProductTypeRelationship &#123;</span><br><span class="line">      ProductID = 2 ,ProductTypeID = 3</span><br><span class="line">  &#125;,</span><br><span class="line">  new Product_ProductTypeRelationship &#123;</span><br><span class="line">      ProductID = 3 ,ProductTypeID = 1</span><br><span class="line">  &#125; ,</span><br><span class="line">  new Product_ProductTypeRelationship &#123;</span><br><span class="line">      ProductID = 3 ,ProductTypeID = 2</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<h4 id="1-LINQ實作INNER-JOIN"><a href="#1-LINQ實作INNER-JOIN" class="headerlink" title="1.LINQ實作INNER JOIN"></a>1.LINQ實作INNER JOIN</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">public void linqInnerJoinExample()</span><br><span class="line">&#123;</span><br><span class="line">    var query =</span><br><span class="line">        from product in products</span><br><span class="line">        join product_ProductTypeRelationship in product_ProductTypeRelationships on product.Id equals product_ProductTypeRelationship.ProductID</span><br><span class="line">        join productType in productTypes on product_ProductTypeRelationship.ProductTypeID equals productType.Id</span><br><span class="line">        select new</span><br><span class="line">        &#123;</span><br><span class="line">            product.Id,</span><br><span class="line">            product.Name,</span><br><span class="line">            product.Price,</span><br><span class="line">            productTypeName = productType.Name</span><br><span class="line">        &#125;;</span><br><span class="line">    var result = query.ToList();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>結果:</p>
+<img src="/2021/10/11/C-MVC-LINQ-%E5%B8%B8%E8%A6%8B%E7%94%A8%E6%B3%95/1.png" class="">
+<p>說明:因為是InnerJoin，都要有重疊才會關聯出，而XBOX Series X的Id沒有在product_ProductTypeRelationships裡面，所以最後沒有被顯示出來。<br>基本上跟原生SQL的寫法挺像的。</p>
+<h4 id="2-LINQ實作LEFT-JOIN"><a href="#2-LINQ實作LEFT-JOIN" class="headerlink" title="2.LINQ實作LEFT JOIN"></a>2.LINQ實作LEFT JOIN</h4><p>寫法1:拆兩個Query</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">public void linqLeftJoinExample()</span><br><span class="line">&#123;</span><br><span class="line">    // product 跟 product_ProductTypeRelationship 先left join </span><br><span class="line">    var query1 =</span><br><span class="line">        from product in products</span><br><span class="line">        join product_ProductTypeRelationship in product_ProductTypeRelationships on product.Id equals product_ProductTypeRelationship.ProductID</span><br><span class="line">        into tmp</span><br><span class="line">        from product_ProductTypeRelationship in tmp.DefaultIfEmpty()</span><br><span class="line">        select new</span><br><span class="line">        &#123;</span><br><span class="line">            product.Id,</span><br><span class="line">            product.Name,</span><br><span class="line">            product.Price,</span><br><span class="line">            ProductTypeID = product_ProductTypeRelationship?.ProductTypeID</span><br><span class="line">        &#125;;</span><br><span class="line"></span><br><span class="line">    // query1結果再跟 productTypes left join </span><br><span class="line">    var query2 =</span><br><span class="line">        from q in query1</span><br><span class="line">        join productType in productTypes on q.ProductTypeID equals productType.Id</span><br><span class="line">        into tmp</span><br><span class="line">        from product_ProductTypeRelationship in tmp.DefaultIfEmpty()</span><br><span class="line">        select new</span><br><span class="line">        &#123;</span><br><span class="line">            q.Id,</span><br><span class="line">            q.Name,</span><br><span class="line">            q.Price,</span><br><span class="line">            ProductName = product_ProductTypeRelationship?.Name</span><br><span class="line">        &#125;;</span><br><span class="line">    var result = query2.ToList();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>結果:</p>
+<img src="/2021/10/11/C-MVC-LINQ-%E5%B8%B8%E8%A6%8B%E7%94%A8%E6%B3%95/2.png" class="">
+<p>說明:可以得到XBOX Series X了。<br>因為LINQ沒有LEFT JOIN這種簡單作法，只能靠DefaultIfEmpty來操作，作法比較複雜、難直覺判斷。<br>((ps.不是要用來讓大家好用的查詢嗎?搞複雜了</p>
+<p>作法2:組多個DefaultIfEmpty</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">public void linqLeftJoinExample2()</span><br><span class="line">&#123;</span><br><span class="line">    var query =</span><br><span class="line">        from a in products</span><br><span class="line">        join b in product_ProductTypeRelationships on a.Id equals b.ProductID</span><br><span class="line">        into result1</span><br><span class="line">        from ab in result1.DefaultIfEmpty()</span><br><span class="line">        join c in productTypes on ab?.ProductTypeID equals c.Id</span><br><span class="line">        into result2</span><br><span class="line">        from abc in result2.DefaultIfEmpty()</span><br><span class="line">        select new&#123;</span><br><span class="line">            a.Id,</span><br><span class="line">            a.Name,</span><br><span class="line">            a.Price,</span><br><span class="line">            ProductName = abc?.Name</span><br><span class="line">        &#125; ;</span><br><span class="line">    var result = query.ToList();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>結果:</p>
+<img src="/2021/10/11/C-MVC-LINQ-%E5%B8%B8%E8%A6%8B%E7%94%A8%E6%B3%95/3.png" class="">
+<p>說明:可以得到XBOX Series X了。<br>這種多個DefaultIfEmpty組法感覺蠻難讀的。<br>要獨立出一個值，導致得用a、b、c來組不然難知道誰是誰，就很難閱讀<br>且要小心有些值讀出來是空的要使用「?.」的做法，把empty的值設定為null才有辦法繼續下去，否則會執行到中間就報錯了。</p>
+<p>以此，就是ab?.ProductTypeID，因為ab做完DefaultIfEmpty時可能ProductTypeID是為empty的，要用這ProductTypeID再去做下個join可能會出錯。</p>
+<h4 id="3-組成階層方式"><a href="#3-組成階層方式" class="headerlink" title="3.組成階層方式"></a>3.組成階層方式</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">public void linqLeftJoinExample3()</span><br><span class="line">&#123;</span><br><span class="line"></span><br><span class="line">    var p = (from a in products</span><br><span class="line">                select new ProductViewModel</span><br><span class="line">                &#123;</span><br><span class="line">                    Id = a.Id,</span><br><span class="line">                    Name = a.Name,</span><br><span class="line">                    Price = a.Price,</span><br><span class="line">                &#125;).ToList();</span><br><span class="line"></span><br><span class="line">    foreach (var item in p)</span><br><span class="line">    &#123;</span><br><span class="line">        var productTypeIDs = from a in product_ProductTypeRelationships</span><br><span class="line">                                where a.ProductID == item.Id</span><br><span class="line">                                select a.ProductTypeID;</span><br><span class="line"></span><br><span class="line">        var productTypeData = from a in productTypeIDs</span><br><span class="line">                                join b in productTypes on a equals b.Id</span><br><span class="line">                                select new ProductType</span><br><span class="line">                                &#123;</span><br><span class="line">                                    Id = b.Id,</span><br><span class="line">                                    Name = b.Name</span><br><span class="line">                                &#125;;</span><br><span class="line">        item.ProductTypes = new List&lt;ProductType&gt;();</span><br><span class="line">        foreach (var x in productTypeData)</span><br><span class="line">        &#123;</span><br><span class="line">            item.ProductTypes.Add(x);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    var result = p;</span><br><span class="line">    string jsonData = JsonConvert.SerializeObject(result);</span><br><span class="line">    System.Diagnostics.Debug.WriteLine(jsonData);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>結果:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line">[</span><br><span class="line">  &#123;</span><br><span class="line">    &quot;Id&quot;: 1,</span><br><span class="line">    &quot;Name&quot;: &quot;PS4&quot;,</span><br><span class="line">    &quot;Price&quot;: 11000,</span><br><span class="line">    &quot;ProductTypes&quot;: [</span><br><span class="line">      &#123;</span><br><span class="line">        &quot;Id&quot;: 1,</span><br><span class="line">        &quot;Name&quot;: &quot;Game&quot;</span><br><span class="line">      &#125;,</span><br><span class="line">      &#123;</span><br><span class="line">        &quot;Id&quot;: 3,</span><br><span class="line">        &quot;Name&quot;: &quot;Sony&quot;</span><br><span class="line">      &#125;</span><br><span class="line">    ]</span><br><span class="line">  &#125;,</span><br><span class="line">  &#123;</span><br><span class="line">    &quot;Id&quot;: 2,</span><br><span class="line">    &quot;Name&quot;: &quot;PS5&quot;,</span><br><span class="line">    &quot;Price&quot;: 15000,</span><br><span class="line">    &quot;ProductTypes&quot;: [</span><br><span class="line">      &#123;</span><br><span class="line">        &quot;Id&quot;: 1,</span><br><span class="line">        &quot;Name&quot;: &quot;Game&quot;</span><br><span class="line">      &#125;,</span><br><span class="line">      &#123;</span><br><span class="line">        &quot;Id&quot;: 3,</span><br><span class="line">        &quot;Name&quot;: &quot;Sony&quot;</span><br><span class="line">      &#125;</span><br><span class="line">    ]</span><br><span class="line">  &#125;,</span><br><span class="line">  &#123;</span><br><span class="line">    &quot;Id&quot;: 3,</span><br><span class="line">    &quot;Name&quot;: &quot;Switch&quot;,</span><br><span class="line">    &quot;Price&quot;: 9900,</span><br><span class="line">    &quot;ProductTypes&quot;: [</span><br><span class="line">      &#123;</span><br><span class="line">        &quot;Id&quot;: 1,</span><br><span class="line">        &quot;Name&quot;: &quot;Game&quot;</span><br><span class="line">      &#125;,</span><br><span class="line">      &#123;</span><br><span class="line">        &quot;Id&quot;: 2,</span><br><span class="line">        &quot;Name&quot;: &quot;nintendo&quot;</span><br><span class="line">      &#125;</span><br><span class="line">    ]</span><br><span class="line">  &#125;,</span><br><span class="line">  &#123;</span><br><span class="line">    &quot;Id&quot;: 4,</span><br><span class="line">    &quot;Name&quot;: &quot;XBOX Series X&quot;,</span><br><span class="line">    &quot;Price&quot;: 15000,</span><br><span class="line">    &quot;ProductTypes&quot;: []</span><br><span class="line">  &#125;</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+<p>說明:用foreach搭配LINQ用組的方式去做出階層資料，並且新增ProductViewModel做最後的資料規格呈現。<br>這種複雜度O(n^2)不是很好，未來想到好的方式再更改。<br>且要注意第10行要先ToList()，執行LINQ，否則下面的foreach會造成每次初始化。<br>如果以前端要資料來講，這樣是最好格式，可以不用手動組。<br>此外，這是多對多的資料關聯，是最複雜的情況。</p>
+<h3 id="總結"><a href="#總結" class="headerlink" title="總結"></a>總結</h3><p>介紹了資料常見的處理JOIN、LEFT JOIN。<br>覺得要處理複雜查詢用LINQ真的不太適合…，因為太難閱讀XD?。<br>LINQ有他強型別、Intellisense的好處，但想到有些情況要LEFT JOIN 5張時應該會蠻崩潰的。<br>可能就得組簡單的LINQ再搭配迴圈分步驟做，效能會差一點。</p>
+<p>總之，在複雜的查詢我會用「原生作法搭配Dapper」或是「簡單的LINQ搭程式用迴圈做」。</p>
+<p>更多LINQ用法可以查看:<br><a target="_blank" rel="noopener" href="https://docs.microsoft.com/zh-tw/dotnet/csharp/linq/">https://docs.microsoft.com/zh-tw/dotnet/csharp/linq/</a></p>
+<p><strong>參考資料</strong><br><a target="_blank" rel="noopener" href="https://dotblogs.com.tw/yc421206/2014/07/11/145907">https://dotblogs.com.tw/yc421206/2014/07/11/145907</a><br><a target="_blank" rel="noopener" href="https://ad57475747.medium.com/linq%E5%AD%B8%E7%BF%92%E7%AD%86%E8%A8%98-6-join-%E5%A4%9A%E8%A1%A8%E5%96%AE%E5%A4%9A%E6%A2%9D%E4%BB%B6%E5%BC%8F-4076c487264f">https://ad57475747.medium.com/linq%E5%AD%B8%E7%BF%92%E7%AD%86%E8%A8%98-6-join-%E5%A4%9A%E8%A1%A8%E5%96%AE%E5%A4%9A%E6%A2%9D%E4%BB%B6%E5%BC%8F-4076c487264f</a><br><a target="_blank" rel="noopener" href="http://vito-note.blogspot.com/2013/04/linq-3-join.html">http://vito-note.blogspot.com/2013/04/linq-3-join.html</a><br><a target="_blank" rel="noopener" href="https://docs.microsoft.com/zh-tw/dotnet/csharp/linq/perform-left-outer-joins">https://docs.microsoft.com/zh-tw/dotnet/csharp/linq/perform-left-outer-joins</a><br><a target="_blank" rel="noopener" href="https://blog.csdn.net/yuanxiang01/article/details/111176654">https://blog.csdn.net/yuanxiang01/article/details/111176654</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://yuhsiang237.github.io/2021/10/11/C-MVC-LINQ-%E5%B8%B8%E8%A6%8B%E7%94%A8%E6%B3%95/" data-id="cme6kwo0e0010galj244x7dfl" data-title="[Day15] C# MVC LINQ常見用法 - C#&amp;AspNetCore" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-C-MVC-LINQ基礎用法" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2021/10/10/C-MVC-LINQ%E5%9F%BA%E7%A4%8E%E7%94%A8%E6%B3%95/" class="article-date">
+  <time class="dt-published" datetime="2021-10-10T11:20:46.000Z" itemprop="datePublished">2021-10-10</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Code/">Code</a>►<a class="article-category-link" href="/categories/Code/C/">C#</a>►<a class="article-category-link" href="/categories/Framework/">Framework</a>►<a class="article-category-link" href="/categories/Framework/AspNetCore-MVC/">AspNetCore MVC</a>►<a class="article-category-link" href="/categories/Topic/">Topic</a>►<a class="article-category-link" href="/categories/Topic/2021-C-AspNetCore-Challenge/">2021 C# AspNetCore Challenge</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2021/10/10/C-MVC-LINQ%E5%9F%BA%E7%A4%8E%E7%94%A8%E6%B3%95/">[Day14] C# MVC LINQ基礎用法 - C#&amp;AspNetCore</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>在上回 <a href="/2021/10/08/C-MVC-%E9%A9%97%E8%AD%89%E8%88%87%E6%8E%88%E6%AC%8A%EF%BC%8C%E6%96%B0%E5%88%AA%E4%BF%AE%E6%9F%A5%E6%8C%89%E9%88%95%E6%AC%8A%E9%99%90/" title="[Day13] C# MVC 驗證與授權，新刪修查按鈕權限 - C#&amp;AspNetCore">[Day13] C# MVC 驗證與授權，新刪修查按鈕權限 - C#&amp;AspNetCore</a>  ，我們學會了進階的權限切割。</p>
+<p>而這回就要開始操作資料了，使用LINQ。</p>
+<h3 id="LINQ"><a href="#LINQ" class="headerlink" title="LINQ"></a>LINQ</h3><p>Language Integrated Query (LINQ) 是一組以直接將查詢功能整合至 C# 語言為基礎之技術的名稱。 傳統上，資料查詢是以簡單的字串表示，既不會在編譯時進行類型檢查，也不支援 IntelliSense。 此外，您還必須針對每種資料來源類型學習不同的查詢語言：SQL 資料庫、XML 文件、各種 Web 服務等等。透過 LINQ，查詢會是第一級語言建構，和類別、方法及事件相同。 您可以使用語言關鍵字和熟悉的運算子，針對強型別的物件集合撰寫查詢。 LINQ 技術系列會針對物件 (LINQ to Object)、關聯式資料庫 (LINQ to SQL) 與 XML (LINQ to XML)，提供一致的查詢體驗。</p>
+<p>對於撰寫查詢的開發人員來說，LINQ 最明顯的「語言整合」部分就是查詢運算式。 查詢運算式是以宣告式「查詢語法」撰寫。 透過使用查詢語法，您就可以利用最少的程式碼，針對資料來源執行篩選、排序及分組作業。 您可以使用相同的基本查詢運算式模式來查詢和轉換 SQL 資料庫、ADO.NET 資料集、XML 檔和資料流程和 .net 集合中的資料。</p>
+<p>您可以使用 C# 針對下列項目撰寫 LINQ 查詢：SQL Server 資料庫、XML 文件、ADO.NET 資料集，以及支援 IEnumerable 或泛型 IEnumerable<T> 介面的任何物件集合。 也有協力廠商針對許多 Web 服務和其他資料庫實作提供 LINQ 支援。</p>
+<p>所有 LINQ 查詢作業都包含三個不同的動作：</p>
+<ol>
+<li>取得資料來源。</li>
+<li>建立查詢。</li>
+<li>執行查詢。</li>
+</ol>
+<h3 id="實作"><a href="#實作" class="headerlink" title="實作"></a>實作</h3><p><strong>HomeController.cs</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">public IActionResult Index()</span><br><span class="line">&#123;</span><br><span class="line">    // Specify the data source.</span><br><span class="line">    int[] scores = new int[] &#123; 97, 92, 81, 60 &#125;;</span><br><span class="line"></span><br><span class="line">    // Define the query expression.</span><br><span class="line">    IEnumerable&lt;int&gt; scoreQuery =</span><br><span class="line">        from score in scores</span><br><span class="line">        where score &gt; 80</span><br><span class="line">        select score;</span><br><span class="line"></span><br><span class="line">    // Execute the query.</span><br><span class="line">    foreach (int i in scoreQuery)</span><br><span class="line">    &#123;</span><br><span class="line">        Console.Write(i + &quot; &quot;);</span><br><span class="line">    &#125;</span><br><span class="line">    return View();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>說明:<br>以上就是過濾&gt;80的分數。</p>
+<ul>
+<li>IEnumerable:第7行，公開能逐一查看非泛型集合內容一次的列舉程式。而其實可以用var當作宣告替代。</li>
+<li>scoreQuery:過濾的結果。<img src="/2021/10/10/C-MVC-LINQ%E5%9F%BA%E7%A4%8E%E7%94%A8%E6%B3%95/1.png" class="">
+下圖顯示完整的查詢作業。<img src="/2021/10/10/C-MVC-LINQ%E5%9F%BA%E7%A4%8E%E7%94%A8%E6%B3%95/2.png" class=""></li>
+</ul>
+<h3 id="總結"><a href="#總結" class="headerlink" title="總結"></a>總結</h3><p>本人習慣直接操作SQL語言，但LINQ說實在也不錯(可以直接防SQL INJECTION、強型別的優勢)。<br>但感覺上LINQ比較適合簡單的查詢，變成在程式裏面爬出來後去操作，性能可能會低，但比較穩。<br>而對於複雜的SQL查詢還是有困難QQ，變成翻譯家的感覺。<br>基於以上原因，複雜查詢我應該會使用Dapper來做，寫原生。</p>
+<p>此外，以有寫過Laravel跟Java的經驗來說，LINQ是C#微軟Only。<br>也就表示熟悉LINQ可能會有換其他語言SQL卡住、忘記正常該怎麼組的問題。</p>
+<p>在這篇中先小試一下，下篇將注重一些平常可能會做的LINQ查詢操作。</p>
+<p><strong>參考資料</strong><br><a target="_blank" rel="noopener" href="https://docs.microsoft.com/zh-tw/dotnet/csharp/programming-guide/concepts/linq/">https://docs.microsoft.com/zh-tw/dotnet/csharp/programming-guide/concepts/linq/</a><br><a target="_blank" rel="noopener" href="https://ithelp.ithome.com.tw/articles/10194468">https://ithelp.ithome.com.tw/articles/10194468</a><br><a target="_blank" rel="noopener" href="https://blog.darkthread.net/blog/linq-or-direct-sql/">https://blog.darkthread.net/blog/linq-or-direct-sql/</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://yuhsiang237.github.io/2021/10/10/C-MVC-LINQ%E5%9F%BA%E7%A4%8E%E7%94%A8%E6%B3%95/" data-id="cme6kwo0d000ygalj46ibco2t" data-title="[Day14] C# MVC LINQ基礎用法 - C#&amp;AspNetCore" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-後端API適合共用APP與網頁嗎" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2021/10/09/%E5%BE%8C%E7%AB%AFAPI%E9%81%A9%E5%90%88%E5%85%B1%E7%94%A8APP%E8%88%87%E7%B6%B2%E9%A0%81%E5%97%8E/" class="article-date">
+  <time class="dt-published" datetime="2021-10-08T22:29:17.000Z" itemprop="datePublished">2021-10-09</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Code/">Code</a>►<a class="article-category-link" href="/categories/Code/C/">C#</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2021/10/09/%E5%BE%8C%E7%AB%AFAPI%E9%81%A9%E5%90%88%E5%85%B1%E7%94%A8APP%E8%88%87%E7%B6%B2%E9%A0%81%E5%97%8E/">後端API適合共用APP與WEB嗎?</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>先說結論:不建議。</p>
+<p><strong>因為會出現以下問題：</strong></p>
+<ol>
+<li>開發時程問題:因網站改API，APP就必須要更新API。</li>
+<li>難同時開發:可能先做完WEB才會做APP，或反過來，彼此資料也差異大。</li>
+<li>難同時滿足兩者:畫面差異大，後端不知道APP或WEB要底要哪種基礎資料，可能少或多給。</li>
+<li>討論時間拉長:因為第3點肯定會延長開會討論，也延遲到開發。</li>
+</ol>
+<p>此外，如果APP要向下支援，不強制更新，那會需要API版號，如v1、v2…等，可以塞在header裡面。<br>而向下支援可能就會有資料庫table異動與欄位被刪，像是沒辦法新增、編輯，這時僅能提示使用者安裝新版本了。<br>如果v1版要跟v100版間要相容肯定會處理的蠻崩潰的。</p>
+<p>基於以上理由，WEB、APP分兩組API是比較好長期維護、開發的方法。</p>
+<p>最後不推graphQL，個人工作經驗只會讓專案變得難以維護。<br>然後API一定要RESTful嗎?<br>這也不一定，有時分權而難以限定權限，就會有漏洞。反而增加開發風險。<br>雖然有人會覺得RESTful就是主流，潮。但然後呢…。Restful很簡潔，能讓知道這模式的人容易上手，但是否必要要看開發者所在的環境而定。<br>可參考以下參考資料，有篇提到KISS (Keep It Simple, Stupid)。</p>
+<p><strong>參考資料</strong><br><a target="_blank" rel="noopener" href="https://www.ptt.cc/bbs/Soft_Job/M.1624876117.A.086.html">https://www.ptt.cc/bbs/Soft_Job/M.1624876117.A.086.html</a><br><a target="_blank" rel="noopener" href="https://blog.darkthread.net/blog/is-restful-required/">https://blog.darkthread.net/blog/is-restful-required/</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://yuhsiang237.github.io/2021/10/09/%E5%BE%8C%E7%AB%AFAPI%E9%81%A9%E5%90%88%E5%85%B1%E7%94%A8APP%E8%88%87%E7%B6%B2%E9%A0%81%E5%97%8E/" data-id="cme6kwo41007xgalj65go0fs1" data-title="後端API適合共用APP與WEB嗎?" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-C-MVC-驗證與授權，新刪修查按鈕權限" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2021/10/08/C-MVC-%E9%A9%97%E8%AD%89%E8%88%87%E6%8E%88%E6%AC%8A%EF%BC%8C%E6%96%B0%E5%88%AA%E4%BF%AE%E6%9F%A5%E6%8C%89%E9%88%95%E6%AC%8A%E9%99%90/" class="article-date">
+  <time class="dt-published" datetime="2021-10-08T04:00:51.000Z" itemprop="datePublished">2021-10-08</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Code/">Code</a>►<a class="article-category-link" href="/categories/Code/C/">C#</a>►<a class="article-category-link" href="/categories/Framework/">Framework</a>►<a class="article-category-link" href="/categories/Framework/AspNetCore-MVC/">AspNetCore MVC</a>►<a class="article-category-link" href="/categories/Topic/">Topic</a>►<a class="article-category-link" href="/categories/Topic/2021-C-AspNetCore-Challenge/">2021 C# AspNetCore Challenge</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2021/10/08/C-MVC-%E9%A9%97%E8%AD%89%E8%88%87%E6%8E%88%E6%AC%8A%EF%BC%8C%E6%96%B0%E5%88%AA%E4%BF%AE%E6%9F%A5%E6%8C%89%E9%88%95%E6%AC%8A%E9%99%90/">[Day13] C# MVC 驗證與授權，新刪修查按鈕權限 - C#&amp;AspNetCore</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>在上回 <a href="/2021/10/07/C-MVC-%E9%A9%97%E8%AD%89%E8%88%87%E6%8E%88%E6%AC%8A%E7%99%BB%E5%85%A5%E8%88%87%E7%99%BB%E5%87%BA/" title="[Day12] C# MVC 驗證與授權，登入與登出 - C#&amp;AspNetCore">[Day12] C# MVC 驗證與授權，登入與登出 - C#&amp;AspNetCore</a>  ，我們介紹了登入與登出。</p>
+<p>而這回，將探討的是<strong>驗證與授權</strong>的細部權限，即所謂的新刪修查權限。<br>如:某角色是禁止使用特定功能的編輯。</p>
+<p>我在之前也有了打篇與這相關的資料表規劃 : <a href="/2021/09/22/%E8%A7%92%E8%89%B2%E6%AC%8A%E9%99%90%E8%B3%87%E6%96%99%E8%A1%A8%E8%A6%8F%E5%8A%83/" title="資訊系統的角色權限規劃，含資料表設計">資訊系統的角色權限規劃，含資料表設計</a></p>
+<h3 id="授權"><a href="#授權" class="headerlink" title="授權"></a>授權</h3><p>授權是指決定使用者能夠做什麼的處理常式。 例如，系統管理使用者可以建立文件庫、新增檔、編輯檔，以及將它們刪除。 </p>
+<h3 id="實作"><a href="#實作" class="headerlink" title="實作"></a>實作</h3><p>目標，可以讓一個有權限的使用者依照他的權限去限制:檢視、新增、刪除、編輯。</p>
+<p>權限代碼:</p>
+<ul>
+<li>Basic_UserManagement_View</li>
+<li>Basic_UserManagement_Create</li>
+<li>Basic_UserManagement_Modify</li>
+<li>Basic_UserManagement_Delete</li>
+</ul>
+<p>使用者擁有的權限代碼:</p>
+<ul>
+<li>Basic_UserManagement_View</li>
+<li>Basic_UserManagement_Create</li>
+<li>Basic_UserManagement_Delete</li>
+</ul>
+<p>所以該使用者只能檢視、建立、刪除，並且無法編輯。</p>
+<p>在此先列出檔案目錄，以及異動檔案(黃色標記處):</p>
+<img src="/2021/10/08/C-MVC-%E9%A9%97%E8%AD%89%E8%88%87%E6%8E%88%E6%AC%8A%EF%BC%8C%E6%96%B0%E5%88%AA%E4%BF%AE%E6%9F%A5%E6%8C%89%E9%88%95%E6%AC%8A%E9%99%90/1.png" class="">
+
+<p>1.首先先建立權限代碼的定義檔案<br><strong>~/Authorization/Permissions.cs</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">namespace CookieAuthentication.Authorization</span><br><span class="line">&#123; </span><br><span class="line">    // 權限代碼</span><br><span class="line">    public static class Permissions</span><br><span class="line">    &#123;</span><br><span class="line">        // 基本資料管理-人員管理</span><br><span class="line">        public const string Basic_UserManagement_View = &quot;Basic_UserManagement_View&quot;;</span><br><span class="line">        public const string Basic_UserManagement_Create= &quot;Basic_UserManagement_Create&quot;;</span><br><span class="line">        public const string Basic_UserManagement_Modify = &quot;Basic_UserManagement_Modify&quot;;</span><br><span class="line">        public const string Basic_UserManagement_Delete = &quot;Basic_UserManagement_Delete&quot;;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>說明:<br>未來如果要新增各種功能代碼都可以從這新增。</p>
+<p>2.建立權限的AuthorizationRequirement，要求規格<br><strong>~/Authorization/PermissionAuthorizationRequirement.cs</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">using Microsoft.AspNetCore.Authorization;</span><br><span class="line">namespace CookieAuthentication.Authorization</span><br><span class="line">&#123;</span><br><span class="line">    public class PermissionAuthorizationRequirement : IAuthorizationRequirement</span><br><span class="line">    &#123;</span><br><span class="line">        public string[] Permissions &#123; get; set; &#125;</span><br><span class="line"></span><br><span class="line">        public PermissionAuthorizationRequirement(string[] permissions)</span><br><span class="line">        &#123;</span><br><span class="line">            Permissions = permissions;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>說明:<br>為了要能夠自訂權限的邏輯，所以需要一個IAuthorizationRequirement幫我們傳遞授權資料的格式。</p>
+<p>3.建立權限邏輯的控制器</p>
+<p><strong>~/Authorization/PermissionAuthorizationHandler.cs</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line">using Microsoft.AspNetCore.Authorization;</span><br><span class="line">using System.Collections.Generic;</span><br><span class="line">using System.Linq;</span><br><span class="line">using System.Threading.Tasks;</span><br><span class="line"></span><br><span class="line">namespace CookieAuthentication.Authorization</span><br><span class="line">&#123;</span><br><span class="line">    // 權限控制邏輯</span><br><span class="line">    public class PermissionAuthorizationHandler : AuthorizationHandler&lt;PermissionAuthorizationRequirement&gt;</span><br><span class="line">    &#123;</span><br><span class="line">        protected override Task HandleRequirementAsync(AuthorizationHandlerContext context, PermissionAuthorizationRequirement requirement)</span><br><span class="line">        &#123;</span><br><span class="line">            // 如果沒有登入直接返回失敗</span><br><span class="line">            var accountClaim = context.User.FindFirst(x =&gt; x.Type == &quot;Account&quot;);</span><br><span class="line">            if (accountClaim == null)</span><br><span class="line">            &#123;</span><br><span class="line">                context.Fail();</span><br><span class="line">                return Task.CompletedTask;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            // 要求的權限</span><br><span class="line">            var requirementPermissions = requirement.Permissions;</span><br><span class="line"></span><br><span class="line">            // 取得使用者的權限， 這段可以從資料庫撈，在這範例用陣列</span><br><span class="line">            List&lt;string&gt; userPermission = new List&lt;string&gt;();</span><br><span class="line">            userPermission.Add(Permissions.Basic_UserManagement_View);</span><br><span class="line">            userPermission.Add(Permissions.Basic_UserManagement_Delete);</span><br><span class="line">            userPermission.Add(Permissions.Basic_UserManagement_Modify);</span><br><span class="line"></span><br><span class="line">            // 檢查是否使用者具備權限    </span><br><span class="line">            bool isExist = false;</span><br><span class="line"></span><br><span class="line">            for (int i = 0; i &lt; userPermission.Count(); i++)</span><br><span class="line">            &#123;</span><br><span class="line">                for (int j = 0; j &lt; requirementPermissions.Count(); j++)</span><br><span class="line">                &#123;</span><br><span class="line">                    if (userPermission[i] == requirementPermissions[j])</span><br><span class="line">                    &#123;</span><br><span class="line">                        isExist = true;</span><br><span class="line">                        break;</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            // 如果具備則授予成功</span><br><span class="line">            if (isExist)</span><br><span class="line">            &#123;</span><br><span class="line">                context.Succeed(requirement);</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            return Task.CompletedTask;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>說明:<br>在此繼承了AuthorizationHandler，是為了要撰寫自己的判斷邏輯。<br>主要在HandleRequirementAsync裡面檢查傳進來的權限與使用者是否匹配，如果是就設定context.Succeed(requirement)；不是就設定context.Fail()。並在最後回傳return Task.CompletedTask。<br>在22～48是關鍵，在這如果連結資料庫就從資料庫抓使用者的權限表來比對即可。<br>我在24～28先用假資料替代資料庫撈出來的情況。</p>
+<p>4.建立過濾器Filter，之後要用來套用在Controller的Action上</p>
+<p><strong>~/Authorization/PermissionFilter.cs</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">using Microsoft.AspNetCore.Authorization;</span><br><span class="line">using Microsoft.AspNetCore.Mvc;</span><br><span class="line">using Microsoft.AspNetCore.Mvc.Filters;</span><br><span class="line">using Microsoft.Extensions.DependencyInjection;</span><br><span class="line">using System;</span><br><span class="line">using System.Threading.Tasks;</span><br><span class="line"></span><br><span class="line">namespace CookieAuthentication.Authorization</span><br><span class="line">&#123;</span><br><span class="line">    public class PermissionFilter:Attribute, IAsyncAuthorizationFilter</span><br><span class="line">    &#123;</span><br><span class="line">        public string[] permissions &#123; get; set; &#125;</span><br><span class="line"></span><br><span class="line">        public PermissionFilter(params string[] permissions)</span><br><span class="line">        &#123;</span><br><span class="line">            this.permissions = permissions;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        public async Task OnAuthorizationAsync(AuthorizationFilterContext context)</span><br><span class="line">        &#123;</span><br><span class="line">            var authorizationService = context.HttpContext.RequestServices.GetRequiredService&lt;IAuthorizationService&gt;();</span><br><span class="line">            var authorizationResult = await authorizationService.AuthorizeAsync(context.HttpContext.User, null, new PermissionAuthorizationRequirement(permissions));</span><br><span class="line">            if (!authorizationResult.Succeeded)</span><br><span class="line">            &#123;</span><br><span class="line">                // 如果授權失敗，設定為未授權</span><br><span class="line">                context.Result = new UnauthorizedResult();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>說明:<br>重點在21～27，使用authorizationService.AuthorizeAsync去認證權限，就會把資料傳到我們上面建立的PermissionAuthorizationHandler.cs裡面判斷。<br>如果最後判斷沒權限則設定context.Result = new UnauthorizedResult();表示禁止。</p>
+<p>5.增加過濾器服務Startup.cs</p>
+<p><strong>~/Startup.cs</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br></pre></td><td class="code"><pre><span class="line">using CookieAuthentication.Authorization;</span><br><span class="line">using Microsoft.AspNetCore.Authentication.Cookies;</span><br><span class="line">using Microsoft.AspNetCore.Authorization;</span><br><span class="line">using Microsoft.AspNetCore.Builder;</span><br><span class="line">using Microsoft.AspNetCore.Hosting;</span><br><span class="line">using Microsoft.AspNetCore.Mvc;</span><br><span class="line">using Microsoft.Extensions.Configuration;</span><br><span class="line">using Microsoft.Extensions.DependencyInjection;</span><br><span class="line">using Microsoft.Extensions.Hosting;</span><br><span class="line">using System;</span><br><span class="line">namespace CookieAuthentication</span><br><span class="line">&#123;</span><br><span class="line">    public class Startup</span><br><span class="line">    &#123;</span><br><span class="line">        public Startup(IConfiguration configuration)</span><br><span class="line">        &#123;</span><br><span class="line">            Configuration = configuration;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        public IConfiguration Configuration &#123; get; &#125;</span><br><span class="line"></span><br><span class="line">        // This method gets called by the runtime. Use this method to add services to the container.</span><br><span class="line">        public void ConfigureServices(IServiceCollection services)</span><br><span class="line">        &#123;</span><br><span class="line">            // 註冊需求和處理常式，套用自訂權限控制器</span><br><span class="line">            services.AddSingleton&lt;IAuthorizationHandler, PermissionAuthorizationHandler&gt;();</span><br><span class="line"></span><br><span class="line">            // 從appsettings.json讀取登入逾時設定</span><br><span class="line">            double LoginExpireMinute = this.Configuration.GetValue&lt;double&gt;(&quot;LoginExpireMinute&quot;);</span><br><span class="line"></span><br><span class="line">            // 建立驗證中介軟體服務</span><br><span class="line">            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(option =&gt;</span><br><span class="line">            &#123;</span><br><span class="line">                // 登入逾期設定，如果沒給預設14天</span><br><span class="line">                option.ExpireTimeSpan = TimeSpan.FromMinutes(LoginExpireMinute);</span><br><span class="line">                // 限制cookie不能延期</span><br><span class="line">                option.SlidingExpiration = false;</span><br><span class="line">            &#125;);</span><br><span class="line"></span><br><span class="line">            services.AddControllersWithViews(options =&gt; &#123;</span><br><span class="line">                //CSRF資安有關，這裡就加入全域驗證範圍Filter的話，待會Controller就不必再加上[AutoValidateAntiforgeryToken]屬性</span><br><span class="line">                options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());</span><br><span class="line">            &#125;);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.</span><br><span class="line">        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)</span><br><span class="line">        &#123;</span><br><span class="line">            if (env.IsDevelopment())</span><br><span class="line">            &#123;</span><br><span class="line">                app.UseDeveloperExceptionPage();</span><br><span class="line">            &#125;</span><br><span class="line">            else</span><br><span class="line">            &#123;</span><br><span class="line">                app.UseExceptionHandler(&quot;/Home/Error&quot;);</span><br><span class="line">                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.</span><br><span class="line">                app.UseHsts();</span><br><span class="line">            &#125;</span><br><span class="line">            app.UseHttpsRedirection();</span><br><span class="line">            app.UseStaticFiles();</span><br><span class="line"></span><br><span class="line">            app.UseRouting();</span><br><span class="line"></span><br><span class="line">            app.UseAuthentication(); // 啟用身份驗證</span><br><span class="line">            app.UseAuthorization(); // 啟用授權，指的是Controller、Action可加上驗證 [Authorize] 屬性</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">            app.UseEndpoints(endpoints =&gt;</span><br><span class="line">            &#123;</span><br><span class="line">                endpoints.MapControllerRoute(</span><br><span class="line">                    name: &quot;default&quot;,</span><br><span class="line">                    pattern: &quot;&#123;controller=Home&#125;/&#123;action=Index&#125;/&#123;id?&#125;&quot;);</span><br><span class="line">            &#125;);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>說明<br>只有在26行，增加一行，表示套用驗證邏輯的PermissionAuthorizationHandler</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">// 註冊需求和處理常式，套用自訂權限控制器</span><br><span class="line">services.AddSingleton&lt;IAuthorizationHandler, PermissionAuthorizationHandler&gt;();</span><br></pre></td></tr></table></figure>
+<p>6.限制頁面上的檢視權限，在Controller增加權限過濾器Filter</p>
+<p><strong>~/Controllers/HomeController.cs</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">[PermissionFilter(Permissions.Basic_UserManagement_View)]</span><br><span class="line">public IActionResult Privacy()</span><br><span class="line">&#123;</span><br><span class="line">    StringBuilder sb = new StringBuilder();</span><br><span class="line">    sb.AppendLine(&quot;&lt;ul&gt;&quot;);</span><br><span class="line"></span><br><span class="line">    foreach (Claim claim in HttpContext.User.Claims)</span><br><span class="line">    &#123;</span><br><span class="line">        sb.AppendLine($@&quot;&lt;li&gt; claim.Type:&#123;claim.Type&#125; , claim.Value:&#123; claim.Value&#125;&lt;/li&gt;&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">    sb.AppendLine(&quot;&lt;/ul&gt;&quot;);</span><br><span class="line"></span><br><span class="line">    ViewBag.msg = sb.ToString();</span><br><span class="line">    return View();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>說明:<br>添加<br>[PermissionFilter(Permissions.Basic_UserManagement_View)]<br>表示允許某權限的代碼進入，在此就是Permissions.Basic_UserManagement_View，表示畫面的檢視權限。</p>
+<p>7.限制頁面上的按鈕權限</p>
+<p><strong>~/View/Home/Privacy.cshtml</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line">@using Microsoft.AspNetCore.Authorization</span><br><span class="line">@using CookieAuthentication.Authorization</span><br><span class="line"></span><br><span class="line">@inject IAuthorizationService AuthorizationService</span><br><span class="line">@&#123;</span><br><span class="line">    ViewData[&quot;Title&quot;] = &quot;Privacy Policy&quot;;</span><br><span class="line">&#125;</span><br><span class="line">&lt;h1&gt;@ViewData[&quot;Title&quot;]&lt;/h1&gt;</span><br><span class="line"></span><br><span class="line">&lt;p&gt;Use this page to detail your site&#x27;s privacy policy.&lt;/p&gt;</span><br><span class="line"></span><br><span class="line">&lt;!-- 按鈕區塊 --&gt;</span><br><span class="line">@if ((await AuthorizationService.AuthorizeAsync(User, null, new PermissionAuthorizationRequirement(new string[] &#123; Permissions.Basic_UserManagement_Create &#125;))).Succeeded)</span><br><span class="line">&#123;</span><br><span class="line">    &lt;button type=&quot;submit&quot;&gt;新增&lt;/button&gt;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">@if ((await AuthorizationService.AuthorizeAsync(User, null, new PermissionAuthorizationRequirement(new string[] &#123; Permissions.Basic_UserManagement_Modify &#125;))).Succeeded)</span><br><span class="line">&#123;</span><br><span class="line">    &lt;button type=&quot;submit&quot;&gt;編輯&lt;/button&gt;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">@if ((await AuthorizationService.AuthorizeAsync(User, null, new PermissionAuthorizationRequirement(new string[] &#123; Permissions.Basic_UserManagement_Delete &#125;))).Succeeded)</span><br><span class="line">&#123;</span><br><span class="line">    &lt;button type=&quot;submit&quot;&gt;刪除&lt;/button&gt;</span><br><span class="line">&#125;</span><br><span class="line">&lt;!-- ./按鈕區塊 --&gt;</span><br><span class="line"></span><br><span class="line">&lt;!--登出區塊--&gt;</span><br><span class="line">&lt;div&gt;</span><br><span class="line">    您的登入資訊↓</span><br><span class="line">&lt;/div&gt;</span><br><span class="line">&lt;div&gt;</span><br><span class="line">    @Html.Raw(ViewBag.msg)</span><br><span class="line">&lt;/div&gt;</span><br><span class="line">&lt;div&gt;</span><br><span class="line">    &lt;a href=&quot;@Url.Action(&quot;Logout&quot;,&quot;Home&quot;)&quot;&gt;登出&lt;/a&gt;</span><br><span class="line">&lt;/div&gt;</span><br><span class="line">&lt;!--./登出區塊--&gt;</span><br></pre></td></tr></table></figure>
+<p>說明:<br>在13~27為限制擁有某些權限的代碼才啟用<br>舉例:<br>@if ((await AuthorizationService.AuthorizeAsync(User, null, new PermissionAuthorizationRequirement(new string[] { Permissions.Basic_UserManagement_Modify }))).Succeeded)</p>
+<p>8.完成!<br>該使用者登入後只有:畫面檢視、刪除、新增權限，而沒有編輯權限。<br>可以見到成功進Privacy頁面，而只有新增、刪除按鈕有顯示，編輯按鈕則因為權限限制沒有被顯示出來。</p>
+<img src="/2021/10/08/C-MVC-%E9%A9%97%E8%AD%89%E8%88%87%E6%8E%88%E6%AC%8A%EF%BC%8C%E6%96%B0%E5%88%AA%E4%BF%AE%E6%9F%A5%E6%8C%89%E9%88%95%E6%AC%8A%E9%99%90/2.gif" class="">
+
+<h3 id="總結"><a href="#總結" class="headerlink" title="總結"></a>總結</h3><p>如此一來權限問題也難不倒了@@<br>而接下來主要以資料呈現為主題，所以下回是LINQ的資料操作。</p>
+<p><strong>參考資料</strong><br><a target="_blank" rel="noopener" href="https://docs.microsoft.com/zh-tw/aspnet/core/security/authorization/views?view=aspnetcore-3.1">https://docs.microsoft.com/zh-tw/aspnet/core/security/authorization/views?view=aspnetcore-3.1</a><br><a target="_blank" rel="noopener" href="https://docs.microsoft.com/zh-tw/aspnet/core/security/authorization/resourcebased?view=aspnetcore-3.1">https://docs.microsoft.com/zh-tw/aspnet/core/security/authorization/resourcebased?view=aspnetcore-3.1</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://yuhsiang237.github.io/2021/10/08/C-MVC-%E9%A9%97%E8%AD%89%E8%88%87%E6%8E%88%E6%AC%8A%EF%BC%8C%E6%96%B0%E5%88%AA%E4%BF%AE%E6%9F%A5%E6%8C%89%E9%88%95%E6%AC%8A%E9%99%90/" data-id="cme6kwo0w001zgalj2mok28ie" data-title="[Day13] C# MVC 驗證與授權，新刪修查按鈕權限 - C#&amp;AspNetCore" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-C-MVC-驗證與授權登入與登出" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2021/10/07/C-MVC-%E9%A9%97%E8%AD%89%E8%88%87%E6%8E%88%E6%AC%8A%E7%99%BB%E5%85%A5%E8%88%87%E7%99%BB%E5%87%BA/" class="article-date">
+  <time class="dt-published" datetime="2021-10-07T04:00:51.000Z" itemprop="datePublished">2021-10-07</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Code/">Code</a>►<a class="article-category-link" href="/categories/Code/C/">C#</a>►<a class="article-category-link" href="/categories/Framework/">Framework</a>►<a class="article-category-link" href="/categories/Framework/AspNetCore-MVC/">AspNetCore MVC</a>►<a class="article-category-link" href="/categories/Topic/">Topic</a>►<a class="article-category-link" href="/categories/Topic/2021-C-AspNetCore-Challenge/">2021 C# AspNetCore Challenge</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2021/10/07/C-MVC-%E9%A9%97%E8%AD%89%E8%88%87%E6%8E%88%E6%AC%8A%E7%99%BB%E5%85%A5%E8%88%87%E7%99%BB%E5%87%BA/">[Day12] C# MVC 驗證與授權，登入與登出 - C#&amp;AspNetCore</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>在上回 <a href="/2021/10/06/C-MVC%E5%82%B3%E9%81%9E%E5%8F%83%E6%95%B8%E7%9A%84%E6%96%B9%E5%BC%8F/" title="[Day11] C# MVC傳遞參數的方式 - C#&amp;AspNetCore">[Day11] C# MVC傳遞參數的方式 - C#&amp;AspNetCore</a>  ，我們介紹了頁面與頁面間的參數傳遞。</p>
+<p>而這回，將探討的是<strong>驗證與授權</strong>，並以實作登入、登出為示範。</p>
+<p>此外，對於權限.net core MVC本身就有提供可實作的方法，連結如下:<br><a target="_blank" rel="noopener" href="https://docs.microsoft.com/zh-tw/aspnet/core/security/authorization/introduction?view=aspnetcore-3.1">https://docs.microsoft.com/zh-tw/aspnet/core/security/authorization/introduction?view=aspnetcore-3.1</a></p>
+<h3 id="驗證與授權"><a href="#驗證與授權" class="headerlink" title="驗證與授權"></a>驗證與授權</h3><p>步驟:驗證-&gt;授權</p>
+<ul>
+<li>驗證 (Authentication):讓系統認得你是誰<ul>
+<li>Cookie-Based驗證</li>
+<li>Token-Based驗證</li>
+<li>Idetity 驗證</li>
+<li>OAuth2 驗證</li>
+<li>Windows 驗證</li>
+</ul>
+</li>
+<li>授權 (Authorization):讓系統判斷你是否有權限<ul>
+<li>AuthorizeAttribute授權</li>
+</ul>
+</li>
+</ul>
+<p>驗證有很多種沒有好壞之分，以我觀點來說就是:<strong>「用官方範例並符合需求的簡單作法」</strong>。<br>因為這樣能避免維護問題、要改動也容易些。<br>在這網頁上是.net core MVC，所以最簡單實作方式就是「Cookie-Based驗證」，未來要使用API時也只要增加「Token-Based驗證」即可。</p>
+<h3 id="Cookie-Based-驗證"><a href="#Cookie-Based-驗證" class="headerlink" title="Cookie-Based 驗證"></a>Cookie-Based 驗證</h3><p>使用瀏覽器的 Cookie 儲存使用者驗證資訊。<br>要使用Cookie驗證要小心的是資料不能太多，因為瀏覽器有4096 bytes限制。<br>(如果是一些舊瀏覽器就會遇到問題，所以要注意資料就是存識別資料即可)<br>此外，ASP.NET Core Cookie驗證，在前台會以加密方式儲存，避免使用者去修改，也有自動逾期時間，整體上來安全程度是有的。</p>
+<h3 id="實作"><a href="#實作" class="headerlink" title="實作"></a>實作</h3><p>主要參考 <a target="_blank" rel="noopener" href="https://docs.microsoft.com/zh-tw/aspnet/core/security/authentication/cookie?view=aspnetcore-3.1">使用 cookie 驗證但不使用 ASP.NET Core Identity</a> 、<a target="_blank" rel="noopener" href="https://dotblogs.com.tw/shadow/2019/01/16/105615">[ASP.net Core] 實作 Cookie based 登入機制</a> 這兩篇進行實作，並以7個步驟完成</p>
+<p>先列出主要異動的檔案:<br>(黃色標記處為異動檔案)</p>
+<img src="/2021/10/07/C-MVC-%E9%A9%97%E8%AD%89%E8%88%87%E6%8E%88%E6%AC%8A%E7%99%BB%E5%85%A5%E8%88%87%E7%99%BB%E5%87%BA/1.png" class="">
+
+<p>1.先增加登入逾期的時間定義值</p>
+<p><strong>appsettings.json</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;Logging&quot;: &#123;</span><br><span class="line">    &quot;LogLevel&quot;: &#123;</span><br><span class="line">      &quot;Default&quot;: &quot;Information&quot;,</span><br><span class="line">      &quot;Microsoft&quot;: &quot;Warning&quot;,</span><br><span class="line">      &quot;Microsoft.Hosting.Lifetime&quot;: &quot;Information&quot;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  &quot;LoginExpireMinute&quot;: 60, //登入逾期時間</span><br><span class="line">  &quot;AllowedHosts&quot;: &quot;*&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>第9:<code>LoginExpireMinute</code>表示幾分後逾期登出。</li>
+</ul>
+<p>2.到Startup.cs去增加載入的授權、身份驗證服務</p>
+<p><strong>Startup.cs</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br></pre></td><td class="code"><pre><span class="line">using Microsoft.AspNetCore.Authentication.Cookies;</span><br><span class="line">using Microsoft.AspNetCore.Builder;</span><br><span class="line">using Microsoft.AspNetCore.Hosting;</span><br><span class="line">using Microsoft.AspNetCore.HttpsPolicy;</span><br><span class="line">using Microsoft.AspNetCore.Mvc;</span><br><span class="line">using Microsoft.Extensions.Configuration;</span><br><span class="line">using Microsoft.Extensions.DependencyInjection;</span><br><span class="line">using Microsoft.Extensions.Hosting;</span><br><span class="line">using System;</span><br><span class="line">using System.Collections.Generic;</span><br><span class="line">using System.Linq;</span><br><span class="line">using System.Threading.Tasks;</span><br><span class="line"></span><br><span class="line">namespace CookieAuthentication</span><br><span class="line">&#123;</span><br><span class="line">    public class Startup</span><br><span class="line">    &#123;</span><br><span class="line">        public Startup(IConfiguration configuration)</span><br><span class="line">        &#123;</span><br><span class="line">            Configuration = configuration;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        public IConfiguration Configuration &#123; get; &#125;</span><br><span class="line"></span><br><span class="line">        // This method gets called by the runtime. Use this method to add services to the container.</span><br><span class="line">        public void ConfigureServices(IServiceCollection services)</span><br><span class="line">        &#123;</span><br><span class="line"></span><br><span class="line">            // 從appsettings.json讀取登入逾時設定</span><br><span class="line">            double LoginExpireMinute = this.Configuration.GetValue&lt;double&gt;(&quot;LoginExpireMinute&quot;);</span><br><span class="line"></span><br><span class="line">            // 建立驗證中介軟體服務</span><br><span class="line">            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(option =&gt;</span><br><span class="line">            &#123;</span><br><span class="line">                // 登入逾期設定，如果沒給預設14天</span><br><span class="line">                option.ExpireTimeSpan = TimeSpan.FromMinutes(LoginExpireMinute);</span><br><span class="line">                // 限制cookie不能延期</span><br><span class="line">                option.SlidingExpiration = false;</span><br><span class="line">            &#125;);</span><br><span class="line"></span><br><span class="line">            services.AddControllersWithViews(options =&gt; &#123;</span><br><span class="line">                // CSRF資安有關，這裡就加入全域驗證範圍Filter的話，待會Controller就不必再加上[AutoValidateAntiforgeryToken]屬性</span><br><span class="line">                options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());</span><br><span class="line">            &#125;);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.</span><br><span class="line">        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)</span><br><span class="line">        &#123;</span><br><span class="line">            if (env.IsDevelopment())</span><br><span class="line">            &#123;</span><br><span class="line">                app.UseDeveloperExceptionPage();</span><br><span class="line">            &#125;</span><br><span class="line">            else</span><br><span class="line">            &#123;</span><br><span class="line">                app.UseExceptionHandler(&quot;/Home/Error&quot;);</span><br><span class="line">                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.</span><br><span class="line">                app.UseHsts();</span><br><span class="line">            &#125;</span><br><span class="line">            app.UseHttpsRedirection();</span><br><span class="line">            app.UseStaticFiles();</span><br><span class="line"></span><br><span class="line">            app.UseRouting();</span><br><span class="line"></span><br><span class="line">            app.UseAuthentication(); // 啟用身份驗證</span><br><span class="line">            app.UseAuthorization(); // 啟用授權，指的是Controller、Action可加上驗證 [Authorize] 屬性</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">            app.UseEndpoints(endpoints =&gt;</span><br><span class="line">            &#123;</span><br><span class="line">                endpoints.MapControllerRoute(</span><br><span class="line">                    name: &quot;default&quot;,</span><br><span class="line">                    pattern: &quot;&#123;controller=Home&#125;/&#123;action=Index&#125;/&#123;id?&#125;&quot;);</span><br><span class="line">            &#125;);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>主要改以下幾點:</p>
+<ul>
+<li><code>[26~45]:</code>在<code>ConfigureServices</code>追加服務，先取得登入逾期的時間參數LoginExpireMinute。之後追加AddAuthentication服務，並修改AddControllersWithViews內容。</li>
+<li><code>[65~66]:</code>啟用身份驗證、授權</li>
+</ul>
+<p>3.再來是控制器的部分，主要設定登入、登出、檢視登入後資訊的方能</p>
+<p><strong>HomeController.cs</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br></pre></td><td class="code"><pre><span class="line">using CookieAuthentication.Models;</span><br><span class="line">using Microsoft.AspNetCore.Authentication;</span><br><span class="line">using Microsoft.AspNetCore.Authentication.Cookies;</span><br><span class="line">using Microsoft.AspNetCore.Authorization;</span><br><span class="line">using Microsoft.AspNetCore.Mvc;</span><br><span class="line">using Microsoft.Extensions.Configuration;</span><br><span class="line">using Microsoft.Extensions.Logging;</span><br><span class="line">using System;</span><br><span class="line">using System.Collections.Generic;</span><br><span class="line">using System.Diagnostics;</span><br><span class="line">using System.Linq;</span><br><span class="line">using System.Security.Claims;</span><br><span class="line">using System.Text;</span><br><span class="line">using System.Threading.Tasks;</span><br><span class="line"></span><br><span class="line">namespace CookieAuthentication.Controllers</span><br><span class="line">&#123;</span><br><span class="line"></span><br><span class="line">    public class HomeController : Controller</span><br><span class="line">    &#123;</span><br><span class="line">        private readonly ILogger&lt;HomeController&gt; _logger;</span><br><span class="line"></span><br><span class="line">        public HomeController(ILogger&lt;HomeController&gt; logger)</span><br><span class="line">        &#123;</span><br><span class="line">            _logger = logger;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        public IActionResult Index()</span><br><span class="line">        &#123;</span><br><span class="line">            return View();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        [Authorize]</span><br><span class="line">        public IActionResult Privacy()</span><br><span class="line">        &#123;</span><br><span class="line">            StringBuilder sb = new StringBuilder();</span><br><span class="line">            sb.AppendLine(&quot;&lt;ul&gt;&quot;);</span><br><span class="line"></span><br><span class="line">            foreach (Claim claim in HttpContext.User.Claims)</span><br><span class="line">            &#123;</span><br><span class="line">                sb.AppendLine($@&quot;&lt;li&gt; claim.Type:&#123;claim.Type&#125; , claim.Value:&#123; claim.Value&#125;&lt;/li&gt;&quot;);</span><br><span class="line">            &#125;</span><br><span class="line">            sb.AppendLine(&quot;&lt;/ul&gt;&quot;);</span><br><span class="line"></span><br><span class="line">            ViewBag.msg = sb.ToString();</span><br><span class="line">            return View();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]</span><br><span class="line">        public IActionResult Error()</span><br><span class="line">        &#123;</span><br><span class="line">            return View(new ErrorViewModel &#123; RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier &#125;);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        [HttpPost]</span><br><span class="line">        public async Task&lt;IActionResult&gt; Login(string Account, string Password,bool IsRememberMe)</span><br><span class="line">        &#123;</span><br><span class="line"></span><br><span class="line">            if ((Account == &quot;test01&quot; &amp;&amp; Password == &quot;test01pwd&quot;) == false)</span><br><span class="line">            &#123;</span><br><span class="line">                ViewBag.errMsg = &quot;帳號或密碼輸入錯誤&quot;;</span><br><span class="line">                return View(&quot;~/Views/Home/Index.cshtml&quot;); // 登入失敗導回頁面</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">            // 登入成功，建立驗證 cookie</span><br><span class="line">            Claim[] claims = new[] &#123; new Claim(&quot;Account&quot;, Account) &#125;; // Key取名&quot;Account&quot;，方便取出後可以對資料庫做操作</span><br><span class="line">            ClaimsIdentity claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);</span><br><span class="line">            ClaimsPrincipal claimsPrincipal = new ClaimsPrincipal(claimsIdentity);</span><br><span class="line"></span><br><span class="line">            // 呼叫 SignInAsync 以登入使用者</span><br><span class="line">            await HttpContext.SignInAsync(claimsPrincipal,</span><br><span class="line">                new AuthenticationProperties()</span><br><span class="line">                &#123;</span><br><span class="line">                    //IsPersistent = false：瀏覽器關閉立馬登出；IsPersistent = true 就變成常見的Remember Me功能</span><br><span class="line">                    IsPersistent = IsRememberMe,</span><br><span class="line">                &#125;);</span><br><span class="line"></span><br><span class="line">            // 導至隱私頁面</span><br><span class="line">            return RedirectToAction(&quot;Privacy&quot;, &quot;Home&quot;);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        public async Task&lt;IActionResult&gt; Logout()</span><br><span class="line">        &#123;</span><br><span class="line">            await HttpContext.SignOutAsync();</span><br><span class="line">            return RedirectToAction(&quot;Index&quot;, &quot;Home&quot;);// 導至登入頁</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>登入:在56~82，主要是檢查帳密&gt;建立Cookie權杖&gt;在使用SignInAsync以Cookie權杖做登入。</li>
+<li>登出:在85~89，很簡單的一行<code>await HttpContext.SignOutAsync();</code>即可。</li>
+<li>檢視登入後資訊:在33~47，<code>[Authorize]</code>表示授權才能啟用，主要把登入後的資訊從HttpContext中取出給前端顯示。</li>
+</ul>
+<p>5.之後建立登入頁，我這把登入做在Index.cshtml</p>
+<p><strong>Index.cshtml</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">@&#123;</span><br><span class="line">    ViewData[&quot;Title&quot;] = &quot;Home Page&quot;;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">&lt;div class=&quot;text-center&quot;&gt;</span><br><span class="line">    &lt;h1 class=&quot;display-4&quot;&gt;Welcome&lt;/h1&gt;</span><br><span class="line">    &lt;p&gt;Learn about &lt;a href=&quot;https://docs.microsoft.com/aspnet/core&quot;&gt;building Web apps with ASP.NET Core&lt;/a&gt;.&lt;/p&gt;</span><br><span class="line">&lt;/div&gt;</span><br><span class="line"></span><br><span class="line">&lt;!--登入區塊--&gt;</span><br><span class="line">@using (Html.BeginForm(&quot;Login&quot;, &quot;Home&quot;, new &#123; ReturnUrl = Context.Request.Query[&quot;ReturnUrl&quot;] &#125;, FormMethod.Post, true, new &#123; name = &quot;loginForm&quot;, autocomplete = &quot;off&quot; &#125;))</span><br><span class="line">&#123;</span><br><span class="line">    &lt;div&gt;</span><br><span class="line">        &lt;label&gt;帳號：&lt;/label&gt;@Html.TextBox(&quot;Account&quot;)</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">    &lt;div&gt;</span><br><span class="line">        &lt;label&gt;密碼：&lt;/label&gt;@Html.Password(&quot;Password&quot;)</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">    &lt;div&gt;</span><br><span class="line">        &lt;label&gt;記住我：&lt;/label&gt;@Html.CheckBox(&quot;IsRememberMe&quot;)</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">    &lt;div&gt;</span><br><span class="line">        &lt;button type=&quot;submit&quot;&gt;提交&lt;/button&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">    &lt;div style=&quot;color:red;&quot;&gt;</span><br><span class="line">        &lt;!--顯示登入失敗訊息 --&gt;</span><br><span class="line">        @ViewBag.errMsg</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">&#125;</span><br><span class="line">&lt;!--./登入區塊--&gt;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>6.登入後才可用的頁面，我這把Privacy.cshtml當成是要登入才能進的頁面</p>
+<p><strong>Privacy.cshtml</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">@&#123;</span><br><span class="line">    ViewData[&quot;Title&quot;] = &quot;Privacy Policy&quot;;</span><br><span class="line">&#125;</span><br><span class="line">&lt;h1&gt;@ViewData[&quot;Title&quot;]&lt;/h1&gt;</span><br><span class="line"></span><br><span class="line">&lt;p&gt;Use this page to detail your site&#x27;s privacy policy.&lt;/p&gt;</span><br><span class="line"></span><br><span class="line">&lt;!--登出區塊--&gt;</span><br><span class="line">&lt;div&gt;</span><br><span class="line">    您的登入資訊↓</span><br><span class="line">&lt;/div&gt;</span><br><span class="line">&lt;div&gt;</span><br><span class="line">    @Html.Raw(ViewBag.msg)</span><br><span class="line">&lt;/div&gt;</span><br><span class="line">&lt;div&gt;</span><br><span class="line">    &lt;a href=&quot;@Url.Action(&quot;Logout&quot;,&quot;Home&quot;)&quot;&gt;登出&lt;/a&gt;</span><br><span class="line">&lt;/div&gt;</span><br><span class="line">&lt;!--./登出區塊--&gt;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>第16:實作登出，點下去回連接到HomeController.cs的Logout動作</li>
+</ul>
+<p>7.完成，看看登入、登出效果。</p>
+<img src="/2021/10/07/C-MVC-%E9%A9%97%E8%AD%89%E8%88%87%E6%8E%88%E6%AC%8A%E7%99%BB%E5%85%A5%E8%88%87%E7%99%BB%E5%87%BA/2.gif" class="">
+
+<h3 id="總結"><a href="#總結" class="headerlink" title="總結"></a>總結</h3><p>以這種Cookie-Based驗證方式不用管是DB First還是Code First都可以用，只要簡單做個設定即可!<br>如果是用Idenity在資料表部分會要符合特定格式，可能對某些已成形的系統不好加入。</p>
+<p>最後，在這篇裡面實現了登入、登出，但現在的網站應該還有更細的權限，如:特定功能的新刪修查、某按鈕權限、只能看不能編輯。<br>因此，在下篇中將會實作更細部分的權限分則。<br>即以角色為基礎的存取控制（Role-based access control，RBAC）。</p>
+<p>(( 這篇文好長</p>
+<p><strong>參考資料</strong><br><a target="_blank" rel="noopener" href="https://docs.microsoft.com/zh-tw/aspnet/core/security/authorization/introduction?view=aspnetcore-3.1">https://docs.microsoft.com/zh-tw/aspnet/core/security/authorization/introduction?view=aspnetcore-3.1</a><br><a target="_blank" rel="noopener" href="https://ithelp.ithome.com.tw/articles/10249930">https://ithelp.ithome.com.tw/articles/10249930</a><br><a target="_blank" rel="noopener" href="https://blogger.tigernaxo.com/post/dotnetcore31/auth/auth_guild_3/">https://blogger.tigernaxo.com/post/dotnetcore31/auth/auth_guild_3/</a><br><a target="_blank" rel="noopener" href="https://ithelp.ithome.com.tw/articles/10199102">https://ithelp.ithome.com.tw/articles/10199102</a><br><a target="_blank" rel="noopener" href="https://ithelp.ithome.com.tw/articles/10198150">https://ithelp.ithome.com.tw/articles/10198150</a><br><a target="_blank" rel="noopener" href="https://blog.miniasp.com/post/2019/12/25/asp-net-core-3-cookie-based-authentication">https://blog.miniasp.com/post/2019/12/25/asp-net-core-3-cookie-based-authentication</a><br><a target="_blank" rel="noopener" href="https://dotblogs.com.tw/shadow/2019/01/16/105615">https://dotblogs.com.tw/shadow/2019/01/16/105615</a><br><a target="_blank" rel="noopener" href="https://docs.microsoft.com/zh-tw/aspnet/core/security/authentication/cookie?view=aspnetcore-3.1">https://docs.microsoft.com/zh-tw/aspnet/core/security/authentication/cookie?view=aspnetcore-3.1</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://yuhsiang237.github.io/2021/10/07/C-MVC-%E9%A9%97%E8%AD%89%E8%88%87%E6%8E%88%E6%AC%8A%E7%99%BB%E5%85%A5%E8%88%87%E7%99%BB%E5%87%BA/" data-id="cme6kwo0t001ugalj8iqwbr9q" data-title="[Day12] C# MVC 驗證與授權，登入與登出 - C#&amp;AspNetCore" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-C-MVC傳遞參數的方式" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2021/10/06/C-MVC%E5%82%B3%E9%81%9E%E5%8F%83%E6%95%B8%E7%9A%84%E6%96%B9%E5%BC%8F/" class="article-date">
+  <time class="dt-published" datetime="2021-10-06T04:06:42.000Z" itemprop="datePublished">2021-10-06</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Code/">Code</a>►<a class="article-category-link" href="/categories/Code/C/">C#</a>►<a class="article-category-link" href="/categories/Framework/">Framework</a>►<a class="article-category-link" href="/categories/Framework/AspNetCore-MVC/">AspNetCore MVC</a>►<a class="article-category-link" href="/categories/Topic/">Topic</a>►<a class="article-category-link" href="/categories/Topic/2021-C-AspNetCore-Challenge/">2021 C# AspNetCore Challenge</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2021/10/06/C-MVC%E5%82%B3%E9%81%9E%E5%8F%83%E6%95%B8%E7%9A%84%E6%96%B9%E5%BC%8F/">[Day11] C# MVC傳遞參數的方式 - C#&amp;AspNetCore</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>在上回 <a href="/2021/10/05/C-MVC-%E6%AA%A2%E8%A6%96%E5%85%83%E4%BB%B6ViewCompoment%E4%BD%BF%E7%94%A8/" title="[Day10] C# MVC 檢視元件View Compoment使用- C#&amp;AspNetCore">[Day10] C# MVC 檢視元件View Compoment使用- C#&amp;AspNetCore</a> ，我們介紹了View Component的做法，算是把整個MVC的View摸透了。</p>
+<p>而這回則是要探討如何在這些頁面間傳遞參數。</p>
+<h3 id="Model-Binder"><a href="#Model-Binder" class="headerlink" title="Model Binder"></a>Model Binder</h3><p>主要會透過Model Binder來完成傳遞，Model Binder主要是用於將HTTP request資料對應到controller/Action去。<br>參數可能是string、integer、class、list、array…等</p>
+<p>而為什麼能接到呢?就是前面的這些設定</p>
+<p><strong>Startup.cs</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">app.UseEndpoints(endpoints =&gt;</span><br><span class="line">&#123;</span><br><span class="line">    endpoints.MapControllerRoute(</span><br><span class="line">        name: &quot;default&quot;,</span><br><span class="line">        pattern: &quot;&#123;controller=Home&#125;/&#123;action=Index&#125;/&#123;id?&#125;&quot;);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<h3 id="常見的傳遞參數方法"><a href="#常見的傳遞參數方法" class="headerlink" title="常見的傳遞參數方法"></a>常見的傳遞參數方法</h3><ol>
+<li>從網址傳遞</li>
+</ol>
+<p>例:<a target="_blank" rel="noopener" href="https://localhost:44378/Home?id=1">https://localhost:44378/Home?id=1</a></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">public IActionResult Index(int id)</span><br><span class="line">&#123;</span><br><span class="line">    Console.Write(id);</span><br><span class="line">    return View();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>後面帶參數即可，以此是id，有多少個帶多少個。</p>
+<ol start="2">
+<li>從form post請求</li>
+</ol>
+<p>View頁面:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">&lt;form asp-action=&quot;Create&quot;&gt;</span><br><span class="line">    &lt;div&gt;</span><br><span class="line">        &lt;label asp-for=&quot;Name&quot;&gt;&lt;/label&gt;</span><br><span class="line">        &lt;input asp-for=&quot;Name&quot; /&gt;</span><br><span class="line">        &lt;span asp-validation-for=&quot;Name&quot;&gt;&lt;/span&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">    &lt;div&gt;</span><br><span class="line">        &lt;label asp-for=&quot;Age&quot;&gt;&lt;/label&gt;</span><br><span class="line">        &lt;input asp-for=&quot;Age&quot; /&gt;</span><br><span class="line">        &lt;span asp-validation-for=&quot;Age&quot;&gt;&lt;/span&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">    &lt;div&gt;</span><br><span class="line">        &lt;input type=&quot;submit&quot; value=&quot;Save&quot; /&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">&lt;/form&gt;</span><br></pre></td></tr></table></figure>
+<p>Controller頁面:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">[HttpPost]</span><br><span class="line">public IActionResult Create(UsersModel usersmodel)</span><br><span class="line">&#123;</span><br><span class="line">    if (ModelState.IsValid)</span><br><span class="line">    &#123;</span><br><span class="line">        //如果連結資料庫在這進行儲存</span><br><span class="line"></span><br><span class="line">        //導回首頁</span><br><span class="line">        return RedirectToAction(nameof(Index));</span><br><span class="line">    &#125;</span><br><span class="line">    return View(usersmodel);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>基本上就是有特別多資料或固定規格會使用Model去接，不然可以參考以下補充資料。</p>
+<h3 id="補充"><a href="#補充" class="headerlink" title="補充"></a>補充</h3><p>通常上面的就足夠來撰寫網頁了，但偶而還是會需要取得請求的特定資料<br>這時還有以下方法可以用:<br>Header、Request、Query、Form、Route、FormBody</p>
+<h3 id="總結"><a href="#總結" class="headerlink" title="總結"></a>總結</h3><p>雖然有時會因為避免用戶改資料，把參數傳遞在session storage就是了。<br>但缺點是他是前台Javascript，要在前台追參數。<br>最後，當專案大起來時勢必要注意參數的管理，不然A到B頁可能會有各種傳法，在追參數、修改上就會花比較多時間。</p>
+<p>預計下回會稍微探討權限部分。</p>
+<p><strong>參考資料</strong><br><a target="_blank" rel="noopener" href="https://ithelp.ithome.com.tw/articles/10240381">https://ithelp.ithome.com.tw/articles/10240381</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://yuhsiang237.github.io/2021/10/06/C-MVC%E5%82%B3%E9%81%9E%E5%8F%83%E6%95%B8%E7%9A%84%E6%96%B9%E5%BC%8F/" data-id="cme6kwo0x0022galj961k0p1l" data-title="[Day11] C# MVC傳遞參數的方式 - C#&amp;AspNetCore" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-在網路中減少自己觸及的資訊量" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2021/10/05/%E5%9C%A8%E7%B6%B2%E8%B7%AF%E4%B8%AD%E6%B8%9B%E5%B0%91%E8%87%AA%E5%B7%B1%E8%A7%B8%E5%8F%8A%E7%9A%84%E8%B3%87%E8%A8%8A%E9%87%8F/" class="article-date">
+  <time class="dt-published" datetime="2021-10-05T11:26:23.000Z" itemprop="datePublished">2021-10-05</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Daily-Log/">Daily Log</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2021/10/05/%E5%9C%A8%E7%B6%B2%E8%B7%AF%E4%B8%AD%E6%B8%9B%E5%B0%91%E8%87%AA%E5%B7%B1%E8%A7%B8%E5%8F%8A%E7%9A%84%E8%B3%87%E8%A8%8A%E9%87%8F/">在網路中減少自己觸及的資訊量</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>2021年的今天，似乎什麼事都要用透過網路。<br>但每天都接觸網路上的資訊就會讓人覺得煩躁、被影響。<br>於是我開始想，有沒有什麼方法”減少資訊量”呢?<br>因為現在已不可能100%離開網路，像是在台灣工作可能還是要Line。</p>
+<p>以下是我想到的作法:</p>
+<ol>
+<li>減少用社群軟體頻率，如7天1次1小時</li>
+<li>不看新聞、論壇</li>
+<li>不看Youtube</li>
+<li>手機換功能型手機</li>
+<li>少用Gxxxxgle搜尋</li>
+<li>瀏覽器ADBLOCK過濾廣告</li>
+<li>轉移注意力到離線的東西</li>
+</ol>
+<p>其實，第2~6點都可以靠自己戒掉<br>只有第1點是現代是必須的，不然就沒朋友了，就是把它當做訊息軟體用，不看動態也不發文。<br>第4點，則是我們要自己培養的見解能力，不要什麼都靠Gxxxxgle，手動去翻閱實體書或是自己想辦法，十年前的自己可以這樣，現在也一定可以。就是找一套自己離線方法。</p>
+<p>然後，可能會覺得不用網路就不能學習，那我問用網路又學到什麼實際能工作的技能…，真正派得上用場的我認為都是內化在自己腦中的知識。</p>
+<p>最後，希望可以主動抵制，不要再被演算法強迫推銷了!<br>一些不相干的事在我們周遭太多了。<br>關心自己周遭實際碰過的人事物比較重要。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://yuhsiang237.github.io/2021/10/05/%E5%9C%A8%E7%B6%B2%E8%B7%AF%E4%B8%AD%E6%B8%9B%E5%B0%91%E8%87%AA%E5%B7%B1%E8%A7%B8%E5%8F%8A%E7%9A%84%E8%B3%87%E8%A8%8A%E9%87%8F/" data-id="cme6kwo3t007fgaljcimheixw" data-title="在網路中減少自己觸及的資訊量" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-C-MVC-檢視元件ViewCompoment使用" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2021/10/05/C-MVC-%E6%AA%A2%E8%A6%96%E5%85%83%E4%BB%B6ViewCompoment%E4%BD%BF%E7%94%A8/" class="article-date">
+  <time class="dt-published" datetime="2021-10-05T04:06:42.000Z" itemprop="datePublished">2021-10-05</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Code/">Code</a>►<a class="article-category-link" href="/categories/Code/C/">C#</a>►<a class="article-category-link" href="/categories/Framework/">Framework</a>►<a class="article-category-link" href="/categories/Framework/AspNetCore-MVC/">AspNetCore MVC</a>►<a class="article-category-link" href="/categories/Topic/">Topic</a>►<a class="article-category-link" href="/categories/Topic/2021-C-AspNetCore-Challenge/">2021 C# AspNetCore Challenge</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2021/10/05/C-MVC-%E6%AA%A2%E8%A6%96%E5%85%83%E4%BB%B6ViewCompoment%E4%BD%BF%E7%94%A8/">[Day10] C# MVC 檢視元件View Compoment使用- C#&amp;AspNetCore</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>在上回 <a href="/2021/10/04/C-MVC-View%E4%BD%BF%E7%94%A8/" title="[Day9] C# MVC View使用 - C#&amp;AspNetCore">[Day9] C# MVC View使用 - C#&amp;AspNetCore</a> ，我們介紹了View的操作及用法，並稍微帶了Partial View。<br>而這回，我們將介紹檢視元件View Compoment。</p>
+<p>因為原本MVC5的<code>@HTML.action</code>在.net core MVC中已經被移除掉了，造成Partial View會無法綁後端Controller撰寫商業邏輯。<br>因此，要改用View Compoment的做法。</p>
+<h3 id="View-Compoment"><a href="#View-Compoment" class="headerlink" title="View Compoment"></a>View Compoment</h3><p>檢視元件與部分檢視類似，但功能更強大。 檢視元件不會使用模型繫結(看你要不要都可以)，並且只取決於呼叫它時所提供的資料。 </p>
+<p>檢視元件：</p>
+<ul>
+<li>轉譯區塊，而不是整個回應。</li>
+<li>包含控制器與檢視之間的相同關注點分離和可測試性優點。</li>
+<li>可以有參數和商務邏輯。</li>
+<li>它通常是從配置頁面叫用。</li>
+<li>不參與控制器生命週期，無法使用Filter。</li>
+<li>非 HTTP 端點的呼叫，不處理Http Request/Response ，ViewComponent是透過程式碼叫用 。 </li>
+</ul>
+<p>簡言之，可以撰寫商務邏輯。<br>有一個專門負責這View Component商務邏輯的程式碼。而你在View中也能把參數傳進View Component裡面。</p>
+<h3 id="View-Compoment建立與使用"><a href="#View-Compoment建立與使用" class="headerlink" title="View Compoment建立與使用"></a>View Compoment建立與使用</h3><p>照微軟官方文件，View Compoment有限定的資料夾結構，避免維護困難。<br>黃色標記是等等會新增的檔案。</p>
+<img src="/2021/10/05/C-MVC-%E6%AA%A2%E8%A6%96%E5%85%83%E4%BB%B6ViewCompoment%E4%BD%BF%E7%94%A8/1.png" class="">
+
+<ul>
+<li><code>ViewComponents資料夾</code>必須在根目錄下新增這資料夾名稱才可以使用ViewComponents，否則底下的程式碼會出現錯誤。<ul>
+<li><code>ShowUserInfo.cs</code>是以View Component為名稱命名的業務邏輯管理器。</li>
+</ul>
+</li>
+<li><code>Shared/Components資料夾</code>底下都是以<strong>資料夾</strong>為名的Component名稱。<ul>
+<li><code>ShowUserInfo資料夾</code>為View Component名稱，底下有一個Default.cshtml，為Component的視圖。</li>
+</ul>
+</li>
+</ul>
+<p>1.首先先建立業務邏輯的檔案</p>
+<p><strong>ShowUserInfo.cs</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">using Microsoft.AspNetCore.Mvc;</span><br><span class="line">using Microsoft.EntityFrameworkCore;</span><br><span class="line">using System.Collections.Generic;</span><br><span class="line">using System.Linq;</span><br><span class="line">using System.Threading.Tasks;</span><br><span class="line">using WebApplication1.Models;</span><br><span class="line"></span><br><span class="line">namespace WebApplication1.ViewComponents</span><br><span class="line">&#123;</span><br><span class="line">    public class ShowUserInfo : ViewComponent</span><br><span class="line">    &#123;</span><br><span class="line">        public async Task&lt;IViewComponentResult&gt; InvokeAsync(string  number, string name,string tel)</span><br><span class="line">        &#123;</span><br><span class="line">            Customer customer = new Customer();</span><br><span class="line">            customer.Name = name;</span><br><span class="line">            customer.Number = number;</span><br><span class="line">            customer.Tel = tel;</span><br><span class="line">            return View(customer);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li><code>IViewComponentResult</code>這段回應照寫就好，算是固定寫法。</li>
+</ul>
+<p>在13~19行可以用Model、ViewBag、ViewData，簡單來說就是當你在寫Controller裡的action那樣。<br>我這邊為了求謹慎，所以回傳的是個強型別Model，因為固定規格比較好維護。</p>
+<p>2.再來是View Component的視圖</p>
+<p><strong>ShowUserInfo.cshtml</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">@model WebApplication1.Models.Customer;</span><br><span class="line"></span><br><span class="line">&lt;ul&gt;</span><br><span class="line">    &lt;li&gt;Number:@Model.Number&lt;/li&gt;</span><br><span class="line">    &lt;li&gt;Name:@Model.Name&lt;/li&gt;</span><br><span class="line">    &lt;li&gt;Tel:@Model.Tel&lt;/li&gt;</span><br><span class="line">&lt;/ul&gt;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>在此就把傳過來的資料顯示即可。</p>
+<p>3.實際把View Component套用到View上。</p>
+<p><strong>Index.cshtml</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">@model WebApplication1.Models.Customer;</span><br><span class="line">@using WebApplication1.ViewComponents;</span><br><span class="line">@&#123;</span><br><span class="line">    ViewData[&quot;Title&quot;] = &quot;Home Page&quot;;</span><br><span class="line">&#125;</span><br><span class="line">&lt;ul&gt;</span><br><span class="line">    &lt;li&gt;@Model.Number&lt;/li&gt;</span><br><span class="line">    &lt;li&gt;@Model.Name&lt;/li&gt;</span><br><span class="line">    &lt;li&gt;@Model.Tel&lt;/li&gt;</span><br><span class="line">&lt;/ul&gt;</span><br><span class="line">&lt;div class=&quot;text-center&quot;&gt;</span><br><span class="line">    &lt;h1 class=&quot;display-4&quot;&gt;Welcome&lt;/h1&gt;</span><br><span class="line">    &lt;p&gt;Learn about &lt;a href=&quot;https://docs.microsoft.com/aspnet/core&quot;&gt;building Web apps with ASP.NET Core&lt;/a&gt;.&lt;/p&gt;</span><br><span class="line">&lt;/div&gt;</span><br><span class="line"></span><br><span class="line">// 呼叫View Component</span><br><span class="line">@await Component.InvokeAsync(nameof(ShowUserInfo), new &#123; number = &quot;A007&quot;, name = &quot;YS&quot;,tel=&quot;00-00000000&quot; &#125;)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<ul>
+<li><code>@await Component.InvokeAsync</code>用這方法傳遞參數來呼叫View Component顯示。</li>
+</ul>
+<p>如此一來就完成了，在網頁上呈現。</p>
+<img src="/2021/10/05/C-MVC-%E6%AA%A2%E8%A6%96%E5%85%83%E4%BB%B6ViewCompoment%E4%BD%BF%E7%94%A8/2.png" class="">
+
+<h3 id="總結"><a href="#總結" class="headerlink" title="總結"></a>總結</h3><p>整體流程大概是這樣:</p>
+<ol>
+<li>使用者進到View頁面</li>
+<li>Controller接受並回應資料給View</li>
+<li>View上的Razor語法呼叫ViewComponent</li>
+<li>把參數再丟給ViewComponent處理</li>
+<li>之後結果再回傳給整個View。</li>
+</ol>
+<p>感覺這種方式真是爽快，功能又強，減少了很多Controller要顧慮的生命週期。<br>有獨立區塊用View Component會比用Partial View輕鬆很多。(時代的眼淚 誤~*</p>
+<p><strong>參考資料</strong><br><a target="_blank" rel="noopener" href="https://dotblogs.com.tw/shadow/2021/04/10/174425">https://dotblogs.com.tw/shadow/2021/04/10/174425</a><br><a target="_blank" rel="noopener" href="https://docs.microsoft.com/en-us/aspnet/core/mvc/views/view-components?view=aspnetcore-5.0">https://docs.microsoft.com/en-us/aspnet/core/mvc/views/view-components?view=aspnetcore-5.0</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://yuhsiang237.github.io/2021/10/05/C-MVC-%E6%AA%A2%E8%A6%96%E5%85%83%E4%BB%B6ViewCompoment%E4%BD%BF%E7%94%A8/" data-id="cme6kwo0v001xgalj676324lu" data-title="[Day10] C# MVC 檢視元件View Compoment使用- C#&amp;AspNetCore" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-C-MVC-View使用" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2021/10/04/C-MVC-View%E4%BD%BF%E7%94%A8/" class="article-date">
+  <time class="dt-published" datetime="2021-10-04T04:00:51.000Z" itemprop="datePublished">2021-10-04</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Code/">Code</a>►<a class="article-category-link" href="/categories/Code/C/">C#</a>►<a class="article-category-link" href="/categories/Framework/">Framework</a>►<a class="article-category-link" href="/categories/Framework/AspNetCore-MVC/">AspNetCore MVC</a>►<a class="article-category-link" href="/categories/Topic/">Topic</a>►<a class="article-category-link" href="/categories/Topic/2021-C-AspNetCore-Challenge/">2021 C# AspNetCore Challenge</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2021/10/04/C-MVC-View%E4%BD%BF%E7%94%A8/">[Day9] C# MVC View使用 - C#&amp;AspNetCore</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>在上回 <a href="/2021/10/03/C-MVC-Controller%E6%8E%A7%E5%88%B6%E5%99%A8%E4%BD%BF%E7%94%A8/" title="[Day8] C# MVC Controller控制器使用 - C#&amp;AspNetCore">[Day8] C# MVC Controller控制器使用 - C#&amp;AspNetCore</a>  ，我們介紹了Controller的基本用法。</p>
+<p>而這回就是使用者畫面了，也就是MVC的View</p>
+<p>在這篇中會介紹:</p>
+<ol>
+<li>View的Razor語法</li>
+<li>可共用的View 部分檢視Partial View</li>
+</ol>
+<h3 id="View的Razor語法"><a href="#View的Razor語法" class="headerlink" title="View的Razor語法"></a>View的Razor語法</h3><p>通常在View中看到@出現通常就是Razor語法了。<br>基本上就是印出值，再來就是一些特定用法。</p>
+<ul>
+<li>後端註解<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">@*註解*@</span><br></pre></td></tr></table></figure></li>
+<li>輸出@符號<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">@@</span><br></pre></td></tr></table></figure></li>
+<li>@變數名稱，取值<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">@DateTime.Now</span><br></pre></td></tr></table></figure></li>
+<li>陳述式<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">@(5*3)</span><br></pre></td></tr></table></figure></li>
+<li>程式碼區塊<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">@&#123; &#125;</span><br></pre></td></tr></table></figure></li>
+<li>for用法<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">@for (int i = 0; i &lt; 10; i++)</span><br><span class="line">&#123;</span><br><span class="line">  &lt;text&gt;</span><br><span class="line">    word   </span><br><span class="line">  &lt;/text&gt;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li>foreach用法<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">@&#123;</span><br><span class="line">    string[] fruits = &#123; &quot;apple&quot;, &quot;orange&quot;, &quot;banana&quot; &#125;;    </span><br><span class="line">    &lt;ul&gt;</span><br><span class="line">      @foreach (var item in fruits)</span><br><span class="line">      &#123;</span><br><span class="line">        &lt;li&gt;@item&lt;/li&gt;    </span><br><span class="line">      &#125;</span><br><span class="line">    &lt;/ul&gt;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li>變數<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">@&#123;</span><br><span class="line">    var name = &quot;mvc&quot;;  </span><br><span class="line">&#125;  </span><br><span class="line">&lt;p&gt;@name 您好&lt;/p&gt;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="Partial-View-部分檢視"><a href="#Partial-View-部分檢視" class="headerlink" title="Partial View 部分檢視"></a>Partial View 部分檢視</h3><p>在網頁時常會有需要<strong>共用的畫面</strong>，如側邊欄、頂端橫幅等。<br>不想要在每個頁面都寫一個，這時就會使用到Partial View把他們切出去。</p>
+<p>Partial View前面會有個_底線<br>可以看到預設建立的MVC專案就有不少Partial View了。</p>
+<img src="/2021/10/04/C-MVC-View%E4%BD%BF%E7%94%A8/1.png" class="">
+
+
+<h5 id="ViewStart-cshtml"><a href="#ViewStart-cshtml" class="headerlink" title="_ViewStart.cshtml"></a>_ViewStart.cshtml</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">@&#123;</span><br><span class="line">    Layout = &quot;_Layout&quot;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>Layout的進入點_ViewStart.cshtml在此可以選擇預設要套用的版，如一些網站會有前台、後台之分。<br>如果想把View切成前後台可以參考這篇動態切換適配的Layout:<br><a target="_blank" rel="noopener" href="https://dotblogs.com.tw/stanley14/2016/06/29/202231">https://dotblogs.com.tw/stanley14/2016/06/29/202231</a><br>其實就是在_ViewStart.cshtml這檔案做些適配而已</p>
+<p>再來我們看_Layout.cs，版面前台主View</p>
+<h5 id="Layout-cs"><a href="#Layout-cs" class="headerlink" title="_Layout.cs"></a>_Layout.cs</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line">&lt;!DOCTYPE html&gt;</span><br><span class="line">&lt;html lang=&quot;en&quot;&gt;</span><br><span class="line">&lt;head&gt;</span><br><span class="line">    &lt;meta charset=&quot;utf-8&quot; /&gt;</span><br><span class="line">    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot; /&gt;</span><br><span class="line">    &lt;title&gt;@ViewData[&quot;Title&quot;] - WebApplication1&lt;/title&gt;</span><br><span class="line">    &lt;link rel=&quot;stylesheet&quot; href=&quot;~/lib/bootstrap/dist/css/bootstrap.min.css&quot; /&gt;</span><br><span class="line">    &lt;link rel=&quot;stylesheet&quot; href=&quot;~/css/site.css&quot; /&gt;</span><br><span class="line">&lt;/head&gt;</span><br><span class="line">&lt;body&gt;</span><br><span class="line">    &lt;header&gt;</span><br><span class="line">        &lt;nav class=&quot;navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3&quot;&gt;</span><br><span class="line">            &lt;div class=&quot;container&quot;&gt;</span><br><span class="line">                &lt;a class=&quot;navbar-brand&quot; asp-area=&quot;&quot; asp-controller=&quot;Home&quot; asp-action=&quot;Index&quot;&gt;WebApplication1&lt;/a&gt;</span><br><span class="line">                &lt;button class=&quot;navbar-toggler&quot; type=&quot;button&quot; data-toggle=&quot;collapse&quot; data-target=&quot;.navbar-collapse&quot; aria-controls=&quot;navbarSupportedContent&quot;</span><br><span class="line">                        aria-expanded=&quot;false&quot; aria-label=&quot;Toggle navigation&quot;&gt;</span><br><span class="line">                    &lt;span class=&quot;navbar-toggler-icon&quot;&gt;&lt;/span&gt;</span><br><span class="line">                &lt;/button&gt;</span><br><span class="line">                &lt;div class=&quot;navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse&quot;&gt;</span><br><span class="line">                    &lt;ul class=&quot;navbar-nav flex-grow-1&quot;&gt;</span><br><span class="line">                        &lt;li class=&quot;nav-item&quot;&gt;</span><br><span class="line">                            &lt;a class=&quot;nav-link text-dark&quot; asp-area=&quot;&quot; asp-controller=&quot;Home&quot; asp-action=&quot;Index&quot;&gt;Home&lt;/a&gt;</span><br><span class="line">                        &lt;/li&gt;</span><br><span class="line">                        &lt;li class=&quot;nav-item&quot;&gt;</span><br><span class="line">                            &lt;a class=&quot;nav-link text-dark&quot; asp-area=&quot;&quot; asp-controller=&quot;Home&quot; asp-action=&quot;Privacy&quot;&gt;Privacy&lt;/a&gt;</span><br><span class="line">                        &lt;/li&gt;</span><br><span class="line">                    &lt;/ul&gt;</span><br><span class="line">                &lt;/div&gt;</span><br><span class="line">            &lt;/div&gt;</span><br><span class="line">        &lt;/nav&gt;</span><br><span class="line">    &lt;/header&gt;</span><br><span class="line">    &lt;div class=&quot;container&quot;&gt;</span><br><span class="line">        &lt;main role=&quot;main&quot; class=&quot;pb-3&quot;&gt;</span><br><span class="line">            @RenderBody()</span><br><span class="line">        &lt;/main&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line"></span><br><span class="line">    &lt;footer class=&quot;border-top footer text-muted&quot;&gt;</span><br><span class="line">        &lt;div class=&quot;container&quot;&gt;</span><br><span class="line">            &amp;copy; 2021 - WebApplication1 - &lt;a asp-area=&quot;&quot; asp-controller=&quot;Home&quot; asp-action=&quot;Privacy&quot;&gt;Privacy&lt;/a&gt;</span><br><span class="line">        &lt;/div&gt;</span><br><span class="line">    &lt;/footer&gt;</span><br><span class="line">    &lt;script src=&quot;~/lib/jquery/dist/jquery.min.js&quot;&gt;&lt;/script&gt;</span><br><span class="line">    &lt;script src=&quot;~/lib/bootstrap/dist/js/bootstrap.bundle.min.js&quot;&gt;&lt;/script&gt;</span><br><span class="line">    &lt;script src=&quot;~/js/site.js&quot; asp-append-version=&quot;true&quot;&gt;&lt;/script&gt;</span><br><span class="line">    @RenderSection(&quot;Scripts&quot;, required: false)</span><br><span class="line">&lt;/body&gt;</span><br><span class="line">&lt;/html&gt;</span><br></pre></td></tr></table></figure>
+<ul>
+<li><code>@RenderSection("Scripts", required: false)</code>用來輸出主板中區段的內容。required是指此Section是否一定要有資料顯示，如果設成true時，檢視中沒有定義此Section的值，那網頁就會掛掉。<br>子版則可以將下列區段內容輸出到主板<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">@section Scripts &#123;</span><br><span class="line">    &lt;script type=&quot;text/javascript&quot; src=&quot;~/scripts/main.js&quot;&gt;&lt;/script&gt;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><code>@RenderBody()</code>所有被導向主版的view會被載入到@RenderBody</li>
+</ul>
+<h3 id="切Partial的方法"><a href="#切Partial的方法" class="headerlink" title="切Partial的方法"></a>切Partial的方法</h3><p>我們可以發現_Layout.cs有段nav區塊可以共用，把他切出去吧。</p>
+<h5 id="Nav-cs"><a href="#Nav-cs" class="headerlink" title="_Nav.cs"></a>_Nav.cs</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">&lt;nav class=&quot;navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3&quot;&gt;</span><br><span class="line">    &lt;div class=&quot;container&quot;&gt;</span><br><span class="line">        &lt;a class=&quot;navbar-brand&quot; asp-area=&quot;&quot; asp-controller=&quot;Home&quot; asp-action=&quot;Index&quot;&gt;WebApplication1&lt;/a&gt;</span><br><span class="line">        &lt;button class=&quot;navbar-toggler&quot; type=&quot;button&quot; data-toggle=&quot;collapse&quot; data-target=&quot;.navbar-collapse&quot; aria-controls=&quot;navbarSupportedContent&quot;</span><br><span class="line">                aria-expanded=&quot;false&quot; aria-label=&quot;Toggle navigation&quot;&gt;</span><br><span class="line">            &lt;span class=&quot;navbar-toggler-icon&quot;&gt;&lt;/span&gt;</span><br><span class="line">        &lt;/button&gt;</span><br><span class="line">        &lt;div class=&quot;navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse&quot;&gt;</span><br><span class="line">            &lt;ul class=&quot;navbar-nav flex-grow-1&quot;&gt;</span><br><span class="line">                &lt;li class=&quot;nav-item&quot;&gt;</span><br><span class="line">                    &lt;a class=&quot;nav-link text-dark&quot; asp-area=&quot;&quot; asp-controller=&quot;Home&quot; asp-action=&quot;Index&quot;&gt;Home&lt;/a&gt;</span><br><span class="line">                &lt;/li&gt;</span><br><span class="line">                &lt;li class=&quot;nav-item&quot;&gt;</span><br><span class="line">                    &lt;a class=&quot;nav-link text-dark&quot; asp-area=&quot;&quot; asp-controller=&quot;Home&quot; asp-action=&quot;Privacy&quot;&gt;Privacy&lt;/a&gt;</span><br><span class="line">                &lt;/li&gt;</span><br><span class="line">            &lt;/ul&gt;</span><br><span class="line">        &lt;/div&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">&lt;/nav&gt;</span><br></pre></td></tr></table></figure>
+<p>之後在_Layout將他引進</p>
+<h5 id="Layout-cs-1"><a href="#Layout-cs-1" class="headerlink" title="_Layout.cs"></a>_Layout.cs</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">&lt;!DOCTYPE html&gt;</span><br><span class="line">&lt;html lang=&quot;en&quot;&gt;</span><br><span class="line">&lt;head&gt;</span><br><span class="line">    &lt;meta charset=&quot;utf-8&quot; /&gt;</span><br><span class="line">    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot; /&gt;</span><br><span class="line">    &lt;title&gt;@ViewData[&quot;Title&quot;] - WebApplication1&lt;/title&gt;</span><br><span class="line">    &lt;link rel=&quot;stylesheet&quot; href=&quot;~/lib/bootstrap/dist/css/bootstrap.min.css&quot; /&gt;</span><br><span class="line">    &lt;link rel=&quot;stylesheet&quot; href=&quot;~/css/site.css&quot; /&gt;</span><br><span class="line">&lt;/head&gt;</span><br><span class="line">&lt;body&gt;</span><br><span class="line">    &lt;header&gt;</span><br><span class="line">        @await Html.PartialAsync(&quot;_Nav&quot;)</span><br><span class="line">    &lt;/header&gt;</span><br><span class="line">    &lt;div class=&quot;container&quot;&gt;</span><br><span class="line">        &lt;main role=&quot;main&quot; class=&quot;pb-3&quot;&gt;</span><br><span class="line">            @RenderBody()</span><br><span class="line">        &lt;/main&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line"></span><br><span class="line">    &lt;footer class=&quot;border-top footer text-muted&quot;&gt;</span><br><span class="line">        &lt;div class=&quot;container&quot;&gt;</span><br><span class="line">            &amp;copy; 2021 - WebApplication1 - &lt;a asp-area=&quot;&quot; asp-controller=&quot;Home&quot; asp-action=&quot;Privacy&quot;&gt;Privacy&lt;/a&gt;</span><br><span class="line">        &lt;/div&gt;</span><br><span class="line">    &lt;/footer&gt;</span><br><span class="line">    &lt;script src=&quot;~/lib/jquery/dist/jquery.min.js&quot;&gt;&lt;/script&gt;</span><br><span class="line">    &lt;script src=&quot;~/lib/bootstrap/dist/js/bootstrap.bundle.min.js&quot;&gt;&lt;/script&gt;</span><br><span class="line">    &lt;script src=&quot;~/js/site.js&quot; asp-append-version=&quot;true&quot;&gt;&lt;/script&gt;</span><br><span class="line">    @RenderSection(&quot;Scripts&quot;, required: false)</span><br><span class="line">&lt;/body&gt;</span><br><span class="line">&lt;/html&gt;</span><br></pre></td></tr></table></figure>
+<ul>
+<li><code>@await Html.PartialAsync("_Nav")</code> 表示用異步的方式把Partial區塊引進來。使用 HTML 協助程式時，最佳做法是使用 PartialAsync。 PartialAsync 會傳回包裝在 Task<TResult> 的 IHtmlContent 類型。 方法的參考方式，是在等候的呼叫前面加上 @ 字元。此外，目前以不建議使用同步方式載入了，因為官方說會造成死結。</li>
+</ul>
+<p>如此以來就會更專注在每個小區塊。</p>
+<p>這時可能有人會問，Partial沒Controller怎麼載資料呢?所以要介紹另個載入的方式。</p>
+<h3 id="Partial傳遞資料的方式"><a href="#Partial傳遞資料的方式" class="headerlink" title="Partial傳遞資料的方式"></a>Partial傳遞資料的方式</h3><p>我們查看<code>@await Html.PartialAsync("_Nav")</code>的函式多載，可以發現能透過Model方式將資料傳入。</p>
+<img src="/2021/10/04/C-MVC-View%E4%BD%BF%E7%94%A8/2.png" class="">
+
+<p>我們建立一個ViewModel叫NavViewModel</p>
+<h5 id="NavViewModel-cs"><a href="#NavViewModel-cs" class="headerlink" title="NavViewModel.cs"></a>NavViewModel.cs</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">using System;</span><br><span class="line">using System.Collections.Generic;</span><br><span class="line">using System.Linq;</span><br><span class="line">using System.Threading.Tasks;</span><br><span class="line"></span><br><span class="line">namespace WebApplication1.Models</span><br><span class="line">&#123;</span><br><span class="line">    public class NavViewModel</span><br><span class="line">    &#123;</span><br><span class="line">        public string BrandName &#123; get; set; &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>將原本的PartialAsync傳入NavViewModel</p>
+<h5 id="Layout-cshtml"><a href="#Layout-cshtml" class="headerlink" title="_Layout.cshtml"></a>_Layout.cshtml</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">@await Html.PartialAsync(&quot;_Nav&quot;,new NavViewModel() &#123; BrandName = &quot;WebApplication1&quot; &#125;)</span><br></pre></td></tr></table></figure>
+<p>之後在_Nav.cshtml顯示</p>
+<h5 id="Nav-cshtml"><a href="#Nav-cshtml" class="headerlink" title="_Nav.cshtml"></a>_Nav.cshtml</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">@model WebApplication1.Models.NavViewModel;</span><br><span class="line">&lt;nav class=&quot;navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3&quot;&gt;</span><br><span class="line">    &lt;div class=&quot;container&quot;&gt;</span><br><span class="line">        &lt;a class=&quot;navbar-brand&quot; asp-area=&quot;&quot; asp-controller=&quot;Home&quot; asp-action=&quot;Index&quot;&gt;</span><br><span class="line">            @Model.BrandName</span><br><span class="line">        &lt;/a&gt;</span><br><span class="line">        &lt;button class=&quot;navbar-toggler&quot; type=&quot;button&quot; data-toggle=&quot;collapse&quot; data-target=&quot;.navbar-collapse&quot; aria-controls=&quot;navbarSupportedContent&quot;</span><br><span class="line">                aria-expanded=&quot;false&quot; aria-label=&quot;Toggle navigation&quot;&gt;</span><br><span class="line">            &lt;span class=&quot;navbar-toggler-icon&quot;&gt;&lt;/span&gt;</span><br><span class="line">        &lt;/button&gt;</span><br><span class="line">        &lt;div class=&quot;navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse&quot;&gt;</span><br><span class="line">            &lt;ul class=&quot;navbar-nav flex-grow-1&quot;&gt;</span><br><span class="line">                &lt;li class=&quot;nav-item&quot;&gt;</span><br><span class="line">                    &lt;a class=&quot;nav-link text-dark&quot; asp-area=&quot;&quot; asp-controller=&quot;Home&quot; asp-action=&quot;Index&quot;&gt;Home&lt;/a&gt;</span><br><span class="line">                &lt;/li&gt;</span><br><span class="line">                &lt;li class=&quot;nav-item&quot;&gt;</span><br><span class="line">                    &lt;a class=&quot;nav-link text-dark&quot; asp-area=&quot;&quot; asp-controller=&quot;Home&quot; asp-action=&quot;Privacy&quot;&gt;Privacy&lt;/a&gt;</span><br><span class="line">                &lt;/li&gt;</span><br><span class="line">            &lt;/ul&gt;</span><br><span class="line">        &lt;/div&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">&lt;/nav&gt;</span><br></pre></td></tr></table></figure>
+<ul>
+<li><code>@Model.BrandName</code>即可印出Model資料</li>
+</ul>
+<p>因為會拉出去獨立寫的通常都是固定規格，所以建議用Model，而不是用弱型別的ViewData、ViewBag方式。</p>
+<h3 id="總結"><a href="#總結" class="headerlink" title="總結"></a>總結</h3><p>MVC的View真的做到很嚴謹，讓整體資料有固定的方式作呈現，關鍵就在那一個View只能綁一個Model，讓資料減少亂竄的可能性。<br>而在Partial也是可以透過API方式去自行載入資料。</p>
+<p>預計下篇可能還是View，會探討一些常見作法在拆頁面結構上。</p>
+<p><strong>參考資料</strong><br><a target="_blank" rel="noopener" href="https://ithelp.ithome.com.tw/articles/10160185">https://ithelp.ithome.com.tw/articles/10160185</a><br><a target="_blank" rel="noopener" href="https://sites.google.com/site/yuedumvcbiji/4-view/layout-cshtml">https://sites.google.com/site/yuedumvcbiji/4-view/layout-cshtml</a><br><a target="_blank" rel="noopener" href="https://docs.microsoft.com/zh-tw/aspnet/core/mvc/views/layout?view=aspnetcore-5.0">https://docs.microsoft.com/zh-tw/aspnet/core/mvc/views/layout?view=aspnetcore-5.0</a><br><a target="_blank" rel="noopener" href="https://docs.microsoft.com/zh-tw/aspnet/core/mvc/views/partial?view=aspnetcore-5.0">https://docs.microsoft.com/zh-tw/aspnet/core/mvc/views/partial?view=aspnetcore-5.0</a><br><a target="_blank" rel="noopener" href="https://ithelp.ithome.com.tw/articles/10186517">https://ithelp.ithome.com.tw/articles/10186517</a><br><a target="_blank" rel="noopener" href="https://ithelp.ithome.com.tw/articles/10205881">https://ithelp.ithome.com.tw/articles/10205881</a><br><a target="_blank" rel="noopener" href="https://ithelp.ithome.com.tw/articles/10240368">https://ithelp.ithome.com.tw/articles/10240368</a><br><a target="_blank" rel="noopener" href="https://dotblogs.com.tw/stanley14/2016/06/29/202231">https://dotblogs.com.tw/stanley14/2016/06/29/202231</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://yuhsiang237.github.io/2021/10/04/C-MVC-View%E4%BD%BF%E7%94%A8/" data-id="cme6kwo0o001jgalj5tzxcpvc" data-title="[Day9] C# MVC View使用 - C#&amp;AspNetCore" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+
+
+  <nav id="page-nav">
+    
+    <a class="extend prev" rel="prev" href="/page/8/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/7/">7</a><a class="page-number" href="/page/8/">8</a><span class="page-number current">9</span><a class="page-number" href="/page/10/">10</a><a class="page-number" href="/page/11/">11</a><span class="space">&hellip;</span><a class="page-number" href="/page/16/">16</a><a class="extend next" rel="next" href="/page/10/">Next &raquo;</a>
+  </nav>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Code/">Code</a><span class="category-list-count">76</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Code/C/">C#</a><span class="category-list-count">69</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Code/Javascript/">Javascript</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Code/Refactoring/">Refactoring</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Code/Typescript/">Typescript</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/">Computer Science</a><span class="category-list-count">5</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/Algorithm/">Algorithm</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/Data-structure/">Data structure</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/Electronic-Circuit/">Electronic Circuit</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Daily-Log/">Daily Log</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/">Database</a><span class="category-list-count">57</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Database/PostgreSQL/">PostgreSQL</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/SQL-Server/">SQL Server</a><span class="category-list-count">47</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/">Framework</a><span class="category-list-count">27</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/AspNetCore-API/">AspNetCore API</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/AspNetCore-MVC/">AspNetCore MVC</a><span class="category-list-count">21</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/">Topic</a><span class="category-list-count">76</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2021-C-AspNetCore-Challenge/">2021 C# AspNetCore Challenge</a><span class="category-list-count">30</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2021-SQL-Server-Challenge/">2021 SQL Server Challenge</a><span class="category-list-count">30</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2022-C-SyncAndAsync/">2022 C# SyncAndAsync</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2025-Typescript/">2025 Typescript</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/Big-Data/">Big Data</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/LeetCode/">LeetCode</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/SystemStructure/">SystemStructure</a><span class="category-list-count">1</span></li></ul></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/08/">August 2025</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/05/">May 2023</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/03/">March 2023</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/02/">February 2023</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/01/">January 2023</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/12/">December 2022</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/09/">September 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/07/">July 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/06/">June 2022</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/05/">May 2022</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/04/">April 2022</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/03/">March 2022</a><span class="archive-list-count">17</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/02/">February 2022</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/01/">January 2022</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">December 2021</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">October 2021</a><span class="archive-list-count">24</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">September 2021</a><span class="archive-list-count">46</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">August 2021</a><span class="archive-list-count">12</span></li></ul>
+    </div>
+  </div>
+
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2025 Yu Hsiang<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

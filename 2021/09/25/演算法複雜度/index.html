@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>Big-O 複雜度分析 | UM&#39;s Coding Note</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="好程式的迷思一個程式好不好通常看你要解決的問題。  時間花得少(運行速度) ex:網頁跑很快、資料載入快 空間花得少 ex:硬體不夠充裕，要使用比較少記憶體 正確率較高 ex:防毒軟體隊攻擊作防範、更高機率偵測 相容性較高 ex:好延伸擴充、裡面程式太複雜造成很難擴充 開發成本低 ex:開發軟體時，很快的做法但寫起來很困難，普通速度的作法但寫起來容易。  所以要適當的平衡，並不是哪種一定是好。相容">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Big-O 複雜度分析">
+<meta property="og:url" content="https://yuhsiang237.github.io/2021/09/25/%E6%BC%94%E7%AE%97%E6%B3%95%E8%A4%87%E9%9B%9C%E5%BA%A6/index.html">
+<meta property="og:site_name" content="UM&#39;s Coding Note">
+<meta property="og:description" content="好程式的迷思一個程式好不好通常看你要解決的問題。  時間花得少(運行速度) ex:網頁跑很快、資料載入快 空間花得少 ex:硬體不夠充裕，要使用比較少記憶體 正確率較高 ex:防毒軟體隊攻擊作防範、更高機率偵測 相容性較高 ex:好延伸擴充、裡面程式太複雜造成很難擴充 開發成本低 ex:開發軟體時，很快的做法但寫起來很困難，普通速度的作法但寫起來容易。  所以要適當的平衡，並不是哪種一定是好。相容">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://yuhsiang237.github.io/2021/09/25/%E6%BC%94%E7%AE%97%E6%B3%95%E8%A4%87%E9%9B%9C%E5%BA%A6/%E9%87%8F%E7%B4%9A%E6%AF%94%E8%BC%83.png">
+<meta property="og:image" content="https://yuhsiang237.github.io/2021/09/25/%E6%BC%94%E7%AE%97%E6%B3%95%E8%A4%87%E9%9B%9C%E5%BA%A6/%E9%87%8F%E7%B4%9A%E6%AF%94%E8%BC%83%E7%AF%84%E4%BE%8B%E5%9C%96.png">
+<meta property="article:published_time" content="2021-09-24T18:53:26.000Z">
+<meta property="article:modified_time" content="2025-08-11T03:49:09.026Z">
+<meta property="article:author" content="Yu Hsiang">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://yuhsiang237.github.io/2021/09/25/%E6%BC%94%E7%AE%97%E6%B3%95%E8%A4%87%E9%9B%9C%E5%BA%A6/%E9%87%8F%E7%B4%9A%E6%AF%94%E8%BC%83.png">
+  
+    <link rel="alternate" href="/atom.xml" title="UM's Coding Note" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">UM&#39;s Coding Note</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">I record my coding experience at this place🤙</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://yuhsiang237.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-演算法複雜度" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2021/09/25/%E6%BC%94%E7%AE%97%E6%B3%95%E8%A4%87%E9%9B%9C%E5%BA%A6/" class="article-date">
+  <time class="dt-published" datetime="2021-09-24T18:53:26.000Z" itemprop="datePublished">2021-09-25</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Computer-Science/">Computer Science</a>►<a class="article-category-link" href="/categories/Computer-Science/Algorithm/">Algorithm</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      Big-O 複雜度分析
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h3 id="好程式的迷思"><a href="#好程式的迷思" class="headerlink" title="好程式的迷思"></a>好程式的迷思</h3><p>一個程式好不好通常看你要解決的問題。</p>
+<ol>
+<li>時間花得少(運行速度) ex:網頁跑很快、資料載入快</li>
+<li>空間花得少 ex:硬體不夠充裕，要使用比較少記憶體</li>
+<li>正確率較高 ex:防毒軟體隊攻擊作防範、更高機率偵測</li>
+<li>相容性較高 ex:好延伸擴充、裡面程式太複雜造成很難擴充</li>
+<li>開發成本低 ex:開發軟體時，很快的做法但寫起來很困難，普通速度的作法但寫起來容易。</li>
+</ol>
+<p>所以要適當的平衡，並不是哪種一定是好。<br>相容性、開發成本，通常仰賴當下開發者評估。<br>正確率則是在實作的細節上、Case量、理論分析上。</p>
+<h3 id="複雜度概念"><a href="#複雜度概念" class="headerlink" title="複雜度概念"></a>複雜度概念</h3><p>把所有操作都視為一樣的時間，如:加減乘除、位運算、存取記憶體、判斷運算子…等<br>把所有操作次數計算出來。<br>看量級大小，來評估執行時間。有些程式容易TLE超時就是因為這問題，比較在意的是量級，而不是精確的值。</p>
+<p>舉例:被指派長期作業，有兩種方案可選:</p>
+<ol>
+<li>每天算10題。</li>
+<li>第一天算1題，第二天算2題，第三天算3題…。</li>
+</ol>
+<p><strong>兩種方案怎麼選?</strong><br>如果每算一題要5秒<br>第n天:</p>
+<ol>
+<li>10 * n * 5 = 50n</li>
+<li>(n+1) * n/2 * 5 = 2.5(n^2+n)</li>
+</ol>
+<p>n=5天時，</p>
+<ol>
+<li>250秒</li>
+<li>75秒</li>
+</ol>
+<p>n=365天時，</p>
+<ol>
+<li>18250秒</li>
+<li>333975秒</li>
+</ol>
+<p>可以發現操作數的量級(複雜)比較多，所以以長期來看會是方案1比較好。</p>
+<h3 id="量級概念"><a href="#量級概念" class="headerlink" title="量級概念"></a>量級概念</h3><p>成長的速度不同等級。<br>如f(n)與g(n)兩個函數，當n趨近無窮大，誰會比較大?</p>
+<ol>
+<li>3n^2+n+20 vs 100n 如果n = 10000，左邊會變成億；右邊只有百萬，所以左邊量級大</li>
+<li>n^100 vs 2^n</li>
+<li>n^2 vs 10nlogn</li>
+<li>100^n vs n! 如果n=200，左邊100倍，右邊成長200倍，所以右邊量級大於左邊。</li>
+<li>30*2^n vs 3^n</li>
+<li>100n vs 200n 同一量級，因為極限的概念</li>
+</ol>
+<p><strong>極限概念</strong></p>
+<p>如果f(n)/g(n)，n趨近無限大時趨近0，那麼說f(n)比g(n)小。<br>如果f(n)/g(n)，n趨近無限大時趨近無限大，那麼說f(n)比g(n)大。<br>否則稱作兩者一樣量級。<br>所以，100n/200n = 1/2，所以不管n多大都一樣，稱作一樣量級。<br>但是，科技進步可以補100n與200n的差異，如平行運算可能可以把100n與200n的作法都視為一樣。但如果不是同一量級，還是會有科技進步彌補不了的，如上面的例子1。</p>
+<h3 id="量級的比較"><a href="#量級的比較" class="headerlink" title="量級的比較"></a>量級的比較</h3><p>以一台每秒可以進行10億次運算的電腦:</p>
+<img src="/2021/09/25/%E6%BC%94%E7%AE%97%E6%B3%95%E8%A4%87%E9%9B%9C%E5%BA%A6/%E9%87%8F%E7%B4%9A%E6%AF%94%E8%BC%83.png" class="">
+<p>所以好算法、壞算法需要的時間是有很大差距的。</p>
+<h3 id="大歐符號-Big-O"><a href="#大歐符號-Big-O" class="headerlink" title="大歐符號 Big-O"></a>大歐符號 Big-O</h3><p>記為O(f(n))，f(n)為複雜度量級的”上界”。所以實際結果可能會比他還要小。<br>常數會省略只寫一個n</p>
+<ol>
+<li>3n^3+5n^2+10n+3 ∈ O(n^3)</li>
+<li>f(n) ∈ O(n^2)，則f(n) ∈ O(n^3)，因為是上界</li>
+<li>1000 ∈ O(1) </li>
+</ol>
+<p>ps.最緊上界:如果一個算法同時是O(n^2)算法、O(n^3)算法，通常會取比較小的O(n^2)，以避免過度悲觀評估。&lt;&lt;=這句我不太懂</p>
+<ol>
+<li>3n^2+n+20 vs 100n ；O(n^2) vs O(n)</li>
+<li>n^2 vs 10nlogn；O(n^2) vs O(nlogn)</li>
+<li>100^n vs n! ；O(100^n) vs O(n!)</li>
+<li>30*2^n vs 3^n ；O(2^n) vs O(3^n)</li>
+<li>100n vs 200n ；O(n) vs O(n)</li>
+</ol>
+<p>常見的時間複雜度函式:</p>
+<img src="/2021/09/25/%E6%BC%94%E7%AE%97%E6%B3%95%E8%A4%87%E9%9B%9C%E5%BA%A6/%E9%87%8F%E7%B4%9A%E6%AF%94%E8%BC%83%E7%AF%84%E4%BE%8B%E5%9C%96.png" class="">
+
+<h3 id="如果時間不穩定"><a href="#如果時間不穩定" class="headerlink" title="如果時間不穩定"></a>如果時間不穩定</h3><p>如一個人姓名存在資料庫，想找到那個人<br>如果是排第一個情況，O(1)<br>如果是排最後一個情況，O(n)</p>
+<p>多數關注的是最壞的case，如:插入排序，最好是O(n)；最壞是O(n^2)</p>
+<h3 id="總結"><a href="#總結" class="headerlink" title="總結"></a>總結</h3><p>從參考資料中整理的一些對演算法複雜度的知識。<br>如果有機會寫到要追求「時間花得少」或「空間花得少」時就能派上用場，但這些通常使用在底層實作上，在應用的層面非常少用到，不過能透過理解複雜度，盡量選擇好的實踐方法。</p>
+<p>此外，在應用層面上，相容性較高、開發成本低，我認為比較重要；底層函式庫則是追求時間花得少、空間花得少。所以，看是寫哪個層面的程式，如果兩者反過來會蠻可怕的。</p>
+<h3 id="參考資料"><a href="#參考資料" class="headerlink" title="參考資料"></a>參考資料</h3><p><a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E5%A4%A7O%E7%AC%A6%E5%8F%B7">https://zh.wikipedia.org/wiki/%E5%A4%A7O%E7%AC%A6%E5%8F%B7</a><br><a target="_blank" rel="noopener" href="https://www.youtube.com/watch?app=desktop&amp;v=_r7cfVrn28c">https://www.youtube.com/watch?app=desktop&amp;v=_r7cfVrn28c</a><br><a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E6%97%B6%E9%97%B4%E5%A4%8D%E6%9D%82%E5%BA%A6">https://zh.wikipedia.org/wiki/%E6%97%B6%E9%97%B4%E5%A4%8D%E6%9D%82%E5%BA%A6</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://yuhsiang237.github.io/2021/09/25/%E6%BC%94%E7%AE%97%E6%B3%95%E8%A4%87%E9%9B%9C%E5%BA%A6/" data-id="cme6kwo430082galjdred2hwc" data-title="Big-O 複雜度分析" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2021/09/26/%E5%9F%BA%E7%A4%8E%E8%B3%87%E6%96%99%E7%B5%90%E6%A7%8B/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          基礎資料結構
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2021/09/23/%E7%84%A1%E9%99%90%E9%9A%8E%E5%B1%A4%E7%95%99%E8%A8%80%E8%B3%87%E6%96%99%E8%A1%A8%E8%A6%8F%E5%8A%83/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">無限階層留言規劃，含資料表設計</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Code/">Code</a><span class="category-list-count">76</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Code/C/">C#</a><span class="category-list-count">69</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Code/Javascript/">Javascript</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Code/Refactoring/">Refactoring</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Code/Typescript/">Typescript</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/">Computer Science</a><span class="category-list-count">5</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/Algorithm/">Algorithm</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/Data-structure/">Data structure</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/Electronic-Circuit/">Electronic Circuit</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Daily-Log/">Daily Log</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/">Database</a><span class="category-list-count">57</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Database/PostgreSQL/">PostgreSQL</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/SQL-Server/">SQL Server</a><span class="category-list-count">47</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/">Framework</a><span class="category-list-count">27</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/AspNetCore-API/">AspNetCore API</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/AspNetCore-MVC/">AspNetCore MVC</a><span class="category-list-count">21</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/">Topic</a><span class="category-list-count">76</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2021-C-AspNetCore-Challenge/">2021 C# AspNetCore Challenge</a><span class="category-list-count">30</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2021-SQL-Server-Challenge/">2021 SQL Server Challenge</a><span class="category-list-count">30</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2022-C-SyncAndAsync/">2022 C# SyncAndAsync</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2025-Typescript/">2025 Typescript</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/Big-Data/">Big Data</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/LeetCode/">LeetCode</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/SystemStructure/">SystemStructure</a><span class="category-list-count">1</span></li></ul></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/08/">August 2025</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/05/">May 2023</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/03/">March 2023</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/02/">February 2023</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/01/">January 2023</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/12/">December 2022</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/09/">September 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/07/">July 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/06/">June 2022</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/05/">May 2022</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/04/">April 2022</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/03/">March 2022</a><span class="archive-list-count">17</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/02/">February 2022</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/01/">January 2022</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">December 2021</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">October 2021</a><span class="archive-list-count">24</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">September 2021</a><span class="archive-list-count">46</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">August 2021</a><span class="archive-list-count">12</span></li></ul>
+    </div>
+  </div>
+
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2025 Yu Hsiang<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

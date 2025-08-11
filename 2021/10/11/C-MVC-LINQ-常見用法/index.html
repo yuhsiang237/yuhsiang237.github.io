@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>[Day15] C# MVC LINQ常見用法 - C#&amp;AspNetCore | UM&#39;s Coding Note</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="在上回 [Day14] C# MVC LINQ基礎用法 - C#&amp;AspNetCore  ，我們介紹了LINQ基本用法。 而這回就要介紹LINQ常用的幾個JOIN、LEFT JOIN作法。 實作先附上測試資料: 12345678910111213141516171819202122232425262728293031323334353637&#x2F;&#x2F;　產品Product[] products &#x3D;">
+<meta property="og:type" content="article">
+<meta property="og:title" content="[Day15] C# MVC LINQ常見用法 - C#&amp;AspNetCore">
+<meta property="og:url" content="https://yuhsiang237.github.io/2021/10/11/C-MVC-LINQ-%E5%B8%B8%E8%A6%8B%E7%94%A8%E6%B3%95/index.html">
+<meta property="og:site_name" content="UM&#39;s Coding Note">
+<meta property="og:description" content="在上回 [Day14] C# MVC LINQ基礎用法 - C#&amp;AspNetCore  ，我們介紹了LINQ基本用法。 而這回就要介紹LINQ常用的幾個JOIN、LEFT JOIN作法。 實作先附上測試資料: 12345678910111213141516171819202122232425262728293031323334353637&#x2F;&#x2F;　產品Product[] products &#x3D;">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://yuhsiang237.github.io/2021/10/11/C-MVC-LINQ-%E5%B8%B8%E8%A6%8B%E7%94%A8%E6%B3%95/1.png">
+<meta property="og:image" content="https://yuhsiang237.github.io/2021/10/11/C-MVC-LINQ-%E5%B8%B8%E8%A6%8B%E7%94%A8%E6%B3%95/2.png">
+<meta property="og:image" content="https://yuhsiang237.github.io/2021/10/11/C-MVC-LINQ-%E5%B8%B8%E8%A6%8B%E7%94%A8%E6%B3%95/3.png">
+<meta property="article:published_time" content="2021-10-11T02:17:57.000Z">
+<meta property="article:modified_time" content="2025-08-11T03:49:08.183Z">
+<meta property="article:author" content="Yu Hsiang">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://yuhsiang237.github.io/2021/10/11/C-MVC-LINQ-%E5%B8%B8%E8%A6%8B%E7%94%A8%E6%B3%95/1.png">
+  
+    <link rel="alternate" href="/atom.xml" title="UM's Coding Note" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">UM&#39;s Coding Note</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">I record my coding experience at this place🤙</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://yuhsiang237.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-C-MVC-LINQ-常見用法" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2021/10/11/C-MVC-LINQ-%E5%B8%B8%E8%A6%8B%E7%94%A8%E6%B3%95/" class="article-date">
+  <time class="dt-published" datetime="2021-10-11T02:17:57.000Z" itemprop="datePublished">2021-10-11</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Code/">Code</a>►<a class="article-category-link" href="/categories/Code/C/">C#</a>►<a class="article-category-link" href="/categories/Framework/">Framework</a>►<a class="article-category-link" href="/categories/Framework/AspNetCore-MVC/">AspNetCore MVC</a>►<a class="article-category-link" href="/categories/Topic/">Topic</a>►<a class="article-category-link" href="/categories/Topic/2021-C-AspNetCore-Challenge/">2021 C# AspNetCore Challenge</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      [Day15] C# MVC LINQ常見用法 - C#&amp;AspNetCore
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>在上回 <a href="/2021/10/10/C-MVC-LINQ%E5%9F%BA%E7%A4%8E%E7%94%A8%E6%B3%95/" title="[Day14] C# MVC LINQ基礎用法 - C#&amp;AspNetCore">[Day14] C# MVC LINQ基礎用法 - C#&amp;AspNetCore</a>  ，我們介紹了LINQ基本用法。</p>
+<p>而這回就要介紹LINQ常用的幾個JOIN、LEFT JOIN作法。</p>
+<h3 id="實作"><a href="#實作" class="headerlink" title="實作"></a>實作</h3><p>先附上測試資料:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">//　產品</span><br><span class="line">Product[] products = new Product[] &#123;</span><br><span class="line">  new Product &#123; Id = 1 ,Name = &quot;PS4&quot;,Price =11000   &#125; ,</span><br><span class="line">  new Product &#123; Id = 2 ,Name = &quot;PS5&quot;,Price =15000   &#125;,</span><br><span class="line">  new Product &#123; Id = 3 ,Name = &quot;Switch&quot;,Price=9900 &#125;,</span><br><span class="line">  new Product&#123; Id= 4 ,Name=&quot;XBOX Series X&quot;,Price=15000   &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">//　分類</span><br><span class="line">ProductType[] productTypes = new ProductType[] &#123;</span><br><span class="line">  new ProductType &#123;Id = 1 ,Name = &quot;Game&quot;&#125; ,</span><br><span class="line">  new ProductType &#123; Id = 2 ,Name = &quot;nintendo&quot; &#125; ,</span><br><span class="line">  new ProductType &#123; Id =3 ,Name = &quot;Sony&quot; &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">//　產品與分類關系表</span><br><span class="line">Product_ProductTypeRelationship[] product_ProductTypeRelationships = new Product_ProductTypeRelationship[] &#123;</span><br><span class="line">  new Product_ProductTypeRelationship &#123;</span><br><span class="line">      ProductID = 1 ,ProductTypeID = 1</span><br><span class="line">  &#125; ,</span><br><span class="line">  new Product_ProductTypeRelationship &#123;</span><br><span class="line">      ProductID = 1 ,ProductTypeID = 3</span><br><span class="line">  &#125; ,</span><br><span class="line">  new Product_ProductTypeRelationship &#123;</span><br><span class="line">      ProductID = 2 ,ProductTypeID = 1</span><br><span class="line">  &#125; ,</span><br><span class="line">  new Product_ProductTypeRelationship &#123;</span><br><span class="line">      ProductID = 2 ,ProductTypeID = 3</span><br><span class="line">  &#125;,</span><br><span class="line">  new Product_ProductTypeRelationship &#123;</span><br><span class="line">      ProductID = 3 ,ProductTypeID = 1</span><br><span class="line">  &#125; ,</span><br><span class="line">  new Product_ProductTypeRelationship &#123;</span><br><span class="line">      ProductID = 3 ,ProductTypeID = 2</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<h4 id="1-LINQ實作INNER-JOIN"><a href="#1-LINQ實作INNER-JOIN" class="headerlink" title="1.LINQ實作INNER JOIN"></a>1.LINQ實作INNER JOIN</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">public void linqInnerJoinExample()</span><br><span class="line">&#123;</span><br><span class="line">    var query =</span><br><span class="line">        from product in products</span><br><span class="line">        join product_ProductTypeRelationship in product_ProductTypeRelationships on product.Id equals product_ProductTypeRelationship.ProductID</span><br><span class="line">        join productType in productTypes on product_ProductTypeRelationship.ProductTypeID equals productType.Id</span><br><span class="line">        select new</span><br><span class="line">        &#123;</span><br><span class="line">            product.Id,</span><br><span class="line">            product.Name,</span><br><span class="line">            product.Price,</span><br><span class="line">            productTypeName = productType.Name</span><br><span class="line">        &#125;;</span><br><span class="line">    var result = query.ToList();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>結果:</p>
+<img src="/2021/10/11/C-MVC-LINQ-%E5%B8%B8%E8%A6%8B%E7%94%A8%E6%B3%95/1.png" class="">
+<p>說明:因為是InnerJoin，都要有重疊才會關聯出，而XBOX Series X的Id沒有在product_ProductTypeRelationships裡面，所以最後沒有被顯示出來。<br>基本上跟原生SQL的寫法挺像的。</p>
+<h4 id="2-LINQ實作LEFT-JOIN"><a href="#2-LINQ實作LEFT-JOIN" class="headerlink" title="2.LINQ實作LEFT JOIN"></a>2.LINQ實作LEFT JOIN</h4><p>寫法1:拆兩個Query</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">public void linqLeftJoinExample()</span><br><span class="line">&#123;</span><br><span class="line">    // product 跟 product_ProductTypeRelationship 先left join </span><br><span class="line">    var query1 =</span><br><span class="line">        from product in products</span><br><span class="line">        join product_ProductTypeRelationship in product_ProductTypeRelationships on product.Id equals product_ProductTypeRelationship.ProductID</span><br><span class="line">        into tmp</span><br><span class="line">        from product_ProductTypeRelationship in tmp.DefaultIfEmpty()</span><br><span class="line">        select new</span><br><span class="line">        &#123;</span><br><span class="line">            product.Id,</span><br><span class="line">            product.Name,</span><br><span class="line">            product.Price,</span><br><span class="line">            ProductTypeID = product_ProductTypeRelationship?.ProductTypeID</span><br><span class="line">        &#125;;</span><br><span class="line"></span><br><span class="line">    // query1結果再跟 productTypes left join </span><br><span class="line">    var query2 =</span><br><span class="line">        from q in query1</span><br><span class="line">        join productType in productTypes on q.ProductTypeID equals productType.Id</span><br><span class="line">        into tmp</span><br><span class="line">        from product_ProductTypeRelationship in tmp.DefaultIfEmpty()</span><br><span class="line">        select new</span><br><span class="line">        &#123;</span><br><span class="line">            q.Id,</span><br><span class="line">            q.Name,</span><br><span class="line">            q.Price,</span><br><span class="line">            ProductName = product_ProductTypeRelationship?.Name</span><br><span class="line">        &#125;;</span><br><span class="line">    var result = query2.ToList();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>結果:</p>
+<img src="/2021/10/11/C-MVC-LINQ-%E5%B8%B8%E8%A6%8B%E7%94%A8%E6%B3%95/2.png" class="">
+<p>說明:可以得到XBOX Series X了。<br>因為LINQ沒有LEFT JOIN這種簡單作法，只能靠DefaultIfEmpty來操作，作法比較複雜、難直覺判斷。<br>((ps.不是要用來讓大家好用的查詢嗎?搞複雜了</p>
+<p>作法2:組多個DefaultIfEmpty</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">public void linqLeftJoinExample2()</span><br><span class="line">&#123;</span><br><span class="line">    var query =</span><br><span class="line">        from a in products</span><br><span class="line">        join b in product_ProductTypeRelationships on a.Id equals b.ProductID</span><br><span class="line">        into result1</span><br><span class="line">        from ab in result1.DefaultIfEmpty()</span><br><span class="line">        join c in productTypes on ab?.ProductTypeID equals c.Id</span><br><span class="line">        into result2</span><br><span class="line">        from abc in result2.DefaultIfEmpty()</span><br><span class="line">        select new&#123;</span><br><span class="line">            a.Id,</span><br><span class="line">            a.Name,</span><br><span class="line">            a.Price,</span><br><span class="line">            ProductName = abc?.Name</span><br><span class="line">        &#125; ;</span><br><span class="line">    var result = query.ToList();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>結果:</p>
+<img src="/2021/10/11/C-MVC-LINQ-%E5%B8%B8%E8%A6%8B%E7%94%A8%E6%B3%95/3.png" class="">
+<p>說明:可以得到XBOX Series X了。<br>這種多個DefaultIfEmpty組法感覺蠻難讀的。<br>要獨立出一個值，導致得用a、b、c來組不然難知道誰是誰，就很難閱讀<br>且要小心有些值讀出來是空的要使用「?.」的做法，把empty的值設定為null才有辦法繼續下去，否則會執行到中間就報錯了。</p>
+<p>以此，就是ab?.ProductTypeID，因為ab做完DefaultIfEmpty時可能ProductTypeID是為empty的，要用這ProductTypeID再去做下個join可能會出錯。</p>
+<h4 id="3-組成階層方式"><a href="#3-組成階層方式" class="headerlink" title="3.組成階層方式"></a>3.組成階層方式</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">public void linqLeftJoinExample3()</span><br><span class="line">&#123;</span><br><span class="line"></span><br><span class="line">    var p = (from a in products</span><br><span class="line">                select new ProductViewModel</span><br><span class="line">                &#123;</span><br><span class="line">                    Id = a.Id,</span><br><span class="line">                    Name = a.Name,</span><br><span class="line">                    Price = a.Price,</span><br><span class="line">                &#125;).ToList();</span><br><span class="line"></span><br><span class="line">    foreach (var item in p)</span><br><span class="line">    &#123;</span><br><span class="line">        var productTypeIDs = from a in product_ProductTypeRelationships</span><br><span class="line">                                where a.ProductID == item.Id</span><br><span class="line">                                select a.ProductTypeID;</span><br><span class="line"></span><br><span class="line">        var productTypeData = from a in productTypeIDs</span><br><span class="line">                                join b in productTypes on a equals b.Id</span><br><span class="line">                                select new ProductType</span><br><span class="line">                                &#123;</span><br><span class="line">                                    Id = b.Id,</span><br><span class="line">                                    Name = b.Name</span><br><span class="line">                                &#125;;</span><br><span class="line">        item.ProductTypes = new List&lt;ProductType&gt;();</span><br><span class="line">        foreach (var x in productTypeData)</span><br><span class="line">        &#123;</span><br><span class="line">            item.ProductTypes.Add(x);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    var result = p;</span><br><span class="line">    string jsonData = JsonConvert.SerializeObject(result);</span><br><span class="line">    System.Diagnostics.Debug.WriteLine(jsonData);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>結果:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line">[</span><br><span class="line">  &#123;</span><br><span class="line">    &quot;Id&quot;: 1,</span><br><span class="line">    &quot;Name&quot;: &quot;PS4&quot;,</span><br><span class="line">    &quot;Price&quot;: 11000,</span><br><span class="line">    &quot;ProductTypes&quot;: [</span><br><span class="line">      &#123;</span><br><span class="line">        &quot;Id&quot;: 1,</span><br><span class="line">        &quot;Name&quot;: &quot;Game&quot;</span><br><span class="line">      &#125;,</span><br><span class="line">      &#123;</span><br><span class="line">        &quot;Id&quot;: 3,</span><br><span class="line">        &quot;Name&quot;: &quot;Sony&quot;</span><br><span class="line">      &#125;</span><br><span class="line">    ]</span><br><span class="line">  &#125;,</span><br><span class="line">  &#123;</span><br><span class="line">    &quot;Id&quot;: 2,</span><br><span class="line">    &quot;Name&quot;: &quot;PS5&quot;,</span><br><span class="line">    &quot;Price&quot;: 15000,</span><br><span class="line">    &quot;ProductTypes&quot;: [</span><br><span class="line">      &#123;</span><br><span class="line">        &quot;Id&quot;: 1,</span><br><span class="line">        &quot;Name&quot;: &quot;Game&quot;</span><br><span class="line">      &#125;,</span><br><span class="line">      &#123;</span><br><span class="line">        &quot;Id&quot;: 3,</span><br><span class="line">        &quot;Name&quot;: &quot;Sony&quot;</span><br><span class="line">      &#125;</span><br><span class="line">    ]</span><br><span class="line">  &#125;,</span><br><span class="line">  &#123;</span><br><span class="line">    &quot;Id&quot;: 3,</span><br><span class="line">    &quot;Name&quot;: &quot;Switch&quot;,</span><br><span class="line">    &quot;Price&quot;: 9900,</span><br><span class="line">    &quot;ProductTypes&quot;: [</span><br><span class="line">      &#123;</span><br><span class="line">        &quot;Id&quot;: 1,</span><br><span class="line">        &quot;Name&quot;: &quot;Game&quot;</span><br><span class="line">      &#125;,</span><br><span class="line">      &#123;</span><br><span class="line">        &quot;Id&quot;: 2,</span><br><span class="line">        &quot;Name&quot;: &quot;nintendo&quot;</span><br><span class="line">      &#125;</span><br><span class="line">    ]</span><br><span class="line">  &#125;,</span><br><span class="line">  &#123;</span><br><span class="line">    &quot;Id&quot;: 4,</span><br><span class="line">    &quot;Name&quot;: &quot;XBOX Series X&quot;,</span><br><span class="line">    &quot;Price&quot;: 15000,</span><br><span class="line">    &quot;ProductTypes&quot;: []</span><br><span class="line">  &#125;</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+<p>說明:用foreach搭配LINQ用組的方式去做出階層資料，並且新增ProductViewModel做最後的資料規格呈現。<br>這種複雜度O(n^2)不是很好，未來想到好的方式再更改。<br>且要注意第10行要先ToList()，執行LINQ，否則下面的foreach會造成每次初始化。<br>如果以前端要資料來講，這樣是最好格式，可以不用手動組。<br>此外，這是多對多的資料關聯，是最複雜的情況。</p>
+<h3 id="總結"><a href="#總結" class="headerlink" title="總結"></a>總結</h3><p>介紹了資料常見的處理JOIN、LEFT JOIN。<br>覺得要處理複雜查詢用LINQ真的不太適合…，因為太難閱讀XD?。<br>LINQ有他強型別、Intellisense的好處，但想到有些情況要LEFT JOIN 5張時應該會蠻崩潰的。<br>可能就得組簡單的LINQ再搭配迴圈分步驟做，效能會差一點。</p>
+<p>總之，在複雜的查詢我會用「原生作法搭配Dapper」或是「簡單的LINQ搭程式用迴圈做」。</p>
+<p>更多LINQ用法可以查看:<br><a target="_blank" rel="noopener" href="https://docs.microsoft.com/zh-tw/dotnet/csharp/linq/">https://docs.microsoft.com/zh-tw/dotnet/csharp/linq/</a></p>
+<p><strong>參考資料</strong><br><a target="_blank" rel="noopener" href="https://dotblogs.com.tw/yc421206/2014/07/11/145907">https://dotblogs.com.tw/yc421206/2014/07/11/145907</a><br><a target="_blank" rel="noopener" href="https://ad57475747.medium.com/linq%E5%AD%B8%E7%BF%92%E7%AD%86%E8%A8%98-6-join-%E5%A4%9A%E8%A1%A8%E5%96%AE%E5%A4%9A%E6%A2%9D%E4%BB%B6%E5%BC%8F-4076c487264f">https://ad57475747.medium.com/linq%E5%AD%B8%E7%BF%92%E7%AD%86%E8%A8%98-6-join-%E5%A4%9A%E8%A1%A8%E5%96%AE%E5%A4%9A%E6%A2%9D%E4%BB%B6%E5%BC%8F-4076c487264f</a><br><a target="_blank" rel="noopener" href="http://vito-note.blogspot.com/2013/04/linq-3-join.html">http://vito-note.blogspot.com/2013/04/linq-3-join.html</a><br><a target="_blank" rel="noopener" href="https://docs.microsoft.com/zh-tw/dotnet/csharp/linq/perform-left-outer-joins">https://docs.microsoft.com/zh-tw/dotnet/csharp/linq/perform-left-outer-joins</a><br><a target="_blank" rel="noopener" href="https://blog.csdn.net/yuanxiang01/article/details/111176654">https://blog.csdn.net/yuanxiang01/article/details/111176654</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://yuhsiang237.github.io/2021/10/11/C-MVC-LINQ-%E5%B8%B8%E8%A6%8B%E7%94%A8%E6%B3%95/" data-id="cme6kwo0e0010galj244x7dfl" data-title="[Day15] C# MVC LINQ常見用法 - C#&amp;AspNetCore" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2021/10/12/C-MVC-Dapper%E7%94%A8%E6%B3%95/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          [Day16] C# MVC Dapper用法與連結資料庫 - C#&amp;AspNetCore
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2021/10/10/C-MVC-LINQ%E5%9F%BA%E7%A4%8E%E7%94%A8%E6%B3%95/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">[Day14] C# MVC LINQ基礎用法 - C#&amp;AspNetCore</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Code/">Code</a><span class="category-list-count">76</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Code/C/">C#</a><span class="category-list-count">69</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Code/Javascript/">Javascript</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Code/Refactoring/">Refactoring</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Code/Typescript/">Typescript</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/">Computer Science</a><span class="category-list-count">5</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/Algorithm/">Algorithm</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/Data-structure/">Data structure</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/Electronic-Circuit/">Electronic Circuit</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Daily-Log/">Daily Log</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/">Database</a><span class="category-list-count">57</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Database/PostgreSQL/">PostgreSQL</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/SQL-Server/">SQL Server</a><span class="category-list-count">47</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/">Framework</a><span class="category-list-count">27</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/AspNetCore-API/">AspNetCore API</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/AspNetCore-MVC/">AspNetCore MVC</a><span class="category-list-count">21</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/">Topic</a><span class="category-list-count">76</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2021-C-AspNetCore-Challenge/">2021 C# AspNetCore Challenge</a><span class="category-list-count">30</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2021-SQL-Server-Challenge/">2021 SQL Server Challenge</a><span class="category-list-count">30</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2022-C-SyncAndAsync/">2022 C# SyncAndAsync</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2025-Typescript/">2025 Typescript</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/Big-Data/">Big Data</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/LeetCode/">LeetCode</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/SystemStructure/">SystemStructure</a><span class="category-list-count">1</span></li></ul></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/08/">August 2025</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/05/">May 2023</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/03/">March 2023</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/02/">February 2023</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/01/">January 2023</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/12/">December 2022</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/09/">September 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/07/">July 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/06/">June 2022</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/05/">May 2022</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/04/">April 2022</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/03/">March 2022</a><span class="archive-list-count">17</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/02/">February 2022</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/01/">January 2022</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">December 2021</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">October 2021</a><span class="archive-list-count">24</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">September 2021</a><span class="archive-list-count">46</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">August 2021</a><span class="archive-list-count">12</span></li></ul>
+    </div>
+  </div>
+
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2025 Yu Hsiang<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

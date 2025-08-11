@@ -1,0 +1,836 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>UM&#39;s Coding Note</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="I record my coding experience at this place">
+<meta property="og:type" content="website">
+<meta property="og:title" content="UM&#39;s Coding Note">
+<meta property="og:url" content="https://yuhsiang237.github.io/page/4/index.html">
+<meta property="og:site_name" content="UM&#39;s Coding Note">
+<meta property="og:description" content="I record my coding experience at this place">
+<meta property="og:locale" content="en_US">
+<meta property="article:author" content="Yu Hsiang">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="UM's Coding Note" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">UM&#39;s Coding Note</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">I record my coding experience at this place🤙</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://yuhsiang237.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main">
+  
+    <article id="post-SQL-Server-PARTITION-BY-分割語法" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2022/04/22/SQL-Server-PARTITION-BY-%E5%88%86%E5%89%B2%E8%AA%9E%E6%B3%95/" class="article-date">
+  <time class="dt-published" datetime="2022-04-22T07:34:24.000Z" itemprop="datePublished">2022-04-22</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Database/">Database</a>►<a class="article-category-link" href="/categories/Database/SQL-Server/">SQL Server</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2022/04/22/SQL-Server-PARTITION-BY-%E5%88%86%E5%89%B2%E8%AA%9E%E6%B3%95/">SQL Server PARTITION BY 分割分組語法</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>最近處理到一些複雜需求，使用到了PARTITION BY。<br>於是記錄一下PARTITION BY的用法。<br>主要是能在分組時取得第一筆資料、與分組有關的操作。  </p>
+<h3 id="PARTITION-BY"><a href="#PARTITION-BY" class="headerlink" title="PARTITION BY"></a>PARTITION BY</h3><p>Divides the query result set into partitions. The window function is applied to each partition separately and computation restarts for each partition.</p>
+<p>PARTITION BY 可將查詢結果集分成幾個資料分割。</p>
+<p>語法:</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">OVER</span> ( [ <span class="keyword">PARTITION</span> <span class="keyword">BY</span> value_expression ] [ order_by_clause ] )  </span><br></pre></td></tr></table></figure>
+
+<h3 id="實作"><a href="#實作" class="headerlink" title="實作"></a>實作</h3><p>目標:要取得每個以UserId分組的第一筆資料</p>
+<p><strong>資料表:[DBO].[TODOS]</strong></p>
+<img src="/2022/04/22/SQL-Server-PARTITION-BY-%E5%88%86%E5%89%B2%E8%AA%9E%E6%B3%95/1.PNG" class="">
+
+<p>首先先使用PARTITION製造出分割出群組編號</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> </span><br><span class="line">	<span class="built_in">ROW_NUMBER</span>() <span class="keyword">OVER</span>(<span class="keyword">PARTITION</span> <span class="keyword">BY</span> USERID <span class="keyword">ORDER</span> <span class="keyword">BY</span> ID) ROW_ID,</span><br><span class="line">	<span class="operator">*</span></span><br><span class="line"><span class="keyword">FROM</span> </span><br><span class="line">	[DBO].[TODOS]</span><br></pre></td></tr></table></figure>
+<p>可以見到ROW_ID出現在列表中，即代表這是這個UserId組的第幾筆資料。<br>依序為:<br>UserId為1的第1筆資料<br>UserId為3的第1筆資料<br>UserId為3的第2筆資料<br>UserId為3的第3筆資料<br>UserId為4的第1筆資料<br>UserId為5的第1筆資料  </p>
+<img src="/2022/04/22/SQL-Server-PARTITION-BY-%E5%88%86%E5%89%B2%E8%AA%9E%E6%B3%95/2.PNG" class="">
+
+<p>再來只要把這結果集外部包一個搜尋，使用條件就能拿到第一筆資料，如下設定:<br>ROW_ID為1代表取得每個分組的第一筆資料。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> (</span><br><span class="line">	<span class="keyword">SELECT</span> </span><br><span class="line">		<span class="built_in">ROW_NUMBER</span>() <span class="keyword">OVER</span>(<span class="keyword">PARTITION</span> <span class="keyword">BY</span> USERID <span class="keyword">ORDER</span> <span class="keyword">BY</span> ID) ROW_ID,</span><br><span class="line">		<span class="operator">*</span></span><br><span class="line">	<span class="keyword">FROM</span> </span><br><span class="line">		[DBO].[TODOS]</span><br><span class="line">) TEMP</span><br><span class="line"><span class="keyword">WHERE</span> TEMP.ROW_ID <span class="operator">=</span> <span class="number">1</span></span><br></pre></td></tr></table></figure>
+<p>最終成功拿到每個UserId分組的第一筆資料</p>
+<img src="/2022/04/22/SQL-Server-PARTITION-BY-%E5%88%86%E5%89%B2%E8%AA%9E%E6%B3%95/3.PNG" class="">
+
+<h3 id="參考資料"><a href="#參考資料" class="headerlink" title="參考資料"></a>參考資料</h3><ul>
+<li><a target="_blank" rel="noopener" href="https://docs.microsoft.com/en-us/sql/t-sql/queries/select-over-clause-transact-sql?view=sql-server-ver15">https://docs.microsoft.com/en-us/sql/t-sql/queries/select-over-clause-transact-sql?view=sql-server-ver15</a></li>
+<li><a target="_blank" rel="noopener" href="https://docs.microsoft.com/zh-tw/sql/t-sql/queries/select-over-clause-transact-sql?view=sql-server-ver15">https://docs.microsoft.com/zh-tw/sql/t-sql/queries/select-over-clause-transact-sql?view=sql-server-ver15</a></li>
+<li><a target="_blank" rel="noopener" href="https://ithelp.ithome.com.tw/articles/10225653">https://ithelp.ithome.com.tw/articles/10225653</a></li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://yuhsiang237.github.io/2022/04/22/SQL-Server-PARTITION-BY-%E5%88%86%E5%89%B2%E8%AA%9E%E6%B3%95/" data-id="cme6kwo29004hgalj8ggobrzl" data-title="SQL Server PARTITION BY 分割分組語法" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-C-LINQ-JOIN-函式效果" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2022/04/12/C-LINQ-JOIN-%E5%87%BD%E5%BC%8F%E6%95%88%E6%9E%9C/" class="article-date">
+  <time class="dt-published" datetime="2022-04-12T06:27:25.000Z" itemprop="datePublished">2022-04-12</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Code/">Code</a>►<a class="article-category-link" href="/categories/Code/C/">C#</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2022/04/12/C-LINQ-JOIN-%E5%87%BD%E5%BC%8F%E6%95%88%E6%9E%9C/">C# LINQ JOIN 函式效果</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>因為平時都是寫lambda寫法的LINQ，而在近期看到函式方式的寫法，所以紀錄一下作法。</p>
+<h3 id="JOIN函式定義"><a href="#JOIN函式定義" class="headerlink" title="JOIN函式定義"></a>JOIN函式定義</h3><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> System.Collections.Generic.<span class="function">IEnumerable&lt;TResult&gt; </span></span><br><span class="line"><span class="function"><span class="title">Join</span>&lt;<span class="title">TOuter</span>,<span class="title">TInner</span>,<span class="title">TKey</span>,<span class="title">TResult</span>&gt; (<span class="params"></span></span></span><br><span class="line"><span class="params"><span class="function">    <span class="keyword">this</span> System.Collections.Generic.IEnumerable&lt;TOuter&gt; outer,</span></span></span><br><span class="line"><span class="params"><span class="function">    System.Collections.Generic.IEnumerable&lt;TInner&gt; inner, </span></span></span><br><span class="line"><span class="params"><span class="function">    Func&lt;TOuter,TKey&gt; outerKeySelector, </span></span></span><br><span class="line"><span class="params"><span class="function">    Func&lt;TInner,TKey&gt; innerKeySelector,</span></span></span><br><span class="line"><span class="params"><span class="function">    Func&lt;TOuter,TInner,TResult&gt; resultSelector, </span></span></span><br><span class="line"><span class="params"><span class="function">    System.Collections.Generic.IEqualityComparer&lt;TKey&gt;? comparer</span>)</span>;</span><br></pre></td></tr></table></figure>
+<p>參數部分:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">outer</span><br><span class="line">IEnumerable&lt;TOuter&gt;</span><br><span class="line">要聯結的第一個序列。</span><br><span class="line"></span><br><span class="line">inner</span><br><span class="line">IEnumerable&lt;TInner&gt;</span><br><span class="line">要加入第一個序列的序列。</span><br><span class="line"></span><br><span class="line">outerKeySelector</span><br><span class="line">Func&lt;TOuter,TKey&gt;</span><br><span class="line">用來從第一個序列各個項目擷取聯結索引鍵的函式。</span><br><span class="line"></span><br><span class="line">innerKeySelector</span><br><span class="line">Func&lt;TInner,TKey&gt;</span><br><span class="line">用來從第二個序列各個項目擷取聯結索引鍵的函式。</span><br><span class="line"></span><br><span class="line">resultSelector</span><br><span class="line">Func&lt;TOuter,TInner,TResult&gt;</span><br><span class="line">用來從兩個相符項目建立結果項目的函式。</span><br><span class="line"></span><br><span class="line">comparer</span><br><span class="line">IEqualityComparer&lt;TKey&gt;</span><br><span class="line">用來雜湊及比較索引鍵的 IEqualityComparer&lt;T&gt;。</span><br></pre></td></tr></table></figure>
+<h3 id="實作"><a href="#實作" class="headerlink" title="實作"></a>實作</h3><p>簡單來講就是拿主表資料去JOIN另一張關聯表，而x、y則是塞進去的key值。<br>在這裡以User為主表，UserDetail為關聯表。<br>原本4筆資料的User，經過與UserDetail JOIN關聯，於是剩下兩筆資料。  </p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> System;</span><br><span class="line"><span class="keyword">using</span> System.Collections;</span><br><span class="line"><span class="keyword">using</span> System.Collections.Generic;</span><br><span class="line"><span class="keyword">using</span> System.Linq;</span><br><span class="line"></span><br><span class="line"><span class="keyword">namespace</span> <span class="title">JoinSample</span></span><br><span class="line">&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">class</span> <span class="title">User</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">public</span> <span class="built_in">int</span> Id &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line">        <span class="keyword">public</span> <span class="built_in">string</span> Name &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">class</span> <span class="title">UserDetail</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">public</span> <span class="built_in">int</span> UserId &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line">        <span class="keyword">public</span> <span class="built_in">string</span> PhoneNumber &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">class</span> <span class="title">UserData</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">public</span> <span class="built_in">int</span> Id &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">public</span> <span class="built_in">string</span> UserName &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line">        <span class="keyword">public</span> <span class="built_in">string</span> PhoneNumber &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">internal</span> <span class="keyword">class</span> <span class="title">Program</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">Main</span>(<span class="params"><span class="built_in">string</span>[] args</span>)</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">var</span> users = <span class="keyword">new</span> List&lt;User&gt;</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">new</span> User</span><br><span class="line">                &#123;</span><br><span class="line">                    Id =<span class="number">1</span>,Name=<span class="string">&quot;大雄&quot;</span>,</span><br><span class="line">                &#125;,</span><br><span class="line">                <span class="keyword">new</span> User</span><br><span class="line">                &#123;</span><br><span class="line">                    Id =<span class="number">2</span>,Name=<span class="string">&quot;多拉A夢&quot;</span>,</span><br><span class="line">                &#125;,</span><br><span class="line">                <span class="keyword">new</span> User</span><br><span class="line">                &#123;</span><br><span class="line">                    Id =<span class="number">3</span>,Name=<span class="string">&quot;胖虎&quot;</span>,</span><br><span class="line">                &#125;,</span><br><span class="line">                <span class="keyword">new</span> User</span><br><span class="line">                &#123;</span><br><span class="line">                    Id =<span class="number">4</span>,Name=<span class="string">&quot;小夫&quot;</span>,</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">var</span> userDetails = <span class="keyword">new</span> List&lt;UserDetail&gt; &#123;</span><br><span class="line">                <span class="keyword">new</span> UserDetail&#123; UserId=<span class="number">1</span>,PhoneNumber=<span class="string">&quot;0911111111&quot;</span>&#125;,</span><br><span class="line">                <span class="keyword">new</span> UserDetail&#123; UserId=<span class="number">2</span>,PhoneNumber=<span class="string">&quot;0922222222&quot;</span>&#125;</span><br><span class="line">            &#125;;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">var</span> userData = users.Join(</span><br><span class="line">                userDetails,</span><br><span class="line">                x =&gt; x.Id,</span><br><span class="line">                y =&gt; y.UserId,</span><br><span class="line">                (x, y) =&gt; <span class="keyword">new</span> UserData</span><br><span class="line">                &#123;</span><br><span class="line">                    Id = x.Id,</span><br><span class="line">                    PhoneNumber = y.PhoneNumber,</span><br><span class="line">                    UserName = x.Name</span><br><span class="line">                &#125;);</span><br><span class="line"></span><br><span class="line">            <span class="keyword">foreach</span> (<span class="keyword">var</span> item <span class="keyword">in</span> userData)</span><br><span class="line">            &#123;</span><br><span class="line">                Console.WriteLine(item.Id);</span><br><span class="line">                Console.WriteLine(item.UserName);</span><br><span class="line">                Console.WriteLine(item.PhoneNumber);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>output:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">1</span><br><span class="line">大雄</span><br><span class="line">0911111111</span><br><span class="line">2</span><br><span class="line">多拉A夢</span><br><span class="line">0922222222</span><br></pre></td></tr></table></figure>
+
+<h3 id="參考資料"><a href="#參考資料" class="headerlink" title="參考資料"></a>參考資料</h3><ul>
+<li><a target="_blank" rel="noopener" href="https://docs.microsoft.com/zh-tw/dotnet/api/system.linq.enumerable.join?view=net-6.0">https://docs.microsoft.com/zh-tw/dotnet/api/system.linq.enumerable.join?view=net-6.0</a></li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://yuhsiang237.github.io/2022/04/12/C-LINQ-JOIN-%E5%87%BD%E5%BC%8F%E6%95%88%E6%9E%9C/" data-id="cme6kwo05000igalj0zvt0pon" data-title="C# LINQ JOIN 函式效果" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-Sql-Server-查詢資料分頁使用offset-fetch-next" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2022/04/08/Sql-Server-%E6%9F%A5%E8%A9%A2%E8%B3%87%E6%96%99%E5%88%86%E9%A0%81%E4%BD%BF%E7%94%A8offset-fetch-next/" class="article-date">
+  <time class="dt-published" datetime="2022-04-08T02:20:26.000Z" itemprop="datePublished">2022-04-08</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2022/04/08/Sql-Server-%E6%9F%A5%E8%A9%A2%E8%B3%87%E6%96%99%E5%88%86%E9%A0%81%E4%BD%BF%E7%94%A8offset-fetch-next/">Sql Server 查詢資料分頁使用offset fetch next</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>撰寫中…</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span></span><br><span class="line"><span class="keyword">FROM</span> [TodoDB].[dbo].[Todos]</span><br><span class="line"><span class="keyword">ORDER</span> <span class="keyword">BY</span> [ID] <span class="keyword">DESC</span></span><br><span class="line"><span class="keyword">OFFSET</span> <span class="number">0</span> <span class="keyword">ROWS</span> </span><br><span class="line"><span class="keyword">FETCH</span> NEXT <span class="number">10</span> <span class="keyword">ROWS</span> <span class="keyword">ONLY</span></span><br></pre></td></tr></table></figure>
+<h3 id="參考資料"><a href="#參考資料" class="headerlink" title="參考資料"></a>參考資料</h3><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/hou973561160/article/details/84313681">https://blog.csdn.net/hou973561160/article/details/84313681</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://yuhsiang237.github.io/2022/04/08/Sql-Server-%E6%9F%A5%E8%A9%A2%E8%B3%87%E6%96%99%E5%88%86%E9%A0%81%E4%BD%BF%E7%94%A8offset-fetch-next/" data-id="cme6kwo2m0052galjevkk05w9" data-title="Sql Server 查詢資料分頁使用offset fetch next" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-建立不會停止的背景Task" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2022/04/08/%E5%BB%BA%E7%AB%8B%E4%B8%8D%E6%9C%83%E5%81%9C%E6%AD%A2%E7%9A%84%E8%83%8C%E6%99%AFTask/" class="article-date">
+  <time class="dt-published" datetime="2022-04-08T01:43:59.000Z" itemprop="datePublished">2022-04-08</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Code/">Code</a>►<a class="article-category-link" href="/categories/Code/C/">C#</a>►<a class="article-category-link" href="/categories/Topic/">Topic</a>►<a class="article-category-link" href="/categories/Topic/2022-C-SyncAndAsync/">2022 C# SyncAndAsync</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2022/04/08/%E5%BB%BA%E7%AB%8B%E4%B8%8D%E6%9C%83%E5%81%9C%E6%AD%A2%E7%9A%84%E8%83%8C%E6%99%AFTask/">[Day7]C#建立不會停止的背景Task</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>在上回 <a href="#">Post not found: Task運行處理-Run、Start、RunSynchronously-C-SyncAndAsync [Day6]Task運行處理(Run、Start、RunSynchronously)</a> ，我們學習了Task的各種啟動方式。<br>而今回主要來撰寫不會停止的背景Task。</p>
+<h3 id="實作"><a href="#實作" class="headerlink" title="實作"></a>實作</h3><p>不終止的非同步事件 ex:多個while(true)常駐。</p>
+<p>主要使用以下的模板去製作常駐程式:</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> endlessTask = Task.Run(<span class="keyword">async</span> () =&gt;</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">while</span> (<span class="literal">true</span>)</span><br><span class="line">        &#123;</span><br><span class="line">          <span class="comment">// Todo</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;);</span><br></pre></td></tr></table></figure>
+<p>簡單來說就是開一個異步的Task讓他跑即可。</p>
+<p>在以下的範例中endlessTask1、endlessTask2會不停的印出資料。</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> System;</span><br><span class="line"><span class="keyword">using</span> System.Threading.Tasks;</span><br><span class="line"></span><br><span class="line"><span class="keyword">namespace</span> <span class="title">EndlessTaskAsync</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">class</span> <span class="title">Program</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> 主程式</span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;returns&gt;</span><span class="doctag">&lt;/returns&gt;</span></span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">async</span> Task <span class="title">Main</span>(<span class="params"></span>)</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">var</span> endlessTask1 = EndlessTask(<span class="number">1</span>);</span><br><span class="line">            <span class="keyword">var</span> endlessTask2 = EndlessTask(<span class="number">2</span>);</span><br><span class="line"></span><br><span class="line">            <span class="keyword">await</span> PreventToStop();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> 製作無止盡的 while task</span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;number&quot;&gt;</span>編號<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;returns&gt;</span><span class="doctag">&lt;/returns&gt;</span></span></span><br><span class="line">        <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> Task <span class="title">EndlessTask</span>(<span class="params"><span class="built_in">int</span> number</span>)</span></span><br><span class="line">        &#123;</span><br><span class="line">            Console.WriteLine(<span class="string">&quot;Start EndlessTask&quot;</span> + number);</span><br><span class="line">            <span class="keyword">var</span> endlessTask = Task.Run(<span class="keyword">async</span> () =&gt;</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">while</span> (<span class="literal">true</span>)</span><br><span class="line">                &#123;</span><br><span class="line">                    Console.WriteLine(<span class="string">&quot;EndlessTask&quot;</span> + number);</span><br><span class="line">                    <span class="keyword">await</span> Task.Delay(<span class="number">100</span>);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;);</span><br><span class="line">            <span class="keyword">return</span> Task.CompletedTask;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> 避免視窗關閉，使用ReadKey();</span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;returns&gt;</span><span class="doctag">&lt;/returns&gt;</span></span></span><br><span class="line">        <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> Task <span class="title">PreventToStop</span>(<span class="params"></span>)</span></span><br><span class="line">        &#123;</span><br><span class="line">            Console.ReadKey();</span><br><span class="line">            <span class="keyword">return</span> Task.CompletedTask;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>運行結果:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">EndlessTask1</span><br><span class="line">EndlessTask2</span><br><span class="line">EndlessTask1</span><br><span class="line">EndlessTask2</span><br><span class="line">EndlessTask1</span><br><span class="line">EndlessTask2</span><br><span class="line">EndlessTask1</span><br><span class="line">EndlessTask2</span><br><span class="line">EndlessTask1</span><br><span class="line">EndlessTask2</span><br><span class="line">EndlessTask1</span><br><span class="line">EndlessTask2</span><br><span class="line">EndlessTask1</span><br><span class="line">EndlessTask2</span><br><span class="line">EndlessTask1</span><br><span class="line">EndlessTask2</span><br><span class="line">EndlessTask1</span><br><span class="line">EndlessTask2</span><br></pre></td></tr></table></figure>
+<p>直到關掉程式都會一直印。</p>
+<h3 id="總結"><a href="#總結" class="headerlink" title="總結"></a>總結</h3><p>在這回中練習了背景常駐的Task，通常會在監聽某個請求while中使用。<br>如果是以目前處理過的code，就是在socket處理上會大量使用。</p>
+<p>專案存庫:<br><a target="_blank" rel="noopener" href="https://github.com/yuhsiang237/EndlessTaskAsync">https://github.com/yuhsiang237/EndlessTaskAsync</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://yuhsiang237.github.io/2022/04/08/%E5%BB%BA%E7%AB%8B%E4%B8%8D%E6%9C%83%E5%81%9C%E6%AD%A2%E7%9A%84%E8%83%8C%E6%99%AFTask/" data-id="cme6kwo3z007vgaljbf8894dr" data-title="[Day7]C#建立不會停止的背景Task" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-C-Tuple實名、匿名用法" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2022/04/06/C-Tuple%E5%AF%A6%E5%90%8D%E3%80%81%E5%8C%BF%E5%90%8D%E7%94%A8%E6%B3%95/" class="article-date">
+  <time class="dt-published" datetime="2022-04-06T02:25:27.000Z" itemprop="datePublished">2022-04-06</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Code/">Code</a>►<a class="article-category-link" href="/categories/Code/C/">C#</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2022/04/06/C-Tuple%E5%AF%A6%E5%90%8D%E3%80%81%E5%8C%BF%E5%90%8D%E7%94%A8%E6%B3%95/">C# Tuple實名、匿名用法</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>最近在寫資料時需要回傳多筆數，但在資料單純、沒特別的邏輯的情況下不想再建立一個Model回傳，這時就可以使用Tuple返回元組類型。</p>
+<p>以下為匿名、實名的兩種Tuple寫法。</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> System;</span><br><span class="line"></span><br><span class="line"><span class="keyword">namespace</span> <span class="title">TupleSample</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">internal</span> <span class="keyword">class</span> <span class="title">Program</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">Main</span>(<span class="params"><span class="built_in">string</span>[] args</span>)</span></span><br><span class="line">        &#123;</span><br><span class="line">            Console.WriteLine(String.Concat(GetUser1().Id, GetUser1().Name));</span><br><span class="line">            Console.WriteLine(String.Concat(GetUser2().Item1, GetUser2().Item2));</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">static</span> (<span class="built_in">int</span> Id, <span class="built_in">string</span> Name) GetUser1()</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">return</span> (<span class="number">5</span>, <span class="string">&quot;王小明&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">static</span> Tuple&lt;<span class="built_in">int</span>, <span class="built_in">string</span>&gt; <span class="title">GetUser2</span>(<span class="params"></span>)</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">return</span> Tuple.Create(<span class="number">5</span>, <span class="string">&quot;王小明&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>output</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">5王小明</span><br><span class="line">5王小明</span><br></pre></td></tr></table></figure>
+
+<h3 id="總結"><a href="#總結" class="headerlink" title="總結"></a>總結</h3><p>當返回值較為單純時可以使用，如2~3個返回值。</p>
+<h3 id="參考資料"><a href="#參考資料" class="headerlink" title="參考資料"></a>參考資料</h3><p><a target="_blank" rel="noopener" href="https://docs.microsoft.com/zh-tw/dotnet/csharp/language-reference/builtin-types/value-tuples">https://docs.microsoft.com/zh-tw/dotnet/csharp/language-reference/builtin-types/value-tuples</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://yuhsiang237.github.io/2022/04/06/C-Tuple%E5%AF%A6%E5%90%8D%E3%80%81%E5%8C%BF%E5%90%8D%E7%94%A8%E6%B3%95/" data-id="cme6kwo12002dgaljeqsu77da" data-title="C# Tuple實名、匿名用法" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-Task運行處理-Run、Start、RunSynchronously-C-執行緒同步異步編程記" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2022/03/20/Task%E9%81%8B%E8%A1%8C%E8%99%95%E7%90%86-Run%E3%80%81Start%E3%80%81RunSynchronously-C-%E5%9F%B7%E8%A1%8C%E7%B7%92%E5%90%8C%E6%AD%A5%E7%95%B0%E6%AD%A5%E7%B7%A8%E7%A8%8B%E8%A8%98/" class="article-date">
+  <time class="dt-published" datetime="2022-03-20T08:27:53.000Z" itemprop="datePublished">2022-03-20</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Code/">Code</a>►<a class="article-category-link" href="/categories/Code/C/">C#</a>►<a class="article-category-link" href="/categories/Topic/">Topic</a>►<a class="article-category-link" href="/categories/Topic/2022-C-SyncAndAsync/">2022 C# SyncAndAsync</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2022/03/20/Task%E9%81%8B%E8%A1%8C%E8%99%95%E7%90%86-Run%E3%80%81Start%E3%80%81RunSynchronously-C-%E5%9F%B7%E8%A1%8C%E7%B7%92%E5%90%8C%E6%AD%A5%E7%95%B0%E6%AD%A5%E7%B7%A8%E7%A8%8B%E8%A8%98/">[Day6]Task運行處理(Run、Start、RunSynchronously)</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>在上回 <a href="#">Post not found: Task等待處理-Wait、WaitAll、WaitAny、WaitAsync、WhenAll、WhenAny-C-SyncAndAsync [Day5]Task等待處理(Wait、WaitAll、WaitAny、WaitAsync、WhenAll、WhenAny) - C# SyncAndAsync</a> ，我們使用了Task來測試等待的效果，而這回主要探討的是執行運行。</p>
+<ul>
+<li>Task.Run:將指定在 ThreadPool 執行工作排入佇列，並傳回該工作的工作或 Task<TResult> 控制代碼。</li>
+<li>Task.Start:啟動 Task，並排定它在目前的 TaskScheduler 執行。</li>
+<li>Task.RunSynchronously:在目前的 Task 上同步執行 TaskScheduler。</li>
+</ul>
+<h3 id="讓一個Task運行的兩種做法"><a href="#讓一個Task運行的兩種做法" class="headerlink" title="讓一個Task運行的兩種做法"></a>讓一個Task運行的兩種做法</h3><p>其實Task.Run、Task.Start都是能達到一樣的結果，只是寫法一個是分兩段，一個是一氣呵成。</p>
+<p>1.第一種用new Task搭配Task.Start，必須寫兩段。好處是可以先建立了，再決定哪時啟用。</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">Main</span>(<span class="params"><span class="built_in">string</span>[] args</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    Task task = <span class="keyword">new</span> Task(() =&gt; Console.WriteLine(<span class="string">&quot;task&quot;</span>));</span><br><span class="line">    task.Start();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>2.第二種用Run，一氣呵成。執行當下就直接運行。</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">Main</span>(<span class="params"><span class="built_in">string</span>[] args</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    Task Task = Task.Run(() =&gt;</span><br><span class="line">            &#123;</span><br><span class="line">                Console.WriteLine(<span class="string">&quot;task&quot;</span>);</span><br><span class="line">            &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>因此以上兩種用法Task.Run、Task.Start的差別已經清楚了。<br>再來則是RunSynchronously用法。</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> System;</span><br><span class="line"><span class="keyword">using</span> System.Threading;</span><br><span class="line"><span class="keyword">using</span> System.Threading.Tasks;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">Example</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">Main</span>(<span class="params"></span>)</span></span><br><span class="line">    &#123;</span><br><span class="line">        Console.WriteLine(<span class="string">&quot;Application executing on thread &#123;0&#125;&quot;</span>,</span><br><span class="line">                          Thread.CurrentThread.ManagedThreadId);</span><br><span class="line">        <span class="keyword">var</span> asyncTask = Task.Run(() =&gt; &#123;</span><br><span class="line">            Console.WriteLine(<span class="string">&quot;Task &#123;0&#125; (asyncTask) executing on Thread &#123;1&#125;&quot;</span>,</span><br><span class="line">                              Task.CurrentId,</span><br><span class="line">                              Thread.CurrentThread.ManagedThreadId);</span><br><span class="line">            <span class="built_in">long</span> sum = <span class="number">0</span>;</span><br><span class="line">            <span class="keyword">for</span> (<span class="built_in">int</span> ctr = <span class="number">1</span>; ctr &lt;= <span class="number">1000000</span>; ctr++)</span><br><span class="line">                sum += ctr;</span><br><span class="line">            <span class="keyword">return</span> sum;</span><br><span class="line">        &#125;);</span><br><span class="line">        <span class="keyword">var</span> syncTask = <span class="keyword">new</span> Task&lt;<span class="built_in">long</span>&gt;(() =&gt; &#123;</span><br><span class="line">            Console.WriteLine(<span class="string">&quot;Task &#123;0&#125; (syncTask) executing on Thread &#123;1&#125;&quot;</span>,</span><br><span class="line">                               Task.CurrentId,</span><br><span class="line">                               Thread.CurrentThread.ManagedThreadId);</span><br><span class="line">            <span class="built_in">long</span> sum = <span class="number">0</span>;</span><br><span class="line">            <span class="keyword">for</span> (<span class="built_in">int</span> ctr = <span class="number">1</span>; ctr &lt;= <span class="number">1000000</span>; ctr++)</span><br><span class="line">                sum += ctr;</span><br><span class="line">            <span class="keyword">return</span> sum;</span><br><span class="line">        &#125;);</span><br><span class="line">        syncTask.RunSynchronously();</span><br><span class="line">        Console.WriteLine();</span><br><span class="line">        Console.WriteLine(<span class="string">&quot;Task &#123;0&#125; returned &#123;1:N0&#125;&quot;</span>, syncTask.Id, syncTask.Result);</span><br><span class="line">        Console.WriteLine(<span class="string">&quot;Task &#123;0&#125; returned &#123;1:N0&#125;&quot;</span>, asyncTask.Id, asyncTask.Result);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>執行結果:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Application executing on thread 1</span><br><span class="line">Task 2 (syncTask) executing on Thread 1</span><br><span class="line">Task 1 (asyncTask) executing on Thread 4</span><br><span class="line"></span><br><span class="line">Task 2 returned 500,000,500,000</span><br><span class="line">Task 1 returned 500,000,500,000</span><br></pre></td></tr></table></figure>
+<p>官方給的解釋:<br>在這兩種情況下，工作都會執行相同的 lambda 運算式，以顯示工作識別碼和工作執行所在之執行緒的識別碼。此工作會計算介於1到1000000之間的整數總和。 如範例的輸出所示，藉由呼叫方法來執行的工作 RunSynchronously 會在應用程式執行緒上執行，而非同步工作則不是。</p>
+<p>簡單來說就是:RunSynchronously會在主執行序上面跑。而非同步的則會在其他執行序。</p>
+<h3 id="總結"><a href="#總結" class="headerlink" title="總結"></a>總結</h3><p>在這回中可以知道讓Task執行有哪幾種作法。</p>
+<h3 id="參考資料"><a href="#參考資料" class="headerlink" title="參考資料"></a>參考資料</h3><ul>
+<li><a target="_blank" rel="noopener" href="https://docs.microsoft.com/en-us/dotnet/api/system.threading.tasks.task.run?view=net-6.0">https://docs.microsoft.com/en-us/dotnet/api/system.threading.tasks.task.run?view=net-6.0</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.itread01.com/content/1569240242.html">https://www.itread01.com/content/1569240242.html</a></li>
+<li><a target="_blank" rel="noopener" href="https://docs.microsoft.com/zh-tw/dotnet/api/system.threading.tasks.task.runsynchronously?view=net-6.0">https://docs.microsoft.com/zh-tw/dotnet/api/system.threading.tasks.task.runsynchronously?view=net-6.0</a></li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://yuhsiang237.github.io/2022/03/20/Task%E9%81%8B%E8%A1%8C%E8%99%95%E7%90%86-Run%E3%80%81Start%E3%80%81RunSynchronously-C-%E5%9F%B7%E8%A1%8C%E7%B7%92%E5%90%8C%E6%AD%A5%E7%95%B0%E6%AD%A5%E7%B7%A8%E7%A8%8B%E8%A8%98/" data-id="cme6kwo2o0055galj5iweccq4" data-title="[Day6]Task運行處理(Run、Start、RunSynchronously)" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-Task等待處理-Wait、WaitAll、WaitAny、WaitAsync、WhenAll、WhenAny-C-執行緒同步異步編程記" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2022/03/20/Task%E7%AD%89%E5%BE%85%E8%99%95%E7%90%86-Wait%E3%80%81WaitAll%E3%80%81WaitAny%E3%80%81WaitAsync%E3%80%81WhenAll%E3%80%81WhenAny-C-%E5%9F%B7%E8%A1%8C%E7%B7%92%E5%90%8C%E6%AD%A5%E7%95%B0%E6%AD%A5%E7%B7%A8%E7%A8%8B%E8%A8%98/" class="article-date">
+  <time class="dt-published" datetime="2022-03-20T08:26:53.000Z" itemprop="datePublished">2022-03-20</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Code/">Code</a>►<a class="article-category-link" href="/categories/Code/C/">C#</a>►<a class="article-category-link" href="/categories/Topic/">Topic</a>►<a class="article-category-link" href="/categories/Topic/2022-C-SyncAndAsync/">2022 C# SyncAndAsync</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2022/03/20/Task%E7%AD%89%E5%BE%85%E8%99%95%E7%90%86-Wait%E3%80%81WaitAll%E3%80%81WaitAny%E3%80%81WaitAsync%E3%80%81WhenAll%E3%80%81WhenAny-C-%E5%9F%B7%E8%A1%8C%E7%B7%92%E5%90%8C%E6%AD%A5%E7%95%B0%E6%AD%A5%E7%B7%A8%E7%A8%8B%E8%A8%98/">[Day5]Task等待處理(Wait、WaitAll、WaitAny、WaitAsync、WhenAll、WhenAny) - C# SyncAndAsync</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>在上回 <a href="#">Post not found: 使用Task撰寫第一個非同步程式-C-SyncAndAsync [Day4]使用Task撰寫第一個非同步程式 - C# SyncAndAsync</a> ，我們使用了Task來撰寫第一隻非同步的程式。<br>而在這回將會著重在等待方面。</p>
+<p>Task提供以下語法能夠等待:Wait、WaitAll、WaitAny、WaitAsync、WhenAll、WhenAny。</p>
+<ul>
+<li>Task.Wait:等候 Task 完成執行。</li>
+<li>Task.WaitAll:等待所有提供的 Task 物件完成執行。</li>
+<li>Task.WaitAny:等候任一提供的 Task 物件完成執行。</li>
+<li>Task.WaitAsync:取得 Task 當此 Task 完成或指定的超時時間過期時將完成的。(ps.是.NET6, 7 Preview 1才支援的新語法，目前是用.net core 3.1所以先不做範例)</li>
+<li>Task.WhenAll:建立當所有提供的工作完成時才會完成的工作。</li>
+<li>Task.WhenAny:建立當任何一個提供的工作完成時才會完成的工作。</li>
+</ul>
+<p>這麼看來，使用Wait、When差別好像很難分清楚?再稍微比較一下:</p>
+<table>
+<tr>
+<td></td>
+<td>Task.WhenAll</td>
+<td>Task.WaitAll</td>
+</tr>
+<tr>
+<td>調用時阻塞該線程</td>
+<td>不會</td>
+<td>會</td>
+</tr>
+<tr>
+<td>返回值</td>
+<td>Task</td>
+<td>無</td>
+</tr>
+<tr>
+<td>備註</td>
+<td>可以用返回的Task去檢查是否完成</td>
+<td></td>
+</tr>
+</table>
+
+<p>此外，Task.WhenAll()也能用前面加await的語法去製造出阻塞。</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">await</span> Task.WhenAll()</span><br></pre></td></tr></table></figure>
+<p>因此在使用上，能夠全部使用When再搭配await去組合出Wait的效果。</p>
+<h3 id="實作測試"><a href="#實作測試" class="headerlink" title="實作測試"></a>實作測試</h3><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> System;</span><br><span class="line"><span class="keyword">using</span> System.Collections.Generic;</span><br><span class="line"><span class="keyword">using</span> System.Diagnostics;</span><br><span class="line"><span class="keyword">using</span> System.Threading.Tasks;</span><br><span class="line"></span><br><span class="line"><span class="keyword">namespace</span> <span class="title">TaskWaitHandle</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">class</span> <span class="title">Program</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">Main</span>(<span class="params"><span class="built_in">string</span>[] args</span>)</span></span><br><span class="line">        &#123;</span><br><span class="line">            TaskWaitTest();</span><br><span class="line"></span><br><span class="line">            TaskWaitAllTest();</span><br><span class="line">            TaskWhenAllTest();</span><br><span class="line"></span><br><span class="line">            TaskWaitAnyTest();</span><br><span class="line">            TaskWhenAnyTest();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> 測試Task.WaitAny</span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">TaskWaitAnyTest</span>(<span class="params"></span>)</span></span><br><span class="line">        &#123;</span><br><span class="line">            Stopwatch sw = <span class="keyword">new</span> Stopwatch();</span><br><span class="line">            sw.Start();</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">            <span class="keyword">var</span> tasks = <span class="keyword">new</span> List&lt;Task&gt; &#123; DelayTime(<span class="number">5000</span>), DelayTime(<span class="number">3000</span>), DelayTime(<span class="number">2000</span>) &#125;;</span><br><span class="line">            Task.WaitAny(tasks.ToArray());</span><br><span class="line"></span><br><span class="line">            <span class="built_in">string</span> second = (sw.Elapsed.TotalMilliseconds / <span class="number">1000</span>).ToString();</span><br><span class="line">            Console.WriteLine(<span class="keyword">nameof</span>(TaskWaitAnyTest) + <span class="string">&quot; : 一共花費:&quot;</span> + second + <span class="string">&quot;秒&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> 測試Task.WhenAny</span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">TaskWhenAnyTest</span>(<span class="params"></span>)</span></span><br><span class="line">        &#123;</span><br><span class="line">            Stopwatch sw = <span class="keyword">new</span> Stopwatch();</span><br><span class="line">            sw.Start();</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">            <span class="keyword">var</span> tasks = <span class="keyword">new</span> List&lt;Task&gt; &#123; DelayTime(<span class="number">5000</span>), DelayTime(<span class="number">3000</span>), DelayTime(<span class="number">2000</span>) &#125;;</span><br><span class="line">            <span class="keyword">var</span> t = Task.WhenAny(tasks);</span><br><span class="line"></span><br><span class="line">            <span class="built_in">string</span> second = (sw.Elapsed.TotalMilliseconds / <span class="number">1000</span>).ToString();</span><br><span class="line">            Console.WriteLine(<span class="keyword">nameof</span>(TaskWhenAnyTest) + <span class="string">&quot; : 一共花費:&quot;</span> + second + <span class="string">&quot;秒&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> 測試Task.WhenAll</span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">TaskWhenAllTest</span>(<span class="params"></span>)</span></span><br><span class="line">        &#123;</span><br><span class="line">            Stopwatch sw = <span class="keyword">new</span> Stopwatch();</span><br><span class="line">            sw.Start();</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">            <span class="keyword">var</span> tasks = <span class="keyword">new</span> List&lt;Task&gt; &#123; DelayTime(<span class="number">5000</span>), DelayTime(<span class="number">3000</span>), DelayTime(<span class="number">2000</span>) &#125;;</span><br><span class="line">            <span class="keyword">var</span> t = Task.WhenAll(tasks);</span><br><span class="line"></span><br><span class="line">            <span class="built_in">string</span> second = (sw.Elapsed.TotalMilliseconds / <span class="number">1000</span>).ToString();</span><br><span class="line">            Console.WriteLine(<span class="keyword">nameof</span>(TaskWhenAllTest) + <span class="string">&quot; : 一共花費:&quot;</span> + second + <span class="string">&quot;秒&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> 測試Task.WaitAll</span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">TaskWaitAllTest</span>(<span class="params"></span>)</span></span><br><span class="line">        &#123;</span><br><span class="line">            Stopwatch sw = <span class="keyword">new</span> Stopwatch();</span><br><span class="line">            sw.Start();</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">            <span class="keyword">var</span> tasks = <span class="keyword">new</span> List&lt;Task&gt; &#123; DelayTime(<span class="number">5000</span>), DelayTime(<span class="number">3000</span>), DelayTime(<span class="number">2000</span>) &#125;;</span><br><span class="line">            Task.WaitAll(tasks.ToArray());</span><br><span class="line"></span><br><span class="line">            sw.Stop();</span><br><span class="line">            <span class="built_in">string</span> second = (sw.Elapsed.TotalMilliseconds / <span class="number">1000</span>).ToString();</span><br><span class="line">            Console.WriteLine(<span class="keyword">nameof</span>(TaskWaitAllTest) + <span class="string">&quot; : 一共花費:&quot;</span> + second + <span class="string">&quot;秒&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> 測試Task.Wait</span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">TaskWaitTest</span>(<span class="params"></span>)</span></span><br><span class="line">        &#123;</span><br><span class="line">            Stopwatch sw = <span class="keyword">new</span> Stopwatch();</span><br><span class="line">            sw.Start();</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">            Task t = DelayTime(<span class="number">5000</span>);</span><br><span class="line">            t.Wait();</span><br><span class="line">            sw.Stop();</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">            <span class="built_in">string</span> second = (sw.Elapsed.TotalMilliseconds / <span class="number">1000</span>).ToString();</span><br><span class="line">            Console.WriteLine(<span class="keyword">nameof</span>(TaskWaitTest) + <span class="string">&quot; : 一共花費:&quot;</span> + second + <span class="string">&quot;秒&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> 停止一段時間</span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;millseconds&quot;&gt;</span>停止毫秒<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;returns&gt;</span><span class="doctag">&lt;/returns&gt;</span></span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">async</span> Task <span class="title">DelayTime</span>(<span class="params"><span class="built_in">int</span> millseconds</span>)</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">await</span> Task.Delay(millseconds);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>執行完結果:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">TaskWaitTest : 一共花費:5.0991762秒</span><br><span class="line">TaskWaitAllTest : 一共花費:5.017742599999999秒</span><br><span class="line">TaskWhenAllTest : 一共花費:0.0008574秒</span><br><span class="line">TaskWaitAnyTest : 一共花費:2.0228913秒</span><br><span class="line">TaskWhenAnyTest : 一共花費:0.0006043秒</span><br></pre></td></tr></table></figure>
+<p>可以見到When不會阻塞所以直接被帶過，而Wait造成阻塞。</p>
+<h3 id="總結"><a href="#總結" class="headerlink" title="總結"></a>總結</h3><p>可以知道Task使用Wait會阻塞，When不會阻塞。<br>而使用When可以再之後去檢查該返回值是否完成。</p>
+<p>至於如果想讓When阻塞，就使用await即可。<br>所以總結是:<strong>When搭await可以組出所有阻塞/非阻塞，因此一路組合技用到底即可，而Wait可以擺一邊放置了。</strong></p>
+<h3 id="參考資料"><a href="#參考資料" class="headerlink" title="參考資料"></a>參考資料</h3><ul>
+<li><a target="_blank" rel="noopener" href="https://docs.microsoft.com/zh-tw/dotnet/api/system.threading.tasks.task.wait?view=net-6.0">https://docs.microsoft.com/zh-tw/dotnet/api/system.threading.tasks.task.wait?view=net-6.0</a></li>
+<li><a target="_blank" rel="noopener" href="https://csharpkh.blogspot.com/2019/04/CSharp-WhenAll-WaitAll-Async-different.html">https://csharpkh.blogspot.com/2019/04/CSharp-WhenAll-WaitAll-Async-different.html</a></li>
+<li><a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/6123406/waitall-vs-whenall">https://stackoverflow.com/questions/6123406/waitall-vs-whenall</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.nhooo.com/note/qa02fb.html">https://www.nhooo.com/note/qa02fb.html</a></li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://yuhsiang237.github.io/2022/03/20/Task%E7%AD%89%E5%BE%85%E8%99%95%E7%90%86-Wait%E3%80%81WaitAll%E3%80%81WaitAny%E3%80%81WaitAsync%E3%80%81WhenAll%E3%80%81WhenAny-C-%E5%9F%B7%E8%A1%8C%E7%B7%92%E5%90%8C%E6%AD%A5%E7%95%B0%E6%AD%A5%E7%B7%A8%E7%A8%8B%E8%A8%98/" data-id="cme6kwo2n0054galjb3zw1n6w" data-title="[Day5]Task等待處理(Wait、WaitAll、WaitAny、WaitAsync、WhenAll、WhenAny) - C# SyncAndAsync" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-使用Task撰寫第一個非同步程式-C-執行緒同步異步編程記" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2022/03/19/%E4%BD%BF%E7%94%A8Task%E6%92%B0%E5%AF%AB%E7%AC%AC%E4%B8%80%E5%80%8B%E9%9D%9E%E5%90%8C%E6%AD%A5%E7%A8%8B%E5%BC%8F-C-%E5%9F%B7%E8%A1%8C%E7%B7%92%E5%90%8C%E6%AD%A5%E7%95%B0%E6%AD%A5%E7%B7%A8%E7%A8%8B%E8%A8%98/" class="article-date">
+  <time class="dt-published" datetime="2022-03-19T08:26:53.000Z" itemprop="datePublished">2022-03-19</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Code/">Code</a>►<a class="article-category-link" href="/categories/Code/C/">C#</a>►<a class="article-category-link" href="/categories/Topic/">Topic</a>►<a class="article-category-link" href="/categories/Topic/2022-C-SyncAndAsync/">2022 C# SyncAndAsync</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2022/03/19/%E4%BD%BF%E7%94%A8Task%E6%92%B0%E5%AF%AB%E7%AC%AC%E4%B8%80%E5%80%8B%E9%9D%9E%E5%90%8C%E6%AD%A5%E7%A8%8B%E5%BC%8F-C-%E5%9F%B7%E8%A1%8C%E7%B7%92%E5%90%8C%E6%AD%A5%E7%95%B0%E6%AD%A5%E7%B7%A8%E7%A8%8B%E8%A8%98/">[Day4]使用Task撰寫第一個非同步程式 - C# SyncAndAsync</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>在上回 <a href="#">Post not found: C-中Task與Thread比較-C-SyncAndAsync [Day3]C#中Task與Thread比較 - C# SyncAndAsync</a> ，比較了Task、Thread，而這回主要會以Task撰寫第一個非同步程式。</p>
+<h3 id="什麼是Task"><a href="#什麼是Task" class="headerlink" title="什麼是Task"></a>什麼是Task</h3><p>Task類別代表不會傳回值，而且通常會以非同步方式執行的單一作業。 Task物件是工作架構非同步模式的其中一個核心元件，第一次是在 .NET Framework 4 中引進。 由於物件所執行的工作 Task 通常會線上程集區執行緒上以非同步方式執行，而不是在主應用程式執行緒上同步執行，因此您可以使用 Status 屬性以及 IsCanceled 、 IsCompleted 和 IsFaulted 屬性來判斷工作的狀態。 最常見的情況是使用 lambda 運算式來指定工作要執行的工作。</p>
+<p>針對傳回值的作業，您可以使用 Task＜TResult＞ 類別。</p>
+<h3 id="需求"><a href="#需求" class="headerlink" title="需求"></a>需求</h3><p>我們有五件事情分別如下:</p>
+<ol>
+<li>起床</li>
+<li>打遊戲</li>
+<li>聽音樂</li>
+<li>吃零食</li>
+<li>睡覺</li>
+</ol>
+<p>而我們預計起床-&gt;同時執行打遊戲、聽音樂、吃零食-&gt;睡覺。<br>整體的順序會如下圖:</p>
+<img src="/2022/03/19/%E4%BD%BF%E7%94%A8Task%E6%92%B0%E5%AF%AB%E7%AC%AC%E4%B8%80%E5%80%8B%E9%9D%9E%E5%90%8C%E6%AD%A5%E7%A8%8B%E5%BC%8F-C-%E5%9F%B7%E8%A1%8C%E7%B7%92%E5%90%8C%E6%AD%A5%E7%95%B0%E6%AD%A5%E7%B7%A8%E7%A8%8B%E8%A8%98/1.png" class="">
+
+<h3 id="程式撰寫"><a href="#程式撰寫" class="headerlink" title="程式撰寫"></a>程式撰寫</h3><p>再來我們快速撰寫一下程式碼。</p>
+<p>我們將以下的事情都設定一個執行的時間:</p>
+<ol>
+<li>起床，2秒</li>
+<li>打遊戲，5秒</li>
+<li>聽音樂，4秒</li>
+<li>吃零食，4秒</li>
+<li>睡覺，3秒</li>
+</ol>
+<p>為了要使程式能夠等待，因此我們在函式上需要加入async，才能再裡面寫await。(不然只能用後面加上.Wait()的作法，有點鱉就是)</p>
+<p>我在前後都加上了Stopwatch碼表，用來計時，如果照理論，那完成時間是10秒。<br>因為2~4項是併發異步執行只要取最高的打遊戲。<br>即:2+5+3=10</p>
+<p>在每個事情裡面使用<br>await Task.Delay(5000);<br>去設定每件事情做的時間</p>
+<p>21~24行則呼叫事情，並且把它加入List。<br>利用await Task.WhenAll去等待所有List中Task執行完畢後才執行接下來的事情。</p>
+<p>程式碼放置庫:<a target="_blank" rel="noopener" href="https://github.com/yuhsiang237/TaskAsync">https://github.com/yuhsiang237/TaskAsync</a></p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> System;</span><br><span class="line"><span class="keyword">using</span> System.Collections.Generic;</span><br><span class="line"><span class="keyword">using</span> System.Diagnostics;</span><br><span class="line"><span class="keyword">using</span> System.Threading.Tasks;</span><br><span class="line"></span><br><span class="line"><span class="keyword">namespace</span> <span class="title">TaskAsync</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">class</span> <span class="title">Program</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> 主程式</span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;returns&gt;</span><span class="doctag">&lt;/returns&gt;</span></span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">async</span> Task <span class="title">Main</span>(<span class="params"></span>)</span></span><br><span class="line">        &#123;</span><br><span class="line">            Stopwatch sw = <span class="keyword">new</span> Stopwatch();</span><br><span class="line">            sw.Start();</span><br><span class="line"></span><br><span class="line">            <span class="keyword">await</span> WakeUpAsync();</span><br><span class="line"></span><br><span class="line">            IList&lt;Task&gt; tasks = <span class="keyword">new</span> List&lt;Task&gt;();</span><br><span class="line">            tasks.Add(PlayGameAsync());</span><br><span class="line">            tasks.Add(ListenMusicAsync());</span><br><span class="line">            tasks.Add(EatSnackAsync());</span><br><span class="line"></span><br><span class="line">            <span class="keyword">await</span> Task.WhenAll(tasks);</span><br><span class="line"></span><br><span class="line">            <span class="keyword">await</span> GoToBedSleepAsync();</span><br><span class="line"></span><br><span class="line">            sw.Stop();</span><br><span class="line">            <span class="built_in">string</span> second = (sw.Elapsed.TotalMilliseconds / <span class="number">1000</span>).ToString();</span><br><span class="line">            Console.WriteLine(<span class="string">&quot;一共花費:&quot;</span> + second + <span class="string">&quot;秒&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> 模擬打遊戲</span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;returns&gt;</span><span class="doctag">&lt;/returns&gt;</span></span></span><br><span class="line">        <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">async</span> Task <span class="title">PlayGameAsync</span>(<span class="params"></span>)</span></span><br><span class="line">        &#123;</span><br><span class="line">            Console.WriteLine(<span class="string">&quot;打遊戲&quot;</span>);</span><br><span class="line">            <span class="keyword">await</span> Task.Delay(<span class="number">5000</span>);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> 模擬聽音樂</span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;returns&gt;</span><span class="doctag">&lt;/returns&gt;</span></span></span><br><span class="line">        <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">async</span> Task <span class="title">ListenMusicAsync</span>(<span class="params"></span>)</span></span><br><span class="line">        &#123;</span><br><span class="line">            Console.WriteLine(<span class="string">&quot;聽音樂&quot;</span>);</span><br><span class="line">            <span class="keyword">await</span> Task.Delay(<span class="number">4000</span>);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> 模擬吃零食</span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;returns&gt;</span><span class="doctag">&lt;/returns&gt;</span></span></span><br><span class="line">        <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">async</span> Task <span class="title">EatSnackAsync</span>(<span class="params"></span>)</span></span><br><span class="line">        &#123;</span><br><span class="line">            Console.WriteLine(<span class="string">&quot;吃零食&quot;</span>);</span><br><span class="line">            <span class="keyword">await</span> Task.Delay(<span class="number">4000</span>);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> 模擬起床</span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;returns&gt;</span><span class="doctag">&lt;/returns&gt;</span></span></span><br><span class="line">        <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">async</span> Task <span class="title">WakeUpAsync</span>(<span class="params"></span>)</span></span><br><span class="line">        &#123;</span><br><span class="line">            Console.WriteLine(<span class="string">&quot;起床&quot;</span>);</span><br><span class="line">            <span class="keyword">await</span> Task.Delay(<span class="number">2000</span>);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> 模擬睡覺</span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;returns&gt;</span><span class="doctag">&lt;/returns&gt;</span></span></span><br><span class="line">        <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">async</span> Task <span class="title">GoToBedSleepAsync</span>(<span class="params"></span>)</span></span><br><span class="line">        &#123;</span><br><span class="line">            Console.WriteLine(<span class="string">&quot;睡覺&quot;</span>);</span><br><span class="line">            <span class="keyword">await</span> Task.Delay(<span class="number">3000</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>執行結果:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">起床</span><br><span class="line">打遊戲</span><br><span class="line">聽音樂</span><br><span class="line">吃零食</span><br><span class="line">睡覺</span><br><span class="line">一共花費:10.1614089秒</span><br></pre></td></tr></table></figure>
+<p>運行:</p>
+<img src="/2022/03/19/%E4%BD%BF%E7%94%A8Task%E6%92%B0%E5%AF%AB%E7%AC%AC%E4%B8%80%E5%80%8B%E9%9D%9E%E5%90%8C%E6%AD%A5%E7%A8%8B%E5%BC%8F-C-%E5%9F%B7%E8%A1%8C%E7%B7%92%E5%90%8C%E6%AD%A5%E7%95%B0%E6%AD%A5%E7%B7%A8%E7%A8%8B%E8%A8%98/2.gif" class="">
+
+<h3 id="總結"><a href="#總結" class="headerlink" title="總結"></a>總結</h3><p>使用Task去處理同步、異步上手挺容易的!<br>然比較需注意的點在如果你要在裡面用await，外層一定要加上async，否則會報錯。</p>
+<p>程式碼放置庫:<a target="_blank" rel="noopener" href="https://github.com/yuhsiang237/TaskAsync">https://github.com/yuhsiang237/TaskAsync</a></p>
+<h3 id="參考資料"><a href="#參考資料" class="headerlink" title="參考資料"></a>參考資料</h3><ul>
+<li><a target="_blank" rel="noopener" href="https://docs.microsoft.com/zh-tw/dotnet/api/system.threading.tasks.task?view=net-6.0">https://docs.microsoft.com/zh-tw/dotnet/api/system.threading.tasks.task?view=net-6.0</a></li>
+<li><a target="_blank" rel="noopener" href="https://docs.microsoft.com/zh-tw/dotnet/api/system.threading.tasks.task.-ctor?view=net-6.0">https://docs.microsoft.com/zh-tw/dotnet/api/system.threading.tasks.task.-ctor?view=net-6.0</a></li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://yuhsiang237.github.io/2022/03/19/%E4%BD%BF%E7%94%A8Task%E6%92%B0%E5%AF%AB%E7%AC%AC%E4%B8%80%E5%80%8B%E9%9D%9E%E5%90%8C%E6%AD%A5%E7%A8%8B%E5%BC%8F-C-%E5%9F%B7%E8%A1%8C%E7%B7%92%E5%90%8C%E6%AD%A5%E7%95%B0%E6%AD%A5%E7%B7%A8%E7%A8%8B%E8%A8%98/" data-id="cme6kwo3p0076galj5iea5vyd" data-title="[Day4]使用Task撰寫第一個非同步程式 - C# SyncAndAsync" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-C-中Task與Thread比較-C-執行緒同步異步編程記" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2022/03/19/C-%E4%B8%ADTask%E8%88%87Thread%E6%AF%94%E8%BC%83-C-%E5%9F%B7%E8%A1%8C%E7%B7%92%E5%90%8C%E6%AD%A5%E7%95%B0%E6%AD%A5%E7%B7%A8%E7%A8%8B%E8%A8%98/" class="article-date">
+  <time class="dt-published" datetime="2022-03-19T07:47:05.000Z" itemprop="datePublished">2022-03-19</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Code/">Code</a>►<a class="article-category-link" href="/categories/Code/C/">C#</a>►<a class="article-category-link" href="/categories/Topic/">Topic</a>►<a class="article-category-link" href="/categories/Topic/2022-C-SyncAndAsync/">2022 C# SyncAndAsync</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2022/03/19/C-%E4%B8%ADTask%E8%88%87Thread%E6%AF%94%E8%BC%83-C-%E5%9F%B7%E8%A1%8C%E7%B7%92%E5%90%8C%E6%AD%A5%E7%95%B0%E6%AD%A5%E7%B7%A8%E7%A8%8B%E8%A8%98/">[Day3]C#中Task與Thread比較 - C# SyncAndAsync</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>在上回 <a href="#">Post not found: 什麼是同步與異步-C-SyncAndAsync [Day2]什麼是同步與異步 - C# SyncAndAsync</a> ，列出了同步異步差異，而今回就朝異步的Task、Thread邁進。</p>
+<h3 id="什麼是Task與Thread"><a href="#什麼是Task與Thread" class="headerlink" title="什麼是Task與Thread"></a>什麼是Task與Thread</h3><p>在此將Task、Thread做一個表格比較:</p>
+<table>
+<tr>
+<td style="width:20%"></td>
+<td style="width:40%">Task</td>
+<td style="width:40%">Thread</td>
+</tr>
+<tr>
+<td>描述</td>
+<td>Task類別代表不會傳回值，而且通常會以非同步方式執行的單一作業。 Task物件是工作架構非同步模式的其中一個核心元件，第一次是在 .NET Framework 4 中引進。 由於物件所執行的工作 Task 通常會線上程集區執行緒上以非同步方式執行，而不是在主應用程式執行緒上同步執行，因此您可以使用 Status 屬性以及 IsCanceled 、 IsCompleted 和 IsFaulted 屬性來判斷工作的狀態。 最常見的情況是使用 lambda 運算式來指定工作要執行的工作。
+
+<p>針對傳回值的作業，您可以使用Task＜TResult＞類別。</td></p>
+<td>可建立和控制執行緒，設定執行緒的優先權，並取得它的狀態。
+Thread是C#中最早的多執行緒模型，後來才推出Task。
+</td>
+</tr>
+<tr>
+<td>基於</td>
+<td>基於Action,Func的更加現代的執行緒模型。支援模板引數。</td>
+<td>基於delegate。僅受限於固定引數。</td>
+</tr>
+<tr>
+<td>C#中常配套的關鍵詞</td>
+<td>async、await</td>
+<td>Start、Suspend、Resume、Join、Abort、ThreadPool</td>
+</tr>
+<tr>
+<td>namespace</td>
+<td>System.Threading.Tasks</td>
+<td>System.Threading</td>
+</tr>
+<tr>
+<td>備註</td>
+<td>Task的目的，就是要替代Thread，未來可能比較主流</td>
+<td>-</td>
+</tr>
+
+</table>
+
+<h3 id="總結"><a href="#總結" class="headerlink" title="總結"></a>總結</h3><p>可以得知Task、Thread都是能夠處理異步的解決方案，而Task算是Thread的改良易用的封裝版本，因此接下來會先以Task為主進行深究，最後才是Thread。</p>
+<p>而在MSDN官方也提供了一個非同步程式的配套設計模式:<br><a target="_blank" rel="noopener" href="https://docs.microsoft.com/zh-tw/dotnet/standard/asynchronous-programming-patterns/">https://docs.microsoft.com/zh-tw/dotnet/standard/asynchronous-programming-patterns/</a></p>
+<h3 id="參考資料"><a href="#參考資料" class="headerlink" title="參考資料"></a>參考資料</h3><ul>
+<li><a target="_blank" rel="noopener" href="https://docs.microsoft.com/zh-tw/dotnet/api/system.threading.thread?view=net-6.0">https://docs.microsoft.com/zh-tw/dotnet/api/system.threading.thread?view=net-6.0</a></li>
+<li><a target="_blank" rel="noopener" href="https://docs.microsoft.com/zh-tw/dotnet/api/system.threading.tasks.task?view=net-6.0">https://docs.microsoft.com/zh-tw/dotnet/api/system.threading.tasks.task?view=net-6.0</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.juduo.cc/club/1064920.html">https://www.juduo.cc/club/1064920.html</a></li>
+<li><a target="_blank" rel="noopener" href="https://docs.microsoft.com/zh-tw/dotnet/standard/asynchronous-programming-patterns/task-based-asynchronous-pattern-tap">https://docs.microsoft.com/zh-tw/dotnet/standard/asynchronous-programming-patterns/task-based-asynchronous-pattern-tap</a></li>
+<li><a target="_blank" rel="noopener" href="https://docs.microsoft.com/zh-tw/dotnet/standard/asynchronous-programming-patterns/">https://docs.microsoft.com/zh-tw/dotnet/standard/asynchronous-programming-patterns/</a></li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://yuhsiang237.github.io/2022/03/19/C-%E4%B8%ADTask%E8%88%87Thread%E6%AF%94%E8%BC%83-C-%E5%9F%B7%E8%A1%8C%E7%B7%92%E5%90%8C%E6%AD%A5%E7%95%B0%E6%AD%A5%E7%B7%A8%E7%A8%8B%E8%A8%98/" data-id="cme6kwo16002igaljcgj7gksy" data-title="[Day3]C#中Task與Thread比較 - C# SyncAndAsync" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-什麼是同步與異步-C-執行緒同步異步編程記" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2022/03/19/%E4%BB%80%E9%BA%BC%E6%98%AF%E5%90%8C%E6%AD%A5%E8%88%87%E7%95%B0%E6%AD%A5-C-%E5%9F%B7%E8%A1%8C%E7%B7%92%E5%90%8C%E6%AD%A5%E7%95%B0%E6%AD%A5%E7%B7%A8%E7%A8%8B%E8%A8%98/" class="article-date">
+  <time class="dt-published" datetime="2022-03-19T06:51:24.000Z" itemprop="datePublished">2022-03-19</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Code/">Code</a>►<a class="article-category-link" href="/categories/Code/C/">C#</a>►<a class="article-category-link" href="/categories/Topic/">Topic</a>►<a class="article-category-link" href="/categories/Topic/2022-C-SyncAndAsync/">2022 C# SyncAndAsync</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2022/03/19/%E4%BB%80%E9%BA%BC%E6%98%AF%E5%90%8C%E6%AD%A5%E8%88%87%E7%95%B0%E6%AD%A5-C-%E5%9F%B7%E8%A1%8C%E7%B7%92%E5%90%8C%E6%AD%A5%E7%95%B0%E6%AD%A5%E7%B7%A8%E7%A8%8B%E8%A8%98/">[Day2]什麼是同步與異步 - C# SyncAndAsync</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>在上回 <a href="/2022/03/19/%E7%82%BA%E4%BA%86%E6%9F%90%E5%80%8B%E5%A4%A2%E6%83%B3%E8%80%8C%E9%96%8B%E5%A7%8B-C-%E5%90%8C%E6%AD%A5%E7%95%B0%E6%AD%A5%E7%B7%A8%E7%A8%8B/" title="[Day1]為了某個夢想而開始 - C# SyncAndAsync">[Day1]為了某個夢想而開始 - C# SyncAndAsync</a> ，列出了學習方向，而今回就朝學習目標邁進。</p>
+<h3 id="什麼是同步與異步"><a href="#什麼是同步與異步" class="headerlink" title="什麼是同步與異步"></a>什麼是同步與異步</h3><p>在此將同步、非同步做一個表格比較:</p>
+<table>
+<tr>
+<td style="width:20%"></td>
+<td style="width:40%">異步</td>
+<td style="width:40%">同步</td>
+</tr>
+<tr>
+<td>描述</td>
+<td>又稱非同步(Asynchronous、async)，調用在發出之後，這個調用就直接返回了，所以沒有返回結果。當一個異步過程調用發出後，調用者不會立刻得到結果。而是在調用發出後，被調用者通過狀態、通知或通過回調函數，讓調用者能響應結果。</td>
+<td>又稱同步(Synchronous、sync)，同步還可以理解為：發出一個調用時，在沒有得到結果之前，該調用就不返回。</td>
+</tr>
+<tr>
+<td>使用場景</td>
+<td>同時，一次做多件事情</td>
+<td>同時，一次做一件事情</td>
+</tr>
+<td>圖例</td>
+<td><img src="/2022/03/19/%E4%BB%80%E9%BA%BC%E6%98%AF%E5%90%8C%E6%AD%A5%E8%88%87%E7%95%B0%E6%AD%A5-C-%E5%9F%B7%E8%A1%8C%E7%B7%92%E5%90%8C%E6%AD%A5%E7%95%B0%E6%AD%A5%E7%B7%A8%E7%A8%8B%E8%A8%98/1.png" class=""></td>
+<td><img src="/2022/03/19/%E4%BB%80%E9%BA%BC%E6%98%AF%E5%90%8C%E6%AD%A5%E8%88%87%E7%95%B0%E6%AD%A5-C-%E5%9F%B7%E8%A1%8C%E7%B7%92%E5%90%8C%E6%AD%A5%E7%95%B0%E6%AD%A5%E7%B7%A8%E7%A8%8B%E8%A8%98/2.png" class=""></td>
+</tr>
+<tr>
+<td>例子</td>
+<td>非同步串行通信、AJAX</td>
+<td>-</td>
+</tr>
+<tr>
+<td>C#中常見的關鍵詞</td>
+<td>async、await、Task、Thread </td>
+<td>-</td>
+</tr>
+</table>
+
+<h3 id="總結"><a href="#總結" class="headerlink" title="總結"></a>總結</h3><p>在這篇中可以得知，如果想加快某些代碼執行的速度，而其彼此又不相干，就能將其以非同步方法實作。<br>且非同步方法調用後立即返回，因此不會有結果，而是用通知、回調方式去獲得結果。<br>而在C#中Thread與Task都能做到異步，下回則主要介紹Thread與Task的差異囉。</p>
+<h3 id="參考資料"><a href="#參考資料" class="headerlink" title="參考資料"></a>參考資料</h3><ul>
+<li><a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E9%9D%9E%E5%90%8C%E6%AD%A5">https://zh.wikipedia.org/wiki/%E9%9D%9E%E5%90%8C%E6%AD%A5</a></li>
+<li><a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E5%90%8C%E6%AD%A5">https://zh.wikipedia.org/wiki/%E5%90%8C%E6%AD%A5</a></li>
+<li><a target="_blank" rel="noopener" href="https://docs.microsoft.com/zh-tw/dotnet/csharp/programming-guide/concepts/async/">https://docs.microsoft.com/zh-tw/dotnet/csharp/programming-guide/concepts/async/</a></li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://yuhsiang237.github.io/2022/03/19/%E4%BB%80%E9%BA%BC%E6%98%AF%E5%90%8C%E6%AD%A5%E8%88%87%E7%95%B0%E6%AD%A5-C-%E5%9F%B7%E8%A1%8C%E7%B7%92%E5%90%8C%E6%AD%A5%E7%95%B0%E6%AD%A5%E7%B7%A8%E7%A8%8B%E8%A8%98/" data-id="cme6kwo3r0079galj5igshv0f" data-title="[Day2]什麼是同步與異步 - C# SyncAndAsync" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+
+
+  <nav id="page-nav">
+    
+    <a class="extend prev" rel="prev" href="/page/3/">&laquo; Prev</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><a class="page-number" href="/page/6/">6</a><span class="space">&hellip;</span><a class="page-number" href="/page/16/">16</a><a class="extend next" rel="next" href="/page/5/">Next &raquo;</a>
+  </nav>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Code/">Code</a><span class="category-list-count">76</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Code/C/">C#</a><span class="category-list-count">69</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Code/Javascript/">Javascript</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Code/Refactoring/">Refactoring</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Code/Typescript/">Typescript</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/">Computer Science</a><span class="category-list-count">5</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/Algorithm/">Algorithm</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/Data-structure/">Data structure</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/Electronic-Circuit/">Electronic Circuit</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Daily-Log/">Daily Log</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/">Database</a><span class="category-list-count">57</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Database/PostgreSQL/">PostgreSQL</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/SQL-Server/">SQL Server</a><span class="category-list-count">47</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/">Framework</a><span class="category-list-count">27</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/AspNetCore-API/">AspNetCore API</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/AspNetCore-MVC/">AspNetCore MVC</a><span class="category-list-count">21</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/">Topic</a><span class="category-list-count">76</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2021-C-AspNetCore-Challenge/">2021 C# AspNetCore Challenge</a><span class="category-list-count">30</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2021-SQL-Server-Challenge/">2021 SQL Server Challenge</a><span class="category-list-count">30</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2022-C-SyncAndAsync/">2022 C# SyncAndAsync</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2025-Typescript/">2025 Typescript</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/Big-Data/">Big Data</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/LeetCode/">LeetCode</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/SystemStructure/">SystemStructure</a><span class="category-list-count">1</span></li></ul></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/08/">August 2025</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/05/">May 2023</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/03/">March 2023</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/02/">February 2023</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/01/">January 2023</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/12/">December 2022</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/09/">September 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/07/">July 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/06/">June 2022</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/05/">May 2022</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/04/">April 2022</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/03/">March 2022</a><span class="archive-list-count">17</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/02/">February 2022</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/01/">January 2022</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">December 2021</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">October 2021</a><span class="archive-list-count">24</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">September 2021</a><span class="archive-list-count">46</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">August 2021</a><span class="archive-list-count">12</span></li></ul>
+    </div>
+  </div>
+
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2025 Yu Hsiang<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

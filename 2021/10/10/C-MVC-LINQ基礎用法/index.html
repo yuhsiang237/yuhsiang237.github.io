@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>[Day14] C# MVC LINQ基礎用法 - C#&amp;AspNetCore | UM&#39;s Coding Note</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="在上回 [Day13] C# MVC 驗證與授權，新刪修查按鈕權限 - C#&amp;AspNetCore  ，我們學會了進階的權限切割。 而這回就要開始操作資料了，使用LINQ。 LINQLanguage Integrated Query (LINQ) 是一組以直接將查詢功能整合至 C# 語言為基礎之技術的名稱。 傳統上，資料查詢是以簡單的字串表示，既不會在編譯時進行類型檢查，也不支援 Inte">
+<meta property="og:type" content="article">
+<meta property="og:title" content="[Day14] C# MVC LINQ基礎用法 - C#&amp;AspNetCore">
+<meta property="og:url" content="https://yuhsiang237.github.io/2021/10/10/C-MVC-LINQ%E5%9F%BA%E7%A4%8E%E7%94%A8%E6%B3%95/index.html">
+<meta property="og:site_name" content="UM&#39;s Coding Note">
+<meta property="og:description" content="在上回 [Day13] C# MVC 驗證與授權，新刪修查按鈕權限 - C#&amp;AspNetCore  ，我們學會了進階的權限切割。 而這回就要開始操作資料了，使用LINQ。 LINQLanguage Integrated Query (LINQ) 是一組以直接將查詢功能整合至 C# 語言為基礎之技術的名稱。 傳統上，資料查詢是以簡單的字串表示，既不會在編譯時進行類型檢查，也不支援 Inte">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://yuhsiang237.github.io/2021/10/10/C-MVC-LINQ%E5%9F%BA%E7%A4%8E%E7%94%A8%E6%B3%95/1.png">
+<meta property="og:image" content="https://yuhsiang237.github.io/2021/10/10/C-MVC-LINQ%E5%9F%BA%E7%A4%8E%E7%94%A8%E6%B3%95/2.png">
+<meta property="article:published_time" content="2021-10-10T11:20:46.000Z">
+<meta property="article:modified_time" content="2025-08-11T03:49:08.186Z">
+<meta property="article:author" content="Yu Hsiang">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://yuhsiang237.github.io/2021/10/10/C-MVC-LINQ%E5%9F%BA%E7%A4%8E%E7%94%A8%E6%B3%95/1.png">
+  
+    <link rel="alternate" href="/atom.xml" title="UM's Coding Note" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">UM&#39;s Coding Note</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">I record my coding experience at this place🤙</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://yuhsiang237.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-C-MVC-LINQ基礎用法" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2021/10/10/C-MVC-LINQ%E5%9F%BA%E7%A4%8E%E7%94%A8%E6%B3%95/" class="article-date">
+  <time class="dt-published" datetime="2021-10-10T11:20:46.000Z" itemprop="datePublished">2021-10-10</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Code/">Code</a>►<a class="article-category-link" href="/categories/Code/C/">C#</a>►<a class="article-category-link" href="/categories/Framework/">Framework</a>►<a class="article-category-link" href="/categories/Framework/AspNetCore-MVC/">AspNetCore MVC</a>►<a class="article-category-link" href="/categories/Topic/">Topic</a>►<a class="article-category-link" href="/categories/Topic/2021-C-AspNetCore-Challenge/">2021 C# AspNetCore Challenge</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      [Day14] C# MVC LINQ基礎用法 - C#&amp;AspNetCore
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>在上回 <a href="/2021/10/08/C-MVC-%E9%A9%97%E8%AD%89%E8%88%87%E6%8E%88%E6%AC%8A%EF%BC%8C%E6%96%B0%E5%88%AA%E4%BF%AE%E6%9F%A5%E6%8C%89%E9%88%95%E6%AC%8A%E9%99%90/" title="[Day13] C# MVC 驗證與授權，新刪修查按鈕權限 - C#&amp;AspNetCore">[Day13] C# MVC 驗證與授權，新刪修查按鈕權限 - C#&amp;AspNetCore</a>  ，我們學會了進階的權限切割。</p>
+<p>而這回就要開始操作資料了，使用LINQ。</p>
+<h3 id="LINQ"><a href="#LINQ" class="headerlink" title="LINQ"></a>LINQ</h3><p>Language Integrated Query (LINQ) 是一組以直接將查詢功能整合至 C# 語言為基礎之技術的名稱。 傳統上，資料查詢是以簡單的字串表示，既不會在編譯時進行類型檢查，也不支援 IntelliSense。 此外，您還必須針對每種資料來源類型學習不同的查詢語言：SQL 資料庫、XML 文件、各種 Web 服務等等。透過 LINQ，查詢會是第一級語言建構，和類別、方法及事件相同。 您可以使用語言關鍵字和熟悉的運算子，針對強型別的物件集合撰寫查詢。 LINQ 技術系列會針對物件 (LINQ to Object)、關聯式資料庫 (LINQ to SQL) 與 XML (LINQ to XML)，提供一致的查詢體驗。</p>
+<p>對於撰寫查詢的開發人員來說，LINQ 最明顯的「語言整合」部分就是查詢運算式。 查詢運算式是以宣告式「查詢語法」撰寫。 透過使用查詢語法，您就可以利用最少的程式碼，針對資料來源執行篩選、排序及分組作業。 您可以使用相同的基本查詢運算式模式來查詢和轉換 SQL 資料庫、ADO.NET 資料集、XML 檔和資料流程和 .net 集合中的資料。</p>
+<p>您可以使用 C# 針對下列項目撰寫 LINQ 查詢：SQL Server 資料庫、XML 文件、ADO.NET 資料集，以及支援 IEnumerable 或泛型 IEnumerable<T> 介面的任何物件集合。 也有協力廠商針對許多 Web 服務和其他資料庫實作提供 LINQ 支援。</p>
+<p>所有 LINQ 查詢作業都包含三個不同的動作：</p>
+<ol>
+<li>取得資料來源。</li>
+<li>建立查詢。</li>
+<li>執行查詢。</li>
+</ol>
+<h3 id="實作"><a href="#實作" class="headerlink" title="實作"></a>實作</h3><p><strong>HomeController.cs</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">public IActionResult Index()</span><br><span class="line">&#123;</span><br><span class="line">    // Specify the data source.</span><br><span class="line">    int[] scores = new int[] &#123; 97, 92, 81, 60 &#125;;</span><br><span class="line"></span><br><span class="line">    // Define the query expression.</span><br><span class="line">    IEnumerable&lt;int&gt; scoreQuery =</span><br><span class="line">        from score in scores</span><br><span class="line">        where score &gt; 80</span><br><span class="line">        select score;</span><br><span class="line"></span><br><span class="line">    // Execute the query.</span><br><span class="line">    foreach (int i in scoreQuery)</span><br><span class="line">    &#123;</span><br><span class="line">        Console.Write(i + &quot; &quot;);</span><br><span class="line">    &#125;</span><br><span class="line">    return View();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>說明:<br>以上就是過濾&gt;80的分數。</p>
+<ul>
+<li>IEnumerable:第7行，公開能逐一查看非泛型集合內容一次的列舉程式。而其實可以用var當作宣告替代。</li>
+<li>scoreQuery:過濾的結果。<img src="/2021/10/10/C-MVC-LINQ%E5%9F%BA%E7%A4%8E%E7%94%A8%E6%B3%95/1.png" class="">
+下圖顯示完整的查詢作業。<img src="/2021/10/10/C-MVC-LINQ%E5%9F%BA%E7%A4%8E%E7%94%A8%E6%B3%95/2.png" class=""></li>
+</ul>
+<h3 id="總結"><a href="#總結" class="headerlink" title="總結"></a>總結</h3><p>本人習慣直接操作SQL語言，但LINQ說實在也不錯(可以直接防SQL INJECTION、強型別的優勢)。<br>但感覺上LINQ比較適合簡單的查詢，變成在程式裏面爬出來後去操作，性能可能會低，但比較穩。<br>而對於複雜的SQL查詢還是有困難QQ，變成翻譯家的感覺。<br>基於以上原因，複雜查詢我應該會使用Dapper來做，寫原生。</p>
+<p>此外，以有寫過Laravel跟Java的經驗來說，LINQ是C#微軟Only。<br>也就表示熟悉LINQ可能會有換其他語言SQL卡住、忘記正常該怎麼組的問題。</p>
+<p>在這篇中先小試一下，下篇將注重一些平常可能會做的LINQ查詢操作。</p>
+<p><strong>參考資料</strong><br><a target="_blank" rel="noopener" href="https://docs.microsoft.com/zh-tw/dotnet/csharp/programming-guide/concepts/linq/">https://docs.microsoft.com/zh-tw/dotnet/csharp/programming-guide/concepts/linq/</a><br><a target="_blank" rel="noopener" href="https://ithelp.ithome.com.tw/articles/10194468">https://ithelp.ithome.com.tw/articles/10194468</a><br><a target="_blank" rel="noopener" href="https://blog.darkthread.net/blog/linq-or-direct-sql/">https://blog.darkthread.net/blog/linq-or-direct-sql/</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://yuhsiang237.github.io/2021/10/10/C-MVC-LINQ%E5%9F%BA%E7%A4%8E%E7%94%A8%E6%B3%95/" data-id="cme6kwo0d000ygalj46ibco2t" data-title="[Day14] C# MVC LINQ基礎用法 - C#&amp;AspNetCore" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2021/10/11/C-MVC-LINQ-%E5%B8%B8%E8%A6%8B%E7%94%A8%E6%B3%95/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          [Day15] C# MVC LINQ常見用法 - C#&amp;AspNetCore
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2021/10/09/%E5%BE%8C%E7%AB%AFAPI%E9%81%A9%E5%90%88%E5%85%B1%E7%94%A8APP%E8%88%87%E7%B6%B2%E9%A0%81%E5%97%8E/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">後端API適合共用APP與WEB嗎?</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Code/">Code</a><span class="category-list-count">76</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Code/C/">C#</a><span class="category-list-count">69</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Code/Javascript/">Javascript</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Code/Refactoring/">Refactoring</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Code/Typescript/">Typescript</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/">Computer Science</a><span class="category-list-count">5</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/Algorithm/">Algorithm</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/Data-structure/">Data structure</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/Electronic-Circuit/">Electronic Circuit</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Daily-Log/">Daily Log</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/">Database</a><span class="category-list-count">57</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Database/PostgreSQL/">PostgreSQL</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/SQL-Server/">SQL Server</a><span class="category-list-count">47</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/">Framework</a><span class="category-list-count">27</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/AspNetCore-API/">AspNetCore API</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/AspNetCore-MVC/">AspNetCore MVC</a><span class="category-list-count">21</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/">Topic</a><span class="category-list-count">76</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2021-C-AspNetCore-Challenge/">2021 C# AspNetCore Challenge</a><span class="category-list-count">30</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2021-SQL-Server-Challenge/">2021 SQL Server Challenge</a><span class="category-list-count">30</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2022-C-SyncAndAsync/">2022 C# SyncAndAsync</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2025-Typescript/">2025 Typescript</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/Big-Data/">Big Data</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/LeetCode/">LeetCode</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/SystemStructure/">SystemStructure</a><span class="category-list-count">1</span></li></ul></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/08/">August 2025</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/05/">May 2023</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/03/">March 2023</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/02/">February 2023</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/01/">January 2023</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/12/">December 2022</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/09/">September 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/07/">July 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/06/">June 2022</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/05/">May 2022</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/04/">April 2022</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/03/">March 2022</a><span class="archive-list-count">17</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/02/">February 2022</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/01/">January 2022</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">December 2021</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">October 2021</a><span class="archive-list-count">24</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">September 2021</a><span class="archive-list-count">46</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">August 2021</a><span class="archive-list-count">12</span></li></ul>
+    </div>
+  </div>
+
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2025 Yu Hsiang<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

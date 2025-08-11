@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>無限階層留言規劃，含資料表設計 | UM&#39;s Coding Note</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="這個議題算是只要有留言系統，並且想實作無限層級的留言都會碰到的。如:Facebook的留言、wordpress的留言。當然也有簡單類的留言，只有一層的，如:古早的無名小站，但這不是我們今天要探討的。就單刀直入了，如何實作「無限階層的留言」。 資料表只要一張comments表加上parent_id即可，如下。再來就可以利用程式方式(遞迴或迴圈)去印出他。   程式部分把comments當主表，撈出資">
+<meta property="og:type" content="article">
+<meta property="og:title" content="無限階層留言規劃，含資料表設計">
+<meta property="og:url" content="https://yuhsiang237.github.io/2021/09/23/%E7%84%A1%E9%99%90%E9%9A%8E%E5%B1%A4%E7%95%99%E8%A8%80%E8%B3%87%E6%96%99%E8%A1%A8%E8%A6%8F%E5%8A%83/index.html">
+<meta property="og:site_name" content="UM&#39;s Coding Note">
+<meta property="og:description" content="這個議題算是只要有留言系統，並且想實作無限層級的留言都會碰到的。如:Facebook的留言、wordpress的留言。當然也有簡單類的留言，只有一層的，如:古早的無名小站，但這不是我們今天要探討的。就單刀直入了，如何實作「無限階層的留言」。 資料表只要一張comments表加上parent_id即可，如下。再來就可以利用程式方式(遞迴或迴圈)去印出他。   程式部分把comments當主表，撈出資">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://yuhsiang237.github.io/2021/09/23/%E7%84%A1%E9%99%90%E9%9A%8E%E5%B1%A4%E7%95%99%E8%A8%80%E8%B3%87%E6%96%99%E8%A1%A8%E8%A6%8F%E5%8A%83/nested-comments.png">
+<meta property="og:image" content="https://yuhsiang237.github.io/2021/09/23/%E7%84%A1%E9%99%90%E9%9A%8E%E5%B1%A4%E7%95%99%E8%A8%80%E8%B3%87%E6%96%99%E8%A1%A8%E8%A6%8F%E5%8A%83/demo.png">
+<meta property="article:published_time" content="2021-09-22T16:17:56.000Z">
+<meta property="article:modified_time" content="2025-08-11T03:49:09.043Z">
+<meta property="article:author" content="Yu Hsiang">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://yuhsiang237.github.io/2021/09/23/%E7%84%A1%E9%99%90%E9%9A%8E%E5%B1%A4%E7%95%99%E8%A8%80%E8%B3%87%E6%96%99%E8%A1%A8%E8%A6%8F%E5%8A%83/nested-comments.png">
+  
+    <link rel="alternate" href="/atom.xml" title="UM's Coding Note" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">UM&#39;s Coding Note</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">I record my coding experience at this place🤙</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://yuhsiang237.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-無限階層留言資料表規劃" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2021/09/23/%E7%84%A1%E9%99%90%E9%9A%8E%E5%B1%A4%E7%95%99%E8%A8%80%E8%B3%87%E6%96%99%E8%A1%A8%E8%A6%8F%E5%8A%83/" class="article-date">
+  <time class="dt-published" datetime="2021-09-22T16:17:56.000Z" itemprop="datePublished">2021-09-23</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Database/">Database</a>►<a class="article-category-link" href="/categories/Database/SQL-Server/">SQL Server</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      無限階層留言規劃，含資料表設計
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>這個議題算是只要有留言系統，並且想實作無限層級的留言都會碰到的。<br>如:Facebook的留言、wordpress的留言。<br>當然也有簡單類的留言，只有一層的，如:古早的無名小站，但這不是我們今天要探討的。<br>就單刀直入了，如何實作「無限階層的留言」。</p>
+<h3 id="資料表"><a href="#資料表" class="headerlink" title="資料表"></a>資料表</h3><p>只要一張comments表加上parent_id即可，如下。<br>再來就可以利用程式方式(遞迴或迴圈)去印出他。</p>
+<img src="/2021/09/23/%E7%84%A1%E9%99%90%E9%9A%8E%E5%B1%A4%E7%95%99%E8%A8%80%E8%B3%87%E6%96%99%E8%A1%A8%E8%A6%8F%E5%8A%83/nested-comments.png" class="">
+
+<h3 id="程式部分"><a href="#程式部分" class="headerlink" title="程式部分"></a>程式部分</h3><p>把comments當主表，撈出資料SQL:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">select</span><br><span class="line">users.name,</span><br><span class="line">comments.id,</span><br><span class="line">comments.comment_parent_id,</span><br><span class="line">comments.title,</span><br><span class="line">comments.content</span><br><span class="line">from comments left join users on comments.user_id = users.id</span><br></pre></td></tr></table></figure>
+
+<p>把上面資料表進行關聯後撈出後的資料:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[</span><br><span class="line">    &#123;id:1,comment_parent_id:null,title:&#x27;留言1&#x27;,content:&#x27;內容&#x27;,name:&#x27;路人A&#x27;&#125;,</span><br><span class="line">    &#123;id:2,comment_parent_id:null,title:&#x27;留言2&#x27;,content:&#x27;內容&#x27;,name:&#x27;路人B&#x27;&#125;,</span><br><span class="line">    &#123;id:3,comment_parent_id:2,title:&#x27;留言3&#x27;,content:&#x27;內容&#x27;,name:&#x27;路人C&#x27;&#125;,</span><br><span class="line">    &#123;id:4,comment_parent_id:3,title:&#x27;留言4&#x27;,content:&#x27;內容&#x27;,name:&#x27;路人D&#x27;&#125;,</span><br><span class="line">    &#123;id:5,comment_parent_id:3,title:&#x27;留言5&#x27;,content:&#x27;內容&#x27;,name:&#x27;路人E&#x27;&#125;</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+<p>再來就可以實作程式碼了，我們要先把上面SQL撈出來的「打平結構」變成「樹狀結構」。<br>這會需要使用到遞迴。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line">&lt;!DOCTYPE html&gt;</span><br><span class="line">&lt;html&gt;</span><br><span class="line">&lt;head&gt;</span><br><span class="line">&lt;title&gt;Page Title&lt;/title&gt;</span><br><span class="line">&lt;/head&gt;</span><br><span class="line">&lt;body&gt;</span><br><span class="line">&lt;/body&gt;</span><br><span class="line">&lt;/html&gt;</span><br><span class="line">&lt;script&gt;</span><br><span class="line">const commentList = [</span><br><span class="line">    &#123;id:1,comment_parent_id:null,title:&#x27;留言1&#x27;,content:&#x27;內容&#x27;,name:&#x27;路人A&#x27;&#125;,</span><br><span class="line">    &#123;id:2,comment_parent_id:null,title:&#x27;留言2&#x27;,content:&#x27;內容&#x27;,name:&#x27;路人B&#x27;&#125;,</span><br><span class="line">    &#123;id:3,comment_parent_id:2,title:&#x27;留言3&#x27;,content:&#x27;內容&#x27;,name:&#x27;路人C&#x27;&#125;,</span><br><span class="line">    &#123;id:4,comment_parent_id:3,title:&#x27;留言4&#x27;,content:&#x27;內容&#x27;,name:&#x27;路人D&#x27;&#125;,</span><br><span class="line">    &#123;id:5,comment_parent_id:3,title:&#x27;留言5&#x27;,content:&#x27;內容&#x27;,name:&#x27;路人E&#x27;&#125;</span><br><span class="line">]</span><br><span class="line"></span><br><span class="line">// 建立樹狀階層</span><br><span class="line">function buildTree(commentList)&#123;</span><br><span class="line">    // 根節點</span><br><span class="line">    const rootNode = commentList.filter(it=&gt; it.comment_parent_id === null)</span><br><span class="line">    // 增加子節點</span><br><span class="line">    return addNode(rootNode,commentList)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// 添加子節點</span><br><span class="line">function addNode(children,commentList)&#123;</span><br><span class="line">    // 找不到子節點返回</span><br><span class="line">    if(children.length === 0)&#123;</span><br><span class="line">    	return []</span><br><span class="line">    &#125;</span><br><span class="line">    // 添加子節點</span><br><span class="line">    const arr = [] </span><br><span class="line">    // 遍歷當前children節點</span><br><span class="line">    for(let i=0;i&lt;children.length;i++)&#123;</span><br><span class="line">    	// 查詢底下的子節點</span><br><span class="line">        const childrenNode = commentList.filter(it=&gt; </span><br><span class="line">        it.comment_parent_id === children[i].id)</span><br><span class="line">        // 把底下子節點添加進陣列</span><br><span class="line">        arr.push(&#123;</span><br><span class="line">            id:children[i].id,</span><br><span class="line">            name:children[i].name,</span><br><span class="line">            title:children[i].title,</span><br><span class="line">            content:children[i].content,</span><br><span class="line">            children:addNode(childrenNode,commentList)</span><br><span class="line">        &#125;)</span><br><span class="line">    &#125;</span><br><span class="line">    // 返回子節點陣列</span><br><span class="line">    return arr</span><br><span class="line">&#125;</span><br><span class="line">// 印出結果</span><br><span class="line">console.log(JSON.stringify(buildTree(commentList)));</span><br><span class="line"></span><br><span class="line">&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+<p><strong>轉成樹狀階層後的資料:</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line">[</span><br><span class="line">    &#123;</span><br><span class="line">        &quot;id&quot;: 1,</span><br><span class="line">        &quot;name&quot;: &quot;路人A&quot;,</span><br><span class="line">        &quot;title&quot;: &quot;留言1&quot;,</span><br><span class="line">        &quot;content&quot;: &quot;內容&quot;,</span><br><span class="line">        &quot;children&quot;: []</span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">        &quot;id&quot;: 2,</span><br><span class="line">        &quot;name&quot;: &quot;路人B&quot;,</span><br><span class="line">        &quot;title&quot;: &quot;留言2&quot;,</span><br><span class="line">        &quot;content&quot;: &quot;內容&quot;,</span><br><span class="line">        &quot;children&quot;: [</span><br><span class="line">            &#123;</span><br><span class="line">                &quot;id&quot;: 3,</span><br><span class="line">                &quot;name&quot;: &quot;路人C&quot;,</span><br><span class="line">                &quot;title&quot;: &quot;留言3&quot;,</span><br><span class="line">                &quot;content&quot;: &quot;內容&quot;,</span><br><span class="line">                &quot;children&quot;: [</span><br><span class="line">                    &#123;</span><br><span class="line">                        &quot;id&quot;: 4,</span><br><span class="line">                        &quot;name&quot;: &quot;路人D&quot;,</span><br><span class="line">                        &quot;title&quot;: &quot;留言4&quot;,</span><br><span class="line">                        &quot;content&quot;: &quot;內容&quot;,</span><br><span class="line">                        &quot;children&quot;: []</span><br><span class="line">                    &#125;,</span><br><span class="line">                    &#123;</span><br><span class="line">                        &quot;id&quot;: 5,</span><br><span class="line">                        &quot;name&quot;: &quot;路人E&quot;,</span><br><span class="line">                        &quot;title&quot;: &quot;留言5&quot;,</span><br><span class="line">                        &quot;content&quot;: &quot;內容&quot;,</span><br><span class="line">                        &quot;children&quot;: []</span><br><span class="line">                    &#125;</span><br><span class="line">                ]</span><br><span class="line">            &#125;</span><br><span class="line">        ]</span><br><span class="line">    &#125;</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+<p>光轉成上面那串，就想了快3小時的遞迴，然後上網找些範例參考才組出來。<br>我當時的疑問就是:「怎麼讓遞迴去回傳整包陣列」，所幸有找到參考，然後小改自己程式就成功了。</p>
+<p>再來就是把上面那階層式資料在網頁上印出來。<br>還是要用遞迴。</p>
+<h3 id="網頁上內容呈現"><a href="#網頁上內容呈現" class="headerlink" title="網頁上內容呈現"></a>網頁上內容呈現</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br></pre></td><td class="code"><pre><span class="line">&lt;!DOCTYPE html&gt;</span><br><span class="line">&lt;html&gt;</span><br><span class="line">&lt;head&gt;</span><br><span class="line">&lt;title&gt;Page Title&lt;/title&gt;</span><br><span class="line">&lt;/head&gt;</span><br><span class="line">&lt;body&gt;</span><br><span class="line"></span><br><span class="line">&lt;div id=&quot;comment&quot;&gt;</span><br><span class="line">&lt;/div&gt;</span><br><span class="line"></span><br><span class="line">&lt;/body&gt;</span><br><span class="line">&lt;/html&gt;</span><br><span class="line">&lt;script&gt;</span><br><span class="line">const commentList = [</span><br><span class="line">    &#123; id: 1, comment_parent_id: null, title: &#x27;留言1&#x27;, content: &#x27;內容&#x27;, name: &#x27;路人A&#x27; &#125;,</span><br><span class="line">    &#123; id: 2, comment_parent_id: null, title: &#x27;留言2&#x27;, content: &#x27;內容&#x27;, name: &#x27;路人B&#x27; &#125;,</span><br><span class="line">    &#123; id: 3, comment_parent_id: 2, title: &#x27;留言3&#x27;, content: &#x27;內容&#x27;, name: &#x27;路人C&#x27; &#125;,</span><br><span class="line">    &#123; id: 4, comment_parent_id: 3, title: &#x27;留言4&#x27;, content: &#x27;內容&#x27;, name: &#x27;路人D&#x27; &#125;,</span><br><span class="line">    &#123; id: 5, comment_parent_id: 3, title: &#x27;留言5&#x27;, content: &#x27;內容&#x27;, name: &#x27;路人E&#x27; &#125;</span><br><span class="line">]</span><br><span class="line"></span><br><span class="line">// 建立樹狀階層</span><br><span class="line">function buildTree(commentList) &#123;</span><br><span class="line">    // 根節點</span><br><span class="line">    const rootNode = commentList.filter(it =&gt; it.comment_parent_id === null)</span><br><span class="line">    // 增加子節點</span><br><span class="line">    return addNode(rootNode, commentList)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// 添加子節點</span><br><span class="line">function addNode(children, commentList) &#123;</span><br><span class="line">    // 找不到子節點返回</span><br><span class="line">    if (children.length === 0) &#123;</span><br><span class="line">        return []</span><br><span class="line">    &#125;</span><br><span class="line">    // 添加子節點</span><br><span class="line">    const arr = []</span><br><span class="line">    // 遍歷當前children節點</span><br><span class="line">    for (let i = 0; i &lt; children.length; i++) &#123;</span><br><span class="line">        // 查詢底下的子節點</span><br><span class="line">        const childrenNode = commentList.filter(it =&gt;</span><br><span class="line">            it.comment_parent_id === children[i].id)</span><br><span class="line">        // 把底下子節點添加進陣列</span><br><span class="line">        arr.push(&#123;</span><br><span class="line">            id: children[i].id,</span><br><span class="line">            name: children[i].name,</span><br><span class="line">            title: children[i].title,</span><br><span class="line">            content: children[i].content,</span><br><span class="line">            children: addNode(childrenNode, commentList)</span><br><span class="line">        &#125;)</span><br><span class="line">    &#125;</span><br><span class="line">    // 返回子節點陣列</span><br><span class="line">    return arr</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// 在網頁上呈現出結果</span><br><span class="line">function generateCommentTemplate(children) &#123;</span><br><span class="line">    let template = &#x27;&lt;ul&gt;&#x27;</span><br><span class="line">    for (let i = 0; i &lt; children.length; i++) &#123;</span><br><span class="line">        template += &#x27;&lt;li&gt;&#x27;</span><br><span class="line">        template += children[i].title + &#x27;&lt;br&gt;&#x27;</span><br><span class="line">        template += children[i].content + &#x27;&lt;br&gt;&#x27;</span><br><span class="line">        template += children[i].name + &#x27;&lt;br&gt;&#x27;</span><br><span class="line"></span><br><span class="line">        // 如果有子節點則遞迴再次呼叫</span><br><span class="line">        if (children[i].children.length !== 0) &#123;</span><br><span class="line">            template += generateCommentTemplate(children[i].children)</span><br><span class="line">        &#125;</span><br><span class="line">        template += &#x27;&lt;/li&gt;&#x27;</span><br><span class="line">    &#125;</span><br><span class="line">    template += &#x27;&lt;/ul&gt;&#x27;</span><br><span class="line">    return template</span><br><span class="line">&#125;</span><br><span class="line">// 建立樹狀結構</span><br><span class="line">const tree = buildTree(commentList)</span><br><span class="line">// 產生HTML模板</span><br><span class="line">document.getElementById(&quot;comment&quot;).innerHTML = generateCommentTemplate(tree)</span><br><span class="line">&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+<p><strong>輸出結果:</strong></p>
+<img src="/2021/09/23/%E7%84%A1%E9%99%90%E9%9A%8E%E5%B1%A4%E7%95%99%E8%A8%80%E8%B3%87%E6%96%99%E8%A1%A8%E8%A6%8F%E5%8A%83/demo.png" class="">
+
+
+<h3 id="總結"><a href="#總結" class="headerlink" title="總結"></a>總結</h3><p>整篇大概花了5小時左右寫完，算是網頁系統裡最難的”遞迴”。<br>在網路上查，很難有一篇現成完整範例T_T，所以在這篇中就把整套都放上來。<br>同時練習對於樹的掌握。</p>
+<p>流程如下:<br>1.規劃無限階層的留言 - 約10分鐘<br>2.樹的組合(遞迴) - 約3小時<br>3.轉譯成HTML模板(遞迴) - 約30分鐘</p>
+<p>總之，有點成就感，因為真的不好寫。<br>如果後端一開始吐給你的是已經階層化的，那就很輕鬆了，因為那段的遞迴比較簡單。</p>
+<p>ps.這留言的實作方法也能用來處理分類、類別、側邊欄，就內文改一下即可。</p>
+<p>我有封裝了方法變成一隻.js函式庫，可以直接拿去用。<br><a target="_blank" rel="noopener" href="https://github.com/yuhsiang237/buildTree.js">https://github.com/yuhsiang237/buildTree.js</a></p>
+<p><strong>參考資料</strong><br><a target="_blank" rel="noopener" href="https://blog.51cto.com/dd118/2095671">https://blog.51cto.com/dd118/2095671</a><br><a target="_blank" rel="noopener" href="https://kevintsengtw.blogspot.com/2013/07/aspnet-mvc-jquery-easy-ui-tree-json.html">https://kevintsengtw.blogspot.com/2013/07/aspnet-mvc-jquery-easy-ui-tree-json.html</a><br><a target="_blank" rel="noopener" href="https://ithelp.ithome.com.tw/articles/10028129">https://ithelp.ithome.com.tw/articles/10028129</a><br><a target="_blank" rel="noopener" href="https://itw01.com/UBNZIEU.html">https://itw01.com/UBNZIEU.html</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://yuhsiang237.github.io/2021/09/23/%E7%84%A1%E9%99%90%E9%9A%8E%E5%B1%A4%E7%95%99%E8%A8%80%E8%B3%87%E6%96%99%E8%A1%A8%E8%A6%8F%E5%8A%83/" data-id="cme6kwo440085galj9gmaerht" data-title="無限階層留言規劃，含資料表設計" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2021/09/25/%E6%BC%94%E7%AE%97%E6%B3%95%E8%A4%87%E9%9B%9C%E5%BA%A6/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Big-O 複雜度分析
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2021/09/22/%E8%A7%92%E8%89%B2%E6%AC%8A%E9%99%90%E8%B3%87%E6%96%99%E8%A1%A8%E8%A6%8F%E5%8A%83/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">資訊系統的角色權限規劃，含資料表設計</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Code/">Code</a><span class="category-list-count">76</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Code/C/">C#</a><span class="category-list-count">69</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Code/Javascript/">Javascript</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Code/Refactoring/">Refactoring</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Code/Typescript/">Typescript</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/">Computer Science</a><span class="category-list-count">5</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/Algorithm/">Algorithm</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/Data-structure/">Data structure</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/Electronic-Circuit/">Electronic Circuit</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Daily-Log/">Daily Log</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/">Database</a><span class="category-list-count">57</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Database/PostgreSQL/">PostgreSQL</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/SQL-Server/">SQL Server</a><span class="category-list-count">47</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/">Framework</a><span class="category-list-count">27</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/AspNetCore-API/">AspNetCore API</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/AspNetCore-MVC/">AspNetCore MVC</a><span class="category-list-count">21</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/">Topic</a><span class="category-list-count">76</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2021-C-AspNetCore-Challenge/">2021 C# AspNetCore Challenge</a><span class="category-list-count">30</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2021-SQL-Server-Challenge/">2021 SQL Server Challenge</a><span class="category-list-count">30</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2022-C-SyncAndAsync/">2022 C# SyncAndAsync</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2025-Typescript/">2025 Typescript</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/Big-Data/">Big Data</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/LeetCode/">LeetCode</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/SystemStructure/">SystemStructure</a><span class="category-list-count">1</span></li></ul></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/08/">August 2025</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/05/">May 2023</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/03/">March 2023</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/02/">February 2023</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/01/">January 2023</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/12/">December 2022</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/09/">September 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/07/">July 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/06/">June 2022</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/05/">May 2022</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/04/">April 2022</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/03/">March 2022</a><span class="archive-list-count">17</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/02/">February 2022</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/01/">January 2022</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">December 2021</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">October 2021</a><span class="archive-list-count">24</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">September 2021</a><span class="archive-list-count">46</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">August 2021</a><span class="archive-list-count">12</span></li></ul>
+    </div>
+  </div>
+
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2025 Yu Hsiang<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

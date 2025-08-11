@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>[Day22] C# MVC API版本控制 - C#&amp;AspNetCore | UM&#39;s Coding Note</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="在上回中我們介紹了 [Day21] C# MVC RESTful API (下) 實作RESTful API - C#&amp;AspNetCore ，實作了RESTful API。 而這回將要進行API版本控制!能處理前端(React&#x2F;Vue)或APP(iOS&#x2F;Android)不能馬上更新的最佳手段，有錯可以馬上先還原上一版本、達到向下相容。 API規格可修改apiVersion調用不同版本AP">
+<meta property="og:type" content="article">
+<meta property="og:title" content="[Day22] C# MVC API版本控制 - C#&amp;AspNetCore">
+<meta property="og:url" content="https://yuhsiang237.github.io/2021/10/19/C-MVC-API%E7%89%88%E6%9C%AC%E6%8E%A7%E5%88%B6/index.html">
+<meta property="og:site_name" content="UM&#39;s Coding Note">
+<meta property="og:description" content="在上回中我們介紹了 [Day21] C# MVC RESTful API (下) 實作RESTful API - C#&amp;AspNetCore ，實作了RESTful API。 而這回將要進行API版本控制!能處理前端(React&#x2F;Vue)或APP(iOS&#x2F;Android)不能馬上更新的最佳手段，有錯可以馬上先還原上一版本、達到向下相容。 API規格可修改apiVersion調用不同版本AP">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://yuhsiang237.github.io/2021/10/19/C-MVC-API%E7%89%88%E6%9C%AC%E6%8E%A7%E5%88%B6/2.png">
+<meta property="og:image" content="https://yuhsiang237.github.io/2021/10/19/C-MVC-API%E7%89%88%E6%9C%AC%E6%8E%A7%E5%88%B6/1.png">
+<meta property="og:image" content="https://yuhsiang237.github.io/2021/10/19/C-MVC-API%E7%89%88%E6%9C%AC%E6%8E%A7%E5%88%B6/demo.gif">
+<meta property="article:published_time" content="2021-10-19T11:59:32.000Z">
+<meta property="article:modified_time" content="2025-08-11T03:49:08.109Z">
+<meta property="article:author" content="Yu Hsiang">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://yuhsiang237.github.io/2021/10/19/C-MVC-API%E7%89%88%E6%9C%AC%E6%8E%A7%E5%88%B6/2.png">
+  
+    <link rel="alternate" href="/atom.xml" title="UM's Coding Note" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">UM&#39;s Coding Note</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">I record my coding experience at this place🤙</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://yuhsiang237.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-C-MVC-API版本控制" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2021/10/19/C-MVC-API%E7%89%88%E6%9C%AC%E6%8E%A7%E5%88%B6/" class="article-date">
+  <time class="dt-published" datetime="2021-10-19T11:59:32.000Z" itemprop="datePublished">2021-10-19</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Code/">Code</a>►<a class="article-category-link" href="/categories/Code/C/">C#</a>►<a class="article-category-link" href="/categories/Framework/">Framework</a>►<a class="article-category-link" href="/categories/Framework/AspNetCore-API/">AspNetCore API</a>►<a class="article-category-link" href="/categories/Topic/">Topic</a>►<a class="article-category-link" href="/categories/Topic/2021-C-AspNetCore-Challenge/">2021 C# AspNetCore Challenge</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      [Day22] C# MVC API版本控制 - C#&amp;AspNetCore
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>在上回中我們介紹了 <a href="/2021/10/18/C-MVC-RESTful-API-%E4%B8%8B-%E5%AF%A6%E4%BD%9CRESTful-API/" title="[Day21] C# MVC RESTful API (下) 實作RESTful API - C#&amp;AspNetCore">[Day21] C# MVC RESTful API (下) 實作RESTful API - C#&amp;AspNetCore</a> ，實作了RESTful API。</p>
+<p>而這回將要進行API版本控制!<br>能處理前端(React/Vue)或APP(iOS/Android)不能馬上更新的最佳手段，有錯可以馬上先還原上一版本、達到向下相容。</p>
+<h3 id="API規格"><a href="#API規格" class="headerlink" title="API規格"></a>API規格</h3><p>可修改apiVersion調用不同版本API，如:v1.0、v2.0</p>
+<table>
+<tbody><tr><th>方法</th>
+<th>網址</th>
+<th>描述</th>
+<th>要求文本</th>
+<th>回應文本</th>
+</tr><tr>
+<td>GET</td>
+<td><code>&#123;apiVersion&#125;/api/todo</code></td>
+<td>取得所有待辦事項</td>
+<td>無</td>
+<td>待辦事項陣列</td>
+</tr>
+<tr>
+<td>GET</td>
+<td><code>&#123;apiVersion&#125;/api/todo/&#123;id&#125;</code></td>
+<td>依識別碼取得待辦事項</td>
+<td>無</td>
+<td>待辦事項</td>
+</tr>
+<tr>
+<td>POST</td>
+<td><code>&#123;apiVersion&#125;/api/todo</code></td>
+<td>新增待辦事項</td>
+<td>待辦事項</td>
+<td>待辦事項</td>
+</tr>
+<tr>
+<td>PUT</td>
+<td><code>&#123;apiVersion&#125;/api/todo/&#123;id&#125;</code></td>
+<td>更新現有的待辦事項</td>
+<td>待辦事項</td>
+<td>待辦事項</td>
+</tr>
+<tr>
+<td>DELETE</td>
+<td><code>&#123;apiVersion&#125;/api/todo/&#123;id&#125;</code></td>
+<td>刪除待辦事項</td>
+<td>無</td>
+<td>待辦事項</td>
+</tr>
+<tr>
+<td>GET</td>
+<td><code>&#123;apiVersion&#125;/api/version</code></td>
+<td>取得API版本</td>
+<td>無</td>
+<td>API版本</td>
+</tr>
+</tbody></table>
+
+
+<h3 id="實作API版控"><a href="#實作API版控" class="headerlink" title="實作API版控"></a>實作API版控</h3><p>先列出我們要改的檔案隻數:</p>
+<img src="/2021/10/19/C-MVC-API%E7%89%88%E6%9C%AC%E6%8E%A7%E5%88%B6/2.png" class="">
+
+<p>1.安裝Microsoft.AspNetCore.Mvc.Versioning</p>
+<img src="/2021/10/19/C-MVC-API%E7%89%88%E6%9C%AC%E6%8E%A7%E5%88%B6/1.png" class="">
+
+<p>2.再來更新Startup.cs，服務增加一行啟用API功能services.AddApiVersioning()</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">// This method gets called by the runtime. Use this method to add services to the container.</span><br><span class="line">public void ConfigureServices(IServiceCollection services)</span><br><span class="line">&#123;</span><br><span class="line">    services.AddControllers();</span><br><span class="line">    // 資料庫配置</span><br><span class="line">    var connection = @&quot;Server=.\SQLExpress;Database=TodoDB;Trusted_Connection=True;ConnectRetryCount=0&quot;;</span><br><span class="line">    services.AddDbContext&lt;TodoDBContext&gt;(options =&gt; options.UseSqlServer(connection));</span><br><span class="line">    </span><br><span class="line">    // 啟用API版控功能</span><br><span class="line">    services.AddApiVersioning();</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>3.以資料夾分版本層，就是把原本的Controller複製至版本資料夾</p>
+<p>如1.0版:<br><strong>~/Controllers/V1/VersionController.cs</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">using System.Collections.Generic;</span><br><span class="line">using Microsoft.AspNetCore.Mvc;</span><br><span class="line"></span><br><span class="line">namespace TodoAPI.Controllers.V1</span><br><span class="line">&#123;</span><br><span class="line">    [ApiVersion(&quot;1.0&quot;)]</span><br><span class="line">    [Route(&quot;api/v&#123;version:apiVersion&#125;/[controller]&quot;)]</span><br><span class="line">    [ApiController]</span><br><span class="line">    public class VersionController : ControllerBase</span><br><span class="line">    &#123;</span><br><span class="line">        [HttpGet]</span><br><span class="line">        public IEnumerable&lt;string&gt; Get()</span><br><span class="line">        &#123;</span><br><span class="line">            return new string[] &#123; &quot;api v1&quot; &#125;;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>如2.0版:</p>
+<p><strong>~/Controllers/V2/VersionController.cs</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">using System.Collections.Generic;</span><br><span class="line">using Microsoft.AspNetCore.Mvc;</span><br><span class="line"></span><br><span class="line">namespace TodoAPI.Controllers.V2</span><br><span class="line">&#123;</span><br><span class="line">    [ApiVersion(&quot;2.0&quot;)]</span><br><span class="line">    [Route(&quot;api/v&#123;version:apiVersion&#125;/[controller]&quot;)]</span><br><span class="line">    [ApiController]</span><br><span class="line">    public class VersionController : ControllerBase</span><br><span class="line">    &#123;</span><br><span class="line">        [HttpGet]</span><br><span class="line">        public IEnumerable&lt;string&gt; Get()</span><br><span class="line">        &#123;</span><br><span class="line">            return new string[] &#123; &quot;api v2&quot; &#125;;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>只要在每個Controller修改以下的地方即可</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">namespace TodoAPI.Controllers.V1 </span><br></pre></td></tr></table></figure>
+<p>改成</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">namespace TodoAPI.Controllers.V2</span><br></pre></td></tr></table></figure>
+<p>以及</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[ApiVersion(&quot;1.0&quot;)]</span><br></pre></td></tr></table></figure>
+<p>改成</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[ApiVersion(&quot;2.0&quot;)]</span><br></pre></td></tr></table></figure>
+<p>TodoController.cs也是一樣喔，就不示範了。</p>
+<p>4.嘗試看看</p>
+<img src="/2021/10/19/C-MVC-API%E7%89%88%E6%9C%AC%E6%8E%A7%E5%88%B6/demo.gif" class="">
+
+
+<h3 id="總結"><a href="#總結" class="headerlink" title="總結"></a>總結</h3><p>原本很難的事情，竟然可以如此簡單解決!感動!<br>再來就是考驗DB規劃了，因為如果要向下兼容變成只能增不能刪。<br>但通常我們能在上與下版間先除錯，所以基本上不會有太大問題。</p>
+<p>而LINQ強型別好處就來了，因為是透過Model存取的關係，所以能夠有效避免規格錯誤。</p>
+<p>而網址用v1.0、v2.0…原因在Get時瀏覽器只能用網址，所以是最方便的方式。<br>當然也能夠改放在header、或用?api=1.0的做法。</p>
+<p>最後附上完整程式碼:<br><a target="_blank" rel="noopener" href="https://github.com/yuhsiang237/ASP.NET-Core-RESTfulAPI-API-Version-Control">https://github.com/yuhsiang237/ASP.NET-Core-RESTfulAPI-API-Version-Control</a></p>
+<p>再來就是添加Swagger:<br> <a href="/2021/10/26/C-MVC-Web-API%E5%A2%9E%E5%8A%A0Swagger/" title="[Day23] C# MVC Web API版本增加Swagger - C#&amp;AspNetCore">[Day23] C# MVC Web API版本增加Swagger - C#&amp;AspNetCore</a></p>
+<p>額外補充:<br>至於Controller多版本那Model呢?<br>因為向下兼容，可能會回傳不同版的Model<br>這時就可以使用繼承跟覆寫!<br>如1.1繼承1.0:ModelV1_1:ModelV1_0<br>之後添加屬性跟覆寫方法<br>而主要就是避免資料庫異動太大，就可以避免break change造成不相容。</p>
+<p><strong>參考資料</strong><br><a target="_blank" rel="noopener" href="https://dotblogs.com.tw/rainmaker/2017/03/12/130759">https://dotblogs.com.tw/rainmaker/2017/03/12/130759</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://yuhsiang237.github.io/2021/10/19/C-MVC-API%E7%89%88%E6%9C%AC%E6%8E%A7%E5%88%B6/" data-id="cme6kwo09000rgalj7kq5fv2s" data-title="[Day22] C# MVC API版本控制 - C#&amp;AspNetCore" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2021/10/26/C-MVC-Web-API%E5%A2%9E%E5%8A%A0Swagger/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          [Day23] C# MVC Web API版本增加Swagger - C#&amp;AspNetCore
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2021/10/18/C-MVC-RESTful-API-%E4%B8%8B-%E5%AF%A6%E4%BD%9CRESTful-API/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">[Day21] C# MVC RESTful API (下) 實作RESTful API - C#&amp;AspNetCore</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Code/">Code</a><span class="category-list-count">76</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Code/C/">C#</a><span class="category-list-count">69</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Code/Javascript/">Javascript</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Code/Refactoring/">Refactoring</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Code/Typescript/">Typescript</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/">Computer Science</a><span class="category-list-count">5</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/Algorithm/">Algorithm</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/Data-structure/">Data structure</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/Electronic-Circuit/">Electronic Circuit</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Daily-Log/">Daily Log</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/">Database</a><span class="category-list-count">57</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Database/PostgreSQL/">PostgreSQL</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/SQL-Server/">SQL Server</a><span class="category-list-count">47</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/">Framework</a><span class="category-list-count">27</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/AspNetCore-API/">AspNetCore API</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/AspNetCore-MVC/">AspNetCore MVC</a><span class="category-list-count">21</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/">Topic</a><span class="category-list-count">76</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2021-C-AspNetCore-Challenge/">2021 C# AspNetCore Challenge</a><span class="category-list-count">30</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2021-SQL-Server-Challenge/">2021 SQL Server Challenge</a><span class="category-list-count">30</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2022-C-SyncAndAsync/">2022 C# SyncAndAsync</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2025-Typescript/">2025 Typescript</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/Big-Data/">Big Data</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/LeetCode/">LeetCode</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/SystemStructure/">SystemStructure</a><span class="category-list-count">1</span></li></ul></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/08/">August 2025</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/05/">May 2023</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/03/">March 2023</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/02/">February 2023</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/01/">January 2023</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/12/">December 2022</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/09/">September 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/07/">July 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/06/">June 2022</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/05/">May 2022</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/04/">April 2022</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/03/">March 2022</a><span class="archive-list-count">17</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/02/">February 2022</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/01/">January 2022</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">December 2021</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">October 2021</a><span class="archive-list-count">24</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">September 2021</a><span class="archive-list-count">46</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">August 2021</a><span class="archive-list-count">12</span></li></ul>
+    </div>
+  </div>
+
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2025 Yu Hsiang<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

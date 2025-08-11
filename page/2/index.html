@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>UM&#39;s Coding Note</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="I record my coding experience at this place">
+<meta property="og:type" content="website">
+<meta property="og:title" content="UM&#39;s Coding Note">
+<meta property="og:url" content="https://yuhsiang237.github.io/page/2/index.html">
+<meta property="og:site_name" content="UM&#39;s Coding Note">
+<meta property="og:description" content="I record my coding experience at this place">
+<meta property="og:locale" content="en_US">
+<meta property="article:author" content="Yu Hsiang">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="UM's Coding Note" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">UM&#39;s Coding Note</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">I record my coding experience at this place🤙</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://yuhsiang237.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main">
+  
+    <article id="post-在C-中何時使用問號-去拿資料" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2022/12/07/%E5%9C%A8C-%E4%B8%AD%E4%BD%95%E6%99%82%E4%BD%BF%E7%94%A8%E5%95%8F%E8%99%9F-%E5%8E%BB%E6%8B%BF%E8%B3%87%E6%96%99/" class="article-date">
+  <time class="dt-published" datetime="2022-12-07T06:40:20.000Z" itemprop="datePublished">2022-12-07</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Code/">Code</a>►<a class="article-category-link" href="/categories/Code/C/">C#</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2022/12/07/%E5%9C%A8C-%E4%B8%AD%E4%BD%95%E6%99%82%E4%BD%BF%E7%94%A8%E5%95%8F%E8%99%9F-%E5%8E%BB%E6%8B%BF%E8%B3%87%E6%96%99/">在C#中何時使用問號?去拿資料</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>在處理C#語言中的物件，常會去拿物件底下子物件的值，常常會遇到錯誤即空物件錯誤，如底下程式碼的amount1變數。因為我們在拿amount1這個值時前面的OrderDetail物件還沒被初始化。<br>這時就要使用問號”?”去取值避免拋錯，如amount2變數。<br>資料在處理時總會拿到髒資料，所以先預判，避免出錯。  </p>
+<p>程式碼如下:</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">namespace</span> <span class="title">Application</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> DataProvider</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">class</span> <span class="title">DataProvider</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> OrderDetail</span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">        <span class="keyword">public</span> OrderDetail OrderDetail &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">class</span> <span class="title">OrderDetail</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> amount</span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">        <span class="keyword">public</span> <span class="built_in">decimal</span>? Amount;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">internal</span> <span class="keyword">class</span> <span class="title">Program</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">Main</span>(<span class="params"><span class="built_in">string</span>[] args</span>)</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">var</span> data = <span class="keyword">new</span> DataProvider();</span><br><span class="line"></span><br><span class="line">            <span class="comment">// amount1: error</span></span><br><span class="line">            <span class="comment">// It will be error. Due to the object, OrderDetail,  is null and doesn&#x27;t initialize.</span></span><br><span class="line">            <span class="comment">// var amount1 = data.OrderDetail.Amount ?? default;</span></span><br><span class="line"></span><br><span class="line">            <span class="comment">// amount2: 0 </span></span><br><span class="line">            <span class="comment">// we can add the symbol &quot;?&quot; after the null object, and it can avoid being an error.</span></span><br><span class="line">            <span class="keyword">var</span> amount2 = data.OrderDetail?.Amount ?? <span class="literal">default</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://yuhsiang237.github.io/2022/12/07/%E5%9C%A8C-%E4%B8%AD%E4%BD%95%E6%99%82%E4%BD%BF%E7%94%A8%E5%95%8F%E8%99%9F-%E5%8E%BB%E6%8B%BF%E8%B3%87%E6%96%99/" data-id="cme6kwo3s007bgaljffyh0hed" data-title="在C#中何時使用問號?去拿資料" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-Combine-multiple-commits-into-one-commit-in-git" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2022/09/01/Combine-multiple-commits-into-one-commit-in-git/" class="article-date">
+  <time class="dt-published" datetime="2022-09-01T06:58:10.000Z" itemprop="datePublished">2022-09-01</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Code/">Code</a>►<a class="article-category-link" href="/categories/Code/Refactoring/">Refactoring</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2022/09/01/Combine-multiple-commits-into-one-commit-in-git/">Combine your multiple commits into one commit in git</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>When you use the git in your project, you could face a problem about how to combine your loose commits into one commit.</p>
+<p>For Examples, I have the commit log like this.</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">First commit </span><br><span class="line">Fix1</span><br><span class="line">Fix2</span><br><span class="line">Adjust wording</span><br></pre></td></tr></table></figure>
+<p>I want to conbine commits of the fix1, fix2 and adjust wording into second commit.<br>It looks great and clear.  </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">First commit</span><br><span class="line">Second commit</span><br></pre></td></tr></table></figure>
+
+<p>In order to become this result, we can use the git command, rebase.</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git rebase -i &lt;SHA&gt;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>SHA : It means the base commit. In this case, the SHA is First commit.</li>
+</ul>
+<p>Then you can use the two commands and adjust your commits.</p>
+<ol>
+<li>pick :  use commit</li>
+<li>squash : use commit, but meld into previous commit</li>
+</ol>
+<h3 id="The-git-operation-gif"><a href="#The-git-operation-gif" class="headerlink" title="The git-operation gif"></a>The git-operation gif</h3><img src="/2022/09/01/Combine-multiple-commits-into-one-commit-in-git/rebase.gif" class="">
+
+<p>The steps following:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">1. Use the command &quot;git rebase -i &lt;SHA&gt;&quot;</span><br><span class="line">2. Use pick and squash to adjust your commits</span><br><span class="line">3. Update the combined-commit message</span><br><span class="line">4. Finish</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://yuhsiang237.github.io/2022/09/01/Combine-multiple-commits-into-one-commit-in-git/" data-id="cme6kwo1k0034galjdkpu9bgt" data-title="Combine your multiple commits into one commit in git" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-First-half-of-2022" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2022/07/29/First-half-of-2022/" class="article-date">
+  <time class="dt-published" datetime="2022-07-29T06:20:36.000Z" itemprop="datePublished">2022-07-29</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Daily-Log/">Daily Log</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2022/07/29/First-half-of-2022/">The first half of 2022</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>In the first half of 2022, I worked from Kaohsiang to Taipei, and then started a financial-related job, which is loan service, and I write code in C# and Typescript to code everyday.</p>
+<p>However, in my rest time, I prepared for Toeic and learned English online cuz I thought it’s a challenge for me and if I got it over, I could do more thing such as joining a game team, doing business or even playing the video game in full English that made me getting more interesting stuff in my life, but my listen of English still needed to improve.</p>
+<p>In terms of living expenses, I just gained some money and improved my life. I thought the money was not very important, but actually I still needed it to live. I work just to improve my life quality and family environment.</p>
+<p>Finally, I want to share a video. I think it’s fun to explore and study the unknown things, and it can give you a different perspective.</p>
+<p><a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=aRCHzso-ni0">https://www.youtube.com/watch?v=aRCHzso-ni0</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://yuhsiang237.github.io/2022/07/29/First-half-of-2022/" data-id="cme6kwo1m0039galj4st183zu" data-title="The first half of 2022" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-Explore-New-Path-What-I-Wanna-Be" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2022/06/28/Explore-New-Path-What-I-Wanna-Be/" class="article-date">
+  <time class="dt-published" datetime="2022-06-27T22:11:21.000Z" itemprop="datePublished">2022-06-28</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Daily-Log/">Daily Log</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2022/06/28/Explore-New-Path-What-I-Wanna-Be/">Explore New Path What I Wanna Be</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>Since I chose the job of software engineer to work, it has been four years. But sometimes I’m still not satisfied because every day is very regular.</p>
+<h3 id="After-I-Get-Off-Work-And-Back-Home"><a href="#After-I-Get-Off-Work-And-Back-Home" class="headerlink" title="After I Get Off Work And Back Home"></a>After I Get Off Work And Back Home</h3><p>In four years, when I get off work, I will open the video game to rest, such as BloodBorne, Dark Souls III and Monster Hunter: World. I have no idea, but they can let me reflect on myself. Other times I just listen to hip hop music or rap or paint something.</p>
+<p>I usually think about what I should do, but my skills, acknowledgement of technique, or environment always restrict me. My mind told me I couldn’t integrate them. If I can’t solve it, finally, I will just be a technical guy with no soul, which I don’t want to see.</p>
+<h3 id="I-Need-To-Lit-The-Bonfire-Of-Life"><a href="#I-Need-To-Lit-The-Bonfire-Of-Life" class="headerlink" title="I Need To Lit The Bonfire Of Life"></a>I Need To Lit The Bonfire Of Life</h3><p>Now I am starting to integrate my acknowledgement, focus on what I felt, and get out of my way like Dark Souls. I have to explore and fail to go ahead, and don’t be afraid to try those paths.</p>
+<p>I will try the following things:</p>
+<ol>
+<li>Integrate my acknowledgement to explore what I want to do.</li>
+<li>Don’t be afraid to try those paths of failing and risk.</li>
+</ol>
+<p>Finally, I’ve to thanks to the Grammar Checker that corrected my grammar.<br><a target="_blank" rel="noopener" href="https://writer.com/grammar-checker/">https://writer.com/grammar-checker/</a></p>
+<p>[中文版]</p>
+<p>自從我選擇軟體工程師工作已經有四年之久，但有時候我仍然覺得不滿足，因為每天似乎都過得很規律。</p>
+<h3 id="當我結束工作回到家"><a href="#當我結束工作回到家" class="headerlink" title="當我結束工作回到家"></a>當我結束工作回到家</h3><p>在這四年間，當我下班了，回到家會打開電視遊樂器來放鬆，像是血源詛咒、暗黑靈魂3、魔物獵人世界。我沒有什麼特別想法，只是它們能夠讓我放鬆反思自己。其他時間則是聽嘻哈音樂或是饒舌，以及畫一些畫。</p>
+<p>我時常在想我該怎麼做，但我的技能、技術認知、環境總是限制我。我內心總告訴我整合不了他們。如果我沒辦法解決掉這問題，最後，我可能就只會成為一個沒靈魂的科技宅，這是我不想見到的。</p>
+<h3 id="我需要點燃生命的篝火"><a href="#我需要點燃生命的篝火" class="headerlink" title="我需要點燃生命的篝火"></a>我需要點燃生命的篝火</h3><p>從現在起我開始整合我的認知，專注在感受上，就像暗黑靈魂，走出一條自己的路。<br>我必須探索、失敗，從中前進，並且不膽怯嘗試那些路。<br>我會嘗試以下的事物:</p>
+<ol>
+<li>整合認知來開拓我想做的事</li>
+<li>不要膽怯嘗試那些失敗、有風險的路</li>
+</ol>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://yuhsiang237.github.io/2022/06/28/Explore-New-Path-What-I-Wanna-Be/" data-id="cme6kwo1l0037galjhkw401k9" data-title="Explore New Path What I Wanna Be" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-695-Max-Area-of-Island" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2022/06/18/695-Max-Area-of-Island/" class="article-date">
+  <time class="dt-published" datetime="2022-06-17T16:18:45.000Z" itemprop="datePublished">2022-06-18</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Code/">Code</a>►<a class="article-category-link" href="/categories/Code/C/">C#</a>►<a class="article-category-link" href="/categories/Topic/">Topic</a>►<a class="article-category-link" href="/categories/Topic/LeetCode/">LeetCode</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2022/06/18/695-Max-Area-of-Island/">695. Max Area of Island - LeetCode</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>In this part, I try to solve the problem of 659 with C#, and this level is medium.</p>
+<h1 id="Problem"><a href="#Problem" class="headerlink" title="Problem"></a>Problem</h1><div class="content__u3I1 question-content__JfgR"><div><p>You are given an <code>m x n</code> binary matrix <code>grid</code>. An island is a group of <code>1</code>'s (representing land) connected <strong>4-directionally</strong> (horizontal or vertical.) You may assume all four edges of the grid are surrounded by water.</p>
+
+<p>The <strong>area</strong> of an island is the number of cells with a value <code>1</code> in the island.</p>
+
+<p>Return <em>the maximum <strong>area</strong> of an island in </em><code>grid</code>. If there is no island, return <code>0</code>.</p>
+<p><strong>Example 1:</strong></p>
+<img src="/2022/06/18/695-Max-Area-of-Island/maxarea1-grid.jpg" class="">
+<pre><strong>Input:</strong> grid = [[0,0,1,0,0,0,0,1,0,0,0,0,0],[0,0,0,0,0,0,0,1,1,1,0,0,0],[0,1,1,0,1,0,0,0,0,0,0,0,0],[0,1,0,0,1,1,0,0,1,0,1,0,0],[0,1,0,0,1,1,0,0,1,1,1,0,0],[0,0,0,0,0,0,0,0,0,0,1,0,0],[0,0,0,0,0,0,0,1,1,1,0,0,0],[0,0,0,0,0,0,0,1,1,0,0,0,0]]
+<strong>Output:</strong> 6
+<strong>Explanation:</strong> The answer is not 11, because the island must be connected 4-directionally.
+</pre>
+
+<p><strong>Example 2:</strong></p>
+
+<pre><strong>Input:</strong> grid = [[0,0,0,0,0,0,0,0]]
+<strong>Output:</strong> 0
+</pre>
+
+<p>&nbsp;</p>
+<p><strong>Constraints:</strong></p>
+
+<ul>
+    <li><code>m == grid.length</code></li>
+    <li><code>n == grid[i].length</code></li>
+    <li><code>1 &lt;= m, n &lt;= 50</code></li>
+    <li><code>grid[i][j]</code> is either <code>0</code> or <code>1</code>.</li>
+</ul>
+</div></div>
+
+<h1 id="My-Answer"><a href="#My-Answer" class="headerlink" title="My Answer"></a>My Answer</h1><p>I use the DFS to solve this problem.</p>
+<p>Concept following:</p>
+<ol>
+<li>Loop grid</li>
+<li>Traverse all island and compare the max count of island areas</li>
+<li>Get the max result of island</li>
+</ol>
+<p>I split the program to partial class to help us easy to read, and define an enum of area to mark the traversal.<br>Finally, I use the function TraverseIsland that is an algorithm of DFS to help us traverse the four directions. </p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">partial</span> <span class="keyword">class</span> <span class="title">Solution</span> &#123;      </span><br><span class="line">    </span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> MaxAreaOfIsland</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;grid&quot;&gt;</span>grid<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;returns&gt;</span>maximum area of an island<span class="doctag">&lt;/returns&gt;</span></span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="built_in">int</span> <span class="title">MaxAreaOfIsland</span>(<span class="params"><span class="built_in">int</span>[][] grid</span>)</span> &#123;</span><br><span class="line">        <span class="keyword">var</span> maxAreaOfIsland = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">var</span> i=<span class="number">0</span>;i&lt;grid.Length;i++)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">var</span> j=<span class="number">0</span>;j&lt;grid[<span class="number">0</span>].Length;j++)</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">if</span>(IsIsland(grid[i][j]))</span><br><span class="line">                &#123;</span><br><span class="line">                    <span class="keyword">var</span> islandAreas = <span class="keyword">new</span> List&lt;(<span class="built_in">int</span>,<span class="built_in">int</span>)&gt;();</span><br><span class="line">                    TraverseIsland(islandAreas,grid,i,j);</span><br><span class="line">                    maxAreaOfIsland = Math.Max(islandAreas.Count,maxAreaOfIsland);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> maxAreaOfIsland;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"><span class="doctag">///</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> private method &amp; variant</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span></span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">partial</span> <span class="keyword">class</span> <span class="title">Solution</span> &#123;      </span><br><span class="line">    </span><br><span class="line">    <span class="keyword">private</span> <span class="built_in">enum</span> AreaEnum </span><br><span class="line">    &#123;</span><br><span class="line">      None = <span class="number">0</span>,</span><br><span class="line">      Island = <span class="number">1</span>,</span><br><span class="line">      HasBeenTraverse = <span class="number">2</span>,</span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> Check the location that is island</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;gridValue&quot;&gt;</span>value of grid<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;returns&gt;</span>bool<span class="doctag">&lt;/returns&gt;</span></span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="built_in">bool</span> <span class="title">IsIsland</span>(<span class="params"><span class="built_in">int</span> gridValue</span>)</span></span><br><span class="line">        =&gt; gridValue == (<span class="built_in">int</span>)AreaEnum.Island;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> Mark the traversal to avoid infinite loops</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;grid&quot;&gt;</span>grid<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;i&quot;&gt;</span>i of grid<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;j&quot;&gt;</span>j of grid<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">MarkTraversal</span>(<span class="params"><span class="built_in">int</span>[][] grid,<span class="built_in">int</span> i,<span class="built_in">int</span> j</span>)</span></span><br><span class="line">        =&gt; grid[i][j] = (<span class="built_in">int</span>)AreaEnum.HasBeenTraverse;</span><br><span class="line">    </span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> Traverse Island</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> Traverse the grid 4-directionally</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;islandAreas&quot;&gt;</span>areas of the island<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;grid&quot;&gt;</span>grid object<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;i&quot;&gt;</span>i of grid<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;j&quot;&gt;</span>j of grid<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">TraverseIsland</span> (<span class="params"></span></span></span><br><span class="line"><span class="params"><span class="function">        List&lt;(<span class="built_in">int</span>,<span class="built_in">int</span></span>)&gt; islandAreas, </span></span><br><span class="line"><span class="function">        <span class="built_in">int</span>[][] grid,</span></span><br><span class="line"><span class="function">        <span class="built_in">int</span> i, </span></span><br><span class="line"><span class="function">        <span class="built_in">int</span> j)</span></span><br><span class="line">    &#123;</span><br><span class="line">        islandAreas.Add((i,j));</span><br><span class="line">        MarkTraversal(grid,i,j);</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// top</span></span><br><span class="line">        <span class="keyword">if</span>(i<span class="number">-1</span> &gt;= <span class="number">0</span> &amp;&amp; IsIsland(grid[i<span class="number">-1</span>][j])) </span><br><span class="line">            TraverseIsland(islandAreas,grid,i<span class="number">-1</span>,j);</span><br><span class="line">        <span class="comment">// bottom</span></span><br><span class="line">        <span class="keyword">if</span>(i+<span class="number">1</span> &lt; grid.Length &amp;&amp; IsIsland(grid[i+<span class="number">1</span>][j]))</span><br><span class="line">            TraverseIsland(islandAreas,grid,i+<span class="number">1</span>,j);</span><br><span class="line">        <span class="comment">// left</span></span><br><span class="line">        <span class="keyword">if</span>(j<span class="number">-1</span> &gt;= <span class="number">0</span> &amp;&amp; IsIsland(grid[i][j<span class="number">-1</span>])) </span><br><span class="line">            TraverseIsland(islandAreas,grid,i,j<span class="number">-1</span>);</span><br><span class="line">        <span class="comment">// right</span></span><br><span class="line">        <span class="keyword">if</span>(j+<span class="number">1</span> &lt; grid[<span class="number">0</span>].Length &amp;&amp; IsIsland(grid[i][j+<span class="number">1</span>]))</span><br><span class="line">            TraverseIsland(islandAreas,grid,i,j+<span class="number">1</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Run Result:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Runtime: 98 ms, faster than 93.42% of C# online submissions for Max Area of Island.</span><br><span class="line">Memory Usage: 43.9 MB, less than 6.70% of C# online submissions for Max Area of Island.</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://yuhsiang237.github.io/2022/06/18/695-Max-Area-of-Island/" data-id="cme6kwnzp0002galjgnsu39m9" data-title="695. Max Area of Island - LeetCode" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-C-create-the-non-reference-object-Deep-Clone" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2022/06/08/C-create-the-non-reference-object-Deep-Clone/" class="article-date">
+  <time class="dt-published" datetime="2022-06-08T02:22:05.000Z" itemprop="datePublished">2022-06-08</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Code/">Code</a>►<a class="article-category-link" href="/categories/Code/C/">C#</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2022/06/08/C-create-the-non-reference-object-Deep-Clone/">C# create the non-reference object (Deep Clone)</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>In my work, I usually have a problem about how to create a non-reference object in C#. So today I want to solve it with a simple way that use the serialization and deserialization of JSON.</p>
+<h3 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h3><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> System;</span><br><span class="line"><span class="keyword">using</span> System.Text.Json;</span><br><span class="line"></span><br><span class="line"><span class="keyword">namespace</span> <span class="title">NonReferenceObj</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">internal</span> <span class="keyword">class</span> <span class="title">Program</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> Order</span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">class</span> <span class="title">Order</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">public</span> <span class="built_in">int</span> Seq &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line">            <span class="keyword">public</span> <span class="built_in">string</span> No &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line">            <span class="keyword">public</span> <span class="built_in">decimal</span> Amount &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> Util</span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">class</span> <span class="title">Util</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">            <span class="comment"><span class="doctag">///</span> Deep Clone</span></span><br><span class="line">            <span class="comment"><span class="doctag">///</span> Copy a non-reference object</span></span><br><span class="line">            <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">            <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;typeparam name=&quot;T&quot;&gt;</span>T<span class="doctag">&lt;/typeparam&gt;</span></span></span><br><span class="line">            <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;obj&quot;&gt;</span>obj<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">            <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;returns&gt;</span><span class="doctag">&lt;/returns&gt;</span></span></span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> T <span class="title">DeepClone</span>&lt;<span class="title">T</span>&gt;(<span class="params">T obj</span>)</span></span><br><span class="line">            =&gt; JsonSerializer.Deserialize&lt;T&gt;(JsonSerializer.Serialize(obj));</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">Main</span>(<span class="params"></span>)</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">var</span> order = <span class="keyword">new</span> Order</span><br><span class="line">            &#123;</span><br><span class="line">                Seq = <span class="number">1</span>,</span><br><span class="line">                No = <span class="string">&quot;20220608&quot;</span>,</span><br><span class="line">                Amount = <span class="number">100</span>,</span><br><span class="line">            &#125;;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">var</span> copy = Util.DeepClone(order);</span><br><span class="line"></span><br><span class="line">            <span class="comment">// Check the reference of object </span></span><br><span class="line">            Console.WriteLine(<span class="string">$&quot;Check the reference of object: <span class="subst">&#123;<span class="built_in">object</span>.ReferenceEquals(order, copy)&#125;</span>&quot;</span>);</span><br><span class="line">            <span class="comment">// Check the equal of value  </span></span><br><span class="line">            Console.WriteLine(<span class="string">$&quot;Check the equal of value: <span class="subst">&#123;order.No == copy.No &amp;&amp; order.Seq == copy.Seq &amp;&amp; order.Amount == copy.Amount&#125;</span>&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Finally, we got the output below:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Check the reference of object: False</span><br><span class="line">Check the equal of value: True</span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://yuhsiang237.github.io/2022/06/08/C-create-the-non-reference-object-Deep-Clone/" data-id="cme6kwo14002fgaljhk1p9uuw" data-title="C# create the non-reference object (Deep Clone)" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-Refactor-the-code-1" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2022/06/07/Refactor-the-code-1/" class="article-date">
+  <time class="dt-published" datetime="2022-06-07T06:34:00.000Z" itemprop="datePublished">2022-06-07</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Code/">Code</a>►<a class="article-category-link" href="/categories/Code/C/">C#</a>►<a class="article-category-link" href="/categories/Code/Refactoring/">Refactoring</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2022/06/07/Refactor-the-code-1/">Refactor the code - function</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>First, we find a section of code that contains different operations, such as initialization and print. We can try to refactor that extracts them into functions.</p>
+<p><strong>Concepts</strong></p>
+<ol>
+<li>The process of restructuring code, while not changing its original functionality.</li>
+<li>Easier to understand</li>
+<li>Cheaper to modify</li>
+</ol>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> System;</span><br><span class="line"><span class="keyword">using</span> System.Collections.Generic;</span><br><span class="line"></span><br><span class="line"><span class="keyword">namespace</span> <span class="title">refactor01</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">internal</span> <span class="keyword">class</span> <span class="title">Program</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">Main</span>(<span class="params"><span class="built_in">string</span>[] args</span>)</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">var</span> numbers = <span class="keyword">new</span> List&lt;<span class="built_in">string</span>&gt;();</span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; <span class="number">10</span>; i++)</span><br><span class="line">            &#123;</span><br><span class="line">                numbers.Add(i.ToString());</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">foreach</span> (<span class="keyword">var</span> item <span class="keyword">in</span> numbers)</span><br><span class="line">            &#123;</span><br><span class="line">                Console.Write(item);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Now, We extract the different operations into functions, and each function just do one thing. We can more easily control something we want to do.</p>
+<ol>
+<li>Extract the different operations into functions.</li>
+<li>Add the summary.</li>
+<li>Remove the unused parameter.</li>
+</ol>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> System;</span><br><span class="line"><span class="keyword">using</span> System.Collections.Generic;</span><br><span class="line"></span><br><span class="line"><span class="keyword">namespace</span> <span class="title">refactor01</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">internal</span> <span class="keyword">class</span> <span class="title">Program</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">Main</span>(<span class="params"></span>)</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">var</span> numbers = <span class="keyword">new</span> List&lt;<span class="built_in">string</span>&gt;();</span><br><span class="line">            initNumbers(numbers);</span><br><span class="line">            printNumbers(numbers);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> init the numbers</span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;numbers&quot;&gt;</span>list of numbers<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">initNumbers</span>(<span class="params">List&lt;<span class="built_in">string</span>&gt; numbers</span>)</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; <span class="number">10</span>; i++)</span><br><span class="line">            &#123;</span><br><span class="line">                numbers.Add(i.ToString());</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> print the numbers</span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;numbers&quot;&gt;</span>list of numbers<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">printNumbers</span>(<span class="params">List&lt;<span class="built_in">string</span>&gt; numbers</span>)</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">foreach</span> (<span class="keyword">var</span> item <span class="keyword">in</span> numbers)</span><br><span class="line">            &#123;</span><br><span class="line">                Console.Write(item);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="In-conclusion"><a href="#In-conclusion" class="headerlink" title="In conclusion"></a>In conclusion</h3><p>Finally, we did it that finished the refactoring and just made it easy to maintain and read.</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://yuhsiang237.github.io/2022/06/07/Refactor-the-code-1/" data-id="cme6kwo27004egaljcqsvhsff" data-title="Refactor the code - function" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-SQL-Server透過建立索引提升查詢速度" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2022/05/31/SQL-Server%E9%80%8F%E9%81%8E%E5%BB%BA%E7%AB%8B%E7%B4%A2%E5%BC%95%E6%8F%90%E5%8D%87%E6%9F%A5%E8%A9%A2%E9%80%9F%E5%BA%A6/" class="article-date">
+  <time class="dt-published" datetime="2022-05-31T05:25:37.000Z" itemprop="datePublished">2022-05-31</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Database/">Database</a>►<a class="article-category-link" href="/categories/Database/SQL-Server/">SQL Server</a>►<a class="article-category-link" href="/categories/Topic/">Topic</a>►<a class="article-category-link" href="/categories/Topic/Big-Data/">Big Data</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2022/05/31/SQL-Server%E9%80%8F%E9%81%8E%E5%BB%BA%E7%AB%8B%E7%B4%A2%E5%BC%95%E6%8F%90%E5%8D%87%E6%9F%A5%E8%A9%A2%E9%80%9F%E5%BA%A6/">SQL Server透過建立索引提升查詢速度</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>因為最近遇到資料庫量大的瓶頸，因此稍微紀錄一下調效能的作法建立「索引」。<br>之前有提到過: <a href="/2022/05/19/SQL-Server-%E5%8F%A2%E9%9B%86%E7%B4%A2%E5%BC%95vs%E9%9D%9E%E5%8F%A2%E9%9B%86%E7%B4%A2%E5%BC%95/" title="SQL Server 叢集索引vs非叢集索引">SQL Server 叢集索引vs非叢集索引</a> 可以先看這邊。</p>
+<p>而這回主要透過建立索引去改善查詢效能，如下實作:</p>
+<h3 id="實作"><a href="#實作" class="headerlink" title="實作"></a>實作</h3><p>1.首先先建立一張表</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">USE [TodoDB]</span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> [Todos](</span><br><span class="line">	[Id] [<span class="type">int</span>] <span class="keyword">IDENTITY</span>(<span class="number">1</span>,<span class="number">1</span>) <span class="keyword">NOT</span> <span class="keyword">NULL</span>,</span><br><span class="line">	[Name] [nvarchar](<span class="number">100</span>) <span class="keyword">NULL</span>,</span><br><span class="line">	[Priority] [tinyint] <span class="keyword">NULL</span>,</span><br><span class="line">	[UserId] [<span class="type">int</span>] <span class="keyword">NOT</span> <span class="keyword">NULL</span>,</span><br><span class="line">	[IsValid] [bit] <span class="keyword">NOT</span> <span class="keyword">NULL</span>,</span><br><span class="line">	[CreatedOn] [datetime] <span class="keyword">NOT</span> <span class="keyword">NULL</span>,</span><br><span class="line">	[UpdatedOn] [datetime] <span class="keyword">NOT</span> <span class="keyword">NULL</span></span><br><span class="line">	<span class="keyword">CONSTRAINT</span> [PK_Todos] <span class="keyword">PRIMARY</span> KEY CLUSTERED ([Id] <span class="keyword">ASC</span>)</span><br><span class="line">	);</span><br><span class="line">GO</span><br></pre></td></tr></table></figure>
+
+<p>2.增加幾筆資料</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">USE [TodoDB]</span><br><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> [Todos] </span><br><span class="line">(</span><br><span class="line">	[Name],</span><br><span class="line">	[Priority],</span><br><span class="line">	[UserId],</span><br><span class="line">	[IsValid],</span><br><span class="line">	[CreatedOn],</span><br><span class="line">	[UpdatedOn]</span><br><span class="line">)</span><br><span class="line"><span class="keyword">VALUES</span></span><br><span class="line">    (<span class="string">&#x27;測試1&#x27;</span>,<span class="number">1</span>,<span class="number">1</span>,<span class="number">1</span>,<span class="string">&#x27;2022-05-31&#x27;</span>,<span class="string">&#x27;2022-05-31&#x27;</span>),</span><br><span class="line">    (<span class="string">&#x27;測試2&#x27;</span>,<span class="number">4</span>,<span class="number">2</span>,<span class="number">1</span>,<span class="string">&#x27;2022-05-31&#x27;</span>,<span class="string">&#x27;2022-05-31&#x27;</span>),</span><br><span class="line">    (<span class="string">&#x27;測試3&#x27;</span>,<span class="number">3</span>,<span class="number">3</span>,<span class="number">1</span>,<span class="string">&#x27;2022-05-31&#x27;</span>,<span class="string">&#x27;2022-05-31&#x27;</span>),</span><br><span class="line">    (<span class="string">&#x27;測試4&#x27;</span>,<span class="number">2</span>,<span class="number">1</span>,<span class="number">1</span>,<span class="string">&#x27;2022-05-31&#x27;</span>,<span class="string">&#x27;2022-05-31&#x27;</span>),</span><br><span class="line">    (<span class="string">&#x27;測試5&#x27;</span>,<span class="number">1</span>,<span class="number">1</span>,<span class="number">1</span>,<span class="string">&#x27;2022-05-31&#x27;</span>,<span class="string">&#x27;2022-05-31&#x27;</span>)</span><br><span class="line">GO</span><br></pre></td></tr></table></figure>
+
+<p>3.建立非叢集索引</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">USE [TodoDB]</span><br><span class="line">	<span class="keyword">CREATE</span> NONCLUSTERED INDEX IX_Priority</span><br><span class="line">	<span class="keyword">ON</span> [Todos](Priority <span class="keyword">ASC</span>,Id <span class="keyword">ASC</span>)</span><br><span class="line">GO</span><br></pre></td></tr></table></figure>
+<p>這時如過資料量筆數大<br>進行查詢剛好排序了Priority ASC、Id ASC速度就會提升。</p>
+<h3 id="參考資料"><a href="#參考資料" class="headerlink" title="參考資料"></a>參考資料</h3><ul>
+<li><a target="_blank" rel="noopener" href="https://docs.microsoft.com/en-us/sql/relational-databases/indexes/create-nonclustered-indexes?view=sql-server-ver16">https://docs.microsoft.com/en-us/sql/relational-databases/indexes/create-nonclustered-indexes?view=sql-server-ver16</a></li>
+<li><a target="_blank" rel="noopener" href="https://dotblogs.com.tw/EganBlog/2017/04/11/013049">https://dotblogs.com.tw/EganBlog/2017/04/11/013049</a></li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://yuhsiang237.github.io/2022/05/31/SQL-Server%E9%80%8F%E9%81%8E%E5%BB%BA%E7%AB%8B%E7%B4%A2%E5%BC%95%E6%8F%90%E5%8D%87%E6%9F%A5%E8%A9%A2%E9%80%9F%E5%BA%A6/" data-id="cme6kwo2f004tgalj38d599s7" data-title="SQL Server透過建立索引提升查詢速度" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-程式千萬筆資料量級搜尋提速方式" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2022/05/27/%E7%A8%8B%E5%BC%8F%E5%8D%83%E8%90%AC%E7%AD%86%E8%B3%87%E6%96%99%E9%87%8F%E7%B4%9A%E6%90%9C%E5%B0%8B%E6%8F%90%E9%80%9F%E6%96%B9%E5%BC%8F/" class="article-date">
+  <time class="dt-published" datetime="2022-05-26T17:27:57.000Z" itemprop="datePublished">2022-05-27</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Code/">Code</a>►<a class="article-category-link" href="/categories/Code/C/">C#</a>►<a class="article-category-link" href="/categories/Topic/">Topic</a>►<a class="article-category-link" href="/categories/Topic/Big-Data/">Big Data</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2022/05/27/%E7%A8%8B%E5%BC%8F%E5%8D%83%E8%90%AC%E7%AD%86%E8%B3%87%E6%96%99%E9%87%8F%E7%B4%9A%E6%90%9C%E5%B0%8B%E6%8F%90%E9%80%9F%E6%96%B9%E5%BC%8F/">程式千萬筆資料量級搜尋提速方式</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>千萬筆資料要怎麼讓每次搜尋的速度提升呢?<br>我以前一直蠻好奇的，最近有幸理解到一個簡單理解的做法。</p>
+<p>用C#舉例，如下程式碼:</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> System;</span><br><span class="line"><span class="keyword">using</span> System.Linq;</span><br><span class="line"><span class="keyword">using</span> System.Collections.Generic;</span><br><span class="line"><span class="keyword">using</span> System.Diagnostics;</span><br><span class="line"></span><br><span class="line"><span class="keyword">namespace</span> <span class="title">LargeData</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">class</span> <span class="title">OrderModel</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">public</span> <span class="built_in">string</span> OrderNumber &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">class</span> <span class="title">Program</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">readonly</span> <span class="built_in">int</span> _dataCount = <span class="number">20000000</span>;</span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">Main</span>(<span class="params"></span>)</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">var</span> list = <span class="keyword">new</span> List&lt;OrderModel&gt;();</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; _dataCount; i++)</span><br><span class="line">            &#123;</span><br><span class="line">                list.Add(<span class="keyword">new</span> OrderModel</span><br><span class="line">                &#123;</span><br><span class="line">                    OrderNumber = <span class="string">$&quot;<span class="subst">&#123;i + <span class="number">1</span>&#125;</span>&quot;</span></span><br><span class="line">                &#125;);</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            Stopwatch sw = <span class="keyword">new</span> Stopwatch();</span><br><span class="line">            sw.Reset();</span><br><span class="line">            sw.Start();</span><br><span class="line"></span><br><span class="line">            <span class="keyword">var</span> result = list.ToList();</span><br><span class="line">            <span class="keyword">var</span> targetOrderNumber = <span class="string">&quot;20000000&quot;</span>;</span><br><span class="line">            <span class="keyword">var</span> targetOrder = list</span><br><span class="line">                .Where(x =&gt; x.OrderNumber == targetOrderNumber)</span><br><span class="line">                .FirstOrDefault();</span><br><span class="line"></span><br><span class="line">            Console.WriteLine(<span class="string">$&quot;TargetOrder:<span class="subst">&#123;targetOrder.OrderNumber&#125;</span>&quot;</span>);</span><br><span class="line"></span><br><span class="line">            sw.Stop();</span><br><span class="line">            <span class="built_in">string</span> second = (sw.Elapsed.TotalMilliseconds / <span class="number">1000</span>).ToString();</span><br><span class="line">            Console.WriteLine(<span class="string">$&quot;Run:<span class="subst">&#123;second&#125;</span>&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>output:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">TargetOrder:20000000</span><br><span class="line">Run Second:0.89836</span><br></pre></td></tr></table></figure>
+
+<p>如上，在2千萬筆資料中查詢只耗了0.8秒。</p>
+<p>簡單來說就是靠快取，我們將17~24行的資料儲存到記憶體中或是其他Redis伺服器當作快取。<br>每次在程式中去撈取時只要從該入口去提取資料即可，雖然耗費記憶體，但提速效果極高。<br>這作法前提:當資料異動時需同步更新快取資料，必須做好單一入口去做存取。</p>
+<p>在30~34行中，我們可以使用演算法去優化，在這裡用最簡單的O(n)作法，如果有使用如二元樹搜尋那可以最佳化到O(log n)，最差O(n)。</p>
+<p>我在執行以上的程式使用了2.4G記憶體。</p>
+<p>電腦效能:</p>
+<ul>
+<li>Intel(R) Core(TM) i7-6600U CPU @ 2.60GHz   2.81 GHz</li>
+<li>16.0 GB (15.9 GB usable)</li>
+</ul>
+<p>如果把這個快取資料放到其他伺服器做，那記憶體在程式上就幾乎不占記憶體。<br>把記憶體耗損轉移到其他伺服器上，記憶體不足時也只要去擴增快取伺服器的記憶體。</p>
+<h3 id="結論"><a href="#結論" class="headerlink" title="結論"></a>結論</h3><p>算是有點火影忍者卡卡西萬花筒血輪眼神威的作法，把負載轉移到其他空間的快取。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://yuhsiang237.github.io/2022/05/27/%E7%A8%8B%E5%BC%8F%E5%8D%83%E8%90%AC%E7%AD%86%E8%B3%87%E6%96%99%E9%87%8F%E7%B4%9A%E6%90%9C%E5%B0%8B%E6%8F%90%E9%80%9F%E6%96%B9%E5%BC%8F/" data-id="cme6kwo7h00ovgaljhmu0c0cq" data-title="程式千萬筆資料量級搜尋提速方式" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-C-陣列分群" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2022/05/20/C-%E9%99%A3%E5%88%97%E5%88%86%E7%BE%A4/" class="article-date">
+  <time class="dt-published" datetime="2022-05-20T08:48:57.000Z" itemprop="datePublished">2022-05-20</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Code/">Code</a>►<a class="article-category-link" href="/categories/Code/C/">C#</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2022/05/20/C-%E9%99%A3%E5%88%97%E5%88%86%E7%BE%A4/">C# 資料分群</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>在這邊主要介紹List的分群，如有以下的五筆資料</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[&quot;00001&quot;,&quot;00002&quot;,&quot;00003&quot;,&quot;00004&quot;,&quot;00005&quot;]</span><br></pre></td></tr></table></figure>
+<p>這時想要以2來群分，變成下方結果</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[[&quot;00001&quot;,&quot;00002&quot;],[&quot;00003&quot;,&quot;00004&quot;],[&quot;00005&quot;]]</span><br></pre></td></tr></table></figure>
+
+<p>程式碼:</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> System;</span><br><span class="line"><span class="keyword">using</span> System.Linq;</span><br><span class="line"><span class="keyword">using</span> System.Collections.Generic;</span><br><span class="line"><span class="keyword">using</span> System.Text.Json;</span><br><span class="line"></span><br><span class="line"><span class="keyword">namespace</span> <span class="title">ListGroupBy</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">internal</span> <span class="keyword">class</span> <span class="title">Program</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">Main</span>(<span class="params"><span class="built_in">string</span>[] args</span>)</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">var</span> numbers = <span class="keyword">new</span> List&lt;<span class="built_in">string</span>&gt;</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="string">&quot;00001&quot;</span>,<span class="string">&quot;00002&quot;</span>,<span class="string">&quot;00003&quot;</span>,<span class="string">&quot;00004&quot;</span>,<span class="string">&quot;00005&quot;</span></span><br><span class="line">            &#125;;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">var</span> numberGroup = numbers</span><br><span class="line">                .Select((number, index) =&gt; <span class="keyword">new</span> &#123; number, index &#125;)</span><br><span class="line">                .GroupBy(g =&gt; g.index / <span class="number">2</span>, i =&gt; i.number)</span><br><span class="line">                .ToList();</span><br><span class="line"></span><br><span class="line">            <span class="comment">//It will iterate through each groups</span></span><br><span class="line">            <span class="keyword">foreach</span> (<span class="keyword">var</span> <span class="keyword">group</span> <span class="keyword">in</span> numberGroup)</span><br><span class="line">            &#123;</span><br><span class="line">                Console.WriteLine(<span class="string">$&quot;<span class="subst">&#123;<span class="keyword">group</span>.Key&#125;</span> ,  count: <span class="subst">&#123;<span class="keyword">group</span>.Count()&#125;</span>&quot;</span>);</span><br><span class="line">                <span class="comment">//Iterate through each number of a group</span></span><br><span class="line">                <span class="keyword">foreach</span> (<span class="keyword">var</span> number <span class="keyword">in</span> <span class="keyword">group</span>)</span><br><span class="line">                    Console.WriteLine(<span class="string">$&quot;  number : <span class="subst">&#123;number&#125;</span>&quot;</span>);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>output:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">0 ,  count: 2</span><br><span class="line">  number : 00001</span><br><span class="line">  number : 00002</span><br><span class="line">1 ,  count: 2</span><br><span class="line">  number : 00003</span><br><span class="line">  number : 00004</span><br><span class="line">2 ,  count: 1</span><br><span class="line">  number : 00005</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://yuhsiang237.github.io/2022/05/20/C-%E9%99%A3%E5%88%97%E5%88%86%E7%BE%A4/" data-id="cme6kwo1d002zgaljcszf4nil" data-title="C# 資料分群" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+
+
+  <nav id="page-nav">
+    
+    <a class="extend prev" rel="prev" href="/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><span class="space">&hellip;</span><a class="page-number" href="/page/16/">16</a><a class="extend next" rel="next" href="/page/3/">Next &raquo;</a>
+  </nav>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Code/">Code</a><span class="category-list-count">76</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Code/C/">C#</a><span class="category-list-count">69</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Code/Javascript/">Javascript</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Code/Refactoring/">Refactoring</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Code/Typescript/">Typescript</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/">Computer Science</a><span class="category-list-count">5</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/Algorithm/">Algorithm</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/Data-structure/">Data structure</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/Electronic-Circuit/">Electronic Circuit</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Daily-Log/">Daily Log</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/">Database</a><span class="category-list-count">57</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Database/PostgreSQL/">PostgreSQL</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/SQL-Server/">SQL Server</a><span class="category-list-count">47</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/">Framework</a><span class="category-list-count">27</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/AspNetCore-API/">AspNetCore API</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/AspNetCore-MVC/">AspNetCore MVC</a><span class="category-list-count">21</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/">Topic</a><span class="category-list-count">76</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2021-C-AspNetCore-Challenge/">2021 C# AspNetCore Challenge</a><span class="category-list-count">30</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2021-SQL-Server-Challenge/">2021 SQL Server Challenge</a><span class="category-list-count">30</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2022-C-SyncAndAsync/">2022 C# SyncAndAsync</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2025-Typescript/">2025 Typescript</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/Big-Data/">Big Data</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/LeetCode/">LeetCode</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/SystemStructure/">SystemStructure</a><span class="category-list-count">1</span></li></ul></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/08/">August 2025</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/05/">May 2023</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/03/">March 2023</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/02/">February 2023</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/01/">January 2023</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/12/">December 2022</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/09/">September 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/07/">July 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/06/">June 2022</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/05/">May 2022</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/04/">April 2022</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/03/">March 2022</a><span class="archive-list-count">17</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/02/">February 2022</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/01/">January 2022</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">December 2021</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">October 2021</a><span class="archive-list-count">24</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">September 2021</a><span class="archive-list-count">46</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">August 2021</a><span class="archive-list-count">12</span></li></ul>
+    </div>
+  </div>
+
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2025 Yu Hsiang<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

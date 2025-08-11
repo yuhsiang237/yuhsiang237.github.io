@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>PostgreSQL資料型別 | UM&#39;s Coding Note</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="前言因為最近有碰PostgreSQL的需要，因此來整理儲存型別。此外，發現PostgreSQL的欄位型態具有Alias別名，所以有些型別找不到就要參考文件的Alias。在以下只列常見的型別，更多請自己參閱參考資料。 常見資料型別字串   名稱   描述   備註    character varying(n), varchar(n)  可變長度，但有限制 其中 n 是正整數。可以長度最多為 n 個">
+<meta property="og:type" content="article">
+<meta property="og:title" content="PostgreSQL資料型別">
+<meta property="og:url" content="https://yuhsiang237.github.io/2022/03/03/PostgreSQL%E8%B3%87%E6%96%99%E5%9E%8B%E5%88%A5/index.html">
+<meta property="og:site_name" content="UM&#39;s Coding Note">
+<meta property="og:description" content="前言因為最近有碰PostgreSQL的需要，因此來整理儲存型別。此外，發現PostgreSQL的欄位型態具有Alias別名，所以有些型別找不到就要參考文件的Alias。在以下只列常見的型別，更多請自己參閱參考資料。 常見資料型別字串   名稱   描述   備註    character varying(n), varchar(n)  可變長度，但有限制 其中 n 是正整數。可以長度最多為 n 個">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2022-03-03T05:23:41.000Z">
+<meta property="article:modified_time" content="2025-08-11T03:49:08.551Z">
+<meta property="article:author" content="Yu Hsiang">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="UM's Coding Note" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">UM&#39;s Coding Note</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">I record my coding experience at this place🤙</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://yuhsiang237.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-PostgreSQL資料型別" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2022/03/03/PostgreSQL%E8%B3%87%E6%96%99%E5%9E%8B%E5%88%A5/" class="article-date">
+  <time class="dt-published" datetime="2022-03-03T05:23:41.000Z" itemprop="datePublished">2022-03-03</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Database/">Database</a>►<a class="article-category-link" href="/categories/Database/PostgreSQL/">PostgreSQL</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      PostgreSQL資料型別
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>因為最近有碰PostgreSQL的需要，因此來整理儲存型別。<br>此外，發現PostgreSQL的欄位型態具有Alias別名，所以有些型別找不到就要參考文件的Alias。<br>在以下只列常見的型別，更多請自己參閱參考資料。</p>
+<h3 id="常見資料型別"><a href="#常見資料型別" class="headerlink" title="常見資料型別"></a>常見資料型別</h3><h4 id="字串"><a href="#字串" class="headerlink" title="字串"></a>字串</h4><table>
+<tr>
+<td>
+名稱
+</td>
+<td>
+描述
+</td>
+<td>
+備註
+</td>
+</tr>
+<tr>
+<td>character varying(n), varchar(n)
+</td>
+<td>可變長度，但有限制
+</td><td>其中 n 是正整數。可以長度最多為 n 個字元（不是位元組）的字串。</td>
+</tr>
+
+<tr>
+<td>character(n), char(n)
+</td>
+<td>固定長度，空白填充
+</td><td>其中 n 是正整數。可以長度最多為 n 個字元（不是位元組）的字串。</td>
+</tr>
+
+
+<tr>
+<td>text
+</td>
+<td>可變且無限長度
+</td><td></td>
+</tr>
+
+</table>
+
+<h4 id="數字"><a href="#數字" class="headerlink" title="數字"></a>數字</h4><table>
+<tr>
+<td>
+名稱
+</td>
+<td>
+描述
+</td>
+<td>
+備註
+</td>
+</tr>
+<tr>
+<td>smallint
+</td>
+<td>2 bytes
+，-32768 to +32767
+</td><td></td>
+</tr>
+
+<tr>
+<td>integer
+</td>
+<td>4 bytes，-2147483648 to +2147483647
+</td><td></td>
+</tr>
+
+
+<tr>
+<td>bigint
+</td>
+<td>8 bytes，-9223372036854775808 to +9223372036854775807
+</td><td></td>
+</tr>
+
+<tr>
+<td>
+numeric
+</td>
+<td>up to 131072 digits before the decimal point; up to 16383 digits after the decimal point。可調式精確度數值型別
+
+</td><td>Alias decimal</td>
+</tr>
+
+<tr>
+<td>
+real
+</td>
+<td>4Bytes，6 decimal digits precision
+非精度浮點數型別
+</td><td></td>
+</tr>
+
+<tr>
+<td>
+double precision
+
+</td>
+<td>8Bytes，15 decimal digits precision
+非精度浮點數型別
+</td><td></td>
+</tr>
+</table>
+
+<h4 id="布林"><a href="#布林" class="headerlink" title="布林"></a>布林</h4><table>
+<tr>
+<td>
+名稱
+</td>
+<td>
+描述
+</td>
+<td>
+備註
+</td>
+</tr>
+<tr>
+<td>boolean
+</td>
+<td>1Bytes
+</td><td></td>
+</tr>
+</table>
+
+
+<h4 id="日期時間"><a href="#日期時間" class="headerlink" title="日期時間"></a>日期時間</h4><table>
+<tr>
+<td>
+名稱
+</td>
+<td>
+描述
+</td>
+<td>
+備註
+</td>
+</tr>
+<tr>
+<td>timestamp [ (p) ] [ without time zone ]
+</td>
+<td>8 bytes，
+both date and time (no time zone)，
+4713 BC ~
+294276 AD
+</td><td></td>
+</tr>
+
+<tr>
+<td>
+timestamp [ (p) ] with time zone
+</td>
+<td>8 bytes，
+both date and time, with time zone，
+4713 BC ~
+294276 AD
+</td><td></td>
+</tr>
+</table>
+
+<h3 id="總結"><a href="#總結" class="headerlink" title="總結"></a>總結</h3><p>在這篇中以一個熟悉SQL Server的角度，列出了平常可能會見到的PostgreSQL資料型態。<br>因為後者的資料型別彈性高(能夠自己建立物件存進、支援儲存JSON等等)，所以等後面實際碰到再額外補充。<br>而完整的型別請自行參考網址的參考資料吧!</p>
+<p>可能會有人有疑問怎沒SQL Server的NVARCHAR?<br>Generally you just use a UTF-8 encoded DB, and everything works with no hassle.</p>
+<h3 id="參考資料"><a href="#參考資料" class="headerlink" title="參考資料"></a>參考資料</h3><ul>
+<li><a target="_blank" rel="noopener" href="https://www.postgresqltutorial.com/postgresql-data-types/">https://www.postgresqltutorial.com/postgresql-data-types/</a></li>
+<li><a target="_blank" rel="noopener" href="https://docs.postgresql.tw/the-sql-language/data-types">https://docs.postgresql.tw/the-sql-language/data-types</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.itread01.com/content/1550538018.html">https://www.itread01.com/content/1550538018.html</a></li>
+<li><a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/21925802/can-i-use-nvarchar-data-type-in-plpgsql">https://stackoverflow.com/questions/21925802/can-i-use-nvarchar-data-type-in-plpgsql</a></li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://yuhsiang237.github.io/2022/03/03/PostgreSQL%E8%B3%87%E6%96%99%E5%9E%8B%E5%88%A5/" data-id="cme6kwo210048galjcdx66w0o" data-title="PostgreSQL資料型別" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2022/03/03/SQL-Server-Outer-Apply%E5%8F%A6%E4%B8%80%E7%A8%AELeft-Join%E4%BD%9C%E6%B3%95/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          SQL Server Left Join只取第一筆做法Outer Apply
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2022/02/17/SQL-Server-NVARCHAR%E8%88%87VARCHAR%E5%B7%AE%E5%88%A5%E6%AF%94%E8%BC%83/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">SQL Server NVARCHAR與VARCHAR差別比較</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Code/">Code</a><span class="category-list-count">76</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Code/C/">C#</a><span class="category-list-count">69</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Code/Javascript/">Javascript</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Code/Refactoring/">Refactoring</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Code/Typescript/">Typescript</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/">Computer Science</a><span class="category-list-count">5</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/Algorithm/">Algorithm</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/Data-structure/">Data structure</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/Electronic-Circuit/">Electronic Circuit</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Daily-Log/">Daily Log</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/">Database</a><span class="category-list-count">57</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Database/PostgreSQL/">PostgreSQL</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/SQL-Server/">SQL Server</a><span class="category-list-count">47</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/">Framework</a><span class="category-list-count">27</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/AspNetCore-API/">AspNetCore API</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/AspNetCore-MVC/">AspNetCore MVC</a><span class="category-list-count">21</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/">Topic</a><span class="category-list-count">76</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2021-C-AspNetCore-Challenge/">2021 C# AspNetCore Challenge</a><span class="category-list-count">30</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2021-SQL-Server-Challenge/">2021 SQL Server Challenge</a><span class="category-list-count">30</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2022-C-SyncAndAsync/">2022 C# SyncAndAsync</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2025-Typescript/">2025 Typescript</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/Big-Data/">Big Data</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/LeetCode/">LeetCode</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/SystemStructure/">SystemStructure</a><span class="category-list-count">1</span></li></ul></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/08/">August 2025</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/05/">May 2023</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/03/">March 2023</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/02/">February 2023</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/01/">January 2023</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/12/">December 2022</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/09/">September 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/07/">July 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/06/">June 2022</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/05/">May 2022</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/04/">April 2022</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/03/">March 2022</a><span class="archive-list-count">17</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/02/">February 2022</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/01/">January 2022</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">December 2021</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">October 2021</a><span class="archive-list-count">24</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">September 2021</a><span class="archive-list-count">46</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">August 2021</a><span class="archive-list-count">12</span></li></ul>
+    </div>
+  </div>
+
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2025 Yu Hsiang<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>[Day4] C# MVC的程式架構淺談 - C#&amp;AspNetCore | UM&#39;s Coding Note</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="這篇主要檢討上回 [Day3] 建立C# MVC專案 - C#&amp;AspNetCore 透過.net core 3.1版本建立出的程式碼架構。 檔案架構 wwwroot資料夾: 是放置靜態檔案如js、css等前台需要的檔案 Controllers資料夾: 是放置MVC的控制器Controller的地方，與使用者請求並給予回應有關 Models資料夾: 是放置MVC的控制器Models的地方，">
+<meta property="og:type" content="article">
+<meta property="og:title" content="[Day4] C# MVC的程式架構淺談 - C#&amp;AspNetCore">
+<meta property="og:url" content="https://yuhsiang237.github.io/2021/09/29/C-MVC%E7%9A%84%E7%A8%8B%E5%BC%8F%E6%9E%B6%E6%A7%8B%E6%B7%BA%E8%AB%87/index.html">
+<meta property="og:site_name" content="UM&#39;s Coding Note">
+<meta property="og:description" content="這篇主要檢討上回 [Day3] 建立C# MVC專案 - C#&amp;AspNetCore 透過.net core 3.1版本建立出的程式碼架構。 檔案架構 wwwroot資料夾: 是放置靜態檔案如js、css等前台需要的檔案 Controllers資料夾: 是放置MVC的控制器Controller的地方，與使用者請求並給予回應有關 Models資料夾: 是放置MVC的控制器Models的地方，">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://yuhsiang237.github.io/2021/09/29/C-MVC%E7%9A%84%E7%A8%8B%E5%BC%8F%E6%9E%B6%E6%A7%8B%E6%B7%BA%E8%AB%87/1.png">
+<meta property="article:published_time" content="2021-09-28T23:05:32.000Z">
+<meta property="article:modified_time" content="2025-08-11T03:49:08.452Z">
+<meta property="article:author" content="Yu Hsiang">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://yuhsiang237.github.io/2021/09/29/C-MVC%E7%9A%84%E7%A8%8B%E5%BC%8F%E6%9E%B6%E6%A7%8B%E6%B7%BA%E8%AB%87/1.png">
+  
+    <link rel="alternate" href="/atom.xml" title="UM's Coding Note" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">UM&#39;s Coding Note</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">I record my coding experience at this place🤙</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://yuhsiang237.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-C-MVC的程式架構淺談" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2021/09/29/C-MVC%E7%9A%84%E7%A8%8B%E5%BC%8F%E6%9E%B6%E6%A7%8B%E6%B7%BA%E8%AB%87/" class="article-date">
+  <time class="dt-published" datetime="2021-09-28T23:05:32.000Z" itemprop="datePublished">2021-09-29</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Code/">Code</a>►<a class="article-category-link" href="/categories/Code/C/">C#</a>►<a class="article-category-link" href="/categories/Framework/">Framework</a>►<a class="article-category-link" href="/categories/Framework/AspNetCore-MVC/">AspNetCore MVC</a>►<a class="article-category-link" href="/categories/Topic/">Topic</a>►<a class="article-category-link" href="/categories/Topic/2021-C-AspNetCore-Challenge/">2021 C# AspNetCore Challenge</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      [Day4] C# MVC的程式架構淺談 - C#&amp;AspNetCore
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>這篇主要檢討上回 <a href="/2021/09/28/%E5%BB%BA%E7%AB%8BC-MVC%E5%B0%88%E6%A1%88/" title="[Day3] 建立C# MVC專案 - C#&amp;AspNetCore">[Day3] 建立C# MVC專案 - C#&amp;AspNetCore</a> 透過.net core 3.1版本建立出的程式碼架構。</p>
+<h3 id="檔案架構"><a href="#檔案架構" class="headerlink" title="檔案架構"></a>檔案架構</h3><ul>
+<li>wwwroot資料夾: 是放置靜態檔案如js、css等前台需要的檔案</li>
+<li>Controllers資料夾: 是放置MVC的控制器Controller的地方，與使用者請求並給予回應有關</li>
+<li>Models資料夾: 是放置MVC的控制器Models的地方，與資料庫有緊密關係</li>
+<li>Views資料夾: 是放置MVC的控制器Views的地方，在頁面上和使用者互動的畫面</li>
+<li>appsetting.json 設定檔案。</li>
+<li>Program.cs 主要的進入點Main的所在，在此建立Host。</li>
+<li>Startup.cs 在這裡可以設定網站的啟用設定，如添加中介層(Middleware) </li>
+</ul>
+<img src="/2021/09/29/C-MVC%E7%9A%84%E7%A8%8B%E5%BC%8F%E6%9E%B6%E6%A7%8B%E6%B7%BA%E8%AB%87/1.png" class="">
+
+<h3 id="程式碼探究"><a href="#程式碼探究" class="headerlink" title="程式碼探究"></a>程式碼探究</h3><h4 id="Program-cs"><a href="#Program-cs" class="headerlink" title="Program.cs"></a>Program.cs</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">using Microsoft.AspNetCore.Hosting;</span><br><span class="line">using Microsoft.Extensions.Configuration;</span><br><span class="line">using Microsoft.Extensions.Hosting;</span><br><span class="line">using Microsoft.Extensions.Logging;</span><br><span class="line">using System;</span><br><span class="line">using System.Collections.Generic;</span><br><span class="line">using System.Linq;</span><br><span class="line">using System.Threading.Tasks;</span><br><span class="line"></span><br><span class="line">namespace WebApplication1</span><br><span class="line">&#123;</span><br><span class="line">    public class Program</span><br><span class="line">    &#123;</span><br><span class="line">        public static void Main(string[] args)</span><br><span class="line">        &#123;</span><br><span class="line">            CreateHostBuilder(args).Build().Run();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        public static IHostBuilder CreateHostBuilder(string[] args) =&gt;</span><br><span class="line">            Host.CreateDefaultBuilder(args)</span><br><span class="line">                .ConfigureWebHostDefaults(webBuilder =&gt;</span><br><span class="line">                &#123;</span><br><span class="line">                    webBuilder.UseStartup&lt;Startup&gt;();</span><br><span class="line">                &#125;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>Main:程式碼進入點，並在裡面呼叫<code>CreateHostBuilder</code>，建立初始化的<code>IHostBuilder</code>。之後，Build建立實體，再透過Run運行。</li>
+<li>CreateDefaultBuilder:預設為空參數，也可以自行添加。</li>
+<li>ConfigureWebHostDefaults:其中包含用來裝載 web 應用程式的預設值</li>
+<li>UseStartup:指定要供 web 主機使用的啟動類型，這裡套用Startup.cs的程式碼，也可以自訂Class然後套用至此。</li>
+</ul>
+<p>小結:透過一個Console程式運行網站伺服器，可在此設定一開始要執行什麼、套用什麼設定。</p>
+<h4 id="Startup-cs"><a href="#Startup-cs" class="headerlink" title="Startup.cs"></a>Startup.cs</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br></pre></td><td class="code"><pre><span class="line">using Microsoft.AspNetCore.Builder;</span><br><span class="line">using Microsoft.AspNetCore.Hosting;</span><br><span class="line">using Microsoft.AspNetCore.HttpsPolicy;</span><br><span class="line">using Microsoft.Extensions.Configuration;</span><br><span class="line">using Microsoft.Extensions.DependencyInjection;</span><br><span class="line">using Microsoft.Extensions.Hosting;</span><br><span class="line">using System;</span><br><span class="line">using System.Collections.Generic;</span><br><span class="line">using System.Linq;</span><br><span class="line">using System.Threading.Tasks;</span><br><span class="line"></span><br><span class="line">namespace WebApplication1</span><br><span class="line">&#123;</span><br><span class="line">    public class Startup</span><br><span class="line">    &#123;</span><br><span class="line">        public Startup(IConfiguration configuration)</span><br><span class="line">        &#123;</span><br><span class="line">            Configuration = configuration;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        public IConfiguration Configuration &#123; get; &#125;</span><br><span class="line"></span><br><span class="line">        // This method gets called by the runtime. Use this method to add services to the container.</span><br><span class="line">        public void ConfigureServices(IServiceCollection services)</span><br><span class="line">        &#123;</span><br><span class="line">            // 添加服務</span><br><span class="line">            services.AddControllersWithViews();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.</span><br><span class="line">        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)</span><br><span class="line">        &#123;</span><br><span class="line">            if (env.IsDevelopment())</span><br><span class="line">            &#123;</span><br><span class="line">                app.UseDeveloperExceptionPage();</span><br><span class="line">            &#125;</span><br><span class="line">            else</span><br><span class="line">            &#123;</span><br><span class="line">                app.UseExceptionHandler(&quot;/Home/Error&quot;);</span><br><span class="line">                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.</span><br><span class="line">                app.UseHsts();</span><br><span class="line">            &#125;</span><br><span class="line">            app.UseHttpsRedirection();</span><br><span class="line">            app.UseStaticFiles();</span><br><span class="line"></span><br><span class="line">            app.UseRouting();</span><br><span class="line"></span><br><span class="line">            app.UseAuthorization();</span><br><span class="line"></span><br><span class="line">            app.UseEndpoints(endpoints =&gt;</span><br><span class="line">            &#123;</span><br><span class="line">                endpoints.MapControllerRoute(</span><br><span class="line">                    name: &quot;default&quot;,</span><br><span class="line">                    pattern: &quot;&#123;controller=Home&#125;/&#123;action=Index&#125;/&#123;id?&#125;&quot;);</span><br><span class="line">            &#125;);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<ul>
+<li>Startup:建構式，程式進入點，裡面設定configuration(如:appsetting.json的資料就會在此被帶進來)。</li>
+<li>ConfigureServices:設定添加的服務。<code>AddControllersWithViews</code>，主要用來設定添加MVC服務，舊版是AddMvc。</li>
+<li>Configure:設定HTTP request pipeline，針對http請求進行設定。<ul>
+<li>IsDevelopmen:套用開發版/上線版兩種模式。</li>
+<li>UseHsts:將 HTTP Strict 傳輸安全性通訊協定 (HSTS) 標頭傳送給用戶端</li>
+<li>UseDeveloperExceptionPage:使用開發者例外頁面</li>
+<li>UseExceptionHandler:例外時導向某頁</li>
+<li>UseHttpsRedirection:強制導向HTTPS</li>
+<li>UseStaticFiles:會在中呼叫方法 Startup.Configure，以啟用靜態檔案的服務</li>
+<li>UseRouting:將路由對應新增到Middleware中</li>
+<li>UseAuthorization:授權使用端點路由傳送的資源時，此呼叫必須出現在對應用程式的呼叫之間 。UseRouting () 和 應用程式。UseEndpoints ( … ) ，讓中介軟體能夠正常運作。</li>
+<li>UseEndpoints:Middleware提供了endpoints可以擴充一些方法去針對route去做設定</li>
+</ul>
+</li>
+</ul>
+<p>小結:添加哪些服務、設定一些初始架構(HTTP協定、開發版/上線版)、中介層設定都在這Startup.cs裡。</p>
+<h4 id="appsettings-json"><a href="#appsettings-json" class="headerlink" title="appsettings.json"></a>appsettings.json</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;Logging&quot;: &#123;</span><br><span class="line">    &quot;LogLevel&quot;: &#123;</span><br><span class="line">      &quot;Default&quot;: &quot;Information&quot;,</span><br><span class="line">      &quot;Microsoft&quot;: &quot;Warning&quot;,</span><br><span class="line">      &quot;Microsoft.Hosting.Lifetime&quot;: &quot;Information&quot;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  &quot;AllowedHosts&quot;: &quot;*&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>小結:在此建立的值可以在Startup.cs被讀取，通常是一些外部字串設定檔，像是舊版的webconfig</p>
+<h4 id="HomeController-cs"><a href="#HomeController-cs" class="headerlink" title="HomeController.cs"></a>HomeController.cs</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">using Microsoft.AspNetCore.Mvc;</span><br><span class="line">using Microsoft.Extensions.Logging;</span><br><span class="line">using System;</span><br><span class="line">using System.Collections.Generic;</span><br><span class="line">using System.Diagnostics;</span><br><span class="line">using System.Linq;</span><br><span class="line">using System.Threading.Tasks;</span><br><span class="line">using WebApplication1.Models;</span><br><span class="line"></span><br><span class="line">namespace WebApplication1.Controllers</span><br><span class="line">&#123;</span><br><span class="line">    public class HomeController : Controller</span><br><span class="line">    &#123;</span><br><span class="line">        private readonly ILogger&lt;HomeController&gt; _logger;</span><br><span class="line"></span><br><span class="line">        public HomeController(ILogger&lt;HomeController&gt; logger)</span><br><span class="line">        &#123;</span><br><span class="line">            _logger = logger;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        public IActionResult Index()</span><br><span class="line">        &#123;</span><br><span class="line">            return View();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        public IActionResult Privacy()</span><br><span class="line">        &#123;</span><br><span class="line">            return View();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]</span><br><span class="line">        public IActionResult Error()</span><br><span class="line">        &#123;</span><br><span class="line">            return View(new ErrorViewModel &#123; RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier &#125;);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>ILogger:提供寫入log的介面，在 ASP.NET Core 統一透過 ILogger 來記錄 Log。</li>
+<li>Index()、Privacy():是Controller裡的action，用來載入的View資料夾的頁面。</li>
+<li>ResponseCache:設定 Response 的暫存方式。並套用到要使用 Response 快取的 Controller 或 Action。以此就是套用到Error()。</li>
+<li>Error():錯誤時返回的頁面，這邊回傳了ErrorViewModel模型格式的內容。<br>[補充]C#問號用法:<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">int? x = null;//定義可空型別變數</span><br><span class="line">int? y = x ?? 1000;//使用合併運算子，當變數x為null時，預設賦值1000</span><br></pre></td></tr></table></figure></li>
+</ul>
+<p>小結:控制器可依需求返回頁面、可在此紀錄LOG。</p>
+<h4 id="ErrorViewModel-cs"><a href="#ErrorViewModel-cs" class="headerlink" title="ErrorViewModel.cs"></a>ErrorViewModel.cs</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">using System;</span><br><span class="line"></span><br><span class="line">namespace WebApplication1.Models</span><br><span class="line">&#123;</span><br><span class="line">    public class ErrorViewModel</span><br><span class="line">    &#123;</span><br><span class="line">        public string RequestId &#123; get; set; &#125;</span><br><span class="line"></span><br><span class="line">        public bool ShowRequestId =&gt; !string.IsNullOrEmpty(RequestId);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>ErrorViewModel:建立Class</li>
+<li>RequestId:model中的string值</li>
+<li>ShowRequestId:model中的bool值，返回一個lambda函式結果</li>
+</ul>
+<p>給View用的Model，跟MVVM概念中所提到的ViewModel是不一樣的<br>在MVC的View中，一個View Binding一個Model，如果要使用多個不同的資料表就會用到View Model。</p>
+<p>小結:在此建立一些模型規格，供頁面呈現使用。</p>
+<h4 id="Index-cshtml"><a href="#Index-cshtml" class="headerlink" title="Index.cshtml"></a>Index.cshtml</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">@&#123;</span><br><span class="line">    ViewData[&quot;Title&quot;] = &quot;Home Page&quot;;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">&lt;div class=&quot;text-center&quot;&gt;</span><br><span class="line">    &lt;h1 class=&quot;display-4&quot;&gt;Welcome&lt;/h1&gt;</span><br><span class="line">    &lt;p&gt;Learn about &lt;a href=&quot;https://docs.microsoft.com/aspnet/core&quot;&gt;building Web apps with ASP.NET Core&lt;/a&gt;.&lt;/p&gt;</span><br><span class="line">&lt;/div&gt;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>ViewData:引用System.Web.Mvc.ViewDataDictionary，屬於Dictionary Object，能放Property或是一個Model的IEnumerable，使用Key/Value的概念存取。生命週期為一個頁面</li>
+<li>@{}區塊:Razor語法，可以在裡面寫C#語法，但建議前台盡量少業務邏輯、只以純顯示為幕的比較好。</li>
+</ul>
+<p>小結:在此可以寫html、前端畫面。</p>
+<h3 id="Privacy-cshtml"><a href="#Privacy-cshtml" class="headerlink" title="Privacy.cshtml"></a>Privacy.cshtml</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">@&#123;</span><br><span class="line">    ViewData[&quot;Title&quot;] = &quot;Privacy Policy&quot;;</span><br><span class="line">&#125;</span><br><span class="line">&lt;h1&gt;@ViewData[&quot;Title&quot;]&lt;/h1&gt;</span><br><span class="line"></span><br><span class="line">&lt;p&gt;Use this page to detail your site&#x27;s privacy policy.&lt;/p&gt;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>@ViewData:可用Razor語法叫出值顯示。</li>
+</ul>
+<p>小結:同 Index.cshtml</p>
+<h3 id="Layout-cshtml"><a href="#Layout-cshtml" class="headerlink" title="_Layout.cshtml"></a>_Layout.cshtml</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line">&lt;!DOCTYPE html&gt;</span><br><span class="line">&lt;html lang=&quot;en&quot;&gt;</span><br><span class="line">&lt;head&gt;</span><br><span class="line">    &lt;meta charset=&quot;utf-8&quot; /&gt;</span><br><span class="line">    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot; /&gt;</span><br><span class="line">    &lt;title&gt;@ViewData[&quot;Title&quot;] - WebApplication1&lt;/title&gt;</span><br><span class="line">    &lt;link rel=&quot;stylesheet&quot; href=&quot;~/lib/bootstrap/dist/css/bootstrap.min.css&quot; /&gt;</span><br><span class="line">    &lt;link rel=&quot;stylesheet&quot; href=&quot;~/css/site.css&quot; /&gt;</span><br><span class="line">&lt;/head&gt;</span><br><span class="line">&lt;body&gt;</span><br><span class="line">    &lt;header&gt;</span><br><span class="line">        &lt;nav class=&quot;navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3&quot;&gt;</span><br><span class="line">            &lt;div class=&quot;container&quot;&gt;</span><br><span class="line">                &lt;a class=&quot;navbar-brand&quot; asp-area=&quot;&quot; asp-controller=&quot;Home&quot; asp-action=&quot;Index&quot;&gt;WebApplication1&lt;/a&gt;</span><br><span class="line">                &lt;button class=&quot;navbar-toggler&quot; type=&quot;button&quot; data-toggle=&quot;collapse&quot; data-target=&quot;.navbar-collapse&quot; aria-controls=&quot;navbarSupportedContent&quot;</span><br><span class="line">                        aria-expanded=&quot;false&quot; aria-label=&quot;Toggle navigation&quot;&gt;</span><br><span class="line">                    &lt;span class=&quot;navbar-toggler-icon&quot;&gt;&lt;/span&gt;</span><br><span class="line">                &lt;/button&gt;</span><br><span class="line">                &lt;div class=&quot;navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse&quot;&gt;</span><br><span class="line">                    &lt;ul class=&quot;navbar-nav flex-grow-1&quot;&gt;</span><br><span class="line">                        &lt;li class=&quot;nav-item&quot;&gt;</span><br><span class="line">                            &lt;a class=&quot;nav-link text-dark&quot; asp-area=&quot;&quot; asp-controller=&quot;Home&quot; asp-action=&quot;Index&quot;&gt;Home&lt;/a&gt;</span><br><span class="line">                        &lt;/li&gt;</span><br><span class="line">                        &lt;li class=&quot;nav-item&quot;&gt;</span><br><span class="line">                            &lt;a class=&quot;nav-link text-dark&quot; asp-area=&quot;&quot; asp-controller=&quot;Home&quot; asp-action=&quot;Privacy&quot;&gt;Privacy&lt;/a&gt;</span><br><span class="line">                        &lt;/li&gt;</span><br><span class="line">                    &lt;/ul&gt;</span><br><span class="line">                &lt;/div&gt;</span><br><span class="line">            &lt;/div&gt;</span><br><span class="line">        &lt;/nav&gt;</span><br><span class="line">    &lt;/header&gt;</span><br><span class="line">    &lt;div class=&quot;container&quot;&gt;</span><br><span class="line">        &lt;main role=&quot;main&quot; class=&quot;pb-3&quot;&gt;</span><br><span class="line">            @RenderBody()</span><br><span class="line">        &lt;/main&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line"></span><br><span class="line">    &lt;footer class=&quot;border-top footer text-muted&quot;&gt;</span><br><span class="line">        &lt;div class=&quot;container&quot;&gt;</span><br><span class="line">            &amp;copy; 2021 - WebApplication1 - &lt;a asp-area=&quot;&quot; asp-controller=&quot;Home&quot; asp-action=&quot;Privacy&quot;&gt;Privacy&lt;/a&gt;</span><br><span class="line">        &lt;/div&gt;</span><br><span class="line">    &lt;/footer&gt;</span><br><span class="line">    &lt;script src=&quot;~/lib/jquery/dist/jquery.min.js&quot;&gt;&lt;/script&gt;</span><br><span class="line">    &lt;script src=&quot;~/lib/bootstrap/dist/js/bootstrap.bundle.min.js&quot;&gt;&lt;/script&gt;</span><br><span class="line">    &lt;script src=&quot;~/js/site.js&quot; asp-append-version=&quot;true&quot;&gt;&lt;/script&gt;</span><br><span class="line">    @RenderSection(&quot;Scripts&quot;, required: false)</span><br><span class="line">&lt;/body&gt;</span><br><span class="line">&lt;/html&gt;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<ul>
+<li>@ViewData[“Title”]:底下頁面PASS過來的Title。</li>
+<li>@RenderBody():把整塊子頁面放進來。</li>
+<li>@RenderSection():建立放js區塊的程式碼區域，required表示是否一定要提供。</li>
+</ul>
+<p>小結:共用的頁面主架構。</p>
+<h4 id="ValidationScriptsPartial-cshtml"><a href="#ValidationScriptsPartial-cshtml" class="headerlink" title="_ValidationScriptsPartial.cshtml"></a>_ValidationScriptsPartial.cshtml</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&lt;script src=&quot;~/lib/jquery-validation/dist/jquery.validate.min.js&quot;&gt;&lt;/script&gt;</span><br><span class="line">&lt;script src=&quot;~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js&quot;&gt;&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+<p>小結:放切出來的區塊。</p>
+<h4 id="Error-cshtml"><a href="#Error-cshtml" class="headerlink" title="Error.cshtml"></a>Error.cshtml</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">@model ErrorViewModel</span><br><span class="line">@&#123;</span><br><span class="line">    ViewData[&quot;Title&quot;] = &quot;Error&quot;;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">&lt;h1 class=&quot;text-danger&quot;&gt;Error.&lt;/h1&gt;</span><br><span class="line">&lt;h2 class=&quot;text-danger&quot;&gt;An error occurred while processing your request.&lt;/h2&gt;</span><br><span class="line"></span><br><span class="line">@if (Model.ShowRequestId)</span><br><span class="line">&#123;</span><br><span class="line">    &lt;p&gt;</span><br><span class="line">        &lt;strong&gt;Request ID:&lt;/strong&gt; &lt;code&gt;@Model.RequestId&lt;/code&gt;</span><br><span class="line">    &lt;/p&gt;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">&lt;h3&gt;Development Mode&lt;/h3&gt;</span><br><span class="line">&lt;p&gt;</span><br><span class="line">    Swapping to &lt;strong&gt;Development&lt;/strong&gt; environment will display more detailed information about the error that occurred.</span><br><span class="line">&lt;/p&gt;</span><br><span class="line">&lt;p&gt;</span><br><span class="line">    &lt;strong&gt;The Development environment shouldn&#x27;t be enabled for deployed applications.&lt;/strong&gt;</span><br><span class="line">    It can result in displaying sensitive information from exceptions to end users.</span><br><span class="line">    For local debugging, enable the &lt;strong&gt;Development&lt;/strong&gt; environment by setting the &lt;strong&gt;ASPNETCORE_ENVIRONMENT&lt;/strong&gt; environment variable to &lt;strong&gt;Development&lt;/strong&gt;</span><br><span class="line">    and restarting the app.</span><br><span class="line">&lt;/p&gt;</span><br></pre></td></tr></table></figure>
+<p>@model:Razor語法，可以使用model的物件<br>小結:套用了ErrorViewModel，主要印出ErrorViewModel內的資料。</p>
+<h4 id="ViewImports-cshtml"><a href="#ViewImports-cshtml" class="headerlink" title="_ViewImports.cshtml"></a>_ViewImports.cshtml</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">@using WebApplication1</span><br><span class="line">@using WebApplication1.Models</span><br><span class="line">@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers</span><br></pre></td></tr></table></figure>
+<p>小結:設定使用那些程式模組</p>
+<h4 id="ViewStart-cshtml"><a href="#ViewStart-cshtml" class="headerlink" title="_ViewStart.cshtml"></a>_ViewStart.cshtml</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">@&#123;</span><br><span class="line">    Layout = &quot;_Layout&quot;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>小結:頁面進入點套用。</p>
+<h3 id="總結"><a href="#總結" class="headerlink" title="總結"></a>總結</h3><p>從程式碼片段中可以得知整個架構上如何運作。<br>從一開始的Console建置啟動程式、Startup設定，至單個頁面程式碼符合MVC架構的撰寫，最後運行起整個系統。</p>
+<p>因為MVC所以知道這設計模式的人就能很快的熟悉這架構的寫法與邏輯。<br>如果是自幹的專案，就會有這地方是什麼架構、要怎麼改的才能達到功能的各種歪路。</p>
+<p>預計下回會針對在Model、View、Controller上的細節程式碼撰寫。</p>
+<p><strong>參考資料</strong><br><a target="_blank" rel="noopener" href="https://www.tutorialsteacher.com/core/aspnet-core-startup">https://www.tutorialsteacher.com/core/aspnet-core-startup</a><br><a target="_blank" rel="noopener" href="https://blog.johnwu.cc/article/asp-net-core-3-application-lifetime.html">https://blog.johnwu.cc/article/asp-net-core-3-application-lifetime.html</a><br><a target="_blank" rel="noopener" href="https://ithelp.ithome.com.tw/articles/10240077">https://ithelp.ithome.com.tw/articles/10240077</a><br><a target="_blank" rel="noopener" href="https://docs.microsoft.com/zh-tw/dotnet/api/microsoft.extensions.hosting.host.createdefaultbuilder?view=dotnet-plat-ext-5.0">https://docs.microsoft.com/zh-tw/dotnet/api/microsoft.extensions.hosting.host.createdefaultbuilder?view=dotnet-plat-ext-5.0</a><br><a target="_blank" rel="noopener" href="https://ithelp.ithome.com.tw/articles/10243332">https://ithelp.ithome.com.tw/articles/10243332</a><br><a target="_blank" rel="noopener" href="https://ithelp.ithome.com.tw/articles/10186520">https://ithelp.ithome.com.tw/articles/10186520</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://yuhsiang237.github.io/2021/09/29/C-MVC%E7%9A%84%E7%A8%8B%E5%BC%8F%E6%9E%B6%E6%A7%8B%E6%B7%BA%E8%AB%87/" data-id="cme6kwo0z0027galj69gi043i" data-title="[Day4] C# MVC的程式架構淺談 - C#&amp;AspNetCore" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2021/09/30/C-MVC-Model%E6%A8%A1%E5%9E%8B%E4%BD%BF%E7%94%A8/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          [Day5] C# MVC Model模型使用 - C#&amp;AspNetCore
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2021/09/28/%E5%BB%BA%E7%AB%8BC-MVC%E5%B0%88%E6%A1%88/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">[Day3] 建立C# MVC專案 - C#&amp;AspNetCore</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Code/">Code</a><span class="category-list-count">76</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Code/C/">C#</a><span class="category-list-count">69</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Code/Javascript/">Javascript</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Code/Refactoring/">Refactoring</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Code/Typescript/">Typescript</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/">Computer Science</a><span class="category-list-count">5</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/Algorithm/">Algorithm</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/Data-structure/">Data structure</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/Electronic-Circuit/">Electronic Circuit</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Daily-Log/">Daily Log</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/">Database</a><span class="category-list-count">57</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Database/PostgreSQL/">PostgreSQL</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/SQL-Server/">SQL Server</a><span class="category-list-count">47</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/">Framework</a><span class="category-list-count">27</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/AspNetCore-API/">AspNetCore API</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/AspNetCore-MVC/">AspNetCore MVC</a><span class="category-list-count">21</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/">Topic</a><span class="category-list-count">76</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2021-C-AspNetCore-Challenge/">2021 C# AspNetCore Challenge</a><span class="category-list-count">30</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2021-SQL-Server-Challenge/">2021 SQL Server Challenge</a><span class="category-list-count">30</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2022-C-SyncAndAsync/">2022 C# SyncAndAsync</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2025-Typescript/">2025 Typescript</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/Big-Data/">Big Data</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/LeetCode/">LeetCode</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/SystemStructure/">SystemStructure</a><span class="category-list-count">1</span></li></ul></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/08/">August 2025</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/05/">May 2023</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/03/">March 2023</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/02/">February 2023</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/01/">January 2023</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/12/">December 2022</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/09/">September 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/07/">July 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/06/">June 2022</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/05/">May 2022</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/04/">April 2022</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/03/">March 2022</a><span class="archive-list-count">17</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/02/">February 2022</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/01/">January 2022</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">December 2021</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">October 2021</a><span class="archive-list-count">24</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">September 2021</a><span class="archive-list-count">46</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">August 2021</a><span class="archive-list-count">12</span></li></ul>
+    </div>
+  </div>
+
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2025 Yu Hsiang<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

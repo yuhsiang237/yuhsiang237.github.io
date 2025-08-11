@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>javascript ES6 整理(上) | UM&#39;s Coding Note</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="陣列、變數、函數。 1. let const 變數宣告123456let  x &#x3D; 10&amp;#123;    let x &#x3D; 2  console.log(x) &#x2F;&#x2F; 2 &amp;#125;console.log(x) &#x2F;&#x2F; 10  let，有自己的區塊作用域，不會蓋掉底下宣告的變數 123456var x &#x3D; 10for(var i&#x3D;0;i&lt;5;i++)&amp;#123;   var x &#x3D; 5   c">
+<meta property="og:type" content="article">
+<meta property="og:title" content="javascript ES6 整理(上)">
+<meta property="og:url" content="https://yuhsiang237.github.io/2021/08/24/javascript-es6-1/index.html">
+<meta property="og:site_name" content="UM&#39;s Coding Note">
+<meta property="og:description" content="陣列、變數、函數。 1. let const 變數宣告123456let  x &#x3D; 10&amp;#123;    let x &#x3D; 2  console.log(x) &#x2F;&#x2F; 2 &amp;#125;console.log(x) &#x2F;&#x2F; 10  let，有自己的區塊作用域，不會蓋掉底下宣告的變數 123456var x &#x3D; 10for(var i&#x3D;0;i&lt;5;i++)&amp;#123;   var x &#x3D; 5   c">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2021-08-24T09:30:22.000Z">
+<meta property="article:modified_time" content="2025-08-11T03:49:08.770Z">
+<meta property="article:author" content="Yu Hsiang">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="UM's Coding Note" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">UM&#39;s Coding Note</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">I record my coding experience at this place🤙</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://yuhsiang237.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-javascript-es6-1" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2021/08/24/javascript-es6-1/" class="article-date">
+  <time class="dt-published" datetime="2021-08-24T09:30:22.000Z" itemprop="datePublished">2021-08-24</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Code/">Code</a>►<a class="article-category-link" href="/categories/Code/Javascript/">Javascript</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      javascript ES6 整理(上)
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>陣列、變數、函數。</p>
+<h2 id="1-let-const-變數宣告"><a href="#1-let-const-變數宣告" class="headerlink" title="1. let const 變數宣告"></a>1. let const 變數宣告</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">let  x = 10</span><br><span class="line">&#123;  </span><br><span class="line">  let x = 2</span><br><span class="line">  console.log(x) // 2 </span><br><span class="line">&#125;</span><br><span class="line">console.log(x) // 10</span><br></pre></td></tr></table></figure>
+
+<p>let，有自己的區塊作用域，不會蓋掉底下宣告的變數</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">var x = 10</span><br><span class="line">for(var i=0;i&lt;5;i++)&#123;</span><br><span class="line">   var x = 5</span><br><span class="line">   console.log(x) //5</span><br><span class="line">&#125;</span><br><span class="line">console.log(x) // 5</span><br></pre></td></tr></table></figure>
+<p>var，沒有自己的區塊作用域，會蓋掉底下宣告的變數</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">const x = 10; </span><br></pre></td></tr></table></figure>
+<p>const用來宣告常數不會被改變，不過如果是物件，仍然可以使用提供的方法去改變裡面的數值。</p>
+<p><strong>結論</strong><br>如果沒有必要需求還是用let或const好，因為不會往下覆之後宣告的變數。</p>
+<h2 id="2-arrow-function"><a href="#2-arrow-function" class="headerlink" title="2. arrow function"></a>2. arrow function</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">&lt;button&gt;按鈕&lt;/button&gt;</span><br><span class="line">&lt;script&gt;</span><br><span class="line">// 使用 addEventListener 監聽事件</span><br><span class="line">var button = document.querySelector(&#x27;button&#x27;);</span><br><span class="line">var fn_arrow = () =&gt; &#123;</span><br><span class="line">  // 建立 function 時 this 指向 Window</span><br><span class="line">    console.log(this.constructor.name);  // 執行 function 時 this 指向 Window</span><br><span class="line">&#125;;</span><br><span class="line">var fn = function()&#123;</span><br><span class="line">  // 建立 function 時 this 指向 Window</span><br><span class="line">    console.log(this.constructor.name);  // 執行 function 時 this 指向 HTMLButtonElement</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">button.addEventListener(&#x27;click&#x27;, fn_arrow);</span><br><span class="line">button.addEventListener(&#x27;click&#x27;, fn);</span><br></pre></td></tr></table></figure>
+<p><strong>結論</strong><br>ES6可以簡化ES5的function寫法(匿名函式)等。<br>ES6 arrow function的this都指向Window，是固定的。<br>ES5 this 指向在運作時的作用域中，以上範例就是在button的作用域。<br>看起來如果只是單純callback那ES6箭頭函式會簡潔些，但如果要操作某作用域還是得用ES5寫法。<br>參考:<a target="_blank" rel="noopener" href="https://ithelp.ithome.com.tw/articles/10195669">https://ithelp.ithome.com.tw/articles/10195669</a><br>(*未完還有this問題待補)</p>
+<h2 id="3-陣列操作"><a href="#3-陣列操作" class="headerlink" title="3. 陣列操作"></a>3. 陣列操作</h2><p><strong>forEach</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">const array = [</span><br><span class="line">  1,2,3,4,5</span><br><span class="line">];</span><br><span class="line"></span><br><span class="line">array.forEach((item,index) =&gt; console.log(index,item));</span><br></pre></td></tr></table></figure>
+<p>遍歷元素使用，基本上可以取代掉for。但在裡面async/await不能生效，要用for。<br>此外，不會回傳任何值。<br>參考:<br><a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/37576685/using-async-await-with-a-foreach-loop">https://stackoverflow.com/questions/37576685/using-async-await-with-a-foreach-loop</a></p>
+<p><strong>map</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">const array1 = [1, 2, 3 ,4];</span><br><span class="line">const array2 = array1.map(item =&gt; item*2);</span><br><span class="line">console.log(array1) // [ 1, 2, 3, 4 ]</span><br><span class="line">console.log(array2) //  [ 2, 4, 6, 8 ]</span><br></pre></td></tr></table></figure>
+<p>會透過函式內所回傳的值組合成一個新的陣列<br>並不會改變原陣列</p>
+<p><strong>reduce</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">const array1 = [1, 2, 3, 4];</span><br><span class="line">const reducer = (accumulator, currentValue) =&gt; accumulator + currentValue;</span><br><span class="line"></span><br><span class="line">// 1 + 2 + 3 + 4</span><br><span class="line">console.log(array1.reduce(reducer));</span><br><span class="line">// output: 10</span><br><span class="line"></span><br><span class="line">// 5 + 1 + 2 + 3 + 4</span><br><span class="line">console.log(array1.reduce(reducer, 5));</span><br><span class="line">// output: 15</span><br></pre></td></tr></table></figure>
+<p>累加器，通常是要把所有陣列內容加起來才會用到，將陣列化為單一值。</p>
+<p>參考:<br><a target="_blank" rel="noopener" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/Reduce">https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/Reduce</a></p>
+<p><strong>from</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">const myArr = Array.from(&quot;ABCDEFG&quot;);</span><br><span class="line">console.log(myArr)  // 拆數組[ &quot;A&quot;, &quot;B&quot;, &quot;C&quot;, &quot;D&quot;, &quot;E&quot;, &quot;F&quot;, &quot;G&quot; ]</span><br></pre></td></tr></table></figure>
+<p>幾乎很少用到，可將字串拆成字組。而在IE上無法運行此函式。</p>
+<p><strong>find</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">const numbers = [4, 9, 16, 25, 29];</span><br><span class="line">const target = numbers.find(item=&gt;item === 4);</span><br><span class="line">console.log(target)</span><br></pre></td></tr></table></figure>
+<p>通常在找陣列中的某元素(物件)會用到，返回是單一的元素。</p>
+<p><strong>keys</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">const fruits = [&quot;Banana&quot;, &quot;Orange&quot;, &quot;Apple&quot;, &quot;Mango&quot;];</span><br><span class="line">const keys = fruits.keys();</span><br><span class="line"></span><br><span class="line">let text = &quot;&quot;;</span><br><span class="line">for (let x of keys) &#123;</span><br><span class="line">  console.log(x)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">//0 1 2 3</span><br></pre></td></tr></table></figure>
+<p>取得陣列所有index</p>
+<p><strong>findIndex</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">const numbers = [4, 9, 16, 25, 29];</span><br><span class="line">const targetIndex = numbers.findIndex((value, index)=&gt;value &gt; 9);</span><br><span class="line">console.log(targetIndex) // 2 (即數字16陣列位置)</span><br></pre></td></tr></table></figure>
+<p>返回第一個符合條件的陣列index。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://yuhsiang237.github.io/2021/08/24/javascript-es6-1/" data-id="cme6kwo2u005igalj2yj3gq6p" data-title="javascript ES6 整理(上)" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2021/08/28/sql-basic/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          SQL基礎操作語法(select、insert、update、delete)
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2021/08/24/linked-list/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">單向鏈結串列(Singly linked list)</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Code/">Code</a><span class="category-list-count">76</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Code/C/">C#</a><span class="category-list-count">69</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Code/Javascript/">Javascript</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Code/Refactoring/">Refactoring</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Code/Typescript/">Typescript</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/">Computer Science</a><span class="category-list-count">5</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/Algorithm/">Algorithm</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/Data-structure/">Data structure</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/Electronic-Circuit/">Electronic Circuit</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Daily-Log/">Daily Log</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/">Database</a><span class="category-list-count">57</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Database/PostgreSQL/">PostgreSQL</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/SQL-Server/">SQL Server</a><span class="category-list-count">47</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/">Framework</a><span class="category-list-count">27</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/AspNetCore-API/">AspNetCore API</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/AspNetCore-MVC/">AspNetCore MVC</a><span class="category-list-count">21</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/">Topic</a><span class="category-list-count">76</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2021-C-AspNetCore-Challenge/">2021 C# AspNetCore Challenge</a><span class="category-list-count">30</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2021-SQL-Server-Challenge/">2021 SQL Server Challenge</a><span class="category-list-count">30</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2022-C-SyncAndAsync/">2022 C# SyncAndAsync</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2025-Typescript/">2025 Typescript</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/Big-Data/">Big Data</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/LeetCode/">LeetCode</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/SystemStructure/">SystemStructure</a><span class="category-list-count">1</span></li></ul></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/08/">August 2025</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/05/">May 2023</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/03/">March 2023</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/02/">February 2023</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/01/">January 2023</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/12/">December 2022</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/09/">September 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/07/">July 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/06/">June 2022</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/05/">May 2022</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/04/">April 2022</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/03/">March 2022</a><span class="archive-list-count">17</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/02/">February 2022</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/01/">January 2022</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">December 2021</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">October 2021</a><span class="archive-list-count">24</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">September 2021</a><span class="archive-list-count">46</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">August 2021</a><span class="archive-list-count">12</span></li></ul>
+    </div>
+  </div>
+
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2025 Yu Hsiang<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

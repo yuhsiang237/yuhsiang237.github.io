@@ -1,0 +1,962 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>UM&#39;s Coding Note</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="I record my coding experience at this place">
+<meta property="og:type" content="website">
+<meta property="og:title" content="UM&#39;s Coding Note">
+<meta property="og:url" content="https://yuhsiang237.github.io/page/12/index.html">
+<meta property="og:site_name" content="UM&#39;s Coding Note">
+<meta property="og:description" content="I record my coding experience at this place">
+<meta property="og:locale" content="en_US">
+<meta property="article:author" content="Yu Hsiang">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="UM's Coding Note" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">UM&#39;s Coding Note</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">I record my coding experience at this place🤙</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://yuhsiang237.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main">
+  
+    <article id="post-sql-server-分頁處理" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2021/09/17/sql-server-%E5%88%86%E9%A0%81%E8%99%95%E7%90%86/" class="article-date">
+  <time class="dt-published" datetime="2021-09-17T09:09:56.000Z" itemprop="datePublished">2021-09-17</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Database/">Database</a>►<a class="article-category-link" href="/categories/Database/SQL-Server/">SQL Server</a>►<a class="article-category-link" href="/categories/Topic/">Topic</a>►<a class="article-category-link" href="/categories/Topic/2021-SQL-Server-Challenge/">2021 SQL Server Challenge</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2021/09/17/sql-server-%E5%88%86%E9%A0%81%E8%99%95%E7%90%86/">[Day26] SQL server 分頁處理 - SQL Server資料庫入門</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>通常在寫表單時，我們不會一次索取所有資料，因為資料若有百萬筆，那效能可能會不好、浪費流量。<br>所以，這時候就需要分頁了。<br>但是SQL server沒有Mysql的limit功能，所以要自己組出來QQ。</p>
+<p>稍微查了一下Google，發現已有不少現成做法，就當作紀錄記下來。</p>
+<p>他的做法其實就是用子查詢。<br>就是內層先做一個有row欄位，這row欄位透過 ROW_NUMBER() OVER 去產生順序編號<br>製作好內部的子查詢後，再由外部把這子查詢視為一張temp_table<br>之後就可以用where去判斷想取哪段的row了。</p>
+<p>但是我比較好奇的是，如果是很多left join、inner join好像用這方法會變得很亂。(?)</p>
+<p>要:1~5筆資料。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">SELECT * FROM ( </span><br><span class="line"> SELECT *, ROW_NUMBER() OVER (ORDER BY id desc)  row </span><br><span class="line"> FROM test</span><br><span class="line"> ) as temp_table</span><br><span class="line">WHERE row &gt;= 1 and row &lt;= 5</span><br></pre></td></tr></table></figure>
+<p>結果:</p>
+<img src="/2021/09/17/sql-server-%E5%88%86%E9%A0%81%E8%99%95%E7%90%86/1.png" class="">
+
+<p>要:6~10筆資料。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">SELECT * FROM ( </span><br><span class="line"> SELECT *, ROW_NUMBER() OVER (ORDER BY id desc)  row </span><br><span class="line"> FROM test</span><br><span class="line"> ) as temp_table</span><br><span class="line">WHERE row &gt;= 6 and row &lt;= 10</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>結果:</p>
+<img src="/2021/09/17/sql-server-%E5%88%86%E9%A0%81%E8%99%95%E7%90%86/2.png" class="">
+
+
+
+<p><strong>參考資料</strong><br><a target="_blank" rel="noopener" href="http://bioankeyang.blogspot.com/2013/03/ms-sql-servermysql-limit.html">http://bioankeyang.blogspot.com/2013/03/ms-sql-servermysql-limit.html</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://yuhsiang237.github.io/2021/09/17/sql-server-%E5%88%86%E9%A0%81%E8%99%95%E7%90%86/" data-id="cme6kwo370066galj7blr7h9a" data-title="[Day26] SQL server 分頁處理 - SQL Server資料庫入門" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-sql-server-日期函數" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2021/09/17/sql-server-%E6%97%A5%E6%9C%9F%E5%87%BD%E6%95%B8/" class="article-date">
+  <time class="dt-published" datetime="2021-09-17T08:28:08.000Z" itemprop="datePublished">2021-09-17</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Database/">Database</a>►<a class="article-category-link" href="/categories/Database/SQL-Server/">SQL Server</a>►<a class="article-category-link" href="/categories/Topic/">Topic</a>►<a class="article-category-link" href="/categories/Topic/2021-SQL-Server-Challenge/">2021 SQL Server Challenge</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2021/09/17/sql-server-%E6%97%A5%E6%9C%9F%E5%87%BD%E6%95%B8/">[Day25] SQL server 日期函數 - SQL Server資料庫入門</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>這回介紹日期函數的使用。<br>在大多的資料庫都會有一些可以用的函式，讓我們做一些特殊操作。<br>在這回以SQL server資料庫為例子。</p>
+<h3 id="SQL-server日期函式"><a href="#SQL-server日期函式" class="headerlink" title="SQL server日期函式"></a>SQL server日期函式</h3><p>GETDATE() 取得現在的日期時間<br>DATEADD() 增加或減少指定的時間間隔<br>DATEPART() 取出日期時間中特定的部分<br>CONVERT() 格式化日期時間顯示<br>DATEDIFF() 日期相減</p>
+<h3 id="可用的關鍵字"><a href="#可用的關鍵字" class="headerlink" title="可用的關鍵字"></a>可用的關鍵字</h3><p>可用的關鍵字參數:</p>
+<table><thead><tr><th>datepart (全名和縮寫)</th><th>說明</th></tr></thead><tbody><tr><td>year, yyyy, yy</td><td>年</td></tr><tr><td>month, mm, m</td><td>月</td></tr><tr><td>day, dd, d</td><td>日</td></tr><tr><td>hour, hh</td><td>時</td></tr><tr><td>minute, n</td><td>分</td></tr><tr><td>second, ss, s</td><td>秒</td></tr><tr><td>millisecond, ms</td><td>毫秒</td></tr><tr><td>microsecond, mcs</td><td>微秒</td></tr><tr><td>nanosecond, ns</td><td>毫微秒</td></tr><tr><td>quarter, qq, q</td><td>季</td></tr><tr><td>dayofyear, dy, y</td><td>一年中的第幾天</td></tr><tr><td>week, wk, ww</td><td>週</td></tr><tr><td>weekday, dw</td><td>星期幾</td></tr></tbody></table>
+
+
+<h3 id="GETDATE"><a href="#GETDATE" class="headerlink" title="GETDATE"></a>GETDATE</h3><p>取得現在的日期時間</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Select </span><br><span class="line">GETDATE() as 現在的日期時間</span><br></pre></td></tr></table></figure>
+<p>結果</p>
+<img src="/2021/09/17/sql-server-%E6%97%A5%E6%9C%9F%E5%87%BD%E6%95%B8/1.png" class="">
+
+<h3 id="DATEADD"><a href="#DATEADD" class="headerlink" title="DATEADD"></a>DATEADD</h3><p>增加或減少指定的時間間隔<br>可以輸入負值，代表回推<br>正值則是往後推</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Select </span><br><span class="line">DATEADD(day, 2, GETDATE()) as 兩天後</span><br></pre></td></tr></table></figure>
+<p>結果</p>
+<img src="/2021/09/17/sql-server-%E6%97%A5%E6%9C%9F%E5%87%BD%E6%95%B8/2.png" class="">
+
+
+<h3 id="DATEPART"><a href="#DATEPART" class="headerlink" title="DATEPART"></a>DATEPART</h3><p>取出日期時間中特定的部分</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">SELECT DATEPART(yyyy, GETDATE())  as 年,</span><br><span class="line">DATEPART(mm, GETDATE())  as 月,</span><br><span class="line">DATEPART(dd, GETDATE())  as 日</span><br></pre></td></tr></table></figure>
+<p>結果</p>
+<img src="/2021/09/17/sql-server-%E6%97%A5%E6%9C%9F%E5%87%BD%E6%95%B8/3.png" class="">
+
+
+<h3 id="CONVERT"><a href="#CONVERT" class="headerlink" title="CONVERT"></a>CONVERT</h3><p>格式化日期時間顯示，可以用格式化代碼快速轉成指定規範格式。</p>
+<p>格式代碼:</p>
+<table>
+<tbody><tr>
+<th>Style ID</th>
+<th>Style 格式</th>
+</tr>
+
+<tr>
+<td>100 或者 0</td>
+<td>mon dd yyyy hh:miAM （或者 PM）</td>
+</tr>
+
+<tr>
+<td>101</td>
+<td>mm/dd/yy</td>
+</tr>
+
+<tr>
+<td>102</td>
+<td>yy.mm.dd</td>
+</tr>
+
+<tr>
+<td>103</td>
+<td>dd/mm/yy</td>
+</tr>
+
+<tr>
+<td>104</td>
+<td>dd.mm.yy</td>
+</tr>
+
+<tr>
+<td>105</td>
+<td>dd-mm-yy</td>
+</tr>
+
+<tr>
+<td>106</td>
+<td>dd mon yy</td>
+</tr>
+
+<tr>
+<td>107</td>
+<td>Mon dd, yy</td>
+</tr>
+
+<tr>
+<td>108</td>
+<td>hh:mm:ss</td>
+</tr>
+
+<tr>
+<td>109 或者 9</td>
+<td>mon dd yyyy hh:mi:ss:mmmAM（或者 PM）</td>
+</tr>
+
+<tr>
+<td>110</td>
+<td>mm-dd-yy</td>
+</tr>
+
+<tr>
+<td>111</td>
+<td>yy/mm/dd</td>
+</tr>
+
+<tr>
+<td>112</td>
+<td>yymmdd</td></tr>
+
+<tr>
+<td>113 或者 13</td>
+<td>dd mon yyyy hh:mm:ss:mmm(24h)</td>
+</tr>
+
+<tr>
+<td>114</td>
+<td>hh:mi:ss:mmm(24h)</td>
+</tr>
+
+<tr>
+<td>120 或者 20</td>
+<td>yyyy-mm-dd hh:mi:ss(24h)</td>
+</tr>
+
+<tr>
+<td>121 或者 21</td>
+<td>yyyy-mm-dd hh:mi:ss.mmm(24h)</td>
+</tr>
+
+<tr>
+<td>126</td>
+<td>yyyy-mm-ddThh:mm:ss.mmm（没有空格）</td>
+</tr>
+
+<tr>
+<td>130</td>
+<td>dd mon yyyy hh:mi:ss:mmmAM</td>
+</tr>
+
+<tr>
+<td>131</td>
+<td>dd/mm/yy hh:mi:ss:mmmAM</td>
+</tr>
+</tbody></table>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SELECT CONVERT(varchar, GETDATE(), 100) AS Converted</span><br></pre></td></tr></table></figure>
+結果
+<img src="/2021/09/17/sql-server-%E6%97%A5%E6%9C%9F%E5%87%BD%E6%95%B8/4.png" class="">
+
+<h3 id="DATEDIFF"><a href="#DATEDIFF" class="headerlink" title="DATEDIFF"></a>DATEDIFF</h3><p>日期相減</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SELECT DATEDIFF(day, &#x27;2008-06-10&#x27;, &#x27;2008-08-10&#x27;) AS 日期相差</span><br></pre></td></tr></table></figure>
+<p>結果</p>
+<img src="/2021/09/17/sql-server-%E6%97%A5%E6%9C%9F%E5%87%BD%E6%95%B8/5.png" class="">
+
+
+<h3 id="結論"><a href="#結論" class="headerlink" title="結論"></a>結論</h3><p>在SQL語法上比較常用的是DATEDIFF、DATEADD、CONVERT。GETDATE。<br>如:前1個月、今天-7天、上禮拜資料這種需求還蠻常見的。</p>
+<p><strong>參考資料</strong><br><a target="_blank" rel="noopener" href="https://www.fooish.com/sql/sql-server-getdate-function.html">https://www.fooish.com/sql/sql-server-getdate-function.html</a><br><a target="_blank" rel="noopener" href="https://www.w3school.com.cn/sql/func_convert.asp">https://www.w3school.com.cn/sql/func_convert.asp</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://yuhsiang237.github.io/2021/09/17/sql-server-%E6%97%A5%E6%9C%9F%E5%87%BD%E6%95%B8/" data-id="cme6kwo3e006igalj09tkbpm8" data-title="[Day25] SQL server 日期函數 - SQL Server資料庫入門" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-sql-server-資料庫管理帳號新增" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2021/09/17/sql-server-%E8%B3%87%E6%96%99%E5%BA%AB%E7%AE%A1%E7%90%86%E5%B8%B3%E8%99%9F%E6%96%B0%E5%A2%9E/" class="article-date">
+  <time class="dt-published" datetime="2021-09-17T04:40:37.000Z" itemprop="datePublished">2021-09-17</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Database/">Database</a>►<a class="article-category-link" href="/categories/Database/SQL-Server/">SQL Server</a>►<a class="article-category-link" href="/categories/Topic/">Topic</a>►<a class="article-category-link" href="/categories/Topic/2021-SQL-Server-Challenge/">2021 SQL Server Challenge</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2021/09/17/sql-server-%E8%B3%87%E6%96%99%E5%BA%AB%E7%AE%A1%E7%90%86%E5%B8%B3%E8%99%9F%E6%96%B0%E5%A2%9E/">[Day24] SQL server 資料庫管理帳號新增 - SQL Server資料庫入門</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>當我們一開始安裝SQL server時，系統會幫我們預設一組帳號，即最高管理員帳號。<br>但當我們實際開發時，勢必不會使用這組帳號，因為太過危險了。<br>他能夠刪除資料庫、表，哪天被入侵、盜用時整個資料庫都會有危險。<br>所以，在此要介紹一下新增自訂權限的管理員。</p>
+<h3 id="新增自訂的資料庫管理員"><a href="#新增自訂的資料庫管理員" class="headerlink" title="新增自訂的資料庫管理員"></a>新增自訂的資料庫管理員</h3><p>1.新增登入</p>
+<img src="/2021/09/17/sql-server-%E8%B3%87%E6%96%99%E5%BA%AB%E7%AE%A1%E7%90%86%E5%B8%B3%E8%99%9F%E6%96%B0%E5%A2%9E/1.png" class="">
+<p>2.填入帳、密資料</p>
+<img src="/2021/09/17/sql-server-%E8%B3%87%E6%96%99%E5%BA%AB%E7%AE%A1%E7%90%86%E5%B8%B3%E8%99%9F%E6%96%B0%E5%A2%9E/1-1.png" class="">
+<p>3.可以在左方看到剛新增的管理員</p>
+<img src="/2021/09/17/sql-server-%E8%B3%87%E6%96%99%E5%BA%AB%E7%AE%A1%E7%90%86%E5%B8%B3%E8%99%9F%E6%96%B0%E5%A2%9E/2.png" class="">
+<p>4.屬性</p>
+<img src="/2021/09/17/sql-server-%E8%B3%87%E6%96%99%E5%BA%AB%E7%AE%A1%E7%90%86%E5%B8%B3%E8%99%9F%E6%96%B0%E5%A2%9E/3.png" class="">
+<p>5.使用混和模式登入</p>
+<img src="/2021/09/17/sql-server-%E8%B3%87%E6%96%99%E5%BA%AB%E7%AE%A1%E7%90%86%E5%B8%B3%E8%99%9F%E6%96%B0%E5%A2%9E/4.png" class="">
+<p>6.開啟SQL Server 2019 Configuration Manager，重啟SQL server。<br>注意，重新開機是沒效的，一定要用這種方法重新運作SQL server</p>
+<img src="/2021/09/17/sql-server-%E8%B3%87%E6%96%99%E5%BA%AB%E7%AE%A1%E7%90%86%E5%B8%B3%E8%99%9F%E6%96%B0%E5%A2%9E/5.png" class="">
+<p>7.登入帳號</p>
+<img src="/2021/09/17/sql-server-%E8%B3%87%E6%96%99%E5%BA%AB%E7%AE%A1%E7%90%86%E5%B8%B3%E8%99%9F%E6%96%B0%E5%A2%9E/6.png" class="">
+<p>8.成功登入</p>
+<img src="/2021/09/17/sql-server-%E8%B3%87%E6%96%99%E5%BA%AB%E7%AE%A1%E7%90%86%E5%B8%B3%E8%99%9F%E6%96%B0%E5%A2%9E/7.png" class="">
+<p>9.登入後選擇原本資料庫會發現沒有權限</p>
+<img src="/2021/09/17/sql-server-%E8%B3%87%E6%96%99%E5%BA%AB%E7%AE%A1%E7%90%86%E5%B8%B3%E8%99%9F%E6%96%B0%E5%A2%9E/9.png" class="">
+<p>10.回去編輯test01帳號，把Orders的db_owner勾起來即可。</p>
+<img src="/2021/09/17/sql-server-%E8%B3%87%E6%96%99%E5%BA%AB%E7%AE%A1%E7%90%86%E5%B8%B3%E8%99%9F%E6%96%B0%E5%A2%9E/10.png" class="">
+
+<h3 id="結論"><a href="#結論" class="headerlink" title="結論"></a>結論</h3><p>這樣一來就能限制某些帳號管理特定資料庫了。</p>
+<h3 id="參考資料"><a href="#參考資料" class="headerlink" title="參考資料"></a>參考資料</h3><p><a target="_blank" rel="noopener" href="https://ithelp.ithome.com.tw/articles/10214386">https://ithelp.ithome.com.tw/articles/10214386</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://yuhsiang237.github.io/2021/09/17/sql-server-%E8%B3%87%E6%96%99%E5%BA%AB%E7%AE%A1%E7%90%86%E5%B8%B3%E8%99%9F%E6%96%B0%E5%A2%9E/" data-id="cme6kwo3g006ngaljbvwi15k8" data-title="[Day24] SQL server 資料庫管理帳號新增 - SQL Server資料庫入門" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-sql-server-資料庫備份使用sql" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2021/09/17/sql-server-%E8%B3%87%E6%96%99%E5%BA%AB%E5%82%99%E4%BB%BD%E4%BD%BF%E7%94%A8sql/" class="article-date">
+  <time class="dt-published" datetime="2021-09-17T02:36:37.000Z" itemprop="datePublished">2021-09-17</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Database/">Database</a>►<a class="article-category-link" href="/categories/Database/SQL-Server/">SQL Server</a>►<a class="article-category-link" href="/categories/Topic/">Topic</a>►<a class="article-category-link" href="/categories/Topic/2021-SQL-Server-Challenge/">2021 SQL Server Challenge</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2021/09/17/sql-server-%E8%B3%87%E6%96%99%E5%BA%AB%E5%82%99%E4%BB%BD%E4%BD%BF%E7%94%A8sql/">[Day23] SQL server 資料庫備份與還原，使用sql - SQL Server資料庫入門</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>因為SQL server會有匯入舊版問題，像是把2019版的匯入到2008版的，所以要在探討另一個做法，即向下兼容的備份與還原。</p>
+<h3 id="備份"><a href="#備份" class="headerlink" title="備份"></a>備份</h3><p>1.選擇generate scripts</p>
+<img src="/2021/09/17/sql-server-%E8%B3%87%E6%96%99%E5%BA%AB%E5%82%99%E4%BB%BD%E4%BD%BF%E7%94%A8sql/1.png" class="">
+<p>2.會跳出框框，選擇進階、儲存成script</p>
+<img src="/2021/09/17/sql-server-%E8%B3%87%E6%96%99%E5%BA%AB%E5%82%99%E4%BB%BD%E4%BD%BF%E7%94%A8sql/2.png" class="">
+<p>3.可選擇想降級的SQL server版本</p>
+<img src="/2021/09/17/sql-server-%E8%B3%87%E6%96%99%E5%BA%AB%E5%82%99%E4%BB%BD%E4%BD%BF%E7%94%A8sql/3.png" class="">
+<p>4.可選擇只要匯出schema還是data</p>
+<img src="/2021/09/17/sql-server-%E8%B3%87%E6%96%99%E5%BA%AB%E5%82%99%E4%BB%BD%E4%BD%BF%E7%94%A8sql/4.png" class="">
+<p>5.點Next下一步</p>
+<img src="/2021/09/17/sql-server-%E8%B3%87%E6%96%99%E5%BA%AB%E5%82%99%E4%BB%BD%E4%BD%BF%E7%94%A8sql/5.png" class="">
+<p>6.也是點Next下一步</p>
+<img src="/2021/09/17/sql-server-%E8%B3%87%E6%96%99%E5%BA%AB%E5%82%99%E4%BB%BD%E4%BD%BF%E7%94%A8sql/6.png" class="">
+<p>7.等待生成完畢，點OK</p>
+<img src="/2021/09/17/sql-server-%E8%B3%87%E6%96%99%E5%BA%AB%E5%82%99%E4%BB%BD%E4%BD%BF%E7%94%A8sql/7.png" class="">
+<p>8.到資料夾就可以找到.sql檔案了</p>
+<img src="/2021/09/17/sql-server-%E8%B3%87%E6%96%99%E5%BA%AB%E5%82%99%E4%BB%BD%E4%BD%BF%E7%94%A8sql/8.png" class="">
+<h3 id="還原"><a href="#還原" class="headerlink" title="還原"></a>還原</h3><p>1.雙擊剛剛匯出的.sql</p>
+<img src="/2021/09/17/sql-server-%E8%B3%87%E6%96%99%E5%BA%AB%E5%82%99%E4%BB%BD%E4%BD%BF%E7%94%A8sql/8.png" class="">
+<p>2.執行他Execute</p>
+<img src="/2021/09/17/sql-server-%E8%B3%87%E6%96%99%E5%BA%AB%E5%82%99%E4%BB%BD%E4%BD%BF%E7%94%A8sql/9.png" class="">
+<p>3.這時會一直跑都跑不完，中止後發現錯誤，因為用.sql匯入要把原本資料庫給砍了。<br>不能有相同名稱的資料庫</p>
+<img src="/2021/09/17/sql-server-%E8%B3%87%E6%96%99%E5%BA%AB%E5%82%99%E4%BB%BD%E4%BD%BF%E7%94%A8sql/10.png" class="">
+<p>4.把現有資料庫給刪除</p>
+<img src="/2021/09/17/sql-server-%E8%B3%87%E6%96%99%E5%BA%AB%E5%82%99%E4%BB%BD%E4%BD%BF%E7%94%A8sql/11.png" class="">
+<p>5.勾選關閉資料庫連線後點擊OK</p>
+<img src="/2021/09/17/sql-server-%E8%B3%87%E6%96%99%E5%BA%AB%E5%82%99%E4%BB%BD%E4%BD%BF%E7%94%A8sql/12.png" class="">
+<p>6.此時，重新再跑一次，可以發現成功執行<br>刷新左方的資料庫，可以發現成功還原了。</p>
+<img src="/2021/09/17/sql-server-%E8%B3%87%E6%96%99%E5%BA%AB%E5%82%99%E4%BB%BD%E4%BD%BF%E7%94%A8sql/14.png" class="">
+
+<h3 id="使用-sql的優缺點"><a href="#使用-sql的優缺點" class="headerlink" title="使用.sql的優缺點"></a>使用.sql的優缺點</h3><p>優點:<br>1.可以選擇產出舊版 SQL Server 的 script<br>2.可以自行調整 script<br>可能會有問題的部分:<br>1.特殊字元或是 binary 無法匯入<br>參考:<a target="_blank" rel="noopener" href="https://social.technet.microsoft.com/Forums/zh-TW/1fc3c435-5b24-45bf-8cb9-1427e3392de2/293052753023383208032338420837sqlserver2001335722251043439930340?forum=sqlservermanagementzhcht">https://social.technet.microsoft.com/Forums/zh-TW/1fc3c435-5b24-45bf-8cb9-1427e3392de2/293052753023383208032338420837sqlserver2001335722251043439930340?forum=sqlservermanagementzhcht</a><br>(但我發現新版2019的都已經有自動幫你補上N了所以好像不太會有問題。)<br>補上:<br>在國際性資料庫中管理字元資料，最容易的方式是使用 Unicode nchar、nvarchar 和 nvarchar(max) 資料類型，而不是相對的非 Unicode char、varchar 和 text。</p>
+<p>2.如果想要建立相同的資料庫需要調整的內容較多。<br>(所以我上面做法是直接砍了。)</p>
+<h3 id="總結"><a href="#總結" class="headerlink" title="總結"></a>總結</h3><p>如果.bak不行才出此下策，通常是對方機器太舊才可能用這種方式。</p>
+<p><strong>參考資料</strong><br><a target="_blank" rel="noopener" href="https://blog.yowko.com/sql-server-backup-restore/">https://blog.yowko.com/sql-server-backup-restore/</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://yuhsiang237.github.io/2021/09/17/sql-server-%E8%B3%87%E6%96%99%E5%BA%AB%E5%82%99%E4%BB%BD%E4%BD%BF%E7%94%A8sql/" data-id="cme6kwo3f006kgalj6olranoh" data-title="[Day23] SQL server 資料庫備份與還原，使用sql - SQL Server資料庫入門" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-sql-server-資料庫備份" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2021/09/17/sql-server-%E8%B3%87%E6%96%99%E5%BA%AB%E5%82%99%E4%BB%BD/" class="article-date">
+  <time class="dt-published" datetime="2021-09-17T01:43:48.000Z" itemprop="datePublished">2021-09-17</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Database/">Database</a>►<a class="article-category-link" href="/categories/Database/SQL-Server/">SQL Server</a>►<a class="article-category-link" href="/categories/Topic/">Topic</a>►<a class="article-category-link" href="/categories/Topic/2021-SQL-Server-Challenge/">2021 SQL Server Challenge</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2021/09/17/sql-server-%E8%B3%87%E6%96%99%E5%BA%AB%E5%82%99%E4%BB%BD/">[Day22] SQL server 資料庫備份與還原，使用bak - SQL Server資料庫入門</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>在這回主要介紹資料庫的備份方法。<br>避免哪天真的遇到不可測的失誤、資料庫毀損、硬碟壞掉。<br>在這篇中先介紹SQL server .bak檔案的備份與還原</p>
+<h3 id="完整備份"><a href="#完整備份" class="headerlink" title="完整備份"></a>完整備份</h3><p>1.對資料表右鍵選到Back Up</p>
+<img src="/2021/09/17/sql-server-%E8%B3%87%E6%96%99%E5%BA%AB%E5%82%99%E4%BB%BD/1.png" class="">
+<p>2.Backup Type 選擇Full表示完整備份</p>
+<img src="/2021/09/17/sql-server-%E8%B3%87%E6%96%99%E5%BA%AB%E5%82%99%E4%BB%BD/2.png" class="">
+<p>3.備份成功會跳出訊息</p>
+<img src="/2021/09/17/sql-server-%E8%B3%87%E6%96%99%E5%BA%AB%E5%82%99%E4%BB%BD/3.png" class="">
+<p>4.可至資料夾找到完整備份的.bak<br>注意:.bak可能沒辦法向下兼容舊版資料庫，如果要向下兼容要用另一種SQL備份的方法。</p>
+<img src="/2021/09/17/sql-server-%E8%B3%87%E6%96%99%E5%BA%AB%E5%82%99%E4%BB%BD/4.png" class="">
+
+
+<h3 id="完整備份還原"><a href="#完整備份還原" class="headerlink" title="完整備份還原"></a>完整備份還原</h3><p>1.先把資料庫設定成離線狀態，Tasks&gt;Take Offline。</p>
+<img src="/2021/09/17/sql-server-%E8%B3%87%E6%96%99%E5%BA%AB%E5%82%99%E4%BB%BD/r1.png" class="">
+<p>2.勾選Drop All Active Connection，之後按下OK，讓資料庫進入離線模式。</p>
+<img src="/2021/09/17/sql-server-%E8%B3%87%E6%96%99%E5%BA%AB%E5%82%99%E4%BB%BD/r2.png" class="">
+<p>3.之後對資料庫按右鍵Tasks&gt;Restore&gt;Datebase。</p>
+<img src="/2021/09/17/sql-server-%E8%B3%87%E6%96%99%E5%BA%AB%E5%82%99%E4%BB%BD/r3.png" class="">
+<p>4.接下來選擇Device，從本地檔案去還原。</p>
+<img src="/2021/09/17/sql-server-%E8%B3%87%E6%96%99%E5%BA%AB%E5%82%99%E4%BB%BD/r4.png" class="">
+<p>5.在跳出的框框選擇Add</p>
+<img src="/2021/09/17/sql-server-%E8%B3%87%E6%96%99%E5%BA%AB%E5%82%99%E4%BB%BD/r5.png" class="">
+<p>6.選擇剛備份出來的.bak</p>
+<img src="/2021/09/17/sql-server-%E8%B3%87%E6%96%99%E5%BA%AB%E5%82%99%E4%BB%BD/r6.png" class="">
+<p>7.返回原本視窗後按下OK</p>
+<img src="/2021/09/17/sql-server-%E8%B3%87%E6%96%99%E5%BA%AB%E5%82%99%E4%BB%BD/r7.png" class="">
+<p>8.然後點OK，開始進行還原</p>
+<img src="/2021/09/17/sql-server-%E8%B3%87%E6%96%99%E5%BA%AB%E5%82%99%E4%BB%BD/r8.png" class="">
+<p>9.跳出了還原成功</p>
+<img src="/2021/09/17/sql-server-%E8%B3%87%E6%96%99%E5%BA%AB%E5%82%99%E4%BB%BD/r9.png" class="">
+<p>10.檢查可以發現資料表都回來了，裡面的資料也是</p>
+<img src="/2021/09/17/sql-server-%E8%B3%87%E6%96%99%E5%BA%AB%E5%82%99%E4%BB%BD/r10.png" class="">
+
+
+<h3 id="還原失敗可能情況"><a href="#還原失敗可能情況" class="headerlink" title="還原失敗可能情況"></a>還原失敗可能情況</h3><p>1.沒有Offline資料庫，就會造成無法匯入。<br>錯誤訊息</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">TITLE: Microsoft SQL Server Management Studio</span><br><span class="line">------------------------------</span><br><span class="line"></span><br><span class="line">Restore of database &#x27;Orders&#x27; failed. (Microsoft.SqlServer.Management.RelationalEngineTasks)</span><br><span class="line"></span><br><span class="line">------------------------------</span><br><span class="line">ADDITIONAL INFORMATION:</span><br><span class="line"></span><br><span class="line">System.Data.SqlClient.SqlError: Exclusive access could not be obtained because the database is in use. (Microsoft.SqlServer.SmoExtended)</span><br><span class="line"></span><br><span class="line">For help, click: https://go.microsoft.com/fwlink?ProdName=Microsoft+SQL+Server&amp;ProdVer=16.100.46437.65+(SMO-master-A)&amp;LinkId=20476</span><br><span class="line"></span><br><span class="line">------------------------------</span><br><span class="line">BUTTONS:</span><br><span class="line"></span><br><span class="line">OK</span><br><span class="line">------------------------------</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>圖:</p>
+<img src="/2021/09/17/sql-server-%E8%B3%87%E6%96%99%E5%BA%AB%E5%82%99%E4%BB%BD/error.png" class="">
+
+
+<p>Ans:只要在還原前先把資料庫設定成離線狀態，Tasks&gt;Take Offline即可。</p>
+<h3 id="結論"><a href="#結論" class="headerlink" title="結論"></a>結論</h3><p>有還原檔案比沒有好，記得備份，以備不時之需。<br>下篇預計是用SQL方式去產可向下兼容的備份檔案。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://yuhsiang237.github.io/2021/09/17/sql-server-%E8%B3%87%E6%96%99%E5%BA%AB%E5%82%99%E4%BB%BD/" data-id="cme6kwo3d006ggaljc1hrfbvd" data-title="[Day22] SQL server 資料庫備份與還原，使用bak - SQL Server資料庫入門" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-sql-server-delete-資料刪除" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2021/09/17/sql-server-delete-%E8%B3%87%E6%96%99%E5%88%AA%E9%99%A4/" class="article-date">
+  <time class="dt-published" datetime="2021-09-17T01:32:56.000Z" itemprop="datePublished">2021-09-17</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Database/">Database</a>►<a class="article-category-link" href="/categories/Database/SQL-Server/">SQL Server</a>►<a class="article-category-link" href="/categories/Topic/">Topic</a>►<a class="article-category-link" href="/categories/Topic/2021-SQL-Server-Challenge/">2021 SQL Server Challenge</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2021/09/17/sql-server-delete-%E8%B3%87%E6%96%99%E5%88%AA%E9%99%A4/">[Day21] SQL server delete 資料刪除 - SQL Server資料庫入門</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>在這回簡易示範SQL server資料刪除。</p>
+<h3 id="DELETE"><a href="#DELETE" class="headerlink" title="DELETE"></a>DELETE</h3><p>主要就是用delete搭配某表，以及條件。<br>此外，要注意條件要記得下，不然整張表資料被刪掉會很悲劇。</p>
+<p>語法:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">DELETE FROM table_name WHERE condition; </span><br></pre></td></tr></table></figure>
+
+<h3 id="測試資料"><a href="#測試資料" class="headerlink" title="測試資料"></a>測試資料</h3><p>還是一樣，先放上資料表:</p>
+<p><strong>customers 顧客</strong></p>
+<img src="/2021/09/17/sql-server-delete-%E8%B3%87%E6%96%99%E5%88%AA%E9%99%A4/%E9%A1%A7%E5%AE%A2.png" class="">
+<p><strong>products 產品</strong></p>
+<img src="/2021/09/17/sql-server-delete-%E8%B3%87%E6%96%99%E5%88%AA%E9%99%A4/%E7%94%A2%E5%93%81.png" class="">
+<p><strong>orders 出貨單</strong></p>
+<img src="/2021/09/17/sql-server-delete-%E8%B3%87%E6%96%99%E5%88%AA%E9%99%A4/%E8%A8%82%E5%96%AE.png" class="">
+<p><strong>order_details 出貨單明細</strong></p>
+<img src="/2021/09/17/sql-server-delete-%E8%B3%87%E6%96%99%E5%88%AA%E9%99%A4/%E6%98%8E%E7%B4%B0.png" class="">
+
+
+<p>實作:想要刪除產品PS4。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">delete from products where name = &#x27;PS4&#x27;</span><br></pre></td></tr></table></figure>
+<p>結果:</p>
+<img src="/2021/09/17/sql-server-delete-%E8%B3%87%E6%96%99%E5%88%AA%E9%99%A4/1.png" class="">
+
+
+<h3 id="結論"><a href="#結論" class="headerlink" title="結論"></a>結論</h3><p>成功的練習了DELETE，非常簡單的語法。<br>但這種反而<strong>要小心</strong>，DELETE跟UPDATE，因為如果where條件下錯，整張表就完了QQ。</p>
+<p>(ps.目前我還沒想到如果沒備份要怎麼救，只能求助google了。)</p>
+<p>下回預計是資料庫備份。</p>
+<p><strong>參考資料</strong><br><a target="_blank" rel="noopener" href="https://www.w3schools.com/sql/sql_delete.asp">https://www.w3schools.com/sql/sql_delete.asp</a><br><a target="_blank" rel="noopener" href="https://ithelp.ithome.com.tw/articles/10220412">https://ithelp.ithome.com.tw/articles/10220412</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://yuhsiang237.github.io/2021/09/17/sql-server-delete-%E8%B3%87%E6%96%99%E5%88%AA%E9%99%A4/" data-id="cme6kwo31005vgaljcq9u36v8" data-title="[Day21] SQL server delete 資料刪除 - SQL Server資料庫入門" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-sql-server-update資料更新" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2021/09/17/sql-server-update%E8%B3%87%E6%96%99%E6%9B%B4%E6%96%B0/" class="article-date">
+  <time class="dt-published" datetime="2021-09-17T01:05:56.000Z" itemprop="datePublished">2021-09-17</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Database/">Database</a>►<a class="article-category-link" href="/categories/Database/SQL-Server/">SQL Server</a>►<a class="article-category-link" href="/categories/Topic/">Topic</a>►<a class="article-category-link" href="/categories/Topic/2021-SQL-Server-Challenge/">2021 SQL Server Challenge</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2021/09/17/sql-server-update%E8%B3%87%E6%96%99%E6%9B%B4%E6%96%B0/">[Day20] SQL server update 資料更新 - SQL Server資料庫入門</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>在這回簡易示範SQL server資料更新。</p>
+<h3 id="UPDATE"><a href="#UPDATE" class="headerlink" title="UPDATE"></a>UPDATE</h3><p>主要就是用update搭配set去設定資料數值。<br>此外，如果要針對某一條件修改請用where加上條件，否則將會每筆都改會很悲劇。(如果你又沒備份的話，記得每日備份阿。)</p>
+<p>語法:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">UPDATE table_name</span><br><span class="line">SET column1 = value1, column2 = value2, ...</span><br><span class="line">WHERE condition; </span><br></pre></td></tr></table></figure>
+
+<h3 id="測試資料"><a href="#測試資料" class="headerlink" title="測試資料"></a>測試資料</h3><p>還是一樣，先放上資料表:</p>
+<p><strong>customers 顧客</strong></p>
+<img src="/2021/09/17/sql-server-update%E8%B3%87%E6%96%99%E6%9B%B4%E6%96%B0/%E9%A1%A7%E5%AE%A2.png" class="">
+<p><strong>products 產品</strong></p>
+<img src="/2021/09/17/sql-server-update%E8%B3%87%E6%96%99%E6%9B%B4%E6%96%B0/%E7%94%A2%E5%93%81.png" class="">
+<p><strong>orders 出貨單</strong></p>
+<img src="/2021/09/17/sql-server-update%E8%B3%87%E6%96%99%E6%9B%B4%E6%96%B0/%E8%A8%82%E5%96%AE.png" class="">
+<p><strong>order_details 出貨單明細</strong></p>
+<img src="/2021/09/17/sql-server-update%E8%B3%87%E6%96%99%E6%9B%B4%E6%96%B0/%E6%98%8E%E7%B4%B0.png" class="">
+
+
+<p>實作:想要更新客戶number為U002資料，把tel更新成09-00000000。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">update customers</span><br><span class="line">set tel=&#x27;09-00000000&#x27;</span><br><span class="line">where customers.number = &#x27;U002&#x27;</span><br></pre></td></tr></table></figure>
+<p>結果:</p>
+<img src="/2021/09/17/sql-server-update%E8%B3%87%E6%96%99%E6%9B%B4%E6%96%B0/1.png" class="">
+
+
+<h3 id="結論"><a href="#結論" class="headerlink" title="結論"></a>結論</h3><p>目前還沒犯過不小心更新全部表的失誤。但不知道哪天會很雖遇到(?)<br>所以，建議操作SQL前或是每日操作前都先備份，並且留存備份檔案，至少哪天有問題時還有機會救。<br>因為可能會有備份需求，所以先記著，之後會打篇資料備份。</p>
+<p>(ps.目前我還沒想到如果沒備份要怎麼救，只能求助google了。)</p>
+<p>下一回預計就是練習刪除語法。</p>
+<p><strong>參考資料</strong><br><a target="_blank" rel="noopener" href="https://www.w3schools.com/sql/sql_update.asp">https://www.w3schools.com/sql/sql_update.asp</a><br><a target="_blank" rel="noopener" href="https://ithelp.ithome.com.tw/articles/10220040">https://ithelp.ithome.com.tw/articles/10220040</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://yuhsiang237.github.io/2021/09/17/sql-server-update%E8%B3%87%E6%96%99%E6%9B%B4%E6%96%B0/" data-id="cme6kwo370065galjcp1eb5yn" data-title="[Day20] SQL server update 資料更新 - SQL Server資料庫入門" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-sql-server-insert-into資料新增" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2021/09/17/sql-server-insert-into%E8%B3%87%E6%96%99%E6%96%B0%E5%A2%9E/" class="article-date">
+  <time class="dt-published" datetime="2021-09-17T00:38:56.000Z" itemprop="datePublished">2021-09-17</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Database/">Database</a>►<a class="article-category-link" href="/categories/Database/SQL-Server/">SQL Server</a>►<a class="article-category-link" href="/categories/Topic/">Topic</a>►<a class="article-category-link" href="/categories/Topic/2021-SQL-Server-Challenge/">2021 SQL Server Challenge</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2021/09/17/sql-server-insert-into%E8%B3%87%E6%96%99%E6%96%B0%E5%A2%9E/">[Day19] SQL server insert into 資料新增 - SQL Server資料庫入門</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>在前面已經把大量的常見查詢語法做過一次實踐了。<br>接下來就是比較簡單的語法了，這回講的是insert into用來在表中插入資料。</p>
+<h3 id="INSERT-INTO"><a href="#INSERT-INTO" class="headerlink" title="INSERT INTO"></a>INSERT INTO</h3><p>語法:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">INSERT INTO table_name (column1, column2, column3, ...)</span><br><span class="line">VALUES (value1, value2, value3, ...); </span><br></pre></td></tr></table></figure>
+
+<h3 id="測試資料"><a href="#測試資料" class="headerlink" title="測試資料"></a>測試資料</h3><p>還是一樣，先放上資料表:</p>
+<p><strong>customers 顧客</strong></p>
+<img src="/2021/09/17/sql-server-insert-into%E8%B3%87%E6%96%99%E6%96%B0%E5%A2%9E/%E9%A1%A7%E5%AE%A2.png" class="">
+<p><strong>products 產品</strong></p>
+<img src="/2021/09/17/sql-server-insert-into%E8%B3%87%E6%96%99%E6%96%B0%E5%A2%9E/%E7%94%A2%E5%93%81.png" class="">
+<p><strong>orders 出貨單</strong></p>
+<img src="/2021/09/17/sql-server-insert-into%E8%B3%87%E6%96%99%E6%96%B0%E5%A2%9E/%E8%A8%82%E5%96%AE.png" class="">
+<p><strong>order_details 出貨單明細</strong></p>
+<img src="/2021/09/17/sql-server-insert-into%E8%B3%87%E6%96%99%E6%96%B0%E5%A2%9E/%E6%98%8E%E7%B4%B0.png" class="">
+
+
+<p>實作:想要新增一筆客戶資料。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">insert into customers (number,name,tel) values(&#x27;U003&#x27;,&#x27;Tom&#x27;,&#x27;09-15965423&#x27;)</span><br></pre></td></tr></table></figure>
+<p>結果:</p>
+<img src="/2021/09/17/sql-server-insert-into%E8%B3%87%E6%96%99%E6%96%B0%E5%A2%9E/1.png" class="">
+
+<h3 id="透過子查詢新增資料"><a href="#透過子查詢新增資料" class="headerlink" title="透過子查詢新增資料"></a>透過子查詢新增資料</h3><p>算是另一種少見的做法，就是數值的部分是使用查詢來的數值。<br>雖然很少用，但就稍微嘗試一下這種寫法:</p>
+<p>實作:我想把products的number、name、price添加到customers將他們視為number、name、tel。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">insert into customers (number,name,tel) </span><br><span class="line">select number,name,price from products </span><br></pre></td></tr></table></figure>
+<p>結果:<br>就把products的資料加到customers了。(為了示範需求，因為真的超怪。</p>
+<img src="/2021/09/17/sql-server-insert-into%E8%B3%87%E6%96%99%E6%96%B0%E5%A2%9E/2.png" class="">
+
+<h3 id="總結"><a href="#總結" class="headerlink" title="總結"></a>總結</h3><p>簡易的操作了資料插入的語法。<br>下回就是更新update。</p>
+<p><strong>參考資料</strong><br><a target="_blank" rel="noopener" href="https://ithelp.ithome.com.tw/articles/10220002">https://ithelp.ithome.com.tw/articles/10220002</a><br><a target="_blank" rel="noopener" href="https://www.w3schools.com/sql/sql_insert.asp">https://www.w3schools.com/sql/sql_insert.asp</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://yuhsiang237.github.io/2021/09/17/sql-server-insert-into%E8%B3%87%E6%96%99%E6%96%B0%E5%A2%9E/" data-id="cme6kwo350062galjfygkh9aq" data-title="[Day19] SQL server insert into 資料新增 - SQL Server資料庫入門" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-sql-server-any與all用法" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2021/09/16/sql-server-any%E8%88%87all%E7%94%A8%E6%B3%95/" class="article-date">
+  <time class="dt-published" datetime="2021-09-16T13:00:25.000Z" itemprop="datePublished">2021-09-16</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Database/">Database</a>►<a class="article-category-link" href="/categories/Database/SQL-Server/">SQL Server</a>►<a class="article-category-link" href="/categories/Topic/">Topic</a>►<a class="article-category-link" href="/categories/Topic/2021-SQL-Server-Challenge/">2021 SQL Server Challenge</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2021/09/16/sql-server-any%E8%88%87all%E7%94%A8%E6%B3%95/">[Day18] SQL server ANY與ALL用法 - SQL Server資料庫入門</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>在這回中要介紹我很少很少很少用到的any與all用法。<br>因為大部分搜尋條件都能靠前面介紹的那些組合度過了，並且更直覺。</p>
+<h3 id="ANY"><a href="#ANY" class="headerlink" title="ANY"></a>ANY</h3><p>用於子查詢<br>任意，一個條件符合就返回true</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">SELECT column_name(s)</span><br><span class="line">FROM table_name</span><br><span class="line">WHERE column_name operator ANY</span><br><span class="line">  (SELECT column_name</span><br><span class="line">  FROM table_name</span><br><span class="line">  WHERE condition); </span><br></pre></td></tr></table></figure>
+
+
+<h3 id="ALL"><a href="#ALL" class="headerlink" title="ALL"></a>ALL</h3><p>用於子查詢<br>所有，全部條件滿足才返回true<br>在select、having、where都可能用到</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">SELECT column_name(s)</span><br><span class="line">FROM table_name</span><br><span class="line">WHERE column_name operator ALL</span><br><span class="line">  (SELECT column_name</span><br><span class="line">  FROM table_name</span><br><span class="line">  WHERE condition); </span><br></pre></td></tr></table></figure>
+
+<h3 id="差異比較"><a href="#差異比較" class="headerlink" title="差異比較"></a>差異比較</h3><p>使用 &gt; 比較運算子來作例子，&gt;ALL 代表大於每個數值；換句話說，就是大於最大值。例如， &gt;ALL (1, 2, 3) 代表大於 3。&gt;ANY 代表至少大於一個數值，也就是說大於最小值。因此 &gt;ANY (1, 2, 3) 代表大於 1。</p>
+<h3 id="實際演練"><a href="#實際演練" class="headerlink" title="實際演練"></a>實際演練</h3><p>還是一樣，先放上資料表:</p>
+<img src="/2021/09/16/sql-server-any%E8%88%87all%E7%94%A8%E6%B3%95/test.png" class="">
+<p>*因為這次範例太難用原本訂單的表，於是建立一個測試的表</p>
+<p>實作:在test表中比較類型為1數值大於所有類型為2的數值結果。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select * from test where type = &#x27;1&#x27; and number &gt; all (select number from test where type = &#x27;2&#x27;)</span><br></pre></td></tr></table></figure>
+<p>結果:<br>1的內容:[1,3,4,8]<br>2的內容:[2,5,4]<br>而以上方條件all等於找最大值，即number &gt; 5 的結果。</p>
+<img src="/2021/09/16/sql-server-any%E8%88%87all%E7%94%A8%E6%B3%95/1.png" class="">
+
+
+
+<p>實作:在test表中比較類型為1數值至少大於一個類型2數值的結果。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select * from test where type = &#x27;1&#x27; and number &gt; any (select number from test where type = &#x27;2&#x27;)</span><br></pre></td></tr></table></figure>
+<p>結果:<br>1的內容:[1,3,4,8]<br>2的內容:[2,5,4]<br>而以上方條件any，等於找最小值，即number &gt; 2 的結果。</p>
+<img src="/2021/09/16/sql-server-any%E8%88%87all%E7%94%A8%E6%B3%95/2.png" class="">
+
+<h3 id="總結"><a href="#總結" class="headerlink" title="總結"></a>總結</h3><p>用到機會連要擠出範例都很難@@…<br>之前的範例都能用原本建的資料表示範，而這回測試any、all時發現除非改動表的設計，否則要做出好的實驗數據太不容易了。<br>總之，all、any就只要求看懂就好。</p>
+<p><strong>參考資料</strong><br><a target="_blank" rel="noopener" href="http://www.blueshop.com.tw/board/FUM20041006152735ZFS/BRD200309251806228LO.html">http://www.blueshop.com.tw/board/FUM20041006152735ZFS/BRD200309251806228LO.html</a><br><a target="_blank" rel="noopener" href="https://blog.csdn.net/xianglingchuan/article/details/51737330">https://blog.csdn.net/xianglingchuan/article/details/51737330</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://yuhsiang237.github.io/2021/09/16/sql-server-any%E8%88%87all%E7%94%A8%E6%B3%95/" data-id="cme6kwo30005tgalj4uj03z97" data-title="[Day18] SQL server ANY與ALL用法 - SQL Server資料庫入門" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-sql-server-having用法" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2021/09/16/sql-server-having%E7%94%A8%E6%B3%95/" class="article-date">
+  <time class="dt-published" datetime="2021-09-16T12:40:49.000Z" itemprop="datePublished">2021-09-16</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Database/">Database</a>►<a class="article-category-link" href="/categories/Database/SQL-Server/">SQL Server</a>►<a class="article-category-link" href="/categories/Topic/">Topic</a>►<a class="article-category-link" href="/categories/Topic/2021-SQL-Server-Challenge/">2021 SQL Server Challenge</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2021/09/16/sql-server-having%E7%94%A8%E6%B3%95/">[Day17] SQL server having用法 - SQL Server資料庫入門</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>在SQL查詢時對這個關鍵詞有印象，但非常陌生。<br>於是這次就來探討一下having。<br>他用來跟我們前面聊過的Group by搭配，因為where不能用在聚合函數</p>
+<h3 id="having"><a href="#having" class="headerlink" title="having"></a>having</h3><p>HAVING 子句是用來取代 WHERE 搭配聚合函數 (aggregate function) 進行條件查詢，因為 WHERE 不能與聚合函數一起使用。</p>
+<p>聚合函數指的也就是 AVG()、COUNT()、MAX()、MIN()、SUM() 等這些內建函數。</p>
+<p>語法:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">SELECT column_name(s)</span><br><span class="line">FROM table_name</span><br><span class="line">WHERE condition</span><br><span class="line">GROUP BY column_name(s)</span><br><span class="line">HAVING condition</span><br><span class="line">ORDER BY column_name(s);</span><br></pre></td></tr></table></figure>
+
+<h3 id="實作"><a href="#實作" class="headerlink" title="實作"></a>實作</h3><p>先列一下目前資料表狀態</p>
+<p><strong>customers 顧客</strong></p>
+<img src="/2021/09/16/sql-server-having%E7%94%A8%E6%B3%95/%E9%A1%A7%E5%AE%A2.png" class="">
+<p><strong>products 產品</strong></p>
+<img src="/2021/09/16/sql-server-having%E7%94%A8%E6%B3%95/%E7%94%A2%E5%93%81.png" class="">
+<p><strong>orders 出貨單</strong></p>
+<img src="/2021/09/16/sql-server-having%E7%94%A8%E6%B3%95/%E8%A8%82%E5%96%AE.png" class="">
+<p><strong>order_details 出貨單明細</strong></p>
+<img src="/2021/09/16/sql-server-having%E7%94%A8%E6%B3%95/%E6%98%8E%E7%B4%B0.png" class="">
+
+
+<p>實作:統計訂單明細並得到總額大於50000的訂單。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Select order_number,sum(price*amount) as 訂單總額 </span><br><span class="line">from order_details group by order_details.order_number</span><br><span class="line">having sum(price*amount) &gt; 50000</span><br></pre></td></tr></table></figure>
+<p>結果:<br>透過having來與聚合函數搭配。</p>
+<img src="/2021/09/16/sql-server-having%E7%94%A8%E6%B3%95/1.png" class="">
+
+<h3 id="總結"><a href="#總結" class="headerlink" title="總結"></a>總結</h3><p>發現having用法也很直覺，沒想像中難。<br>最主要就是group by後想篩選資料時就使用它。</p>
+<p><strong>參考資料</strong><br><a target="_blank" rel="noopener" href="https://www.fooish.com/sql/having.html">https://www.fooish.com/sql/having.html</a><br><a target="_blank" rel="noopener" href="https://www.w3schools.com/sql/sql_having.asp">https://www.w3schools.com/sql/sql_having.asp</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://yuhsiang237.github.io/2021/09/16/sql-server-having%E7%94%A8%E6%B3%95/" data-id="cme6kwo33005zgaljeht2b69u" data-title="[Day17] SQL server having用法 - SQL Server資料庫入門" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+
+
+  <nav id="page-nav">
+    
+    <a class="extend prev" rel="prev" href="/page/11/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/10/">10</a><a class="page-number" href="/page/11/">11</a><span class="page-number current">12</span><a class="page-number" href="/page/13/">13</a><a class="page-number" href="/page/14/">14</a><span class="space">&hellip;</span><a class="page-number" href="/page/16/">16</a><a class="extend next" rel="next" href="/page/13/">Next &raquo;</a>
+  </nav>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Code/">Code</a><span class="category-list-count">76</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Code/C/">C#</a><span class="category-list-count">69</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Code/Javascript/">Javascript</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Code/Refactoring/">Refactoring</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Code/Typescript/">Typescript</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/">Computer Science</a><span class="category-list-count">5</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/Algorithm/">Algorithm</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/Data-structure/">Data structure</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/Electronic-Circuit/">Electronic Circuit</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Daily-Log/">Daily Log</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/">Database</a><span class="category-list-count">57</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Database/PostgreSQL/">PostgreSQL</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/SQL-Server/">SQL Server</a><span class="category-list-count">47</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/">Framework</a><span class="category-list-count">27</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/AspNetCore-API/">AspNetCore API</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/AspNetCore-MVC/">AspNetCore MVC</a><span class="category-list-count">21</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/">Topic</a><span class="category-list-count">76</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2021-C-AspNetCore-Challenge/">2021 C# AspNetCore Challenge</a><span class="category-list-count">30</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2021-SQL-Server-Challenge/">2021 SQL Server Challenge</a><span class="category-list-count">30</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2022-C-SyncAndAsync/">2022 C# SyncAndAsync</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2025-Typescript/">2025 Typescript</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/Big-Data/">Big Data</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/LeetCode/">LeetCode</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/SystemStructure/">SystemStructure</a><span class="category-list-count">1</span></li></ul></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/08/">August 2025</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/05/">May 2023</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/03/">March 2023</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/02/">February 2023</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/01/">January 2023</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/12/">December 2022</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/09/">September 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/07/">July 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/06/">June 2022</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/05/">May 2022</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/04/">April 2022</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/03/">March 2022</a><span class="archive-list-count">17</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/02/">February 2022</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/01/">January 2022</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">December 2021</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">October 2021</a><span class="archive-list-count">24</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">September 2021</a><span class="archive-list-count">46</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">August 2021</a><span class="archive-list-count">12</span></li></ul>
+    </div>
+  </div>
+
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2025 Yu Hsiang<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

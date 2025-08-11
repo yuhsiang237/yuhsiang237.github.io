@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>[Day23] C# MVC Web API版本增加Swagger - C#&amp;AspNetCore | UM&#39;s Coding Note</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="在上回中我們介紹了 [Day22] C# MVC API版本控制 - C#&amp;AspNetCore ，實作了RESTful API的版控。 而這回將要進行API的部屬，使用Swagger UI。 找了很多篇算是找到一篇https:&#x2F;&#x2F;codingfreaks.de&#x2F;dotnet-core-api-versioning&#x2F;可以同時使用API Versioning跟Swagger套件的範例 在這篇">
+<meta property="og:type" content="article">
+<meta property="og:title" content="[Day23] C# MVC Web API版本增加Swagger - C#&amp;AspNetCore">
+<meta property="og:url" content="https://yuhsiang237.github.io/2021/10/26/C-MVC-Web-API%E5%A2%9E%E5%8A%A0Swagger/index.html">
+<meta property="og:site_name" content="UM&#39;s Coding Note">
+<meta property="og:description" content="在上回中我們介紹了 [Day22] C# MVC API版本控制 - C#&amp;AspNetCore ，實作了RESTful API的版控。 而這回將要進行API的部屬，使用Swagger UI。 找了很多篇算是找到一篇https:&#x2F;&#x2F;codingfreaks.de&#x2F;dotnet-core-api-versioning&#x2F;可以同時使用API Versioning跟Swagger套件的範例 在這篇">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://yuhsiang237.github.io/2021/10/26/C-MVC-Web-API%E5%A2%9E%E5%8A%A0Swagger/4.png">
+<meta property="og:image" content="https://yuhsiang237.github.io/2021/10/26/C-MVC-Web-API%E5%A2%9E%E5%8A%A0Swagger/5.png">
+<meta property="og:image" content="https://yuhsiang237.github.io/2021/10/26/C-MVC-Web-API%E5%A2%9E%E5%8A%A0Swagger/demo.gif">
+<meta property="article:published_time" content="2021-10-26T11:59:32.000Z">
+<meta property="article:modified_time" content="2025-08-11T03:49:08.328Z">
+<meta property="article:author" content="Yu Hsiang">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://yuhsiang237.github.io/2021/10/26/C-MVC-Web-API%E5%A2%9E%E5%8A%A0Swagger/4.png">
+  
+    <link rel="alternate" href="/atom.xml" title="UM's Coding Note" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">UM&#39;s Coding Note</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">I record my coding experience at this place🤙</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://yuhsiang237.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-C-MVC-Web-API增加Swagger" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2021/10/26/C-MVC-Web-API%E5%A2%9E%E5%8A%A0Swagger/" class="article-date">
+  <time class="dt-published" datetime="2021-10-26T11:59:32.000Z" itemprop="datePublished">2021-10-26</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Code/">Code</a>►<a class="article-category-link" href="/categories/Code/C/">C#</a>►<a class="article-category-link" href="/categories/Topic/">Topic</a>►<a class="article-category-link" href="/categories/Topic/2021-C-AspNetCore-Challenge/">2021 C# AspNetCore Challenge</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      [Day23] C# MVC Web API版本增加Swagger - C#&amp;AspNetCore
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>在上回中我們介紹了 <a href="/2021/10/19/C-MVC-API%E7%89%88%E6%9C%AC%E6%8E%A7%E5%88%B6/" title="[Day22] C# MVC API版本控制 - C#&amp;AspNetCore">[Day22] C# MVC API版本控制 - C#&amp;AspNetCore</a> ，實作了RESTful API的版控。</p>
+<p>而這回將要進行API的部屬，使用Swagger UI。</p>
+<p>找了很多篇算是找到一篇<br><a target="_blank" rel="noopener" href="https://codingfreaks.de/dotnet-core-api-versioning/">https://codingfreaks.de/dotnet-core-api-versioning/</a><br>可以同時使用API Versioning跟Swagger套件的範例</p>
+<p>在這篇中主要配置API並且切版本</p>
+<p>1.先用Nuget安裝以下套件:<br>Swashbuckle.AspNetCore<br>Swashbuckle.AspNetCore.Annotations<br>Swashbuckle.AspNetCore.Swagger<br>Swashbuckle.AspNetCore.SwaggerGen<br>Swashbuckle.AspNetCore.SwaggerUI</p>
+<img src="/2021/10/26/C-MVC-Web-API%E5%A2%9E%E5%8A%A0Swagger/4.png" class="">
+
+<p>2.再來是我們要修改的檔案</p>
+<img src="/2021/10/26/C-MVC-Web-API%E5%A2%9E%E5%8A%A0Swagger/5.png" class="">
+
+<p>首先是Swagger的定義類別</p>
+<p><strong>~/ConfigureSwaggerOptions.cs</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br></pre></td><td class="code"><pre><span class="line">namespace ApiVersioningSample</span><br><span class="line">&#123;</span><br><span class="line">    using System;</span><br><span class="line">    using System.Linq;</span><br><span class="line"></span><br><span class="line">    using Microsoft.AspNetCore.Mvc.ApiExplorer;</span><br><span class="line">    using Microsoft.Extensions.DependencyInjection;</span><br><span class="line">    using Microsoft.Extensions.Options;</span><br><span class="line">    using Microsoft.OpenApi.Models;</span><br><span class="line"></span><br><span class="line">    using Swashbuckle.AspNetCore.SwaggerGen;</span><br><span class="line"></span><br><span class="line">    /// &lt;summary&gt;</span><br><span class="line">    /// Configures the Swagger generation options.</span><br><span class="line">    /// &lt;/summary&gt;</span><br><span class="line">    /// &lt;remarks&gt;</span><br><span class="line">    /// &lt;para&gt;</span><br><span class="line">    /// This allows API versioning to define a Swagger document per API version after the</span><br><span class="line">    /// &lt;see cref=&quot;IApiVersionDescriptionProvider&quot; /&gt; service has been resolved from the service container.</span><br><span class="line">    /// &lt;/para&gt;</span><br><span class="line">    /// &lt;para&gt;Taken from https://github.com/microsoft/aspnet-api-versioning.&lt;/para&gt;</span><br><span class="line">    /// &lt;/remarks&gt;</span><br><span class="line">    public class ConfigureSwaggerOptions : IConfigureOptions&lt;SwaggerGenOptions&gt;</span><br><span class="line">    &#123;</span><br><span class="line">        #region member vars</span><br><span class="line"></span><br><span class="line">        private readonly IApiVersionDescriptionProvider _provider;</span><br><span class="line"></span><br><span class="line">        #endregion</span><br><span class="line"></span><br><span class="line">        #region constructors and destructors</span><br><span class="line"></span><br><span class="line">        /// &lt;summary&gt;</span><br><span class="line">        /// Initializes a new instance of the &lt;see cref=&quot;ConfigureSwaggerOptions&quot; /&gt; class.</span><br><span class="line">        /// &lt;/summary&gt;</span><br><span class="line">        /// &lt;param name=&quot;provider&quot;&gt;</span><br><span class="line">        /// The &lt;see cref=&quot;IApiVersionDescriptionProvider&quot;&gt;provider&lt;/see&gt; used to generate Swagger</span><br><span class="line">        /// documents.</span><br><span class="line">        /// &lt;/param&gt;</span><br><span class="line">        public ConfigureSwaggerOptions(IApiVersionDescriptionProvider provider)</span><br><span class="line">        &#123;</span><br><span class="line">            _provider = provider;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        #endregion</span><br><span class="line"></span><br><span class="line">        #region explicit interfaces</span><br><span class="line"></span><br><span class="line">        /// &lt;inheritdoc /&gt;</span><br><span class="line">        public void Configure(SwaggerGenOptions options)</span><br><span class="line">        &#123;</span><br><span class="line">            // add a swagger document for each discovered API version</span><br><span class="line">            // note: you might choose to skip or document deprecated API versions differently</span><br><span class="line">            foreach (var description in _provider.ApiVersionDescriptions)</span><br><span class="line">            &#123;</span><br><span class="line">                options.SwaggerDoc(description.GroupName, CreateInfoForApiVersion(description));</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        #endregion</span><br><span class="line"></span><br><span class="line">        #region methods</span><br><span class="line"></span><br><span class="line">        /// &lt;summary&gt;</span><br><span class="line">        /// Internal implementation for building the Swagger basic config.</span><br><span class="line">        /// &lt;/summary&gt;</span><br><span class="line">        /// &lt;param name=&quot;description&quot;&gt;The description object containing the.&lt;/param&gt;</span><br><span class="line">        /// &lt;returns&gt;The generated Open API info.&lt;/returns&gt;</span><br><span class="line">        private static OpenApiInfo CreateInfoForApiVersion(ApiVersionDescription description)</span><br><span class="line">        &#123;</span><br><span class="line">            var info = new OpenApiInfo</span><br><span class="line">            &#123;</span><br><span class="line">                Title = &quot;Sample API&quot;,</span><br><span class="line">                Version = description.ApiVersion.ToString(),</span><br><span class="line">                Description = @&quot;&lt;p&gt;Sample API with versioning including Swagger.&lt;/p&gt;&lt;p&gt;Partly taken from &lt;a href=&quot;&quot;https://github.com/microsoft/aspnet-api-versioning&quot;&quot;&gt;this repository&lt;/a&gt;.&lt;/p&gt;&quot;,</span><br><span class="line">                Contact = new OpenApiContact</span><br><span class="line">                &#123;</span><br><span class="line">                    Name = &quot;Yu Hsiang&quot;,</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;;</span><br><span class="line">            if (description.IsDeprecated)</span><br><span class="line">            &#123;</span><br><span class="line">                info.Description += @&quot;&lt;p&gt;&lt;strong&gt;&lt;span style=&quot;&quot;color:white;background-color:red&quot;&quot;&gt;VERSION IS DEPRECATED&lt;/span&gt;&lt;/strong&gt;&lt;/p&gt;&quot;;</span><br><span class="line">            &#125;</span><br><span class="line">            return info;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        #endregion</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>這類別主要用來放Swagger客製化的數值</p>
+<p>再來是啟用Swagger</p>
+<p><strong>~/Startup.cs</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br></pre></td><td class="code"><pre><span class="line">using Microsoft.AspNetCore.Builder;</span><br><span class="line">using Microsoft.AspNetCore.Hosting;</span><br><span class="line">using Microsoft.AspNetCore.HttpsPolicy;</span><br><span class="line">using Microsoft.AspNetCore.Mvc;</span><br><span class="line">using Microsoft.Extensions.Configuration;</span><br><span class="line">using Microsoft.Extensions.DependencyInjection;</span><br><span class="line">using Microsoft.Extensions.Hosting;</span><br><span class="line">using Microsoft.Extensions.Logging;</span><br><span class="line">using System;</span><br><span class="line">using System.Collections.Generic;</span><br><span class="line">using System.Linq;</span><br><span class="line">using System.Threading.Tasks;</span><br><span class="line">using Microsoft.EntityFrameworkCore;</span><br><span class="line">using TodoAPI.Models;</span><br><span class="line">using Microsoft.OpenApi.Models;</span><br><span class="line">using Swashbuckle.AspNetCore.SwaggerGen;</span><br><span class="line">using Microsoft.Extensions.Options;</span><br><span class="line">using ApiVersioningSample;</span><br><span class="line">using Microsoft.AspNetCore.Mvc.ApiExplorer;</span><br><span class="line"></span><br><span class="line">namespace TodoAPI</span><br><span class="line">&#123;</span><br><span class="line">    public class Startup</span><br><span class="line">    &#123;</span><br><span class="line">        public Startup(IConfiguration configuration)</span><br><span class="line">        &#123;</span><br><span class="line">            Configuration = configuration;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        public IConfiguration Configuration &#123; get; &#125;</span><br><span class="line"></span><br><span class="line">        // This method gets called by the runtime. Use this method to add services to the container.</span><br><span class="line">        public void ConfigureServices(IServiceCollection services)</span><br><span class="line">        &#123;</span><br><span class="line">            services.AddControllers();</span><br><span class="line">            // 資料庫配置</span><br><span class="line">            var connection = @&quot;Server=.\SQLExpress;Database=TodoDB;Trusted_Connection=True;ConnectRetryCount=0&quot;;</span><br><span class="line">            services.AddDbContext&lt;TodoDBContext&gt;(options =&gt; options.UseSqlServer(connection));</span><br><span class="line"></span><br><span class="line">            // 啟用API版控功能</span><br><span class="line">            services.AddApiVersioning(</span><br><span class="line">              options =&gt;</span><br><span class="line">              &#123;</span><br><span class="line">                    // reporting api versions will return the headers &quot;api-supported-versions&quot; and &quot;api-deprecated-versions&quot;</span><br><span class="line">                    options.ReportApiVersions = true;</span><br><span class="line">              &#125;);</span><br><span class="line"></span><br><span class="line">            // swagger 配置</span><br><span class="line">            services.AddVersionedApiExplorer(</span><br><span class="line">                options =&gt;</span><br><span class="line">                &#123;</span><br><span class="line">                    // add the versioned api explorer, which also adds IApiVersionDescriptionProvider service</span><br><span class="line">                    // note: the specified format code will format the version as &quot;&#x27;v&#x27;major[.minor][-status]&quot;</span><br><span class="line">                    options.GroupNameFormat = &quot;&#x27;v&#x27;VVV&quot;;</span><br><span class="line">                    // note: this option is only necessary when versioning by url segment. the SubstitutionFormat</span><br><span class="line">                    // can also be used to control the format of the API version in route templates</span><br><span class="line">                    options.SubstituteApiVersionInUrl = true;</span><br><span class="line">                &#125;);</span><br><span class="line">            services.AddTransient&lt;IConfigureOptions&lt;SwaggerGenOptions&gt;, ConfigureSwaggerOptions&gt;();</span><br><span class="line">            services.AddSwaggerGen();</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.</span><br><span class="line">        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IApiVersionDescriptionProvider provider)</span><br><span class="line">        &#123;</span><br><span class="line">            if (env.IsDevelopment())</span><br><span class="line">            &#123;</span><br><span class="line">                app.UseDeveloperExceptionPage();</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            app.UseHttpsRedirection();</span><br><span class="line"></span><br><span class="line">            app.UseRouting();</span><br><span class="line"></span><br><span class="line">            app.UseAuthorization();</span><br><span class="line">            </span><br><span class="line">            // swagger 配置</span><br><span class="line">            app.UseSwagger();</span><br><span class="line">            app.UseSwaggerUI(</span><br><span class="line">                options =&gt;</span><br><span class="line">                &#123;</span><br><span class="line">                    // build a swagger endpoint for each discovered API version</span><br><span class="line">                    foreach (var description in provider.ApiVersionDescriptions)</span><br><span class="line">                    &#123;</span><br><span class="line">                        options.SwaggerEndpoint($&quot;/swagger/&#123;description.GroupName&#125;/swagger.json&quot;, description.GroupName.ToUpperInvariant());</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">            app.UseEndpoints(endpoints =&gt;</span><br><span class="line">            &#123;</span><br><span class="line">                endpoints.MapControllers();</span><br><span class="line"></span><br><span class="line">            &#125;);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>第48～60行:swagger 配置<br>第79～89行:swagger 配置</p>
+<p>4.版本的類別撰寫:</p>
+<p><strong>~/Controllers/V1_1/VersionController.cs</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">using System.Collections.Generic;</span><br><span class="line">using Microsoft.AspNetCore.Mvc;</span><br><span class="line"></span><br><span class="line">namespace TodoAPI.Controllers.V1_1</span><br><span class="line">&#123;</span><br><span class="line">    [ApiVersion(&quot;1.1&quot;)]</span><br><span class="line">    [Route(&quot;api/v&#123;version:apiVersion&#125;/[controller]&quot;)]</span><br><span class="line">    [ApiController]</span><br><span class="line">    public class VersionController : ControllerBase</span><br><span class="line">    &#123;</span><br><span class="line">        [HttpGet]</span><br><span class="line">        public IEnumerable&lt;string&gt; Get()</span><br><span class="line">        &#123;</span><br><span class="line">            return new string[] &#123; &quot;api v1.1&quot; &#125;;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>~/Controllers/V1_1/VersionController.cs</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">using System.Collections.Generic;</span><br><span class="line">using Microsoft.AspNetCore.Mvc;</span><br><span class="line"></span><br><span class="line">namespace TodoAPI.Controllers.V1_1</span><br><span class="line">&#123;</span><br><span class="line">    [ApiVersion(&quot;1.1&quot;)]</span><br><span class="line">    [Route(&quot;api/v&#123;version:apiVersion&#125;/[controller]&quot;)]</span><br><span class="line">    [ApiController]</span><br><span class="line">    public class VersionController : ControllerBase</span><br><span class="line">    &#123;</span><br><span class="line">        [HttpGet]</span><br><span class="line">        public IEnumerable&lt;string&gt; Get()</span><br><span class="line">        &#123;</span><br><span class="line">            return new string[] &#123; &quot;api v1.1&quot; &#125;;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p><strong>~/Controllers/V2_0/VersionController.cs</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">using System.Collections.Generic;</span><br><span class="line">using Microsoft.AspNetCore.Mvc;</span><br><span class="line"></span><br><span class="line">namespace TodoAPI.Controllers.V2_0</span><br><span class="line">&#123;</span><br><span class="line">    [ApiVersion(&quot;2.0&quot;)]</span><br><span class="line">    [Route(&quot;api/v&#123;version:apiVersion&#125;/[controller]&quot;)]</span><br><span class="line">    [ApiController]</span><br><span class="line">    public class VersionController : ControllerBase</span><br><span class="line">    &#123;</span><br><span class="line">        [HttpGet]</span><br><span class="line">        public IEnumerable&lt;string&gt; Get()</span><br><span class="line">        &#123;</span><br><span class="line">            return new string[] &#123; &quot;api v2.0&quot; &#125;;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>基本上就是改<br>第4行資料夾:V1_0 至 V1_1 至 V2_0<br>第6行ApiVersion:1.0 至 1.1 至 2.0<br>其他的Controller也是一樣，這邊就舉例VersionController.cs</p>
+<p>5.啟用後範例:</p>
+<img src="/2021/10/26/C-MVC-Web-API%E5%A2%9E%E5%8A%A0Swagger/demo.gif" class="">
+
+<h3 id="專案連結"><a href="#專案連結" class="headerlink" title="專案連結"></a>專案連結</h3><p><a target="_blank" rel="noopener" href="https://github.com/yuhsiang237/ASP.NET-Core-RESTfulAPI-Swagger">https://github.com/yuhsiang237/ASP.NET-Core-RESTfulAPI-Swagger</a></p>
+<h3 id="總覽"><a href="#總覽" class="headerlink" title="總覽"></a>總覽</h3><p>Swagger UI搭配版控，而在.net Core官方是沒有提供版本+Swagger配置的，所以踩很多雷。<br>這回參考了 <a target="_blank" rel="noopener" href="https://codingfreaks.de/dotnet-core-api-versioning/">https://codingfreaks.de/dotnet-core-api-versioning/</a> 的文章。<br>花了不少時間在除錯，最後終於把Swagger搭建起來。</p>
+<p><strong>參考資料</strong><br><a target="_blank" rel="noopener" href="https://codingfreaks.de/dotnet-core-api-versioning/">https://codingfreaks.de/dotnet-core-api-versioning/</a><br><a target="_blank" rel="noopener" href="https://docs.microsoft.com/zh-tw/aspnet/core/tutorials/getting-started-with-swashbuckle?view=aspnetcore-3.1&amp;tabs=visual-studio">https://docs.microsoft.com/zh-tw/aspnet/core/tutorials/getting-started-with-swashbuckle?view=aspnetcore-3.1&amp;tabs=visual-studio</a><br><a target="_blank" rel="noopener" href="https://medium.com/wenchin-rolls-around/%E8%BB%9F%E9%AB%94%E7%89%88%E6%9C%AC%E8%99%9F-ee446e1ad543">https://medium.com/wenchin-rolls-around/%E8%BB%9F%E9%AB%94%E7%89%88%E6%9C%AC%E8%99%9F-ee446e1ad543</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://yuhsiang237.github.io/2021/10/26/C-MVC-Web-API%E5%A2%9E%E5%8A%A0Swagger/" data-id="cme6kwo0n001ggalj7ckk47m9" data-title="[Day23] C# MVC Web API版本增加Swagger - C#&amp;AspNetCore" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2021/10/27/C-MVC-API-Bearer-Token%E9%A9%97%E8%AD%89/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          [Day24] C# MVC API JWT Token驗證 (上) JWT基礎知識 - C#&amp;AspNetCore
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2021/10/19/C-MVC-API%E7%89%88%E6%9C%AC%E6%8E%A7%E5%88%B6/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">[Day22] C# MVC API版本控制 - C#&amp;AspNetCore</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Code/">Code</a><span class="category-list-count">76</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Code/C/">C#</a><span class="category-list-count">69</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Code/Javascript/">Javascript</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Code/Refactoring/">Refactoring</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Code/Typescript/">Typescript</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/">Computer Science</a><span class="category-list-count">5</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/Algorithm/">Algorithm</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/Data-structure/">Data structure</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/Electronic-Circuit/">Electronic Circuit</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Daily-Log/">Daily Log</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/">Database</a><span class="category-list-count">57</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Database/PostgreSQL/">PostgreSQL</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/SQL-Server/">SQL Server</a><span class="category-list-count">47</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/">Framework</a><span class="category-list-count">27</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/AspNetCore-API/">AspNetCore API</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/AspNetCore-MVC/">AspNetCore MVC</a><span class="category-list-count">21</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/">Topic</a><span class="category-list-count">76</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2021-C-AspNetCore-Challenge/">2021 C# AspNetCore Challenge</a><span class="category-list-count">30</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2021-SQL-Server-Challenge/">2021 SQL Server Challenge</a><span class="category-list-count">30</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2022-C-SyncAndAsync/">2022 C# SyncAndAsync</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2025-Typescript/">2025 Typescript</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/Big-Data/">Big Data</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/LeetCode/">LeetCode</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/SystemStructure/">SystemStructure</a><span class="category-list-count">1</span></li></ul></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/08/">August 2025</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/05/">May 2023</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/03/">March 2023</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/02/">February 2023</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/01/">January 2023</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/12/">December 2022</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/09/">September 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/07/">July 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/06/">June 2022</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/05/">May 2022</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/04/">April 2022</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/03/">March 2022</a><span class="archive-list-count">17</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/02/">February 2022</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/01/">January 2022</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">December 2021</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">October 2021</a><span class="archive-list-count">24</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">September 2021</a><span class="archive-list-count">46</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">August 2021</a><span class="archive-list-count">12</span></li></ul>
+    </div>
+  </div>
+
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2025 Yu Hsiang<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>[Day13] C# MVC 驗證與授權，新刪修查按鈕權限 - C#&amp;AspNetCore | UM&#39;s Coding Note</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="在上回 [Day12] C# MVC 驗證與授權，登入與登出 - C#&amp;AspNetCore  ，我們介紹了登入與登出。 而這回，將探討的是驗證與授權的細部權限，即所謂的新刪修查權限。如:某角色是禁止使用特定功能的編輯。 我在之前也有了打篇與這相關的資料表規劃 : 資訊系統的角色權限規劃，含資料表設計 授權授權是指決定使用者能夠做什麼的處理常式。 例如，系統管理使用者可以建立文件庫、新增檔">
+<meta property="og:type" content="article">
+<meta property="og:title" content="[Day13] C# MVC 驗證與授權，新刪修查按鈕權限 - C#&amp;AspNetCore">
+<meta property="og:url" content="https://yuhsiang237.github.io/2021/10/08/C-MVC-%E9%A9%97%E8%AD%89%E8%88%87%E6%8E%88%E6%AC%8A%EF%BC%8C%E6%96%B0%E5%88%AA%E4%BF%AE%E6%9F%A5%E6%8C%89%E9%88%95%E6%AC%8A%E9%99%90/index.html">
+<meta property="og:site_name" content="UM&#39;s Coding Note">
+<meta property="og:description" content="在上回 [Day12] C# MVC 驗證與授權，登入與登出 - C#&amp;AspNetCore  ，我們介紹了登入與登出。 而這回，將探討的是驗證與授權的細部權限，即所謂的新刪修查權限。如:某角色是禁止使用特定功能的編輯。 我在之前也有了打篇與這相關的資料表規劃 : 資訊系統的角色權限規劃，含資料表設計 授權授權是指決定使用者能夠做什麼的處理常式。 例如，系統管理使用者可以建立文件庫、新增檔">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://yuhsiang237.github.io/2021/10/08/C-MVC-%E9%A9%97%E8%AD%89%E8%88%87%E6%8E%88%E6%AC%8A%EF%BC%8C%E6%96%B0%E5%88%AA%E4%BF%AE%E6%9F%A5%E6%8C%89%E9%88%95%E6%AC%8A%E9%99%90/1.png">
+<meta property="og:image" content="https://yuhsiang237.github.io/2021/10/08/C-MVC-%E9%A9%97%E8%AD%89%E8%88%87%E6%8E%88%E6%AC%8A%EF%BC%8C%E6%96%B0%E5%88%AA%E4%BF%AE%E6%9F%A5%E6%8C%89%E9%88%95%E6%AC%8A%E9%99%90/2.gif">
+<meta property="article:published_time" content="2021-10-08T04:00:51.000Z">
+<meta property="article:modified_time" content="2025-08-11T03:49:08.442Z">
+<meta property="article:author" content="Yu Hsiang">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://yuhsiang237.github.io/2021/10/08/C-MVC-%E9%A9%97%E8%AD%89%E8%88%87%E6%8E%88%E6%AC%8A%EF%BC%8C%E6%96%B0%E5%88%AA%E4%BF%AE%E6%9F%A5%E6%8C%89%E9%88%95%E6%AC%8A%E9%99%90/1.png">
+  
+    <link rel="alternate" href="/atom.xml" title="UM's Coding Note" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">UM&#39;s Coding Note</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">I record my coding experience at this place🤙</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://yuhsiang237.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-C-MVC-驗證與授權，新刪修查按鈕權限" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2021/10/08/C-MVC-%E9%A9%97%E8%AD%89%E8%88%87%E6%8E%88%E6%AC%8A%EF%BC%8C%E6%96%B0%E5%88%AA%E4%BF%AE%E6%9F%A5%E6%8C%89%E9%88%95%E6%AC%8A%E9%99%90/" class="article-date">
+  <time class="dt-published" datetime="2021-10-08T04:00:51.000Z" itemprop="datePublished">2021-10-08</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Code/">Code</a>►<a class="article-category-link" href="/categories/Code/C/">C#</a>►<a class="article-category-link" href="/categories/Framework/">Framework</a>►<a class="article-category-link" href="/categories/Framework/AspNetCore-MVC/">AspNetCore MVC</a>►<a class="article-category-link" href="/categories/Topic/">Topic</a>►<a class="article-category-link" href="/categories/Topic/2021-C-AspNetCore-Challenge/">2021 C# AspNetCore Challenge</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      [Day13] C# MVC 驗證與授權，新刪修查按鈕權限 - C#&amp;AspNetCore
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>在上回 <a href="/2021/10/07/C-MVC-%E9%A9%97%E8%AD%89%E8%88%87%E6%8E%88%E6%AC%8A%E7%99%BB%E5%85%A5%E8%88%87%E7%99%BB%E5%87%BA/" title="[Day12] C# MVC 驗證與授權，登入與登出 - C#&amp;AspNetCore">[Day12] C# MVC 驗證與授權，登入與登出 - C#&amp;AspNetCore</a>  ，我們介紹了登入與登出。</p>
+<p>而這回，將探討的是<strong>驗證與授權</strong>的細部權限，即所謂的新刪修查權限。<br>如:某角色是禁止使用特定功能的編輯。</p>
+<p>我在之前也有了打篇與這相關的資料表規劃 : <a href="/2021/09/22/%E8%A7%92%E8%89%B2%E6%AC%8A%E9%99%90%E8%B3%87%E6%96%99%E8%A1%A8%E8%A6%8F%E5%8A%83/" title="資訊系統的角色權限規劃，含資料表設計">資訊系統的角色權限規劃，含資料表設計</a></p>
+<h3 id="授權"><a href="#授權" class="headerlink" title="授權"></a>授權</h3><p>授權是指決定使用者能夠做什麼的處理常式。 例如，系統管理使用者可以建立文件庫、新增檔、編輯檔，以及將它們刪除。 </p>
+<h3 id="實作"><a href="#實作" class="headerlink" title="實作"></a>實作</h3><p>目標，可以讓一個有權限的使用者依照他的權限去限制:檢視、新增、刪除、編輯。</p>
+<p>權限代碼:</p>
+<ul>
+<li>Basic_UserManagement_View</li>
+<li>Basic_UserManagement_Create</li>
+<li>Basic_UserManagement_Modify</li>
+<li>Basic_UserManagement_Delete</li>
+</ul>
+<p>使用者擁有的權限代碼:</p>
+<ul>
+<li>Basic_UserManagement_View</li>
+<li>Basic_UserManagement_Create</li>
+<li>Basic_UserManagement_Delete</li>
+</ul>
+<p>所以該使用者只能檢視、建立、刪除，並且無法編輯。</p>
+<p>在此先列出檔案目錄，以及異動檔案(黃色標記處):</p>
+<img src="/2021/10/08/C-MVC-%E9%A9%97%E8%AD%89%E8%88%87%E6%8E%88%E6%AC%8A%EF%BC%8C%E6%96%B0%E5%88%AA%E4%BF%AE%E6%9F%A5%E6%8C%89%E9%88%95%E6%AC%8A%E9%99%90/1.png" class="">
+
+<p>1.首先先建立權限代碼的定義檔案<br><strong>~/Authorization/Permissions.cs</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">namespace CookieAuthentication.Authorization</span><br><span class="line">&#123; </span><br><span class="line">    // 權限代碼</span><br><span class="line">    public static class Permissions</span><br><span class="line">    &#123;</span><br><span class="line">        // 基本資料管理-人員管理</span><br><span class="line">        public const string Basic_UserManagement_View = &quot;Basic_UserManagement_View&quot;;</span><br><span class="line">        public const string Basic_UserManagement_Create= &quot;Basic_UserManagement_Create&quot;;</span><br><span class="line">        public const string Basic_UserManagement_Modify = &quot;Basic_UserManagement_Modify&quot;;</span><br><span class="line">        public const string Basic_UserManagement_Delete = &quot;Basic_UserManagement_Delete&quot;;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>說明:<br>未來如果要新增各種功能代碼都可以從這新增。</p>
+<p>2.建立權限的AuthorizationRequirement，要求規格<br><strong>~/Authorization/PermissionAuthorizationRequirement.cs</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">using Microsoft.AspNetCore.Authorization;</span><br><span class="line">namespace CookieAuthentication.Authorization</span><br><span class="line">&#123;</span><br><span class="line">    public class PermissionAuthorizationRequirement : IAuthorizationRequirement</span><br><span class="line">    &#123;</span><br><span class="line">        public string[] Permissions &#123; get; set; &#125;</span><br><span class="line"></span><br><span class="line">        public PermissionAuthorizationRequirement(string[] permissions)</span><br><span class="line">        &#123;</span><br><span class="line">            Permissions = permissions;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>說明:<br>為了要能夠自訂權限的邏輯，所以需要一個IAuthorizationRequirement幫我們傳遞授權資料的格式。</p>
+<p>3.建立權限邏輯的控制器</p>
+<p><strong>~/Authorization/PermissionAuthorizationHandler.cs</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line">using Microsoft.AspNetCore.Authorization;</span><br><span class="line">using System.Collections.Generic;</span><br><span class="line">using System.Linq;</span><br><span class="line">using System.Threading.Tasks;</span><br><span class="line"></span><br><span class="line">namespace CookieAuthentication.Authorization</span><br><span class="line">&#123;</span><br><span class="line">    // 權限控制邏輯</span><br><span class="line">    public class PermissionAuthorizationHandler : AuthorizationHandler&lt;PermissionAuthorizationRequirement&gt;</span><br><span class="line">    &#123;</span><br><span class="line">        protected override Task HandleRequirementAsync(AuthorizationHandlerContext context, PermissionAuthorizationRequirement requirement)</span><br><span class="line">        &#123;</span><br><span class="line">            // 如果沒有登入直接返回失敗</span><br><span class="line">            var accountClaim = context.User.FindFirst(x =&gt; x.Type == &quot;Account&quot;);</span><br><span class="line">            if (accountClaim == null)</span><br><span class="line">            &#123;</span><br><span class="line">                context.Fail();</span><br><span class="line">                return Task.CompletedTask;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            // 要求的權限</span><br><span class="line">            var requirementPermissions = requirement.Permissions;</span><br><span class="line"></span><br><span class="line">            // 取得使用者的權限， 這段可以從資料庫撈，在這範例用陣列</span><br><span class="line">            List&lt;string&gt; userPermission = new List&lt;string&gt;();</span><br><span class="line">            userPermission.Add(Permissions.Basic_UserManagement_View);</span><br><span class="line">            userPermission.Add(Permissions.Basic_UserManagement_Delete);</span><br><span class="line">            userPermission.Add(Permissions.Basic_UserManagement_Modify);</span><br><span class="line"></span><br><span class="line">            // 檢查是否使用者具備權限    </span><br><span class="line">            bool isExist = false;</span><br><span class="line"></span><br><span class="line">            for (int i = 0; i &lt; userPermission.Count(); i++)</span><br><span class="line">            &#123;</span><br><span class="line">                for (int j = 0; j &lt; requirementPermissions.Count(); j++)</span><br><span class="line">                &#123;</span><br><span class="line">                    if (userPermission[i] == requirementPermissions[j])</span><br><span class="line">                    &#123;</span><br><span class="line">                        isExist = true;</span><br><span class="line">                        break;</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            // 如果具備則授予成功</span><br><span class="line">            if (isExist)</span><br><span class="line">            &#123;</span><br><span class="line">                context.Succeed(requirement);</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            return Task.CompletedTask;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>說明:<br>在此繼承了AuthorizationHandler，是為了要撰寫自己的判斷邏輯。<br>主要在HandleRequirementAsync裡面檢查傳進來的權限與使用者是否匹配，如果是就設定context.Succeed(requirement)；不是就設定context.Fail()。並在最後回傳return Task.CompletedTask。<br>在22～48是關鍵，在這如果連結資料庫就從資料庫抓使用者的權限表來比對即可。<br>我在24～28先用假資料替代資料庫撈出來的情況。</p>
+<p>4.建立過濾器Filter，之後要用來套用在Controller的Action上</p>
+<p><strong>~/Authorization/PermissionFilter.cs</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">using Microsoft.AspNetCore.Authorization;</span><br><span class="line">using Microsoft.AspNetCore.Mvc;</span><br><span class="line">using Microsoft.AspNetCore.Mvc.Filters;</span><br><span class="line">using Microsoft.Extensions.DependencyInjection;</span><br><span class="line">using System;</span><br><span class="line">using System.Threading.Tasks;</span><br><span class="line"></span><br><span class="line">namespace CookieAuthentication.Authorization</span><br><span class="line">&#123;</span><br><span class="line">    public class PermissionFilter:Attribute, IAsyncAuthorizationFilter</span><br><span class="line">    &#123;</span><br><span class="line">        public string[] permissions &#123; get; set; &#125;</span><br><span class="line"></span><br><span class="line">        public PermissionFilter(params string[] permissions)</span><br><span class="line">        &#123;</span><br><span class="line">            this.permissions = permissions;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        public async Task OnAuthorizationAsync(AuthorizationFilterContext context)</span><br><span class="line">        &#123;</span><br><span class="line">            var authorizationService = context.HttpContext.RequestServices.GetRequiredService&lt;IAuthorizationService&gt;();</span><br><span class="line">            var authorizationResult = await authorizationService.AuthorizeAsync(context.HttpContext.User, null, new PermissionAuthorizationRequirement(permissions));</span><br><span class="line">            if (!authorizationResult.Succeeded)</span><br><span class="line">            &#123;</span><br><span class="line">                // 如果授權失敗，設定為未授權</span><br><span class="line">                context.Result = new UnauthorizedResult();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>說明:<br>重點在21～27，使用authorizationService.AuthorizeAsync去認證權限，就會把資料傳到我們上面建立的PermissionAuthorizationHandler.cs裡面判斷。<br>如果最後判斷沒權限則設定context.Result = new UnauthorizedResult();表示禁止。</p>
+<p>5.增加過濾器服務Startup.cs</p>
+<p><strong>~/Startup.cs</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br></pre></td><td class="code"><pre><span class="line">using CookieAuthentication.Authorization;</span><br><span class="line">using Microsoft.AspNetCore.Authentication.Cookies;</span><br><span class="line">using Microsoft.AspNetCore.Authorization;</span><br><span class="line">using Microsoft.AspNetCore.Builder;</span><br><span class="line">using Microsoft.AspNetCore.Hosting;</span><br><span class="line">using Microsoft.AspNetCore.Mvc;</span><br><span class="line">using Microsoft.Extensions.Configuration;</span><br><span class="line">using Microsoft.Extensions.DependencyInjection;</span><br><span class="line">using Microsoft.Extensions.Hosting;</span><br><span class="line">using System;</span><br><span class="line">namespace CookieAuthentication</span><br><span class="line">&#123;</span><br><span class="line">    public class Startup</span><br><span class="line">    &#123;</span><br><span class="line">        public Startup(IConfiguration configuration)</span><br><span class="line">        &#123;</span><br><span class="line">            Configuration = configuration;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        public IConfiguration Configuration &#123; get; &#125;</span><br><span class="line"></span><br><span class="line">        // This method gets called by the runtime. Use this method to add services to the container.</span><br><span class="line">        public void ConfigureServices(IServiceCollection services)</span><br><span class="line">        &#123;</span><br><span class="line">            // 註冊需求和處理常式，套用自訂權限控制器</span><br><span class="line">            services.AddSingleton&lt;IAuthorizationHandler, PermissionAuthorizationHandler&gt;();</span><br><span class="line"></span><br><span class="line">            // 從appsettings.json讀取登入逾時設定</span><br><span class="line">            double LoginExpireMinute = this.Configuration.GetValue&lt;double&gt;(&quot;LoginExpireMinute&quot;);</span><br><span class="line"></span><br><span class="line">            // 建立驗證中介軟體服務</span><br><span class="line">            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(option =&gt;</span><br><span class="line">            &#123;</span><br><span class="line">                // 登入逾期設定，如果沒給預設14天</span><br><span class="line">                option.ExpireTimeSpan = TimeSpan.FromMinutes(LoginExpireMinute);</span><br><span class="line">                // 限制cookie不能延期</span><br><span class="line">                option.SlidingExpiration = false;</span><br><span class="line">            &#125;);</span><br><span class="line"></span><br><span class="line">            services.AddControllersWithViews(options =&gt; &#123;</span><br><span class="line">                //CSRF資安有關，這裡就加入全域驗證範圍Filter的話，待會Controller就不必再加上[AutoValidateAntiforgeryToken]屬性</span><br><span class="line">                options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());</span><br><span class="line">            &#125;);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.</span><br><span class="line">        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)</span><br><span class="line">        &#123;</span><br><span class="line">            if (env.IsDevelopment())</span><br><span class="line">            &#123;</span><br><span class="line">                app.UseDeveloperExceptionPage();</span><br><span class="line">            &#125;</span><br><span class="line">            else</span><br><span class="line">            &#123;</span><br><span class="line">                app.UseExceptionHandler(&quot;/Home/Error&quot;);</span><br><span class="line">                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.</span><br><span class="line">                app.UseHsts();</span><br><span class="line">            &#125;</span><br><span class="line">            app.UseHttpsRedirection();</span><br><span class="line">            app.UseStaticFiles();</span><br><span class="line"></span><br><span class="line">            app.UseRouting();</span><br><span class="line"></span><br><span class="line">            app.UseAuthentication(); // 啟用身份驗證</span><br><span class="line">            app.UseAuthorization(); // 啟用授權，指的是Controller、Action可加上驗證 [Authorize] 屬性</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">            app.UseEndpoints(endpoints =&gt;</span><br><span class="line">            &#123;</span><br><span class="line">                endpoints.MapControllerRoute(</span><br><span class="line">                    name: &quot;default&quot;,</span><br><span class="line">                    pattern: &quot;&#123;controller=Home&#125;/&#123;action=Index&#125;/&#123;id?&#125;&quot;);</span><br><span class="line">            &#125;);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>說明<br>只有在26行，增加一行，表示套用驗證邏輯的PermissionAuthorizationHandler</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">// 註冊需求和處理常式，套用自訂權限控制器</span><br><span class="line">services.AddSingleton&lt;IAuthorizationHandler, PermissionAuthorizationHandler&gt;();</span><br></pre></td></tr></table></figure>
+<p>6.限制頁面上的檢視權限，在Controller增加權限過濾器Filter</p>
+<p><strong>~/Controllers/HomeController.cs</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">[PermissionFilter(Permissions.Basic_UserManagement_View)]</span><br><span class="line">public IActionResult Privacy()</span><br><span class="line">&#123;</span><br><span class="line">    StringBuilder sb = new StringBuilder();</span><br><span class="line">    sb.AppendLine(&quot;&lt;ul&gt;&quot;);</span><br><span class="line"></span><br><span class="line">    foreach (Claim claim in HttpContext.User.Claims)</span><br><span class="line">    &#123;</span><br><span class="line">        sb.AppendLine($@&quot;&lt;li&gt; claim.Type:&#123;claim.Type&#125; , claim.Value:&#123; claim.Value&#125;&lt;/li&gt;&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">    sb.AppendLine(&quot;&lt;/ul&gt;&quot;);</span><br><span class="line"></span><br><span class="line">    ViewBag.msg = sb.ToString();</span><br><span class="line">    return View();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>說明:<br>添加<br>[PermissionFilter(Permissions.Basic_UserManagement_View)]<br>表示允許某權限的代碼進入，在此就是Permissions.Basic_UserManagement_View，表示畫面的檢視權限。</p>
+<p>7.限制頁面上的按鈕權限</p>
+<p><strong>~/View/Home/Privacy.cshtml</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line">@using Microsoft.AspNetCore.Authorization</span><br><span class="line">@using CookieAuthentication.Authorization</span><br><span class="line"></span><br><span class="line">@inject IAuthorizationService AuthorizationService</span><br><span class="line">@&#123;</span><br><span class="line">    ViewData[&quot;Title&quot;] = &quot;Privacy Policy&quot;;</span><br><span class="line">&#125;</span><br><span class="line">&lt;h1&gt;@ViewData[&quot;Title&quot;]&lt;/h1&gt;</span><br><span class="line"></span><br><span class="line">&lt;p&gt;Use this page to detail your site&#x27;s privacy policy.&lt;/p&gt;</span><br><span class="line"></span><br><span class="line">&lt;!-- 按鈕區塊 --&gt;</span><br><span class="line">@if ((await AuthorizationService.AuthorizeAsync(User, null, new PermissionAuthorizationRequirement(new string[] &#123; Permissions.Basic_UserManagement_Create &#125;))).Succeeded)</span><br><span class="line">&#123;</span><br><span class="line">    &lt;button type=&quot;submit&quot;&gt;新增&lt;/button&gt;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">@if ((await AuthorizationService.AuthorizeAsync(User, null, new PermissionAuthorizationRequirement(new string[] &#123; Permissions.Basic_UserManagement_Modify &#125;))).Succeeded)</span><br><span class="line">&#123;</span><br><span class="line">    &lt;button type=&quot;submit&quot;&gt;編輯&lt;/button&gt;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">@if ((await AuthorizationService.AuthorizeAsync(User, null, new PermissionAuthorizationRequirement(new string[] &#123; Permissions.Basic_UserManagement_Delete &#125;))).Succeeded)</span><br><span class="line">&#123;</span><br><span class="line">    &lt;button type=&quot;submit&quot;&gt;刪除&lt;/button&gt;</span><br><span class="line">&#125;</span><br><span class="line">&lt;!-- ./按鈕區塊 --&gt;</span><br><span class="line"></span><br><span class="line">&lt;!--登出區塊--&gt;</span><br><span class="line">&lt;div&gt;</span><br><span class="line">    您的登入資訊↓</span><br><span class="line">&lt;/div&gt;</span><br><span class="line">&lt;div&gt;</span><br><span class="line">    @Html.Raw(ViewBag.msg)</span><br><span class="line">&lt;/div&gt;</span><br><span class="line">&lt;div&gt;</span><br><span class="line">    &lt;a href=&quot;@Url.Action(&quot;Logout&quot;,&quot;Home&quot;)&quot;&gt;登出&lt;/a&gt;</span><br><span class="line">&lt;/div&gt;</span><br><span class="line">&lt;!--./登出區塊--&gt;</span><br></pre></td></tr></table></figure>
+<p>說明:<br>在13~27為限制擁有某些權限的代碼才啟用<br>舉例:<br>@if ((await AuthorizationService.AuthorizeAsync(User, null, new PermissionAuthorizationRequirement(new string[] { Permissions.Basic_UserManagement_Modify }))).Succeeded)</p>
+<p>8.完成!<br>該使用者登入後只有:畫面檢視、刪除、新增權限，而沒有編輯權限。<br>可以見到成功進Privacy頁面，而只有新增、刪除按鈕有顯示，編輯按鈕則因為權限限制沒有被顯示出來。</p>
+<img src="/2021/10/08/C-MVC-%E9%A9%97%E8%AD%89%E8%88%87%E6%8E%88%E6%AC%8A%EF%BC%8C%E6%96%B0%E5%88%AA%E4%BF%AE%E6%9F%A5%E6%8C%89%E9%88%95%E6%AC%8A%E9%99%90/2.gif" class="">
+
+<h3 id="總結"><a href="#總結" class="headerlink" title="總結"></a>總結</h3><p>如此一來權限問題也難不倒了@@<br>而接下來主要以資料呈現為主題，所以下回是LINQ的資料操作。</p>
+<p><strong>參考資料</strong><br><a target="_blank" rel="noopener" href="https://docs.microsoft.com/zh-tw/aspnet/core/security/authorization/views?view=aspnetcore-3.1">https://docs.microsoft.com/zh-tw/aspnet/core/security/authorization/views?view=aspnetcore-3.1</a><br><a target="_blank" rel="noopener" href="https://docs.microsoft.com/zh-tw/aspnet/core/security/authorization/resourcebased?view=aspnetcore-3.1">https://docs.microsoft.com/zh-tw/aspnet/core/security/authorization/resourcebased?view=aspnetcore-3.1</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://yuhsiang237.github.io/2021/10/08/C-MVC-%E9%A9%97%E8%AD%89%E8%88%87%E6%8E%88%E6%AC%8A%EF%BC%8C%E6%96%B0%E5%88%AA%E4%BF%AE%E6%9F%A5%E6%8C%89%E9%88%95%E6%AC%8A%E9%99%90/" data-id="cme6kwo0w001zgalj2mok28ie" data-title="[Day13] C# MVC 驗證與授權，新刪修查按鈕權限 - C#&amp;AspNetCore" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2021/10/09/%E5%BE%8C%E7%AB%AFAPI%E9%81%A9%E5%90%88%E5%85%B1%E7%94%A8APP%E8%88%87%E7%B6%B2%E9%A0%81%E5%97%8E/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          後端API適合共用APP與WEB嗎?
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2021/10/07/C-MVC-%E9%A9%97%E8%AD%89%E8%88%87%E6%8E%88%E6%AC%8A%E7%99%BB%E5%85%A5%E8%88%87%E7%99%BB%E5%87%BA/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">[Day12] C# MVC 驗證與授權，登入與登出 - C#&amp;AspNetCore</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Code/">Code</a><span class="category-list-count">76</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Code/C/">C#</a><span class="category-list-count">69</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Code/Javascript/">Javascript</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Code/Refactoring/">Refactoring</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Code/Typescript/">Typescript</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/">Computer Science</a><span class="category-list-count">5</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/Algorithm/">Algorithm</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/Data-structure/">Data structure</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/Electronic-Circuit/">Electronic Circuit</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Daily-Log/">Daily Log</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/">Database</a><span class="category-list-count">57</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Database/PostgreSQL/">PostgreSQL</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/SQL-Server/">SQL Server</a><span class="category-list-count">47</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/">Framework</a><span class="category-list-count">27</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/AspNetCore-API/">AspNetCore API</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/AspNetCore-MVC/">AspNetCore MVC</a><span class="category-list-count">21</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/">Topic</a><span class="category-list-count">76</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2021-C-AspNetCore-Challenge/">2021 C# AspNetCore Challenge</a><span class="category-list-count">30</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2021-SQL-Server-Challenge/">2021 SQL Server Challenge</a><span class="category-list-count">30</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2022-C-SyncAndAsync/">2022 C# SyncAndAsync</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2025-Typescript/">2025 Typescript</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/Big-Data/">Big Data</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/LeetCode/">LeetCode</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/SystemStructure/">SystemStructure</a><span class="category-list-count">1</span></li></ul></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/08/">August 2025</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/05/">May 2023</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/03/">March 2023</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/02/">February 2023</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/01/">January 2023</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/12/">December 2022</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/09/">September 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/07/">July 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/06/">June 2022</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/05/">May 2022</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/04/">April 2022</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/03/">March 2022</a><span class="archive-list-count">17</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/02/">February 2022</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/01/">January 2022</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">December 2021</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">October 2021</a><span class="archive-list-count">24</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">September 2021</a><span class="archive-list-count">46</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">August 2021</a><span class="archive-list-count">12</span></li></ul>
+    </div>
+  </div>
+
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2025 Yu Hsiang<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>[Day6] C# MVC Model模型驗證 - C#&amp;AspNetCore | UM&#39;s Coding Note</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="在上回 [Day5] C# MVC Model模型使用 - C#&amp;AspNetCore  ，我們建立了基本的Model，並且示範讓資料藉由Model資料呈現在網頁上。在這篇主要談如何Model模型上進行驗證。 Model的驗證為了讓資料進到資料庫是符合我們要的格式，就必須在前面先擋過一層，而這層我們可以透過Model來達到。 常見的驗證屬性  [ValidateNever]： Valida">
+<meta property="og:type" content="article">
+<meta property="og:title" content="[Day6] C# MVC Model模型驗證 - C#&amp;AspNetCore">
+<meta property="og:url" content="https://yuhsiang237.github.io/2021/10/01/C-MVC-Model%E6%A8%A1%E5%9E%8B%E9%A9%97%E8%AD%89/index.html">
+<meta property="og:site_name" content="UM&#39;s Coding Note">
+<meta property="og:description" content="在上回 [Day5] C# MVC Model模型使用 - C#&amp;AspNetCore  ，我們建立了基本的Model，並且示範讓資料藉由Model資料呈現在網頁上。在這篇主要談如何Model模型上進行驗證。 Model的驗證為了讓資料進到資料庫是符合我們要的格式，就必須在前面先擋過一層，而這層我們可以透過Model來達到。 常見的驗證屬性  [ValidateNever]： Valida">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://yuhsiang237.github.io/2021/10/01/C-MVC-Model%E6%A8%A1%E5%9E%8B%E9%A9%97%E8%AD%89/1.gif">
+<meta property="og:image" content="https://yuhsiang237.github.io/2021/10/01/C-MVC-Model%E6%A8%A1%E5%9E%8B%E9%A9%97%E8%AD%89/2.gif">
+<meta property="og:image" content="https://yuhsiang237.github.io/2021/10/01/C-MVC-Model%E6%A8%A1%E5%9E%8B%E9%A9%97%E8%AD%89/3.gif">
+<meta property="article:published_time" content="2021-10-01T04:00:51.000Z">
+<meta property="article:modified_time" content="2025-08-11T03:49:08.193Z">
+<meta property="article:author" content="Yu Hsiang">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://yuhsiang237.github.io/2021/10/01/C-MVC-Model%E6%A8%A1%E5%9E%8B%E9%A9%97%E8%AD%89/1.gif">
+  
+    <link rel="alternate" href="/atom.xml" title="UM's Coding Note" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">UM&#39;s Coding Note</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">I record my coding experience at this place🤙</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://yuhsiang237.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-C-MVC-Model模型驗證" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2021/10/01/C-MVC-Model%E6%A8%A1%E5%9E%8B%E9%A9%97%E8%AD%89/" class="article-date">
+  <time class="dt-published" datetime="2021-10-01T04:00:51.000Z" itemprop="datePublished">2021-10-01</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Code/">Code</a>►<a class="article-category-link" href="/categories/Code/C/">C#</a>►<a class="article-category-link" href="/categories/Framework/">Framework</a>►<a class="article-category-link" href="/categories/Framework/AspNetCore-MVC/">AspNetCore MVC</a>►<a class="article-category-link" href="/categories/Topic/">Topic</a>►<a class="article-category-link" href="/categories/Topic/2021-C-AspNetCore-Challenge/">2021 C# AspNetCore Challenge</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      [Day6] C# MVC Model模型驗證 - C#&amp;AspNetCore
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>在上回 <a href="/2021/09/30/C-MVC-Model%E6%A8%A1%E5%9E%8B%E4%BD%BF%E7%94%A8/" title="[Day5] C# MVC Model模型使用 - C#&amp;AspNetCore">[Day5] C# MVC Model模型使用 - C#&amp;AspNetCore</a>  ，我們建立了基本的Model，並且示範讓資料藉由Model資料呈現在網頁上。<br>在這篇主要談如何Model模型上進行驗證。</p>
+<h3 id="Model的驗證"><a href="#Model的驗證" class="headerlink" title="Model的驗證"></a>Model的驗證</h3><p>為了讓資料進到資料庫是符合我們要的格式，就必須在前面先擋過一層，而這層我們可以透過Model來達到。</p>
+<p><strong>常見的驗證屬性</strong></p>
+<ul>
+<li>[ValidateNever]： ValidateNeverAttribute 指出屬性或參數應該從驗證中排除。</li>
+<li>[CreditCard]：驗證屬性是否具有信用卡格式。 需要 JQuery 驗證的其他方法。</li>
+<li>[Compare]：驗證模型中的兩個屬性是否相符。</li>
+<li>[EmailAddress]：驗證屬性具有電子郵件格式。</li>
+<li>[Phone]：驗證屬性具有電話號碼格式。</li>
+<li>[Range]：驗證屬性值是否落在指定的範圍內。像是最大值(Max)、最小值(min)</li>
+<li>[RegularExpression]：驗證屬性值是否符合指定的正則運算式。</li>
+<li>[Required]：驗證欄位不是 null。 </li>
+<li>[StringLength]：驗證字串屬性值不超過指定的長度限制。</li>
+<li>[Url]：驗證屬性是否具有 URL 格式。</li>
+<li>[Remote]：在伺服器上呼叫動作方法，以驗證用戶端上的輸入。</li>
+<li>[Display]:顯示名稱為</li>
+<li>[DataType]:資料型別</li>
+</ul>
+<h3 id="添加驗證屬性範例實作"><a href="#添加驗證屬性範例實作" class="headerlink" title="添加驗證屬性範例實作"></a>添加驗證屬性範例實作</h3><p>我們先在UsersModel.cs增加屬性<br>需先添加<code>using System.ComponentModel.DataAnnotations</code>才可使用驗證屬性。</p>
+<h5 id="UsersModel-cs"><a href="#UsersModel-cs" class="headerlink" title="UsersModel.cs"></a>UsersModel.cs</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">using System;</span><br><span class="line">using System.Collections.Generic;</span><br><span class="line">using System.Linq;</span><br><span class="line">using System.Threading.Tasks;</span><br><span class="line">using System.ComponentModel.DataAnnotations;</span><br><span class="line"></span><br><span class="line">namespace WebApplication1.Models</span><br><span class="line">&#123;</span><br><span class="line">    public class UsersModel</span><br><span class="line">    &#123;</span><br><span class="line">        [Display(Name = &quot;編號&quot;)]</span><br><span class="line">        public int ID &#123; get; set; &#125;</span><br><span class="line"></span><br><span class="line">        [Required(ErrorMessage = &quot;姓名不可為空&quot;)]</span><br><span class="line">        [Display(Name = &quot;姓名&quot;)]</span><br><span class="line">        public string Name &#123; get; set; &#125;</span><br><span class="line"></span><br><span class="line">        [Display(Name = &quot;年齡&quot;)]</span><br><span class="line">        public int Age &#123; get; set; &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>接著在HomeController.cs裡面個添加一個HttpGet、HttpPost的Create方法<br>HttpGet是進頁面時會跑的方法<br>HttpPost是表單觸發發送後會跑的方法</p>
+<h5 id="HomeController-cs"><a href="#HomeController-cs" class="headerlink" title="HomeController.cs"></a>HomeController.cs</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">[HttpGet]</span><br><span class="line">public IActionResult Create()</span><br><span class="line">&#123;</span><br><span class="line">    return View();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">[HttpPost]</span><br><span class="line">public IActionResult Create(UsersModel usersmodel)</span><br><span class="line">&#123;</span><br><span class="line">    if (ModelState.IsValid)</span><br><span class="line">    &#123;</span><br><span class="line">        //如果連結資料庫在這進行儲存</span><br><span class="line"></span><br><span class="line">        //導回首頁</span><br><span class="line">        return RedirectToAction(nameof(Index));</span><br><span class="line">    &#125;</span><br><span class="line">    return View(usersmodel);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>接著新增一個View頁面，在前台畫面上製作一個form表單。</p>
+<h5 id="Create-cshtml"><a href="#Create-cshtml" class="headerlink" title="Create.cshtml"></a>Create.cshtml</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">@model WebApplication1.Models.UsersModel</span><br><span class="line">@&#123;</span><br><span class="line">    ViewData[&quot;Title&quot;] = &quot;Create Page&quot;;</span><br><span class="line">&#125;</span><br><span class="line">&lt;form asp-action=&quot;Create&quot;&gt;</span><br><span class="line">    &lt;div&gt;</span><br><span class="line">        &lt;label asp-for=&quot;Name&quot;&gt;&lt;/label&gt;</span><br><span class="line">        &lt;input asp-for=&quot;Name&quot; /&gt;</span><br><span class="line">        &lt;span asp-validation-for=&quot;Name&quot;&gt;&lt;/span&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">    &lt;div&gt;</span><br><span class="line">        &lt;label asp-for=&quot;Age&quot;&gt;&lt;/label&gt;</span><br><span class="line">        &lt;input asp-for=&quot;Age&quot; /&gt;</span><br><span class="line">        &lt;span asp-validation-for=&quot;Age&quot;&gt;&lt;/span&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">    &lt;div&gt;</span><br><span class="line">        &lt;input type=&quot;submit&quot; value=&quot;Save&quot; /&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">&lt;/form&gt;</span><br></pre></td></tr></table></figure>
+
+<p>注意，<code>asp-validation-for="Name"</code>表示後端回傳的錯誤訊息會傳送到這裡。</p>
+<p>然後至網址:<a target="_blank" rel="noopener" href="https://localhost:44378/Home/Create">https://localhost:44378/Home/Create</a> 查看後<br>名子不填儲存就會出現錯誤了</p>
+<img src="/2021/10/01/C-MVC-Model%E6%A8%A1%E5%9E%8B%E9%A9%97%E8%AD%89/1.gif" class="">
+<p>在程式碼上會發現跑到HttpPost的Create裡面</p>
+<img src="/2021/10/01/C-MVC-Model%E6%A8%A1%E5%9E%8B%E9%A9%97%E8%AD%89/2.gif" class="">
+
+<h3 id="自訂驗證"><a href="#自訂驗證" class="headerlink" title="自訂驗證"></a>自訂驗證</h3><p>系統預設的驗證肯定不夠，所以就來製作自己的驗證。</p>
+<p>我們在UsersModel.cs裡面增加一個CheckValidAge的class並且繼承ValidationAttribute<br>並覆寫裡面IsValid方法。</p>
+<h5 id="UsersModel-cs-1"><a href="#UsersModel-cs-1" class="headerlink" title="UsersModel.cs"></a>UsersModel.cs</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line">using System;</span><br><span class="line">using System.Collections.Generic;</span><br><span class="line">using System.Linq;</span><br><span class="line">using System.Threading.Tasks;</span><br><span class="line">using System.ComponentModel.DataAnnotations;</span><br><span class="line"></span><br><span class="line">namespace WebApplication1.Models</span><br><span class="line">&#123;</span><br><span class="line">    public class UsersModel</span><br><span class="line">    &#123;</span><br><span class="line">        [Display(Name = &quot;編號&quot;)]</span><br><span class="line">        public int ID &#123; get; set; &#125;</span><br><span class="line"></span><br><span class="line">        [Required(ErrorMessage = &quot;姓名不可為空&quot;)]</span><br><span class="line">        [Display(Name = &quot;姓名&quot;)]</span><br><span class="line">        public string Name &#123; get; set; &#125;</span><br><span class="line"></span><br><span class="line">        [CheckValidAge]</span><br><span class="line">        [Display(Name = &quot;年齡&quot;)]</span><br><span class="line">        public int Age &#123; get; set; &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public class CheckValidAge : ValidationAttribute</span><br><span class="line">    &#123;</span><br><span class="line"></span><br><span class="line">        public CheckValidAge()</span><br><span class="line">        &#123;</span><br><span class="line">            ErrorMessage = &quot;年齡不可超過50歲&quot;;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        public override bool IsValid(object value)</span><br><span class="line">        &#123;</span><br><span class="line">            if (value == null)</span><br><span class="line">            &#123;</span><br><span class="line">                return true;</span><br><span class="line">            &#125;</span><br><span class="line">            int age = (int)value;</span><br><span class="line">            if (age &gt; 50)</span><br><span class="line">            &#123;</span><br><span class="line">                return false;</span><br><span class="line">            &#125;</span><br><span class="line">            else</span><br><span class="line">            &#123;</span><br><span class="line">                return true;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>如此一來，送出如果&gt;50就會顯示出錯誤。</p>
+<img src="/2021/10/01/C-MVC-Model%E6%A8%A1%E5%9E%8B%E9%A9%97%E8%AD%89/3.gif" class="">
+
+
+<h3 id="總結"><a href="#總結" class="headerlink" title="總結"></a>總結</h3><p>雖然2021年的今天，大多數人都不使用這種form驗證，而是用API傳送。<br>因為頁面不用跳轉，用戶也能得到比較好的體驗。</p>
+<p>然而，這種傳統的送資料方式還是有存在必要，就是系統追求安全性、穩定性，因為API方式會有比較難管理的問題。</p>
+<p>此外，寫到這裡就開始有綁手綁腳的感覺<br>因為框架不那麼自由的讓你直接寫想寫的程式碼，而是照MVC架構<br>這就是一個好處，代表維護或後續開發的人就會照同條路走</p>
+<p><strong>參考資料</strong><br><a target="_blank" rel="noopener" href="https://ithelp.ithome.com.tw/articles/10240340">https://ithelp.ithome.com.tw/articles/10240340</a><br><a target="_blank" rel="noopener" href="https://docs.microsoft.com/zh-tw/aspnet/core/mvc/models/validation?view=aspnetcore-5.0">https://docs.microsoft.com/zh-tw/aspnet/core/mvc/models/validation?view=aspnetcore-5.0</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://yuhsiang237.github.io/2021/10/01/C-MVC-Model%E6%A8%A1%E5%9E%8B%E9%A9%97%E8%AD%89/" data-id="cme6kwo0h0016galjessmabl1" data-title="[Day6] C# MVC Model模型驗證 - C#&amp;AspNetCore" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2021/10/02/C-MVC-Model%E8%88%87%E8%B3%87%E6%96%99%E5%BA%AB%E9%80%A3%E7%B5%90/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          [Day7] C# MVC Model模型連結資料庫，使用Entity Framework - C#&amp;AspNetCore
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2021/09/30/C-MVC-Model%E6%A8%A1%E5%9E%8B%E4%BD%BF%E7%94%A8/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">[Day5] C# MVC Model模型使用 - C#&amp;AspNetCore</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Code/">Code</a><span class="category-list-count">76</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Code/C/">C#</a><span class="category-list-count">69</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Code/Javascript/">Javascript</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Code/Refactoring/">Refactoring</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Code/Typescript/">Typescript</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/">Computer Science</a><span class="category-list-count">5</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/Algorithm/">Algorithm</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/Data-structure/">Data structure</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/Electronic-Circuit/">Electronic Circuit</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Daily-Log/">Daily Log</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/">Database</a><span class="category-list-count">57</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Database/PostgreSQL/">PostgreSQL</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/SQL-Server/">SQL Server</a><span class="category-list-count">47</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/">Framework</a><span class="category-list-count">27</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/AspNetCore-API/">AspNetCore API</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/AspNetCore-MVC/">AspNetCore MVC</a><span class="category-list-count">21</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/">Topic</a><span class="category-list-count">76</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2021-C-AspNetCore-Challenge/">2021 C# AspNetCore Challenge</a><span class="category-list-count">30</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2021-SQL-Server-Challenge/">2021 SQL Server Challenge</a><span class="category-list-count">30</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2022-C-SyncAndAsync/">2022 C# SyncAndAsync</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2025-Typescript/">2025 Typescript</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/Big-Data/">Big Data</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/LeetCode/">LeetCode</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/SystemStructure/">SystemStructure</a><span class="category-list-count">1</span></li></ul></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/08/">August 2025</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/05/">May 2023</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/03/">March 2023</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/02/">February 2023</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/01/">January 2023</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/12/">December 2022</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/09/">September 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/07/">July 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/06/">June 2022</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/05/">May 2022</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/04/">April 2022</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/03/">March 2022</a><span class="archive-list-count">17</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/02/">February 2022</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/01/">January 2022</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">December 2021</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">October 2021</a><span class="archive-list-count">24</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">September 2021</a><span class="archive-list-count">46</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">August 2021</a><span class="archive-list-count">12</span></li></ul>
+    </div>
+  </div>
+
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2025 Yu Hsiang<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

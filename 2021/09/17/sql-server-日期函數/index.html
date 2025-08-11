@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>[Day25] SQL server 日期函數 - SQL Server資料庫入門 | UM&#39;s Coding Note</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="這回介紹日期函數的使用。在大多的資料庫都會有一些可以用的函式，讓我們做一些特殊操作。在這回以SQL server資料庫為例子。 SQL server日期函式GETDATE() 取得現在的日期時間DATEADD() 增加或減少指定的時間間隔DATEPART() 取出日期時間中特定的部分CONVERT() 格式化日期時間顯示DATEDIFF() 日期相減 可用的關鍵字可用的關鍵字參數: datepar">
+<meta property="og:type" content="article">
+<meta property="og:title" content="[Day25] SQL server 日期函數 - SQL Server資料庫入門">
+<meta property="og:url" content="https://yuhsiang237.github.io/2021/09/17/sql-server-%E6%97%A5%E6%9C%9F%E5%87%BD%E6%95%B8/index.html">
+<meta property="og:site_name" content="UM&#39;s Coding Note">
+<meta property="og:description" content="這回介紹日期函數的使用。在大多的資料庫都會有一些可以用的函式，讓我們做一些特殊操作。在這回以SQL server資料庫為例子。 SQL server日期函式GETDATE() 取得現在的日期時間DATEADD() 增加或減少指定的時間間隔DATEPART() 取出日期時間中特定的部分CONVERT() 格式化日期時間顯示DATEDIFF() 日期相減 可用的關鍵字可用的關鍵字參數: datepar">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://yuhsiang237.github.io/2021/09/17/sql-server-%E6%97%A5%E6%9C%9F%E5%87%BD%E6%95%B8/1.png">
+<meta property="og:image" content="https://yuhsiang237.github.io/2021/09/17/sql-server-%E6%97%A5%E6%9C%9F%E5%87%BD%E6%95%B8/2.png">
+<meta property="og:image" content="https://yuhsiang237.github.io/2021/09/17/sql-server-%E6%97%A5%E6%9C%9F%E5%87%BD%E6%95%B8/3.png">
+<meta property="og:image" content="https://yuhsiang237.github.io/2021/09/17/sql-server-%E6%97%A5%E6%9C%9F%E5%87%BD%E6%95%B8/4.png">
+<meta property="og:image" content="https://yuhsiang237.github.io/2021/09/17/sql-server-%E6%97%A5%E6%9C%9F%E5%87%BD%E6%95%B8/5.png">
+<meta property="article:published_time" content="2021-09-17T08:28:08.000Z">
+<meta property="article:modified_time" content="2025-08-11T03:49:08.845Z">
+<meta property="article:author" content="Yu Hsiang">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://yuhsiang237.github.io/2021/09/17/sql-server-%E6%97%A5%E6%9C%9F%E5%87%BD%E6%95%B8/1.png">
+  
+    <link rel="alternate" href="/atom.xml" title="UM's Coding Note" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">UM&#39;s Coding Note</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">I record my coding experience at this place🤙</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://yuhsiang237.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-sql-server-日期函數" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2021/09/17/sql-server-%E6%97%A5%E6%9C%9F%E5%87%BD%E6%95%B8/" class="article-date">
+  <time class="dt-published" datetime="2021-09-17T08:28:08.000Z" itemprop="datePublished">2021-09-17</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Database/">Database</a>►<a class="article-category-link" href="/categories/Database/SQL-Server/">SQL Server</a>►<a class="article-category-link" href="/categories/Topic/">Topic</a>►<a class="article-category-link" href="/categories/Topic/2021-SQL-Server-Challenge/">2021 SQL Server Challenge</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      [Day25] SQL server 日期函數 - SQL Server資料庫入門
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>這回介紹日期函數的使用。<br>在大多的資料庫都會有一些可以用的函式，讓我們做一些特殊操作。<br>在這回以SQL server資料庫為例子。</p>
+<h3 id="SQL-server日期函式"><a href="#SQL-server日期函式" class="headerlink" title="SQL server日期函式"></a>SQL server日期函式</h3><p>GETDATE() 取得現在的日期時間<br>DATEADD() 增加或減少指定的時間間隔<br>DATEPART() 取出日期時間中特定的部分<br>CONVERT() 格式化日期時間顯示<br>DATEDIFF() 日期相減</p>
+<h3 id="可用的關鍵字"><a href="#可用的關鍵字" class="headerlink" title="可用的關鍵字"></a>可用的關鍵字</h3><p>可用的關鍵字參數:</p>
+<table><thead><tr><th>datepart (全名和縮寫)</th><th>說明</th></tr></thead><tbody><tr><td>year, yyyy, yy</td><td>年</td></tr><tr><td>month, mm, m</td><td>月</td></tr><tr><td>day, dd, d</td><td>日</td></tr><tr><td>hour, hh</td><td>時</td></tr><tr><td>minute, n</td><td>分</td></tr><tr><td>second, ss, s</td><td>秒</td></tr><tr><td>millisecond, ms</td><td>毫秒</td></tr><tr><td>microsecond, mcs</td><td>微秒</td></tr><tr><td>nanosecond, ns</td><td>毫微秒</td></tr><tr><td>quarter, qq, q</td><td>季</td></tr><tr><td>dayofyear, dy, y</td><td>一年中的第幾天</td></tr><tr><td>week, wk, ww</td><td>週</td></tr><tr><td>weekday, dw</td><td>星期幾</td></tr></tbody></table>
+
+
+<h3 id="GETDATE"><a href="#GETDATE" class="headerlink" title="GETDATE"></a>GETDATE</h3><p>取得現在的日期時間</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Select </span><br><span class="line">GETDATE() as 現在的日期時間</span><br></pre></td></tr></table></figure>
+<p>結果</p>
+<img src="/2021/09/17/sql-server-%E6%97%A5%E6%9C%9F%E5%87%BD%E6%95%B8/1.png" class="">
+
+<h3 id="DATEADD"><a href="#DATEADD" class="headerlink" title="DATEADD"></a>DATEADD</h3><p>增加或減少指定的時間間隔<br>可以輸入負值，代表回推<br>正值則是往後推</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Select </span><br><span class="line">DATEADD(day, 2, GETDATE()) as 兩天後</span><br></pre></td></tr></table></figure>
+<p>結果</p>
+<img src="/2021/09/17/sql-server-%E6%97%A5%E6%9C%9F%E5%87%BD%E6%95%B8/2.png" class="">
+
+
+<h3 id="DATEPART"><a href="#DATEPART" class="headerlink" title="DATEPART"></a>DATEPART</h3><p>取出日期時間中特定的部分</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">SELECT DATEPART(yyyy, GETDATE())  as 年,</span><br><span class="line">DATEPART(mm, GETDATE())  as 月,</span><br><span class="line">DATEPART(dd, GETDATE())  as 日</span><br></pre></td></tr></table></figure>
+<p>結果</p>
+<img src="/2021/09/17/sql-server-%E6%97%A5%E6%9C%9F%E5%87%BD%E6%95%B8/3.png" class="">
+
+
+<h3 id="CONVERT"><a href="#CONVERT" class="headerlink" title="CONVERT"></a>CONVERT</h3><p>格式化日期時間顯示，可以用格式化代碼快速轉成指定規範格式。</p>
+<p>格式代碼:</p>
+<table>
+<tbody><tr>
+<th>Style ID</th>
+<th>Style 格式</th>
+</tr>
+
+<tr>
+<td>100 或者 0</td>
+<td>mon dd yyyy hh:miAM （或者 PM）</td>
+</tr>
+
+<tr>
+<td>101</td>
+<td>mm/dd/yy</td>
+</tr>
+
+<tr>
+<td>102</td>
+<td>yy.mm.dd</td>
+</tr>
+
+<tr>
+<td>103</td>
+<td>dd/mm/yy</td>
+</tr>
+
+<tr>
+<td>104</td>
+<td>dd.mm.yy</td>
+</tr>
+
+<tr>
+<td>105</td>
+<td>dd-mm-yy</td>
+</tr>
+
+<tr>
+<td>106</td>
+<td>dd mon yy</td>
+</tr>
+
+<tr>
+<td>107</td>
+<td>Mon dd, yy</td>
+</tr>
+
+<tr>
+<td>108</td>
+<td>hh:mm:ss</td>
+</tr>
+
+<tr>
+<td>109 或者 9</td>
+<td>mon dd yyyy hh:mi:ss:mmmAM（或者 PM）</td>
+</tr>
+
+<tr>
+<td>110</td>
+<td>mm-dd-yy</td>
+</tr>
+
+<tr>
+<td>111</td>
+<td>yy/mm/dd</td>
+</tr>
+
+<tr>
+<td>112</td>
+<td>yymmdd</td></tr>
+
+<tr>
+<td>113 或者 13</td>
+<td>dd mon yyyy hh:mm:ss:mmm(24h)</td>
+</tr>
+
+<tr>
+<td>114</td>
+<td>hh:mi:ss:mmm(24h)</td>
+</tr>
+
+<tr>
+<td>120 或者 20</td>
+<td>yyyy-mm-dd hh:mi:ss(24h)</td>
+</tr>
+
+<tr>
+<td>121 或者 21</td>
+<td>yyyy-mm-dd hh:mi:ss.mmm(24h)</td>
+</tr>
+
+<tr>
+<td>126</td>
+<td>yyyy-mm-ddThh:mm:ss.mmm（没有空格）</td>
+</tr>
+
+<tr>
+<td>130</td>
+<td>dd mon yyyy hh:mi:ss:mmmAM</td>
+</tr>
+
+<tr>
+<td>131</td>
+<td>dd/mm/yy hh:mi:ss:mmmAM</td>
+</tr>
+</tbody></table>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SELECT CONVERT(varchar, GETDATE(), 100) AS Converted</span><br></pre></td></tr></table></figure>
+結果
+<img src="/2021/09/17/sql-server-%E6%97%A5%E6%9C%9F%E5%87%BD%E6%95%B8/4.png" class="">
+
+<h3 id="DATEDIFF"><a href="#DATEDIFF" class="headerlink" title="DATEDIFF"></a>DATEDIFF</h3><p>日期相減</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SELECT DATEDIFF(day, &#x27;2008-06-10&#x27;, &#x27;2008-08-10&#x27;) AS 日期相差</span><br></pre></td></tr></table></figure>
+<p>結果</p>
+<img src="/2021/09/17/sql-server-%E6%97%A5%E6%9C%9F%E5%87%BD%E6%95%B8/5.png" class="">
+
+
+<h3 id="結論"><a href="#結論" class="headerlink" title="結論"></a>結論</h3><p>在SQL語法上比較常用的是DATEDIFF、DATEADD、CONVERT。GETDATE。<br>如:前1個月、今天-7天、上禮拜資料這種需求還蠻常見的。</p>
+<p><strong>參考資料</strong><br><a target="_blank" rel="noopener" href="https://www.fooish.com/sql/sql-server-getdate-function.html">https://www.fooish.com/sql/sql-server-getdate-function.html</a><br><a target="_blank" rel="noopener" href="https://www.w3school.com.cn/sql/func_convert.asp">https://www.w3school.com.cn/sql/func_convert.asp</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://yuhsiang237.github.io/2021/09/17/sql-server-%E6%97%A5%E6%9C%9F%E5%87%BD%E6%95%B8/" data-id="cme6kwo3e006igalj09tkbpm8" data-title="[Day25] SQL server 日期函數 - SQL Server資料庫入門" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2021/09/17/sql-server-%E5%88%86%E9%A0%81%E8%99%95%E7%90%86/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          [Day26] SQL server 分頁處理 - SQL Server資料庫入門
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2021/09/17/sql-server-%E8%B3%87%E6%96%99%E5%BA%AB%E7%AE%A1%E7%90%86%E5%B8%B3%E8%99%9F%E6%96%B0%E5%A2%9E/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">[Day24] SQL server 資料庫管理帳號新增 - SQL Server資料庫入門</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Code/">Code</a><span class="category-list-count">76</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Code/C/">C#</a><span class="category-list-count">69</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Code/Javascript/">Javascript</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Code/Refactoring/">Refactoring</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Code/Typescript/">Typescript</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/">Computer Science</a><span class="category-list-count">5</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/Algorithm/">Algorithm</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/Data-structure/">Data structure</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/Electronic-Circuit/">Electronic Circuit</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Daily-Log/">Daily Log</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/">Database</a><span class="category-list-count">57</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Database/PostgreSQL/">PostgreSQL</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/SQL-Server/">SQL Server</a><span class="category-list-count">47</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/">Framework</a><span class="category-list-count">27</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/AspNetCore-API/">AspNetCore API</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/AspNetCore-MVC/">AspNetCore MVC</a><span class="category-list-count">21</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/">Topic</a><span class="category-list-count">76</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2021-C-AspNetCore-Challenge/">2021 C# AspNetCore Challenge</a><span class="category-list-count">30</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2021-SQL-Server-Challenge/">2021 SQL Server Challenge</a><span class="category-list-count">30</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2022-C-SyncAndAsync/">2022 C# SyncAndAsync</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2025-Typescript/">2025 Typescript</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/Big-Data/">Big Data</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/LeetCode/">LeetCode</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/SystemStructure/">SystemStructure</a><span class="category-list-count">1</span></li></ul></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/08/">August 2025</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/05/">May 2023</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/03/">March 2023</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/02/">February 2023</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/01/">January 2023</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/12/">December 2022</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/09/">September 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/07/">July 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/06/">June 2022</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/05/">May 2022</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/04/">April 2022</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/03/">March 2022</a><span class="archive-list-count">17</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/02/">February 2022</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/01/">January 2022</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">December 2021</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">October 2021</a><span class="archive-list-count">24</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">September 2021</a><span class="archive-list-count">46</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">August 2021</a><span class="archive-list-count">12</span></li></ul>
+    </div>
+  </div>
+
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2025 Yu Hsiang<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>
