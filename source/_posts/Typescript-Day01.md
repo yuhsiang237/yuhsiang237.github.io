@@ -206,3 +206,175 @@ class Person {
   }
 }
 ```
+
+11. 型別別名（Type Alias）與複雜型別組合
+
+大型專案中可以將複雜型別命名，方便重用與維護
+TS:
+```typescript
+type OrderStatus = "pending" | "shipped" | "delivered";
+type Order = { id: number; status: OrderStatus };
+
+function process(order: Order) { /* ... */ }
+```
+
+12. Intersection Types（交叉型別）合併資料結構
+
+JS:
+```javascript
+// 只能動態合併物件
+const person = Object.assign({}, { name: "Alex" }, { age: 25 });
+```
+
+交叉型別在多個模組資料合併時很常用（特別是 Redux / API 結果整合）
+
+TS:
+```typescript
+type Name = { name: string };
+type Age = { age: number };
+type Person = Name & Age; // 交叉型別
+
+const person: Person = { name: "Alex", age: 25 };
+```
+
+13. 型別守衛（Type Guards）
+
+JS
+```javascript
+function handle(val) {
+  if (val.start) val.start(); // 可能 undefined
+}
+```
+
+
+大型專案裡經常用自訂型別守衛來精準縮小型別範圍
+
+TS
+```typescript
+function isFunction(value: unknown): value is Function {
+  return typeof value === "function";
+}
+
+function handle(val: unknown) {
+  if (isFunction(val)) {
+    val(); // ✅ 已縮小型別
+  }
+}
+```
+
+14. 宣告檔（.d.ts）與第三方函式庫型別
+
+JS:
+```javascript
+// 使用第三方庫時，無法獲得型別提示
+import moment from "moment";
+moment().format("YYYY-MM-DD"); // 沒 IntelliSense
+```
+
+大型專案幾乎都要用 .d.ts 來補齊沒有型別定義的第三方套件
+TS:
+```typescript
+// @types/moment 提供型別定義
+import moment from "moment";
+moment().format("YYYY-MM-DD"); // ✅ 型別提示 + 自動完成
+```
+
+15.readonly 與 Immutable 資料結構
+
+readonly 對大型專案的設定檔、常量物件非常重要
+
+Typescript
+```typescript
+type Config = {
+  readonly port: number;
+};
+
+const config: Config = { port: 3000 };
+config.port = 4000; 
+// ❌ Cannot assign to 'port' because it is a read-only property
+```
+
+16. keyof 與型別安全的物件鍵名存取
+
+JS
+```javascript
+function getProp(obj, key) {
+  return obj[key]; // key 可能錯拼
+}
+```
+
+keyof 確保傳入的屬性名稱是物件中真實存在的鍵名
+
+
+TS
+```typescript
+function getProp<T, K extends keyof T>(obj: T, key: K) {
+  return obj[key];
+}
+
+const user = { id: 1, name: "Alex" };
+getProp(user, "name"); // ✅
+getProp(user, "age");  
+// ❌ Argument of type '"age"' is not assignable to parameter of type '"id" | "name"'
+```
+17. Mapped Types（映射型別）
+
+JS:
+```javascript
+// 只能手動定義每個屬性為可選
+const partialUser = { name: "Alex" };
+```
+大型專案中 Partial、Required、Readonly 等都是 Mapped Types 的應用
+
+TS:
+```typescript
+type User = { id: number; name: string; age: number };
+type PartialUser = { [K in keyof User]?: User[K] };
+
+const partialUser: PartialUser = { name: "Alex" };
+```
+
+18. 模組與命名空間（Modules vs Namespaces）
+
+JS:
+```javascript
+// 無型別檢查的全域污染
+window.myApp = {};
+```
+大型專案建議使用 ES Modules 搭配 TS 的型別系統管理命名與依賴
+
+TS:
+```typescript
+// 使用模組系統
+export const myApp = {};
+```
+
+19. 型別推斷與 as const
+
+```javascript
+const roles = ["admin", "user"];
+
+```
+as const 在定義固定字面值陣列、物件時非常有用（例如權限、狀態碼）
+
+```typescript
+const roles = ["admin", "user"] as const;
+// roles: readonly ["admin", "user"]
+type Role = typeof roles[number]; // "admin" | "user"
+```
+
+20. Non-null Assertion（非空斷言）與嚴格模式
+
+JS:
+```javascript
+let el = document.getElementById("myDiv");
+el.style.color = "red"; // el 可能是 null
+```
+嚴格模式 (strictNullChecks) 在大型專案中很重要，可以提早發現 null/undefined 錯誤
+
+
+TS:
+```typescript
+let el = document.getElementById("myDiv")!;
+el.style.color = "red"; // ✅ 告訴 TS 這裡一定不為 null
+```
