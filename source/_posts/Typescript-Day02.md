@@ -45,6 +45,20 @@ enum StatusCode {
   InProgress = 3
 }
 
+// 中文對應
+const StatusCodeNameChi: Record<StatusCode, string> = {
+  [StatusCode.Done]: '完成',
+  [StatusCode.Pending]: '等待',
+  [StatusCode.InProgress]: '進行中'
+};
+
+// 英文對應
+const StatusCodeNameEng: Record<StatusCode, string> = {
+  [StatusCode.Done]: 'Done',
+  [StatusCode.Pending]: 'Pending',
+  [StatusCode.InProgress]: 'In Progress'
+};
+
 // Todo 型別
 interface Todo {
   id: number;
@@ -62,7 +76,7 @@ class TodoManager {
 
   // 讀取全部
   readAll(): Todo[] {
-    return [...this.todos]; // 複製避免外部修改
+    return [...this.todos];
   }
 
   // 讀取單一
@@ -85,38 +99,36 @@ class TodoManager {
     return this.todos.length < originalLength;
   }
 
-  // 顯示狀態文字版（擴充）
-  getStatusName(status: StatusCode): string {
-    return StatusCode[status];
+  // 取得英文狀態名稱
+  getStatusNameEng(status: StatusCode): string {
+    return StatusCodeNameEng[status];
+  }
+
+  // 取得中文狀態名稱
+  getStatusNameChi(status: StatusCode): string {
+    return StatusCodeNameChi[status];
   }
 }
 
 // 測試 CRUD
 const manager = new TodoManager();
 
-// Create
 manager.create({ id: 1, nametitle: 'Test Task 1', status: StatusCode.Pending });
 manager.create({ id: 2, nametitle: 'Test Task 2', status: StatusCode.InProgress });
 
-// Read All
 console.log('All Todos:', manager.readAll());
 
-// Read By Id
 console.log('Todo with id=1:', manager.readById(1));
 
-// Update
 manager.update(1, { status: StatusCode.Done, nametitle: 'Updated Task 1' });
 console.log('After Update:', manager.readById(1));
 
-// Delete
 manager.delete(2);
 console.log('After Delete:', manager.readAll());
 
-// 取得狀態名稱示範
 const todo = manager.readById(1);
 if (todo) {
-  console.log('Status code:', todo.status);
-  console.log('Status name:', manager.getStatusName(todo.status));
+  console.log('英文狀態:', manager.getStatusNameEng(todo.status));
+  console.log('中文狀態:', manager.getStatusNameChi(todo.status));
 }
-
 ```
