@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>[Day02] Typescript實作強型別todolist | UM&#39;s Coding Note</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="這回主要使用Typescript時做一個todolist，以強型別方式規範資料，並操作CRUD以過往實作經驗搭配AI撰寫，在職場正式專案上也很通用的做法 功能 新增(create) 查詢(readAll, readById) 更新(update) 刪除(delete) enum 狀態對應文字取得(getStatusName)  優點1.可讀性高:透過 StatusCode.Done、StatusC">
+<meta property="og:type" content="article">
+<meta property="og:title" content="[Day02] Typescript實作強型別todolist">
+<meta property="og:url" content="https://yuhsiang237.github.io/2025/08/12/Typescript-Day02/index.html">
+<meta property="og:site_name" content="UM&#39;s Coding Note">
+<meta property="og:description" content="這回主要使用Typescript時做一個todolist，以強型別方式規範資料，並操作CRUD以過往實作經驗搭配AI撰寫，在職場正式專案上也很通用的做法 功能 新增(create) 查詢(readAll, readById) 更新(update) 刪除(delete) enum 狀態對應文字取得(getStatusName)  優點1.可讀性高:透過 StatusCode.Done、StatusC">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2025-08-12T13:17:12.000Z">
+<meta property="article:modified_time" content="2025-08-12T09:27:19.822Z">
+<meta property="article:author" content="Yu Hsiang">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="UM's Coding Note" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">UM&#39;s Coding Note</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">I record my coding experience at this place🤙</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://yuhsiang237.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-Typescript-Day02" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2025/08/12/Typescript-Day02/" class="article-date">
+  <time class="dt-published" datetime="2025-08-12T13:17:12.000Z" itemprop="datePublished">2025-08-12</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Code/">Code</a>►<a class="article-category-link" href="/categories/Code/Javascript/">Javascript</a>►<a class="article-category-link" href="/categories/Code/Typescript/">Typescript</a>►<a class="article-category-link" href="/categories/Topic/">Topic</a>►<a class="article-category-link" href="/categories/Topic/2025-Typescript/">2025 Typescript</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      [Day02] Typescript實作強型別todolist
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>這回主要使用Typescript時做一個todolist，以強型別方式規範資料，並操作CRUD<br>以過往實作經驗搭配AI撰寫，在職場正式專案上也很通用的做法</p>
+<h4 id="功能"><a href="#功能" class="headerlink" title="功能"></a>功能</h4><ol>
+<li>新增(create)</li>
+<li>查詢(readAll, readById)</li>
+<li>更新(update)</li>
+<li>刪除(delete)</li>
+<li>enum 狀態對應文字取得(getStatusName)</li>
+</ol>
+<h4 id="優點"><a href="#優點" class="headerlink" title="優點"></a>優點</h4><p>1.可讀性高:<br>透過 StatusCode.Done、StatusCode.Pending 等命名，<br>代碼一目了然，比單純用 1、2、3 更好理解。<br>反向查詢文字 StatusCode[status] 讓狀態展示更友善。<br>enum 支援數字 ↔ 字串互轉，<br>程式內可用數字節省空間，UI 顯示可用文字增強可讀性。</p>
+<p>2.維護方便:<br>CRUD 邏輯封裝在 TodoManager 類別中，讓資料操作統一管理，易於擴展與維護。</p>
+<p>3.封裝良好:<br>todos 陣列設為私有 (private)，外部只能透過方法操作資料，</p>
+<p>4.型別安全:<br>status 欄位被定義成 StatusCode enum，<br>只能接受預先定義的數值（1 | 2 | 3），避免亂輸入或寫錯字串。<br>編譯器會檢查不合規的狀態賦值，降低執行錯誤風險。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 狀態 enum</span></span><br><span class="line"><span class="built_in">enum</span> StatusCode &#123;</span><br><span class="line">  Done = <span class="number">1</span>,</span><br><span class="line">  Pending = <span class="number">2</span>,</span><br><span class="line">  InProgress = <span class="number">3</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Todo 型別</span></span><br><span class="line"><span class="keyword">interface</span> Todo &#123;</span><br><span class="line">  <span class="attr">id</span>: <span class="built_in">number</span>;</span><br><span class="line">  nametitle: <span class="built_in">string</span>;</span><br><span class="line">  status: StatusCode;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">TodoManager</span> </span>&#123;</span><br><span class="line">  <span class="keyword">private</span> todos: Todo[] = [];</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 新增</span></span><br><span class="line">  create(todo: Todo): <span class="built_in">void</span> &#123;</span><br><span class="line">    <span class="built_in">this</span>.todos.push(todo);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 讀取全部</span></span><br><span class="line">  readAll(): Todo[] &#123;</span><br><span class="line">    <span class="keyword">return</span> [...this.todos]; <span class="comment">// 複製避免外部修改</span></span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 讀取單一</span></span><br><span class="line">  readById(id: <span class="built_in">number</span>): Todo | <span class="literal">undefined</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">this</span>.todos.find(<span class="function"><span class="params">t</span> =&gt;</span> t.id === id);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 更新</span></span><br><span class="line">  update(id: <span class="built_in">number</span>, <span class="attr">updatedFields</span>: Partial&lt;Todo&gt;): <span class="built_in">boolean</span> &#123;</span><br><span class="line">    <span class="keyword">const</span> index = <span class="built_in">this</span>.todos.findIndex(<span class="function"><span class="params">t</span> =&gt;</span> t.id === id);</span><br><span class="line">    <span class="keyword">if</span> (index === -<span class="number">1</span>) <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    <span class="built_in">this</span>.todos[index] = &#123; ...this.todos[index], ...updatedFields &#125;;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 刪除</span></span><br><span class="line">  <span class="keyword">delete</span>(id: <span class="built_in">number</span>): <span class="built_in">boolean</span> &#123;</span><br><span class="line">    <span class="keyword">const</span> originalLength = <span class="built_in">this</span>.todos.length;</span><br><span class="line">    <span class="built_in">this</span>.todos = <span class="built_in">this</span>.todos.filter(<span class="function"><span class="params">t</span> =&gt;</span> t.id !== id);</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">this</span>.todos.length &lt; originalLength;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 顯示狀態文字版（擴充）</span></span><br><span class="line">  getStatusName(status: StatusCode): <span class="built_in">string</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> StatusCode[status];</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 測試 CRUD</span></span><br><span class="line"><span class="keyword">const</span> manager = <span class="keyword">new</span> TodoManager();</span><br><span class="line"></span><br><span class="line"><span class="comment">// Create</span></span><br><span class="line">manager.create(&#123; <span class="attr">id</span>: <span class="number">1</span>, <span class="attr">nametitle</span>: <span class="string">&#x27;Test Task 1&#x27;</span>, <span class="attr">status</span>: StatusCode.Pending &#125;);</span><br><span class="line">manager.create(&#123; <span class="attr">id</span>: <span class="number">2</span>, <span class="attr">nametitle</span>: <span class="string">&#x27;Test Task 2&#x27;</span>, <span class="attr">status</span>: StatusCode.InProgress &#125;);</span><br><span class="line"></span><br><span class="line"><span class="comment">// Read All</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="string">&#x27;All Todos:&#x27;</span>, manager.readAll());</span><br><span class="line"></span><br><span class="line"><span class="comment">// Read By Id</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="string">&#x27;Todo with id=1:&#x27;</span>, manager.readById(<span class="number">1</span>));</span><br><span class="line"></span><br><span class="line"><span class="comment">// Update</span></span><br><span class="line">manager.update(<span class="number">1</span>, &#123; <span class="attr">status</span>: StatusCode.Done, <span class="attr">nametitle</span>: <span class="string">&#x27;Updated Task 1&#x27;</span> &#125;);</span><br><span class="line"><span class="built_in">console</span>.log(<span class="string">&#x27;After Update:&#x27;</span>, manager.readById(<span class="number">1</span>));</span><br><span class="line"></span><br><span class="line"><span class="comment">// Delete</span></span><br><span class="line">manager.delete(<span class="number">2</span>);</span><br><span class="line"><span class="built_in">console</span>.log(<span class="string">&#x27;After Delete:&#x27;</span>, manager.readAll());</span><br><span class="line"></span><br><span class="line"><span class="comment">// 取得狀態名稱示範</span></span><br><span class="line"><span class="keyword">const</span> todo = manager.readById(<span class="number">1</span>);</span><br><span class="line"><span class="keyword">if</span> (todo) &#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">&#x27;Status code:&#x27;</span>, todo.status);</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">&#x27;Status name:&#x27;</span>, manager.getStatusName(todo.status));</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://yuhsiang237.github.io/2025/08/12/Typescript-Day02/" data-id="cme8bz3uy00004qlj1wqf3wvx" data-title="[Day02] Typescript實作強型別todolist" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2025/08/11/Typescript-Day01/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">[Day01] Typescript與Javascript差異</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Code/">Code</a><span class="category-list-count">77</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Code/C/">C#</a><span class="category-list-count">69</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Code/Javascript/">Javascript</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Code/Refactoring/">Refactoring</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Code/Typescript/">Typescript</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/">Computer Science</a><span class="category-list-count">5</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/Algorithm/">Algorithm</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/Data-structure/">Data structure</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/Electronic-Circuit/">Electronic Circuit</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Daily-Log/">Daily Log</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/">Database</a><span class="category-list-count">57</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Database/PostgreSQL/">PostgreSQL</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/SQL-Server/">SQL Server</a><span class="category-list-count">47</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/">Framework</a><span class="category-list-count">27</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/AspNetCore-API/">AspNetCore API</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/AspNetCore-MVC/">AspNetCore MVC</a><span class="category-list-count">21</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/">Topic</a><span class="category-list-count">77</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2021-C-AspNetCore-Challenge/">2021 C# AspNetCore Challenge</a><span class="category-list-count">30</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2021-SQL-Server-Challenge/">2021 SQL Server Challenge</a><span class="category-list-count">30</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2022-C-SyncAndAsync/">2022 C# SyncAndAsync</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2025-Typescript/">2025 Typescript</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/Big-Data/">Big Data</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/LeetCode/">LeetCode</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/SystemStructure/">SystemStructure</a><span class="category-list-count">1</span></li></ul></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/08/">August 2025</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/05/">May 2023</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/03/">March 2023</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/02/">February 2023</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/01/">January 2023</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/12/">December 2022</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/09/">September 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/07/">July 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/06/">June 2022</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/05/">May 2022</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/04/">April 2022</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/03/">March 2022</a><span class="archive-list-count">17</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/02/">February 2022</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/01/">January 2022</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">December 2021</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">October 2021</a><span class="archive-list-count">24</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">September 2021</a><span class="archive-list-count">46</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">August 2021</a><span class="archive-list-count">12</span></li></ul>
+    </div>
+  </div>
+
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2025 Yu Hsiang<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>
