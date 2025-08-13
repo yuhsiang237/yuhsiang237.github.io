@@ -77,6 +77,71 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-C-MVC專案中撰寫API" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2021/10/15/C-MVC%E5%B0%88%E6%A1%88%E4%B8%AD%E6%92%B0%E5%AF%ABAPI/" class="article-date">
+  <time class="dt-published" datetime="2021-10-15T02:16:48.000Z" itemprop="datePublished">2021-10-15</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Code/">Code</a>►<a class="article-category-link" href="/categories/Code/C/">C#</a>►<a class="article-category-link" href="/categories/Framework/">Framework</a>►<a class="article-category-link" href="/categories/Framework/AspNetCore-MVC/">AspNetCore MVC</a>►<a class="article-category-link" href="/categories/Topic/">Topic</a>►<a class="article-category-link" href="/categories/Topic/2021-C-AspNetCore-Challenge/">2021 C# AspNetCore Challenge</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2021/10/15/C-MVC%E5%B0%88%E6%A1%88%E4%B8%AD%E6%92%B0%E5%AF%ABAPI/">[Day18] C# MVC專案中撰寫API - C#&amp;AspNetCore</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>在上回中我們介紹了 <a href="/2021/10/14/C-MVC-%E6%8E%92%E5%BA%8F%E7%AF%A9%E9%81%B8%E5%92%8C%E5%88%86%E9%A0%81%E5%AF%A6%E4%BD%9C/" title="[Day17] C# MVC 排序、篩選和分頁實作 - C#&amp;AspNetCore">[Day17] C# MVC 排序、篩選和分頁實作 - C#&amp;AspNetCore</a> ，能呈現出列表了。</p>
+<p>而這回就要講能讓事情比較省事的API。</p>
+<h3 id="API"><a href="#API" class="headerlink" title="API"></a>API</h3><p>應用程式介面（英語：Application Programming Interface），縮寫為API，是一種計算介面，它定義多個軟體中介之間的互動，以及可以進行的呼叫（call）或請求（request）的種類，如何進行呼叫或發出請求，應使用的資料格式，應遵循的慣例等。</p>
+<p>簡單來說就是:程式的接口，可以傳送參數給後端處理的函式，之後會把所需的資料回傳你。</p>
+<h3 id="實作API"><a href="#實作API" class="headerlink" title="實作API"></a>實作API</h3><p>這回先介紹任意命名的API。</p>
+<p>1.在Controller撰寫API，第37~45行</p>
+<p><strong>~/Controller/HomeController.cs</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line">using Microsoft.AspNetCore.Mvc;</span><br><span class="line">using Microsoft.Extensions.Logging;</span><br><span class="line">using MVC_With_API.Models;</span><br><span class="line">using System;</span><br><span class="line">using System.Collections.Generic;</span><br><span class="line">using System.Diagnostics;</span><br><span class="line">using System.Linq;</span><br><span class="line">using System.Threading.Tasks;</span><br><span class="line"></span><br><span class="line">namespace MVC_With_API.Controllers</span><br><span class="line">&#123;</span><br><span class="line">    public class HomeController : Controller</span><br><span class="line">    &#123;</span><br><span class="line">        private readonly ILogger&lt;HomeController&gt; _logger;</span><br><span class="line"></span><br><span class="line">        public HomeController(ILogger&lt;HomeController&gt; logger)</span><br><span class="line">        &#123;</span><br><span class="line">            _logger = logger;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        public IActionResult Index()</span><br><span class="line">        &#123;</span><br><span class="line">            return View();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        public IActionResult Privacy()</span><br><span class="line">        &#123;</span><br><span class="line">            return View();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]</span><br><span class="line">        public IActionResult Error()</span><br><span class="line">        &#123;</span><br><span class="line">            return View(new ErrorViewModel &#123; RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier &#125;);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        [HttpPost]</span><br><span class="line">        public JsonResult getSum(int num)</span><br><span class="line">        &#123;</span><br><span class="line">            int sum = 0;</span><br><span class="line">            for(int i = 0; i &lt; num; i++)</span><br><span class="line">            &#123;</span><br><span class="line">                sum += i;</span><br><span class="line">            &#125;</span><br><span class="line">            return Json(new &#123; result = sum &#125;);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>說明:<br>如上第37~45行就是一個API了，外界可以用POST方式Request，然後經由裡面的計算去得到一個結果，並回傳Response。<br>這種隨意風格的API大概僅適合在特定Controller底下使用。</p>
+<p>2.再來我們用測試工具PostMan查看結果<br><a target="_blank" rel="noopener" href="https://www.postman.com/downloads/">https://www.postman.com/downloads/</a><br>說明:我們用body傳送了參數num，並設定為10，會從1+2+3…+10=45得到45，可從Response接到值。</p>
+<img src="/2021/10/15/C-MVC%E5%B0%88%E6%A1%88%E4%B8%AD%E6%92%B0%E5%AF%ABAPI/1.png" class="">
+
+<p>3.嘗試在頁面上呼叫</p>
+<p><strong>~/Views/Home/Index.cshtml</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">@&#123;</span><br><span class="line">    ViewData[&quot;Title&quot;] = &quot;Home Page&quot;;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">&lt;div class=&quot;text-center&quot;&gt;</span><br><span class="line">    &lt;h1 class=&quot;display-4&quot;&gt;Welcome&lt;/h1&gt;</span><br><span class="line">    &lt;p&gt;Learn about &lt;a href=&quot;https://docs.microsoft.com/aspnet/core&quot;&gt;building Web apps with ASP.NET Core&lt;/a&gt;.&lt;/p&gt;</span><br><span class="line">&lt;/div&gt;</span><br><span class="line"></span><br><span class="line">&lt;div id=&quot;result&quot;&gt;&lt;/div&gt;</span><br><span class="line"></span><br><span class="line">@section Scripts&#123;</span><br><span class="line">    &lt;script type=&quot;text/javascript&quot;&gt;</span><br><span class="line">    $.post(&quot;Home/getSum&quot;,</span><br><span class="line">        &#123;</span><br><span class="line">            num: &quot;10&quot;,</span><br><span class="line">        &#125;,</span><br><span class="line">        function (data, status) &#123;</span><br><span class="line">            $(&#x27;#result&#x27;).html(data.result)</span><br><span class="line">        &#125;);</span><br><span class="line">    &lt;/script&gt;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>說明:第95~105行就是呼叫的AJAX了!<br>並把結果印到html上。</p>
+<p>結果:</p>
+<img src="/2021/10/15/C-MVC%E5%B0%88%E6%A1%88%E4%B8%AD%E6%92%B0%E5%AF%ABAPI/2.png" class="">
+<h3 id="總結"><a href="#總結" class="headerlink" title="總結"></a>總結</h3><p>這種簡易無規範的API比較適合只在Controller底下寫。<br>如果要開給外界比較推薦用RESTful API。</p>
+<p>至於為什麼RESTful呢?<br>因為各種getPeopleData、updatePeople、getPeopleList…會造成維護上不好掌控，沒有固定格式，不好直覺知道結果。<br>但如果專案內部有風格統一API，且偏向自用，那其實也不需要RESTful。</p>
+<p>下回會嘗試使用RESTful API的方式撰寫。</p>
+<p>然後相較於之前Laravel開發的經驗，感覺.net core MVC切路由方式不太直覺@@。</p>
+<p><strong>參考資料</strong><br><a target="_blank" rel="noopener" href="https://docs.microsoft.com/zh-tw/aspnet/core/web-api/?view=aspnetcore-3.1">https://docs.microsoft.com/zh-tw/aspnet/core/web-api/?view=aspnetcore-3.1</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://yuhsiang237.github.io/2021/10/15/C-MVC%E5%B0%88%E6%A1%88%E4%B8%AD%E6%92%B0%E5%AF%ABAPI/" data-id="cme6kwo0y0024galj02ycbp22" data-title="[Day18] C# MVC專案中撰寫API - C#&amp;AspNetCore" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
     <article id="post-C-MVC-排序篩選和分頁實作" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
     <a href="/2021/10/14/C-MVC-%E6%8E%92%E5%BA%8F%E7%AF%A9%E9%81%B8%E5%92%8C%E5%88%86%E9%A0%81%E5%AF%A6%E4%BD%9C/" class="article-date">
@@ -787,104 +852,6 @@
 
 
   
-    <article id="post-C-MVC-檢視元件ViewCompoment使用" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2021/10/05/C-MVC-%E6%AA%A2%E8%A6%96%E5%85%83%E4%BB%B6ViewCompoment%E4%BD%BF%E7%94%A8/" class="article-date">
-  <time class="dt-published" datetime="2021-10-05T04:06:42.000Z" itemprop="datePublished">2021-10-05</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/Code/">Code</a>►<a class="article-category-link" href="/categories/Code/C/">C#</a>►<a class="article-category-link" href="/categories/Framework/">Framework</a>►<a class="article-category-link" href="/categories/Framework/AspNetCore-MVC/">AspNetCore MVC</a>►<a class="article-category-link" href="/categories/Topic/">Topic</a>►<a class="article-category-link" href="/categories/Topic/2021-C-AspNetCore-Challenge/">2021 C# AspNetCore Challenge</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2021/10/05/C-MVC-%E6%AA%A2%E8%A6%96%E5%85%83%E4%BB%B6ViewCompoment%E4%BD%BF%E7%94%A8/">[Day10] C# MVC 檢視元件View Compoment使用- C#&amp;AspNetCore</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p>在上回 <a href="/2021/10/04/C-MVC-View%E4%BD%BF%E7%94%A8/" title="[Day9] C# MVC View使用 - C#&amp;AspNetCore">[Day9] C# MVC View使用 - C#&amp;AspNetCore</a> ，我們介紹了View的操作及用法，並稍微帶了Partial View。<br>而這回，我們將介紹檢視元件View Compoment。</p>
-<p>因為原本MVC5的<code>@HTML.action</code>在.net core MVC中已經被移除掉了，造成Partial View會無法綁後端Controller撰寫商業邏輯。<br>因此，要改用View Compoment的做法。</p>
-<h3 id="View-Compoment"><a href="#View-Compoment" class="headerlink" title="View Compoment"></a>View Compoment</h3><p>檢視元件與部分檢視類似，但功能更強大。 檢視元件不會使用模型繫結(看你要不要都可以)，並且只取決於呼叫它時所提供的資料。 </p>
-<p>檢視元件：</p>
-<ul>
-<li>轉譯區塊，而不是整個回應。</li>
-<li>包含控制器與檢視之間的相同關注點分離和可測試性優點。</li>
-<li>可以有參數和商務邏輯。</li>
-<li>它通常是從配置頁面叫用。</li>
-<li>不參與控制器生命週期，無法使用Filter。</li>
-<li>非 HTTP 端點的呼叫，不處理Http Request/Response ，ViewComponent是透過程式碼叫用 。 </li>
-</ul>
-<p>簡言之，可以撰寫商務邏輯。<br>有一個專門負責這View Component商務邏輯的程式碼。而你在View中也能把參數傳進View Component裡面。</p>
-<h3 id="View-Compoment建立與使用"><a href="#View-Compoment建立與使用" class="headerlink" title="View Compoment建立與使用"></a>View Compoment建立與使用</h3><p>照微軟官方文件，View Compoment有限定的資料夾結構，避免維護困難。<br>黃色標記是等等會新增的檔案。</p>
-<img src="/2021/10/05/C-MVC-%E6%AA%A2%E8%A6%96%E5%85%83%E4%BB%B6ViewCompoment%E4%BD%BF%E7%94%A8/1.png" class="">
-
-<ul>
-<li><code>ViewComponents資料夾</code>必須在根目錄下新增這資料夾名稱才可以使用ViewComponents，否則底下的程式碼會出現錯誤。<ul>
-<li><code>ShowUserInfo.cs</code>是以View Component為名稱命名的業務邏輯管理器。</li>
-</ul>
-</li>
-<li><code>Shared/Components資料夾</code>底下都是以<strong>資料夾</strong>為名的Component名稱。<ul>
-<li><code>ShowUserInfo資料夾</code>為View Component名稱，底下有一個Default.cshtml，為Component的視圖。</li>
-</ul>
-</li>
-</ul>
-<p>1.首先先建立業務邏輯的檔案</p>
-<p><strong>ShowUserInfo.cs</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">using Microsoft.AspNetCore.Mvc;</span><br><span class="line">using Microsoft.EntityFrameworkCore;</span><br><span class="line">using System.Collections.Generic;</span><br><span class="line">using System.Linq;</span><br><span class="line">using System.Threading.Tasks;</span><br><span class="line">using WebApplication1.Models;</span><br><span class="line"></span><br><span class="line">namespace WebApplication1.ViewComponents</span><br><span class="line">&#123;</span><br><span class="line">    public class ShowUserInfo : ViewComponent</span><br><span class="line">    &#123;</span><br><span class="line">        public async Task&lt;IViewComponentResult&gt; InvokeAsync(string  number, string name,string tel)</span><br><span class="line">        &#123;</span><br><span class="line">            Customer customer = new Customer();</span><br><span class="line">            customer.Name = name;</span><br><span class="line">            customer.Number = number;</span><br><span class="line">            customer.Tel = tel;</span><br><span class="line">            return View(customer);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<ul>
-<li><code>IViewComponentResult</code>這段回應照寫就好，算是固定寫法。</li>
-</ul>
-<p>在13~19行可以用Model、ViewBag、ViewData，簡單來說就是當你在寫Controller裡的action那樣。<br>我這邊為了求謹慎，所以回傳的是個強型別Model，因為固定規格比較好維護。</p>
-<p>2.再來是View Component的視圖</p>
-<p><strong>ShowUserInfo.cshtml</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">@model WebApplication1.Models.Customer;</span><br><span class="line"></span><br><span class="line">&lt;ul&gt;</span><br><span class="line">    &lt;li&gt;Number:@Model.Number&lt;/li&gt;</span><br><span class="line">    &lt;li&gt;Name:@Model.Name&lt;/li&gt;</span><br><span class="line">    &lt;li&gt;Tel:@Model.Tel&lt;/li&gt;</span><br><span class="line">&lt;/ul&gt;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<p>在此就把傳過來的資料顯示即可。</p>
-<p>3.實際把View Component套用到View上。</p>
-<p><strong>Index.cshtml</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">@model WebApplication1.Models.Customer;</span><br><span class="line">@using WebApplication1.ViewComponents;</span><br><span class="line">@&#123;</span><br><span class="line">    ViewData[&quot;Title&quot;] = &quot;Home Page&quot;;</span><br><span class="line">&#125;</span><br><span class="line">&lt;ul&gt;</span><br><span class="line">    &lt;li&gt;@Model.Number&lt;/li&gt;</span><br><span class="line">    &lt;li&gt;@Model.Name&lt;/li&gt;</span><br><span class="line">    &lt;li&gt;@Model.Tel&lt;/li&gt;</span><br><span class="line">&lt;/ul&gt;</span><br><span class="line">&lt;div class=&quot;text-center&quot;&gt;</span><br><span class="line">    &lt;h1 class=&quot;display-4&quot;&gt;Welcome&lt;/h1&gt;</span><br><span class="line">    &lt;p&gt;Learn about &lt;a href=&quot;https://docs.microsoft.com/aspnet/core&quot;&gt;building Web apps with ASP.NET Core&lt;/a&gt;.&lt;/p&gt;</span><br><span class="line">&lt;/div&gt;</span><br><span class="line"></span><br><span class="line">// 呼叫View Component</span><br><span class="line">@await Component.InvokeAsync(nameof(ShowUserInfo), new &#123; number = &quot;A007&quot;, name = &quot;YS&quot;,tel=&quot;00-00000000&quot; &#125;)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<ul>
-<li><code>@await Component.InvokeAsync</code>用這方法傳遞參數來呼叫View Component顯示。</li>
-</ul>
-<p>如此一來就完成了，在網頁上呈現。</p>
-<img src="/2021/10/05/C-MVC-%E6%AA%A2%E8%A6%96%E5%85%83%E4%BB%B6ViewCompoment%E4%BD%BF%E7%94%A8/2.png" class="">
-
-<h3 id="總結"><a href="#總結" class="headerlink" title="總結"></a>總結</h3><p>整體流程大概是這樣:</p>
-<ol>
-<li>使用者進到View頁面</li>
-<li>Controller接受並回應資料給View</li>
-<li>View上的Razor語法呼叫ViewComponent</li>
-<li>把參數再丟給ViewComponent處理</li>
-<li>之後結果再回傳給整個View。</li>
-</ol>
-<p>感覺這種方式真是爽快，功能又強，減少了很多Controller要顧慮的生命週期。<br>有獨立區塊用View Component會比用Partial View輕鬆很多。(時代的眼淚 誤~*</p>
-<p><strong>參考資料</strong><br><a target="_blank" rel="noopener" href="https://dotblogs.com.tw/shadow/2021/04/10/174425">https://dotblogs.com.tw/shadow/2021/04/10/174425</a><br><a target="_blank" rel="noopener" href="https://docs.microsoft.com/en-us/aspnet/core/mvc/views/view-components?view=aspnetcore-5.0">https://docs.microsoft.com/en-us/aspnet/core/mvc/views/view-components?view=aspnetcore-5.0</a></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://yuhsiang237.github.io/2021/10/05/C-MVC-%E6%AA%A2%E8%A6%96%E5%85%83%E4%BB%B6ViewCompoment%E4%BD%BF%E7%94%A8/" data-id="cme6kwo0v001xgalj676324lu" data-title="[Day10] C# MVC 檢視元件View Compoment使用- C#&amp;AspNetCore" class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
 
 
   <nav id="page-nav">
@@ -900,7 +867,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Categories</h3>
     <div class="widget">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Code/">Code</a><span class="category-list-count">77</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Code/C/">C#</a><span class="category-list-count">69</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Code/Javascript/">Javascript</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Code/Refactoring/">Refactoring</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Code/Typescript/">Typescript</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/">Computer Science</a><span class="category-list-count">5</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/Algorithm/">Algorithm</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/Data-structure/">Data structure</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/Electronic-Circuit/">Electronic Circuit</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Daily-Log/">Daily Log</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/">Database</a><span class="category-list-count">57</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Database/PostgreSQL/">PostgreSQL</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/SQL-Server/">SQL Server</a><span class="category-list-count">47</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/">Framework</a><span class="category-list-count">27</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/AspNetCore-API/">AspNetCore API</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/AspNetCore-MVC/">AspNetCore MVC</a><span class="category-list-count">21</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/">Topic</a><span class="category-list-count">77</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2021-C-AspNetCore-Challenge/">2021 C# AspNetCore Challenge</a><span class="category-list-count">30</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2021-SQL-Server-Challenge/">2021 SQL Server Challenge</a><span class="category-list-count">30</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2022-C-SyncAndAsync/">2022 C# SyncAndAsync</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2025-Typescript/">2025 Typescript</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/Big-Data/">Big Data</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/LeetCode/">LeetCode</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/SystemStructure/">SystemStructure</a><span class="category-list-count">1</span></li></ul></li></ul>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Code/">Code</a><span class="category-list-count">78</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Code/C/">C#</a><span class="category-list-count">69</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Code/Javascript/">Javascript</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Code/Refactoring/">Refactoring</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Code/Typescript/">Typescript</a><span class="category-list-count">3</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/">Computer Science</a><span class="category-list-count">5</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/Algorithm/">Algorithm</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/Data-structure/">Data structure</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/Electronic-Circuit/">Electronic Circuit</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Daily-Log/">Daily Log</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/">Database</a><span class="category-list-count">57</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Database/PostgreSQL/">PostgreSQL</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/SQL-Server/">SQL Server</a><span class="category-list-count">47</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/">Framework</a><span class="category-list-count">27</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/AspNetCore-API/">AspNetCore API</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/AspNetCore-MVC/">AspNetCore MVC</a><span class="category-list-count">21</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/">Topic</a><span class="category-list-count">78</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2021-C-AspNetCore-Challenge/">2021 C# AspNetCore Challenge</a><span class="category-list-count">30</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2021-SQL-Server-Challenge/">2021 SQL Server Challenge</a><span class="category-list-count">30</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2022-C-SyncAndAsync/">2022 C# SyncAndAsync</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2025-Typescript/">2025 Typescript</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/Big-Data/">Big Data</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/LeetCode/">LeetCode</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/SystemStructure/">SystemStructure</a><span class="category-list-count">1</span></li></ul></li></ul>
     </div>
   </div>
 
@@ -910,7 +877,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/08/">August 2025</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/05/">May 2023</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/03/">March 2023</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/02/">February 2023</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/01/">January 2023</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/12/">December 2022</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/09/">September 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/07/">July 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/06/">June 2022</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/05/">May 2022</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/04/">April 2022</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/03/">March 2022</a><span class="archive-list-count">17</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/02/">February 2022</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/01/">January 2022</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">December 2021</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">October 2021</a><span class="archive-list-count">24</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">September 2021</a><span class="archive-list-count">46</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">August 2021</a><span class="archive-list-count">12</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/08/">August 2025</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/05/">May 2023</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/03/">March 2023</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/02/">February 2023</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/01/">January 2023</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/12/">December 2022</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/09/">September 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/07/">July 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/06/">June 2022</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/05/">May 2022</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/04/">April 2022</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/03/">March 2022</a><span class="archive-list-count">17</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/02/">February 2022</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/01/">January 2022</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">December 2021</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">October 2021</a><span class="archive-list-count">24</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">September 2021</a><span class="archive-list-count">46</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">August 2021</a><span class="archive-list-count">12</span></li></ul>
     </div>
   </div>
 
