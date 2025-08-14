@@ -77,6 +77,122 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-sql-server-合併查詢join" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2021/09/10/sql-server-%E5%90%88%E4%BD%B5%E6%9F%A5%E8%A9%A2join/" class="article-date">
+  <time class="dt-published" datetime="2021-09-10T14:31:26.000Z" itemprop="datePublished">2021-09-10</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Database/">Database</a>►<a class="article-category-link" href="/categories/Database/SQL-Server/">SQL Server</a>►<a class="article-category-link" href="/categories/Topic/">Topic</a>►<a class="article-category-link" href="/categories/Topic/2021-SQL-Server-Challenge/">2021 SQL Server Challenge</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2021/09/10/sql-server-%E5%90%88%E4%BD%B5%E6%9F%A5%E8%A9%A2join/">[Day10] SQL server Select合併查詢JOIN用法 - SQL Server資料庫入門</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>在上回 <a href="/2021/09/09/sql-server%E6%9F%A5%E8%A9%A2%E8%AA%9E%E6%B3%95Select/" title="[Day9] SQL server查詢語法Select - SQL Server資料庫入門">[Day9] SQL server查詢語法Select - SQL Server資料庫入門</a> 中，我們練習了一些查詢語法，且都是針對同一張表的查詢。<br>而在這回中，我們將要開始活用關聯式資料庫的核心用法「JOIN」，透過它實踐合併的查詢。</p>
+<p>在這回中我們主要探討五種查詢，並實際來操作:</p>
+<p>1.inner Join 內部合併查詢<br>2.left (outer) Join 左外部合併查詢<br>3.right (outer) Join 右外部合併查詢<br>4.full (outer) Join 完全外部合併查詢<br>5.cross Join 交叉合併查詢</p>
+<h3 id="目前表中資料"><a href="#目前表中資料" class="headerlink" title="目前表中資料"></a>目前表中資料</h3><p>在此，提供一下目前資料表中的測試資料，作為核對。</p>
+<p><strong>關聯圖</strong></p>
+<img src="/2021/09/10/sql-server-%E5%90%88%E4%BD%B5%E6%9F%A5%E8%A9%A2join/%E6%8B%89%E9%97%9C%E8%81%AF%E5%AE%8C%E6%88%90.png" class="">
+
+<p><strong>customers 顧客</strong></p>
+<img src="/2021/09/10/sql-server-%E5%90%88%E4%BD%B5%E6%9F%A5%E8%A9%A2join/%E9%A1%A7%E5%AE%A2.png" class="">
+<p><strong>products 產品</strong></p>
+<img src="/2021/09/10/sql-server-%E5%90%88%E4%BD%B5%E6%9F%A5%E8%A9%A2join/%E7%94%A2%E5%93%81.png" class="">
+<p><strong>orders 出貨單</strong></p>
+<img src="/2021/09/10/sql-server-%E5%90%88%E4%BD%B5%E6%9F%A5%E8%A9%A2join/%E8%A8%82%E5%96%AE.png" class="">
+<p><strong>order_details 出貨單明細</strong></p>
+<img src="/2021/09/10/sql-server-%E5%90%88%E4%BD%B5%E6%9F%A5%E8%A9%A2join/%E6%98%8E%E7%B4%B0.png" class="">
+
+
+<h3 id="Inner-Join-內部合併查詢"><a href="#Inner-Join-內部合併查詢" class="headerlink" title="Inner Join  內部合併查詢"></a>Inner Join  內部合併查詢</h3><p>內部合併查詢，為兩個表中都有的值才把資料拉出來。<br>如下圖，就是A、B的交集。</p>
+<img src="/2021/09/10/sql-server-%E5%90%88%E4%BD%B5%E6%9F%A5%E8%A9%A2join/1.png" class="">
+<p>語法:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">SELECT column_name(s)</span><br><span class="line">FROM table1</span><br><span class="line">INNER JOIN table2</span><br><span class="line">ON table1.column_name = table2.column_name;</span><br></pre></td></tr></table></figure>
+
+<p>實作:對customers以及orders做inner join，得到出貨單與顧客關聯的資料集。<br>ps.稍微補充一下 orders.number as orders_number 是代表把某東西用as設定別稱</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Select customers.number,customers.name,orders.number as orders_number </span><br><span class="line">from customers </span><br><span class="line">inner join orders </span><br><span class="line">on customers.number = orders.customer_number</span><br></pre></td></tr></table></figure>
+<p>結果:<br>可以發現，原本在order表內看不到的客戶名稱name出現了。且customers表中的編號U002並沒出現在表裡，因為在orders表中它找不到相同的值。</p>
+<img src="/2021/09/10/sql-server-%E5%90%88%E4%BD%B5%E6%9F%A5%E8%A9%A2join/%E7%AF%84%E4%BE%8B1.PNG" class="">
+
+<h3 id="Left-outer-Join-左外部合併查詢"><a href="#Left-outer-Join-左外部合併查詢" class="headerlink" title="Left (outer) Join 左外部合併查詢"></a>Left (outer) Join 左外部合併查詢</h3><p>取回左邊資料表的所有紀錄，並拉進右邊資料表的值。結果會以左邊資料表為主。</p>
+<img src="/2021/09/10/sql-server-%E5%90%88%E4%BD%B5%E6%9F%A5%E8%A9%A2join/2.png" class="">
+<p>語法:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">SELECT column_name(s)</span><br><span class="line">FROM table1</span><br><span class="line">LEFT JOIN table2</span><br><span class="line">ON table1.column_name = table2.column_name;</span><br></pre></td></tr></table></figure>
+
+<p>實作:想要取得顧客名單同時也想知道他們有關的出訂單，對customers以及orders做left join。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Select customers.number,customers.name,orders.number as orders_number </span><br><span class="line">from customers</span><br><span class="line">left join orders </span><br><span class="line">on customers.number = orders.customer_number</span><br></pre></td></tr></table></figure>
+<p>結果:<br>可以發現，customers為主表，所以有客戶即使沒出貨單也被拉出來，而U001這位客戶因為關連到兩筆所以列出兩列。</p>
+<img src="/2021/09/10/sql-server-%E5%90%88%E4%BD%B5%E6%9F%A5%E8%A9%A2join/%E7%AF%84%E4%BE%8B2.PNG" class="">
+
+<h3 id="Right-outer-Join-右外部合併查詢"><a href="#Right-outer-Join-右外部合併查詢" class="headerlink" title="Right (outer) Join 右外部合併查詢"></a>Right (outer) Join 右外部合併查詢</h3><p>取回右邊資料表的所有紀錄，並拉進左邊資料表的值。結果會以右邊資料表為主。<br>其實就是跟左外部查詢一樣，只是表顛倒放而已，通常左邊比較直覺。</p>
+<img src="/2021/09/10/sql-server-%E5%90%88%E4%BD%B5%E6%9F%A5%E8%A9%A2join/3.png" class="">
+<p>語法:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">SELECT column_name(s)</span><br><span class="line">FROM table1</span><br><span class="line">RIGHT JOIN table2</span><br><span class="line">ON table1.column_name = table2.column_name;</span><br></pre></td></tr></table></figure>
+
+<p>實作:想要取得訂單，並嘗試抓出顧客名單即使客戶名單消失或為NULL，對customers以及orders做right join。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Select customers.number,customers.name,orders.number as orders_number </span><br><span class="line">from customers </span><br><span class="line">right join orders </span><br><span class="line">on customers.number = orders.customer_number</span><br></pre></td></tr></table></figure>
+<p>結果:<br>可以發現，orders為主表列出了所有訂單2筆A002、A003，並嘗試關聯到顧客。</p>
+<img src="/2021/09/10/sql-server-%E5%90%88%E4%BD%B5%E6%9F%A5%E8%A9%A2join/%E7%AF%84%E4%BE%8B3.PNG" class="">
+
+<h3 id="Full-outer-Join-完全外部合併查詢"><a href="#Full-outer-Join-完全外部合併查詢" class="headerlink" title="Full (outer) Join 完全外部合併查詢"></a>Full (outer) Join 完全外部合併查詢</h3><p>full Join(完全外部合併)可以取回左右兩邊資料表的所有紀錄。</p>
+<img src="/2021/09/10/sql-server-%E5%90%88%E4%BD%B5%E6%9F%A5%E8%A9%A2join/4.png" class="">
+<p>語法:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">SELECT column_name(s)</span><br><span class="line">FROM table1</span><br><span class="line">FULL OUTER JOIN table2</span><br><span class="line">ON table1.column_name = table2.column_name</span><br><span class="line">WHERE condition; </span><br></pre></td></tr></table></figure>
+<p>實作:訂單、顧客名單的左右資料全部合併</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Select customers.number,customers.name,orders.number as orders_number </span><br><span class="line">from customers </span><br><span class="line">full join orders </span><br><span class="line">on customers.number = orders.customer_number</span><br></pre></td></tr></table></figure>
+<p>結果:<br>跟inner join比較的話，就是原本因為orders資料表沒有相關資料消失的U002客戶出現了。</p>
+<img src="/2021/09/10/sql-server-%E5%90%88%E4%BD%B5%E6%9F%A5%E8%A9%A2join/%E7%AF%84%E4%BE%8B4.PNG" class="">
+
+<h3 id="Cross-Join-交叉合併查詢"><a href="#Cross-Join-交叉合併查詢" class="headerlink" title="Cross Join 交叉合併查詢"></a>Cross Join 交叉合併查詢</h3><p>交叉連接為兩個資料表間的笛卡兒乘積 (Cartesian product)，兩個資料表在結合時，不指定任何條件，即將兩個資料表中所有的可能排列組合出來<br>語法:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Select * From 表A Cross Join 表B;</span><br></pre></td></tr></table></figure>
+<p>也就是說表A有5筆紀錄，表B有8筆紀錄，交查合併後會得到5 * 8=40筆的紀錄，如果沒有指名欄位，欄位數就是2個資料表的欄位總數。</p>
+<p>實作:取得訂單、顧客名單的所有可能排列組合</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Select customers.number,customers.name,orders.number as orders_number </span><br><span class="line">from customers </span><br><span class="line">cross join orders </span><br></pre></td></tr></table></figure>
+<p>結果:<br>customers目前兩筆資料、orders目前兩筆資料 2x2 = 4 所有可能排列組合。<br>因為沒用ON去指定，所以會發現顧客U002明明沒訂單卻關聯上了A002、A003訂單。</p>
+<img src="/2021/09/10/sql-server-%E5%90%88%E4%BD%B5%E6%9F%A5%E8%A9%A2join/%E7%AF%84%E4%BE%8B5.PNG" class="">
+
+<h3 id="多組JOIN寫法"><a href="#多組JOIN寫法" class="headerlink" title="多組JOIN寫法"></a>多組JOIN寫法</h3><p>簡單來說就是可以依照你的目標去操作各種JOIN得到你要的結果。<br>大概畫一下圖:</p>
+<img src="/2021/09/10/sql-server-%E5%90%88%E4%BD%B5%E6%9F%A5%E8%A9%A2join/5.png" class="">
+<p>實作:我想得到訂單詳細資料打平的樣子<br>ps.這種多組JOIN可以用as簡短，以下是全部簡寫。如果為了求好讀可以多打寫字，可以不要用as。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Select * from order_details as a</span><br><span class="line">inner join orders  as b on a.order_number = b.number</span><br><span class="line">inner join customers as c on c.number = b.customer_number</span><br><span class="line">inner join products as d on a.product_number = d.number</span><br></pre></td></tr></table></figure>
+<p>結果:<br>其實就是把所有的主鍵、外來鍵拉起來而已R。就完全成為正規化前的模樣XDD</p>
+<img src="/2021/09/10/sql-server-%E5%90%88%E4%BD%B5%E6%9F%A5%E8%A9%A2join/N%20JOIN.PNG" class="">
+
+<h3 id="總結"><a href="#總結" class="headerlink" title="總結"></a>總結</h3><p>在這回中學習了合併查詢的用法JOIN，一般來說都是搭配主鍵、外來鍵去做這些事。<br>而平常自己實際習慣用INNER JOIN、LEFT JOIN，而FULL JOIN、CROSS JOIN則超少用到。<br>也許是不太直覺的關係吧XD?<br>且因為需求都是人想出來的，如果不是計算機專業，一般很少人會想出FULL JOIN、CROSS JOIN。</p>
+<p>然後預告一下，下回是子查詢。@@</p>
+<p><strong>參考資料:</strong><br><a target="_blank" rel="noopener" href="https://ithelp.ithome.com.tw/articles/10215741">https://ithelp.ithome.com.tw/articles/10215741</a><br><a target="_blank" rel="noopener" href="https://www.fooish.com/sql/cross-join.html">https://www.fooish.com/sql/cross-join.html</a><br><a target="_blank" rel="noopener" href="https://charleslin74.pixnet.net/blog/post/460066978">https://charleslin74.pixnet.net/blog/post/460066978</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://yuhsiang237.github.io/2021/09/10/sql-server-%E5%90%88%E4%BD%B5%E6%9F%A5%E8%A9%A2join/" data-id="cme6kwo390069galjfcfe9swt" data-title="[Day10] SQL server Select合併查詢JOIN用法 - SQL Server資料庫入門" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
     <article id="post-sql-server查詢語法Select" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
     <a href="/2021/09/09/sql-server%E6%9F%A5%E8%A9%A2%E8%AA%9E%E6%B3%95Select/" class="article-date">
@@ -1023,62 +1139,6 @@ All other precision require 8 bytes.2<br></span></td>
 
 
   
-    <article id="post-主索引鍵與外部索引鍵" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2021/09/02/%E4%B8%BB%E7%B4%A2%E5%BC%95%E9%8D%B5%E8%88%87%E5%A4%96%E9%83%A8%E7%B4%A2%E5%BC%95%E9%8D%B5/" class="article-date">
-  <time class="dt-published" datetime="2021-09-02T06:30:12.000Z" itemprop="datePublished">2021-09-02</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/Database/">Database</a>►<a class="article-category-link" href="/categories/Database/SQL-Server/">SQL Server</a>►<a class="article-category-link" href="/categories/Topic/">Topic</a>►<a class="article-category-link" href="/categories/Topic/2021-SQL-Server-Challenge/">2021 SQL Server Challenge</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2021/09/02/%E4%B8%BB%E7%B4%A2%E5%BC%95%E9%8D%B5%E8%88%87%E5%A4%96%E9%83%A8%E7%B4%A2%E5%BC%95%E9%8D%B5/">[Day2] 主索引鍵與外部索引鍵，及其他關係鍵 - SQL Server資料庫入門</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p>在資料庫的資料表中，我們常藉「主索引鍵(Primary Key，PK，主鍵)、外部索引鍵（Foreign Key，FK，外來鍵）」，對不同的表進行關聯，最後串起整個資料庫。</p>
-<h3 id="主索引鍵-Primary-Key"><a href="#主索引鍵-Primary-Key" class="headerlink" title="主索引鍵(Primary Key)"></a>主索引鍵(Primary Key)</h3><p>在一張資料表中，<br>唯一性且不允許重複。</p>
-<h3 id="外部索引鍵-Foreign-Key"><a href="#外部索引鍵-Foreign-Key" class="headerlink" title="外部索引鍵(Foreign Key)"></a>外部索引鍵(Foreign Key)</h3><p>在一張資料表中，<br>外部索引鍵並不一定要唯一。<br>外部索引鍵是另一個資料表的主索引鍵。</p>
-<h3 id="範例"><a href="#範例" class="headerlink" title="範例"></a>範例</h3><img src="/2021/09/02/%E4%B8%BB%E7%B4%A2%E5%BC%95%E9%8D%B5%E8%88%87%E5%A4%96%E9%83%A8%E7%B4%A2%E5%BC%95%E9%8D%B5/20119925MvOyMbX3Cd.png" class="" title="資料表主鍵、外來鍵關係">
-<p>以上是資料表主鍵、外來鍵的關係。</p>
-<p>在客戶資料表中，id是主鍵。<br>在產品資料表中，id是主鍵。<br>在訂單詳情資料表中，id是主鍵；客戶id、產品id分別是外來鍵，他們各自是客戶資料表中的主鍵、產品資料表中的主鍵。</p>
-<p>舉例:<br>如我想找某筆訂單中的客戶是誰，就能夠用訂單裡的客戶id去客戶資料表中找到對應的客戶。</p>
-<h2 id="補充"><a href="#補充" class="headerlink" title="補充"></a>補充</h2><h3 id="超鍵-superkey"><a href="#超鍵-superkey" class="headerlink" title="超鍵(superkey)"></a>超鍵(superkey)</h3><p>是指在一個資料表中，選出兩個或兩個以上的欄位組合起來，以作為唯一識別資料的欄位。</p>
-<h3 id="候選鍵-candidate-key"><a href="#候選鍵-candidate-key" class="headerlink" title="候選鍵(candidate key)"></a>候選鍵(candidate key)</h3><p>這個屬性集合始終能夠確保在關係中能唯一標識元組<br>在這個屬性集合中找不出真子集能夠滿足條件。</p>
-<h3 id="代理鍵-surrogate-key"><a href="#代理鍵-surrogate-key" class="headerlink" title="代理鍵(surrogate key)"></a>代理鍵(surrogate key)</h3><p>是在當資料表中的候選鍵都不適合當主鍵時，例如資料太長，或是意義層面太多，就會請一個無意義的但唯一的欄位來代為作主鍵。</p>
-<h3 id="次要鍵-Secondary-Key"><a href="#次要鍵-Secondary-Key" class="headerlink" title="次要鍵(Secondary Key)"></a>次要鍵(Secondary Key)</h3><p>主要的功能是提供資料索引。資料庫系統中，除了主鍵這個唯一的識別值，可以用做索引外，也可以設定其他欄位用作資料索引，這類的鍵值並不是主鍵，但因為資料內容並不會重複，所以也可作為資料索引，這就是次要鍵。在員工資料表中，員工姓名、到職日期等欄位都沒有重複，就可以做為次要鍵，提供不同於主鍵的資料索引。</p>
-<h3 id="複合鍵-Composite-Key"><a href="#複合鍵-Composite-Key" class="headerlink" title="複合鍵(Composite Key)"></a>複合鍵(Composite Key)</h3><p>是指資料表中的主鍵，是由兩個或兩個欄位以上所組成，這種主鍵稱為複合鍵(Composite Key)。<br>當表格中某一欄位的值無法區分資料記錄時可以使用此方法。</p>
-<h3 id="結語"><a href="#結語" class="headerlink" title="結語"></a>結語</h3><p>在整理過各種鍵後，理解到各種鍵的使用時機。(未來可能在資料庫正規化方面能夠更加順手。)<br>而以自身經驗來說，實際設計過的資料表中通常只會用到主鍵、外來鍵居多，其餘的特殊鍵則比較少，甚至沒有用到的情況。</p>
-<p><strong>參考資料:</strong><br><a target="_blank" rel="noopener" href="https://ithelp.ithome.com.tw/articles/10213896">https://ithelp.ithome.com.tw/articles/10213896</a><br><a target="_blank" rel="noopener" href="https://rileylin91.github.io/2020/05/29/MSSQL-9-Primary-Foreign-Key/">https://rileylin91.github.io/2020/05/29/MSSQL-9-Primary-Foreign-Key/</a><br><a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E5%85%B3%E7%B3%BB%E9%94%AE">https://zh.wikipedia.org/wiki/%E5%85%B3%E7%B3%BB%E9%94%AE</a><br><a target="_blank" rel="noopener" href="https://www.1keydata.com/tw/sql/sql-foreign-key.html">https://www.1keydata.com/tw/sql/sql-foreign-key.html</a><br><a target="_blank" rel="noopener" href="https://www.ithome.com.tw/node/46156">https://www.ithome.com.tw/node/46156</a></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://yuhsiang237.github.io/2021/09/02/%E4%B8%BB%E7%B4%A2%E5%BC%95%E9%8D%B5%E8%88%87%E5%A4%96%E9%83%A8%E7%B4%A2%E5%BC%95%E9%8D%B5/" data-id="cme6kwo3o0075galjdk5l043i" data-title="[Day2] 主索引鍵與外部索引鍵，及其他關係鍵 - SQL Server資料庫入門" class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
 
 
   <nav id="page-nav">
@@ -1094,7 +1154,7 @@ All other precision require 8 bytes.2<br></span></td>
   <div class="widget-wrap">
     <h3 class="widget-title">Categories</h3>
     <div class="widget">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Code/">Code</a><span class="category-list-count">78</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Code/C/">C#</a><span class="category-list-count">69</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Code/Javascript/">Javascript</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Code/Refactoring/">Refactoring</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Code/Typescript/">Typescript</a><span class="category-list-count">3</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/">Computer Science</a><span class="category-list-count">5</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/Algorithm/">Algorithm</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/Data-structure/">Data structure</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/Electronic-Circuit/">Electronic Circuit</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Daily-Log/">Daily Log</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/">Database</a><span class="category-list-count">57</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Database/PostgreSQL/">PostgreSQL</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/SQL-Server/">SQL Server</a><span class="category-list-count">47</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/">Framework</a><span class="category-list-count">27</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/AspNetCore-API/">AspNetCore API</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/AspNetCore-MVC/">AspNetCore MVC</a><span class="category-list-count">21</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/">Topic</a><span class="category-list-count">78</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2021-C-AspNetCore-Challenge/">2021 C# AspNetCore Challenge</a><span class="category-list-count">30</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2021-SQL-Server-Challenge/">2021 SQL Server Challenge</a><span class="category-list-count">30</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2022-C-SyncAndAsync/">2022 C# SyncAndAsync</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2025-Typescript/">2025 Typescript</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/Big-Data/">Big Data</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/LeetCode/">LeetCode</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/SystemStructure/">SystemStructure</a><span class="category-list-count">1</span></li></ul></li></ul>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Code/">Code</a><span class="category-list-count">79</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Code/C/">C#</a><span class="category-list-count">69</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Code/Javascript/">Javascript</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Code/Refactoring/">Refactoring</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Code/Typescript/">Typescript</a><span class="category-list-count">4</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/">Computer Science</a><span class="category-list-count">5</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/Algorithm/">Algorithm</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/Data-structure/">Data structure</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/Electronic-Circuit/">Electronic Circuit</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Daily-Log/">Daily Log</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/">Database</a><span class="category-list-count">57</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Database/PostgreSQL/">PostgreSQL</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/SQL-Server/">SQL Server</a><span class="category-list-count">47</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/">Framework</a><span class="category-list-count">27</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/AspNetCore-API/">AspNetCore API</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/AspNetCore-MVC/">AspNetCore MVC</a><span class="category-list-count">21</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/">Topic</a><span class="category-list-count">79</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2021-C-AspNetCore-Challenge/">2021 C# AspNetCore Challenge</a><span class="category-list-count">30</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2021-SQL-Server-Challenge/">2021 SQL Server Challenge</a><span class="category-list-count">30</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2022-C-SyncAndAsync/">2022 C# SyncAndAsync</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2025-Typescript/">2025 Typescript</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/Big-Data/">Big Data</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/LeetCode/">LeetCode</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/SystemStructure/">SystemStructure</a><span class="category-list-count">1</span></li></ul></li></ul>
     </div>
   </div>
 
@@ -1104,7 +1164,7 @@ All other precision require 8 bytes.2<br></span></td>
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/08/">August 2025</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/05/">May 2023</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/03/">March 2023</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/02/">February 2023</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/01/">January 2023</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/12/">December 2022</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/09/">September 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/07/">July 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/06/">June 2022</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/05/">May 2022</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/04/">April 2022</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/03/">March 2022</a><span class="archive-list-count">17</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/02/">February 2022</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/01/">January 2022</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">December 2021</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">October 2021</a><span class="archive-list-count">24</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">September 2021</a><span class="archive-list-count">46</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">August 2021</a><span class="archive-list-count">12</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/08/">August 2025</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/05/">May 2023</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/03/">March 2023</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/02/">February 2023</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/01/">January 2023</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/12/">December 2022</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/09/">September 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/07/">July 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/06/">June 2022</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/05/">May 2022</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/04/">April 2022</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/03/">March 2022</a><span class="archive-list-count">17</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/02/">February 2022</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/01/">January 2022</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">December 2021</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">October 2021</a><span class="archive-list-count">24</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">September 2021</a><span class="archive-list-count">46</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">August 2021</a><span class="archive-list-count">12</span></li></ul>
     </div>
   </div>
 

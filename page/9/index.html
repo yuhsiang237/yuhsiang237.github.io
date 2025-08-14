@@ -77,6 +77,132 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-C-MVC-RESTful-API-上-RESTful-基礎知識" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2021/10/16/C-MVC-RESTful-API-%E4%B8%8A-RESTful-%E5%9F%BA%E7%A4%8E%E7%9F%A5%E8%AD%98/" class="article-date">
+  <time class="dt-published" datetime="2021-10-16T02:16:48.000Z" itemprop="datePublished">2021-10-16</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Code/">Code</a>►<a class="article-category-link" href="/categories/Code/C/">C#</a>►<a class="article-category-link" href="/categories/Framework/">Framework</a>►<a class="article-category-link" href="/categories/Framework/AspNetCore-API/">AspNetCore API</a>►<a class="article-category-link" href="/categories/Topic/">Topic</a>►<a class="article-category-link" href="/categories/Topic/2021-C-AspNetCore-Challenge/">2021 C# AspNetCore Challenge</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2021/10/16/C-MVC-RESTful-API-%E4%B8%8A-RESTful-%E5%9F%BA%E7%A4%8E%E7%9F%A5%E8%AD%98/">[Day19] C# MVC RESTful API (上) RESTful 基礎知識 - C#&amp;AspNetCore</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>在上回中我們介紹了 <a href="/2021/10/15/C-MVC%E5%B0%88%E6%A1%88%E4%B8%AD%E6%92%B0%E5%AF%ABAPI/" title="[Day18] C# MVC專案中撰寫API - C#&amp;AspNetCore">[Day18] C# MVC專案中撰寫API - C#&amp;AspNetCore</a> ，能在MVC專案中撰寫API了。</p>
+<p>而這回，探討Web API，他會開給APP(iOS或Android)、前端網站(React或Vue)這種主從式分離的架構。<br>為了能開出比較公版的API，就必須先了解RESTful的核心概念。<br>(這次嘗試以翻原文的方式撰寫，往後都盡可能以原文為主)</p>
+<h3 id="RESTful-介紹"><a href="#RESTful-介紹" class="headerlink" title="RESTful 介紹"></a>RESTful 介紹</h3><p>Representational state transfer (REST) is a software architectural style that was created to guide the design and development of the architecture for the World Wide Web.REST defines a set of constraints for how the architecture of an Internet-scale distributed hypermedia system, such as the Web, should behave.The REST architectural style emphasises the scalability of interactions between components, uniform interfaces, independent deployment of components, and the creation of a layered architecture to facilitate caching components to reduce user-perceived latency, enforce security, and encapsulate legacy systems.</p>
+<p>REST是一種軟體架構的風格，被創立來引導網站設計、開發架構。並且定義了約束架構，像是在網站上的行為。<br>架構上強調在組件間的可擴展性、統一的接口、獨立部署的組建、創建分層架構以建立快取減少用戶延遲、強化安全性、封裝老舊系統。</p>
+<p>The REST architectural style is designed for network-based applications, specifically client-server applications. But more than that, it is designed for Internet-scale usage, so the coupling between the user agent (client) and the origin server must be as lightweight (loose) as possible to facilitate large-scale adoption. </p>
+<p>被用來處理網路基礎的應用，具體來說在主從式架構的應用。但不止如此，也被用來作為互聯網的使用而設計，因此客戶端、主機端耦合度盡可能可能輕量級，以使在大規模時容易採用。</p>
+<p>耦合度(Coupling):coupling is the degree of interdependence between software modules。Coupling is usually contrasted with cohesion. Low coupling often correlates with high cohesion,<br>耦合度表示模組間相互依賴的程度。<br>耦合通常與內聚相關，低耦合通常與高內聚相關。<br>如下的(a)就是比較好的結構，盡量封裝好，開簡單的接口出來，但現實情況下不可能做到理想。<br>以我自身經驗，曾維護那種(b)的狀況，要搞懂A還得先去搞懂B在幹嘛，追了8層之多。此外，精簡的程式碼不等於高內聚，有時更多的是<a target="_blank" rel="noopener" href="https://lenchen.medium.com/%E5%BF%8D%E8%80%85%E7%A8%8B%E5%BC%8F%E7%A2%BC-ninja-code-cc5e4a70bafc">忍者程式碼（Ninja Code）</a>。</p>
+<img src="/2021/10/16/C-MVC-RESTful-API-%E4%B8%8A-RESTful-%E5%9F%BA%E7%A4%8E%E7%9F%A5%E8%AD%98/1.png" class="">
+
+<h3 id="RESTful-6個限制"><a href="#RESTful-6個限制" class="headerlink" title="RESTful 6個限制"></a>RESTful 6個限制</h3><ol>
+<li><p><strong>主從式架構(Client–server architecture)</strong><br> The client-server design pattern enforces the principle of separation of concerns<br>主從式設計模式強制關注點分離的原則<br>separating the user interface concerns from the data storage concerns. Portability of the user interface is thus improved.<br>分離用戶介面與資料儲存問題。用戶介面的可攜性因此被改善。</p>
+</li>
+<li><p><strong>無狀態(Statelessness)</strong><br> In computing, a stateless protocol is a communications protocol in which no session information is retained by the receiver, usually a server. Relevant session data is sent to the receiver by the client in such a way that every packet of information transferred can be understood in isolation, without context information from previous packets in the session.<br> 無狀態是種溝通的協定，沒有session被接收者保留，通常接收者是伺服器端。客戶端將資訊送給接收者，每個資訊可以獨立離解，不用藉由理解上下文才能知道訊息。</p>
+</li>
+<li><p><strong>快取(Cacheability)</strong><br> As on the World Wide Web, clients and intermediaries can cache responses. Responses must, implicitly or explicitly, define themselves as either cacheable or non-cacheable to prevent clients from providing stale or inappropriate data in response to further requests. Well-managed caching partially or completely eliminates some client–server interactions, further improving scalability and performance.<br> 在網路上客戶、中間人可以快取結果，可自行定義是否該緩存的資料。良好的快取能改善效能。</p>
+</li>
+</ol>
+<ol start="4">
+<li><p><strong>分層系統(Layered system)</strong><br> A client cannot ordinarily tell whether it is connected directly to the end server or to an intermediary along the way.Adding security as a separate layer enforces security policies.<br> 客戶端不能判斷是連結到終端還是中介。能增加安全性在特別的層級強制特定的安全政策。</p>
+</li>
+<li><p><strong>按需求編碼(Code on demand) 可選</strong><br> Servers can temporarily extend or customize the functionality of a client by transferring executable code: for example, compiled components such as Java applets, or client-side scripts such as JavaScript.<br> 伺服器端可臨時擴充或可執行代碼給客戶端，如：客戶端代碼JavaScript、編譯後元件Java小程式。</p>
+</li>
+<li><p><strong>統一接口(Uniform interface)</strong><br> The uniform interface constraint is fundamental to the design of any RESTful system<br> 統一接口約束是restful系統的基礎。<br> 為以下四點:</p>
+<ol>
+<li><strong>請求中包含資源的 ID（Resource identification in requests）</strong><br> 求中包含了各種獨立資源的標識，例如，在Web服務中的URI。資源本身和傳送給客戶端的標識是獨立。例如，伺服器可以將自身的資料庫資訊以HTML、XML或者JSON的方式傳送給客戶端，但是這些可能都不是伺服器的內部記錄方式。</li>
+<li><strong>資源通過標識來操作（Resource manipulation through representations）</strong><br>當客戶端擁有一個資源的標識，包括附帶的元資料，則它就有足夠的資訊來刪除這個資源。</li>
+<li><strong>訊息的自我描述性（Self-descriptive messages）</strong><br> 每個訊息包含足夠資訊描述如何處理訊息。</li>
+<li><strong>用超媒體驅動應用狀態（Hypermedia as the engine of application state (HATEOAS)</strong><br> 同使用者存取Web伺服器的Home頁面相似，當一個 REST 客戶端存取了最初的REST應用的URI之後，REST 客戶端應該可以使用伺服器端提供的連結，動態的發現所有的可用的資源和可執行的操作。</li>
+</ol>
+</li>
+</ol>
+<h3 id="RESTful優點"><a href="#RESTful優點" class="headerlink" title="RESTful優點"></a>RESTful優點</h3><ul>
+<li>可更高效利用快取來提高回應速度</li>
+<li>通訊本身的無狀態性可以讓不同的伺服器的處理一系列請求中的不同請求，提高伺服器的擴充性</li>
+<li>瀏覽器即可作為客戶端，簡化軟體需求</li>
+<li>相對於其他疊加在HTTP協定之上的機制，REST的軟體相依性更小<br>不需要額外的資源發現機制</li>
+<li>在軟體技術演進中的長期的相容性更好</li>
+</ul>
+<h3 id="HTTP請求方法在RESTful-API中的典型應用"><a href="#HTTP請求方法在RESTful-API中的典型應用" class="headerlink" title="HTTP請求方法在RESTful API中的典型應用"></a>HTTP請求方法在RESTful API中的典型應用</h3><table class="wikitable" border="1">
+<tbody><tr>
+<th>資源</th>
+<th>GET</th>
+<th>PUT</th>
+<th>POST</th>
+<th>DELETE
+</th></tr>
+<tr>
+<th>一組資源的URI，比如<code>https://example.com/resources</code>
+</th>
+<td><b>列出</b>URI，以及該資源組中每個資源的詳細資訊（後者可選）。
+</td>
+<td>使用給定的一組資源<b>替換</b>當前整組資源。
+</td>
+<td>在本組資源中<b>建立/追加</b>一個新的資源。該操作往往返回新資源的URL。
+</td>
+<td><b>刪除</b>整組資源。
+</td></tr>
+<tr>
+<th>單個資源的URI，比如<code>https://example.com/resources/142</code>
+</th>
+<td><b>取得</b>指定的資源的詳細資訊，格式可以自選一個合適的網路媒體類型（比如：XML、JSON等）
+</td>
+<td><b>替換/建立</b>指定的資源。並將其追加到相應的資源組中。
+</td>
+<td>把指定的資源當做一個資源組，並在其下<b>建立/追加</b>一個新的元素，使其隸屬於當前資源。
+</td>
+<td><b>刪除</b>指定的元素。
+</td></tr></tbody></table>
+
+<h3 id="RESTful衍伸問題"><a href="#RESTful衍伸問題" class="headerlink" title="RESTful衍伸問題"></a>RESTful衍伸問題</h3><ol>
+<li><strong>RESTful的批量處理問題，要一次處理多筆資料</strong><br> RESTful給出了處理單筆資料的方式，卻沒多介紹多筆，因此參考以下文件後發現可以用<code>example.com/resources/batch</code>的方式處理<br> <a target="_blank" rel="noopener" href="https://www.npmjs.com/package/restful-api">https://www.npmjs.com/package/restful-api</a><br> <a target="_blank" rel="noopener" href="https://cloud.tencent.com/developer/article/1575071">https://cloud.tencent.com/developer/article/1575071</a></li>
+<li><strong>RESTful的權限規劃問題，以資源式不好管理</strong><br> 後台通常以Role Based Access Control (RBAC) 去規劃權限。<br> 而RESTful是以資源(Resources)為底，這時判斷哪個API具有某權限就必須特別判斷或添加。如沒限制好可能造成資料多給的漏洞。<br> 如果是我會以敏感資訊為大方向去限制。</li>
+<li><strong>RESTful的客戶端邏輯，錯在誰身上</strong><br> 因為關注點分離，所以難知道客戶端如Android/iOS的程式有問題時是落在API人員身上還是前端身上。<br> 有點我資料都給你了，你自己處理的感覺。</li>
+</ol>
+<h3 id="總結"><a href="#總結" class="headerlink" title="總結"></a>總結</h3><p>在這篇中我們主要探討RESTful的核心理論部分，也發現RESTful在現實使用上的問題。<br>在我的看法上，使用RESTful的原因在於:</p>
+<ol>
+<li>API統一的風格設計</li>
+<li>有特定設計模式利於維護性</li>
+<li>能減少開發成本、開發時間</li>
+</ol>
+<p>如果沒法達成以上幾點，那額外使用自訂的API也無妨。<br>比如Google真有做到全RESTful嗎?<br>稍微查看Google Drive、Gmail就會發現沒有，還是用一些getXXX的API。只有開給其他開發者才用RESTful API。</p>
+<p>因此，直覺上比較適合開給外部的其他人而使用。</p>
+<p>最後，實作將在下篇開始進行。</p>
+<p><strong>參考資料</strong><br><a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Coupling_(computer_programming)#/media/File:CouplingVsCohesion.svg">https://en.wikipedia.org/wiki/Coupling_(computer_programming)#/media/File:CouplingVsCohesion.svg</a><br><a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Coupling_(computer_programming)">https://en.wikipedia.org/wiki/Coupling_(computer_programming)</a><br><a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E8%A1%A8%E7%8E%B0%E5%B1%82%E7%8A%B6%E6%80%81%E8%BD%AC%E6%8D%A2">https://zh.wikipedia.org/wiki/%E8%A1%A8%E7%8E%B0%E5%B1%82%E7%8A%B6%E6%80%81%E8%BD%AC%E6%8D%A2</a><br><a target="_blank" rel="noopener" href="https://cloud.tencent.com/developer/article/1497547">https://cloud.tencent.com/developer/article/1497547</a><br><a target="_blank" rel="noopener" href="https://cloud.tencent.com/developer/article/1575071">https://cloud.tencent.com/developer/article/1575071</a><br><a target="_blank" rel="noopener" href="https://www.restapitutorial.com/httpstatuscodes.html#google_vignette">https://www.restapitutorial.com/httpstatuscodes.html#google_vignette</a><br><a target="_blank" rel="noopener" href="https://noob.tw/restful-api/">https://noob.tw/restful-api/</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://yuhsiang237.github.io/2021/10/16/C-MVC-RESTful-API-%E4%B8%8A-RESTful-%E5%9F%BA%E7%A4%8E%E7%9F%A5%E8%AD%98/" data-id="cme6kwo0j001bgalj5gq29ycj" data-title="[Day19] C# MVC RESTful API (上) RESTful 基礎知識 - C#&amp;AspNetCore" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
     <article id="post-C-MVC專案中撰寫API" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
     <a href="/2021/10/15/C-MVC%E5%B0%88%E6%A1%88%E4%B8%AD%E6%92%B0%E5%AF%ABAPI/" class="article-date">
@@ -796,62 +922,6 @@
 
 
   
-    <article id="post-在網路中減少自己觸及的資訊量" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2021/10/05/%E5%9C%A8%E7%B6%B2%E8%B7%AF%E4%B8%AD%E6%B8%9B%E5%B0%91%E8%87%AA%E5%B7%B1%E8%A7%B8%E5%8F%8A%E7%9A%84%E8%B3%87%E8%A8%8A%E9%87%8F/" class="article-date">
-  <time class="dt-published" datetime="2021-10-05T11:26:23.000Z" itemprop="datePublished">2021-10-05</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/Daily-Log/">Daily Log</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2021/10/05/%E5%9C%A8%E7%B6%B2%E8%B7%AF%E4%B8%AD%E6%B8%9B%E5%B0%91%E8%87%AA%E5%B7%B1%E8%A7%B8%E5%8F%8A%E7%9A%84%E8%B3%87%E8%A8%8A%E9%87%8F/">在網路中減少自己觸及的資訊量</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p>2021年的今天，似乎什麼事都要用透過網路。<br>但每天都接觸網路上的資訊就會讓人覺得煩躁、被影響。<br>於是我開始想，有沒有什麼方法”減少資訊量”呢?<br>因為現在已不可能100%離開網路，像是在台灣工作可能還是要Line。</p>
-<p>以下是我想到的作法:</p>
-<ol>
-<li>減少用社群軟體頻率，如7天1次1小時</li>
-<li>不看新聞、論壇</li>
-<li>不看Youtube</li>
-<li>手機換功能型手機</li>
-<li>少用Gxxxxgle搜尋</li>
-<li>瀏覽器ADBLOCK過濾廣告</li>
-<li>轉移注意力到離線的東西</li>
-</ol>
-<p>其實，第2~6點都可以靠自己戒掉<br>只有第1點是現代是必須的，不然就沒朋友了，就是把它當做訊息軟體用，不看動態也不發文。<br>第4點，則是我們要自己培養的見解能力，不要什麼都靠Gxxxxgle，手動去翻閱實體書或是自己想辦法，十年前的自己可以這樣，現在也一定可以。就是找一套自己離線方法。</p>
-<p>然後，可能會覺得不用網路就不能學習，那我問用網路又學到什麼實際能工作的技能…，真正派得上用場的我認為都是內化在自己腦中的知識。</p>
-<p>最後，希望可以主動抵制，不要再被演算法強迫推銷了!<br>一些不相干的事在我們周遭太多了。<br>關心自己周遭實際碰過的人事物比較重要。</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://yuhsiang237.github.io/2021/10/05/%E5%9C%A8%E7%B6%B2%E8%B7%AF%E4%B8%AD%E6%B8%9B%E5%B0%91%E8%87%AA%E5%B7%B1%E8%A7%B8%E5%8F%8A%E7%9A%84%E8%B3%87%E8%A8%8A%E9%87%8F/" data-id="cme6kwo3t007fgaljcimheixw" data-title="在網路中減少自己觸及的資訊量" class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
 
 
   <nav id="page-nav">
@@ -867,7 +937,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Categories</h3>
     <div class="widget">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Code/">Code</a><span class="category-list-count">78</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Code/C/">C#</a><span class="category-list-count">69</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Code/Javascript/">Javascript</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Code/Refactoring/">Refactoring</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Code/Typescript/">Typescript</a><span class="category-list-count">3</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/">Computer Science</a><span class="category-list-count">5</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/Algorithm/">Algorithm</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/Data-structure/">Data structure</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/Electronic-Circuit/">Electronic Circuit</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Daily-Log/">Daily Log</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/">Database</a><span class="category-list-count">57</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Database/PostgreSQL/">PostgreSQL</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/SQL-Server/">SQL Server</a><span class="category-list-count">47</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/">Framework</a><span class="category-list-count">27</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/AspNetCore-API/">AspNetCore API</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/AspNetCore-MVC/">AspNetCore MVC</a><span class="category-list-count">21</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/">Topic</a><span class="category-list-count">78</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2021-C-AspNetCore-Challenge/">2021 C# AspNetCore Challenge</a><span class="category-list-count">30</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2021-SQL-Server-Challenge/">2021 SQL Server Challenge</a><span class="category-list-count">30</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2022-C-SyncAndAsync/">2022 C# SyncAndAsync</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2025-Typescript/">2025 Typescript</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/Big-Data/">Big Data</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/LeetCode/">LeetCode</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/SystemStructure/">SystemStructure</a><span class="category-list-count">1</span></li></ul></li></ul>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Code/">Code</a><span class="category-list-count">79</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Code/C/">C#</a><span class="category-list-count">69</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Code/Javascript/">Javascript</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Code/Refactoring/">Refactoring</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Code/Typescript/">Typescript</a><span class="category-list-count">4</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/">Computer Science</a><span class="category-list-count">5</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/Algorithm/">Algorithm</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/Data-structure/">Data structure</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/Electronic-Circuit/">Electronic Circuit</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Daily-Log/">Daily Log</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/">Database</a><span class="category-list-count">57</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Database/PostgreSQL/">PostgreSQL</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/SQL-Server/">SQL Server</a><span class="category-list-count">47</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/">Framework</a><span class="category-list-count">27</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/AspNetCore-API/">AspNetCore API</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/AspNetCore-MVC/">AspNetCore MVC</a><span class="category-list-count">21</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/">Topic</a><span class="category-list-count">79</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2021-C-AspNetCore-Challenge/">2021 C# AspNetCore Challenge</a><span class="category-list-count">30</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2021-SQL-Server-Challenge/">2021 SQL Server Challenge</a><span class="category-list-count">30</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2022-C-SyncAndAsync/">2022 C# SyncAndAsync</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2025-Typescript/">2025 Typescript</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/Big-Data/">Big Data</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/LeetCode/">LeetCode</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/SystemStructure/">SystemStructure</a><span class="category-list-count">1</span></li></ul></li></ul>
     </div>
   </div>
 
@@ -877,7 +947,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/08/">August 2025</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/05/">May 2023</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/03/">March 2023</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/02/">February 2023</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/01/">January 2023</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/12/">December 2022</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/09/">September 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/07/">July 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/06/">June 2022</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/05/">May 2022</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/04/">April 2022</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/03/">March 2022</a><span class="archive-list-count">17</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/02/">February 2022</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/01/">January 2022</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">December 2021</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">October 2021</a><span class="archive-list-count">24</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">September 2021</a><span class="archive-list-count">46</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">August 2021</a><span class="archive-list-count">12</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/08/">August 2025</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/05/">May 2023</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/03/">March 2023</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/02/">February 2023</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/01/">January 2023</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/12/">December 2022</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/09/">September 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/07/">July 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/06/">June 2022</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/05/">May 2022</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/04/">April 2022</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/03/">March 2022</a><span class="archive-list-count">17</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/02/">February 2022</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/01/">January 2022</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">December 2021</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">October 2021</a><span class="archive-list-count">24</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">September 2021</a><span class="archive-list-count">46</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">August 2021</a><span class="archive-list-count">12</span></li></ul>
     </div>
   </div>
 
