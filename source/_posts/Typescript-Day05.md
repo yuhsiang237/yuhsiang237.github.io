@@ -115,6 +115,7 @@ const userDetails: UserDetail[] = [
 ];
 
 // 先用 users 建立 Map
+// 這裡用 Partial<UserDetail> 的目的，是 允許在 Map 裡的 user 物件還沒有完整的 UserDetail 時，也能先存入 Map，而不會 TypeScript 報錯。
 const userMap = new Map<string, User & Partial<UserDetail>>(
   users.map(user => [user.userId, { ...user }])
 );
