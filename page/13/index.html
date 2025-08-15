@@ -77,6 +77,74 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-sql-server-update資料更新" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2021/09/17/sql-server-update%E8%B3%87%E6%96%99%E6%9B%B4%E6%96%B0/" class="article-date">
+  <time class="dt-published" datetime="2021-09-17T01:05:56.000Z" itemprop="datePublished">2021-09-17</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Database/">Database</a>►<a class="article-category-link" href="/categories/Database/SQL-Server/">SQL Server</a>►<a class="article-category-link" href="/categories/Topic/">Topic</a>►<a class="article-category-link" href="/categories/Topic/2021-SQL-Server-Challenge/">2021 SQL Server Challenge</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2021/09/17/sql-server-update%E8%B3%87%E6%96%99%E6%9B%B4%E6%96%B0/">[Day20] SQL server update 資料更新 - SQL Server資料庫入門</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>在這回簡易示範SQL server資料更新。</p>
+<h3 id="UPDATE"><a href="#UPDATE" class="headerlink" title="UPDATE"></a>UPDATE</h3><p>主要就是用update搭配set去設定資料數值。<br>此外，如果要針對某一條件修改請用where加上條件，否則將會每筆都改會很悲劇。(如果你又沒備份的話，記得每日備份阿。)</p>
+<p>語法:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">UPDATE table_name</span><br><span class="line">SET column1 = value1, column2 = value2, ...</span><br><span class="line">WHERE condition; </span><br></pre></td></tr></table></figure>
+
+<h3 id="測試資料"><a href="#測試資料" class="headerlink" title="測試資料"></a>測試資料</h3><p>還是一樣，先放上資料表:</p>
+<p><strong>customers 顧客</strong></p>
+<img src="/2021/09/17/sql-server-update%E8%B3%87%E6%96%99%E6%9B%B4%E6%96%B0/%E9%A1%A7%E5%AE%A2.png" class="">
+<p><strong>products 產品</strong></p>
+<img src="/2021/09/17/sql-server-update%E8%B3%87%E6%96%99%E6%9B%B4%E6%96%B0/%E7%94%A2%E5%93%81.png" class="">
+<p><strong>orders 出貨單</strong></p>
+<img src="/2021/09/17/sql-server-update%E8%B3%87%E6%96%99%E6%9B%B4%E6%96%B0/%E8%A8%82%E5%96%AE.png" class="">
+<p><strong>order_details 出貨單明細</strong></p>
+<img src="/2021/09/17/sql-server-update%E8%B3%87%E6%96%99%E6%9B%B4%E6%96%B0/%E6%98%8E%E7%B4%B0.png" class="">
+
+
+<p>實作:想要更新客戶number為U002資料，把tel更新成09-00000000。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">update customers</span><br><span class="line">set tel=&#x27;09-00000000&#x27;</span><br><span class="line">where customers.number = &#x27;U002&#x27;</span><br></pre></td></tr></table></figure>
+<p>結果:</p>
+<img src="/2021/09/17/sql-server-update%E8%B3%87%E6%96%99%E6%9B%B4%E6%96%B0/1.png" class="">
+
+
+<h3 id="結論"><a href="#結論" class="headerlink" title="結論"></a>結論</h3><p>目前還沒犯過不小心更新全部表的失誤。但不知道哪天會很雖遇到(?)<br>所以，建議操作SQL前或是每日操作前都先備份，並且留存備份檔案，至少哪天有問題時還有機會救。<br>因為可能會有備份需求，所以先記著，之後會打篇資料備份。</p>
+<p>(ps.目前我還沒想到如果沒備份要怎麼救，只能求助google了。)</p>
+<p>下一回預計就是練習刪除語法。</p>
+<p><strong>參考資料</strong><br><a target="_blank" rel="noopener" href="https://www.w3schools.com/sql/sql_update.asp">https://www.w3schools.com/sql/sql_update.asp</a><br><a target="_blank" rel="noopener" href="https://ithelp.ithome.com.tw/articles/10220040">https://ithelp.ithome.com.tw/articles/10220040</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://yuhsiang237.github.io/2021/09/17/sql-server-update%E8%B3%87%E6%96%99%E6%9B%B4%E6%96%B0/" data-id="cme6kwo370065galjcp1eb5yn" data-title="[Day20] SQL server update 資料更新 - SQL Server資料庫入門" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
     <article id="post-sql-server-insert-into資料新增" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
     <a href="/2021/09/17/sql-server-insert-into%E8%B3%87%E6%96%99%E6%96%B0%E5%A2%9E/" class="article-date">
@@ -752,90 +820,6 @@
 
 
   
-    <article id="post-sql-server-子查詢" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2021/09/11/sql-server-%E5%AD%90%E6%9F%A5%E8%A9%A2/" class="article-date">
-  <time class="dt-published" datetime="2021-09-11T10:47:01.000Z" itemprop="datePublished">2021-09-11</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/Database/">Database</a>►<a class="article-category-link" href="/categories/Database/SQL-Server/">SQL Server</a>►<a class="article-category-link" href="/categories/Topic/">Topic</a>►<a class="article-category-link" href="/categories/Topic/2021-SQL-Server-Challenge/">2021 SQL Server Challenge</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2021/09/11/sql-server-%E5%AD%90%E6%9F%A5%E8%A9%A2/">[Day11] SQL server 子查詢 - SQL Server資料庫入門</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p>在上回 <a href="/2021/09/10/sql-server-%E5%90%88%E4%BD%B5%E6%9F%A5%E8%A9%A2join/" title="[Day10] SQL server Select合併查詢JOIN用法 - SQL Server資料庫入門">[Day10] SQL server Select合併查詢JOIN用法 - SQL Server資料庫入門</a> 中，我們練習了合併查詢的JOIN。</p>
-<p>在這回中，我們主要淺談一下子查詢。<br>他跟JOIN一樣都可以使用在多表的查詢上。</p>
-<h3 id="子查詢"><a href="#子查詢" class="headerlink" title="子查詢"></a>子查詢</h3><p>子查詢通常使用在Select的Where子句上。<br>首先處理的是子查詢條件，才會向外處理外部的主查詢。有點像是寫一個function，然後回傳一個結果再給主程式去跑。</p>
-<p>語法:</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">SELECT 欄位名稱1,欄位名稱2,...,欄位名稱n </span><br><span class="line">FROM 資料表名稱1</span><br><span class="line">WHERE 欄位名稱 = </span><br><span class="line">(SELECT 欄位名稱 FROM 資料表名稱2 WHERE 條件)</span><br></pre></td></tr></table></figure>
-<p>1.子查詢要在括號()中。<br>2.通常子查詢SELECT只會取得單一欄位的值，以便主查詢的欄位進行比較運算。<br>3.如需排序，子查詢不能使用ORDER BY，只能使用GROUP BY 子句。<br>4.如果子查詢可以取得多筆資料，在主查詢需使用IN邏輯運算子。</p>
-<p>在WHERE使用子查詢主要目的是取得其他資料表紀錄的欄位值來建立WHERE句的條件運算式。</p>
-<h3 id="實際演練"><a href="#實際演練" class="headerlink" title="實際演練"></a>實際演練</h3><h3 id="目前表中資料"><a href="#目前表中資料" class="headerlink" title="目前表中資料"></a>目前表中資料</h3><p>在此，提供一下目前資料表中的測試資料，作為核對。</p>
-<p><strong>customers 顧客</strong></p>
-<img src="/2021/09/11/sql-server-%E5%AD%90%E6%9F%A5%E8%A9%A2/%E9%A1%A7%E5%AE%A2.png" class="">
-<p><strong>products 產品</strong></p>
-<img src="/2021/09/11/sql-server-%E5%AD%90%E6%9F%A5%E8%A9%A2/%E7%94%A2%E5%93%81.png" class="">
-<p><strong>orders 出貨單</strong></p>
-<img src="/2021/09/11/sql-server-%E5%AD%90%E6%9F%A5%E8%A9%A2/%E8%A8%82%E5%96%AE.png" class="">
-<p><strong>order_details 出貨單明細</strong></p>
-<img src="/2021/09/11/sql-server-%E5%AD%90%E6%9F%A5%E8%A9%A2/%E6%98%8E%E7%B4%B0.png" class="">
-
-
-<p>實作:想要取得名子為XXX的訂單。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Select * from orders </span><br><span class="line">where orders.customer_number = (Select number from customers where customers.name = &#x27;XXX&#x27; )</span><br></pre></td></tr></table></figure>
-<p>結果:<br>子查詢的語句只會返回單一一筆的number叫做U001，之後就會變成orders.customer_number = ‘U001’去搜尋，最後得到結果。</p>
-<img src="/2021/09/11/sql-server-%E5%AD%90%E6%9F%A5%E8%A9%A2/ex1.png" class="">
-
-
-
-<p>實作:想要取得大於平均值的商品列表。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Select *,(select avg(price) from products) as avg_price from products </span><br><span class="line">where price &gt; (select avg(price) from products)</span><br></pre></td></tr></table></figure>
-<p>結果:<br>原本想要寫成 where price &gt; avg_price，但發現這樣的寫法不可以，因為前面的這種匿名欄位(原本就不在資料表中的欄位)在where後沒辦法取得，所以又補了一段(select avg(price) from products)。<br>總之，子查詢也可以用在欄位上。</p>
-<img src="/2021/09/11/sql-server-%E5%AD%90%E6%9F%A5%E8%A9%A2/ex2.png" class="">
-
-<p>實作:想取得訂單明細中有商品PS4及PS5的明細。<br>[補充]EXISTS指令:可以判斷子查詢的結果有沒有回傳資料，若有則會執行查詢中的結果。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Select * from order_details </span><br><span class="line">where exists </span><br><span class="line">(Select * from products where (products.name = &#x27;PS4&#x27; or products.name =&#x27;PS5&#x27;) and products.number = order_details.product_number)</span><br></pre></td></tr></table></figure>
-<p>結果:<br>搜尋order_details表單後用Exists子查詢，用Select取出商品名稱為PS4或PS5的集合，並且這集合的產品編號在訂單明細的產品編號裡。</p>
-<img src="/2021/09/11/sql-server-%E5%AD%90%E6%9F%A5%E8%A9%A2/ex3.png" class="">
-
-<p>實作:想取得還沒有下過訂單的顧客。<br>[補充]IN指令可以檢查是否存在子查詢的資料紀錄中。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Select * from customers </span><br><span class="line">where customers.number not in (Select orders.customer_number from orders )</span><br></pre></td></tr></table></figure>
-<p>結果:<br>用子查詢去查orders資料表，得到客戶編號的集合。之後主查詢用not in去篩選不在集合中的顧客編號。<br>最終得到U002這個沒下訂單的顧客。</p>
-<img src="/2021/09/11/sql-server-%E5%AD%90%E6%9F%A5%E8%A9%A2/ex4.png" class="">
-
-<h3 id="小結"><a href="#小結" class="headerlink" title="小結"></a>小結</h3><p>在這篇中練習了子查詢的寫法，並且知道子查詢可以放在欄位、或where後，且可以搭配如exists、in等等做法去擴展用法。<br>可能會找一時間把一些擴展語法如exists、in等等類型的都拉出來獨立講一遍。<br>下篇預計會是垂直的UNION查詢的做法。</p>
-<p><strong>參考資料</strong><br><a target="_blank" rel="noopener" href="https://ithelp.ithome.com.tw/articles/10219497">https://ithelp.ithome.com.tw/articles/10219497</a></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://yuhsiang237.github.io/2021/09/11/sql-server-%E5%AD%90%E6%9F%A5%E8%A9%A2/" data-id="cme6kwo3a006bgaljhbvg2e1o" data-title="[Day11] SQL server 子查詢 - SQL Server資料庫入門" class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
 
 
   <nav id="page-nav">
@@ -851,7 +835,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Categories</h3>
     <div class="widget">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Code/">Code</a><span class="category-list-count">79</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Code/C/">C#</a><span class="category-list-count">69</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Code/Javascript/">Javascript</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Code/Refactoring/">Refactoring</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Code/Typescript/">Typescript</a><span class="category-list-count">4</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/">Computer Science</a><span class="category-list-count">5</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/Algorithm/">Algorithm</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/Data-structure/">Data structure</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/Electronic-Circuit/">Electronic Circuit</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Daily-Log/">Daily Log</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/">Database</a><span class="category-list-count">57</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Database/PostgreSQL/">PostgreSQL</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/SQL-Server/">SQL Server</a><span class="category-list-count">47</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/">Framework</a><span class="category-list-count">27</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/AspNetCore-API/">AspNetCore API</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/AspNetCore-MVC/">AspNetCore MVC</a><span class="category-list-count">21</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/">Topic</a><span class="category-list-count">79</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2021-C-AspNetCore-Challenge/">2021 C# AspNetCore Challenge</a><span class="category-list-count">30</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2021-SQL-Server-Challenge/">2021 SQL Server Challenge</a><span class="category-list-count">30</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2022-C-SyncAndAsync/">2022 C# SyncAndAsync</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2025-Typescript/">2025 Typescript</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/Big-Data/">Big Data</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/LeetCode/">LeetCode</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/SystemStructure/">SystemStructure</a><span class="category-list-count">1</span></li></ul></li></ul>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Code/">Code</a><span class="category-list-count">80</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Code/C/">C#</a><span class="category-list-count">69</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Code/Javascript/">Javascript</a><span class="category-list-count">11</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Code/Refactoring/">Refactoring</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Code/Typescript/">Typescript</a><span class="category-list-count">5</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/">Computer Science</a><span class="category-list-count">5</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/Algorithm/">Algorithm</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/Data-structure/">Data structure</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/Electronic-Circuit/">Electronic Circuit</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Daily-Log/">Daily Log</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/">Database</a><span class="category-list-count">57</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Database/PostgreSQL/">PostgreSQL</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/SQL-Server/">SQL Server</a><span class="category-list-count">47</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/">Framework</a><span class="category-list-count">27</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/AspNetCore-API/">AspNetCore API</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/AspNetCore-MVC/">AspNetCore MVC</a><span class="category-list-count">21</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/">Topic</a><span class="category-list-count">80</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2021-C-AspNetCore-Challenge/">2021 C# AspNetCore Challenge</a><span class="category-list-count">30</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2021-SQL-Server-Challenge/">2021 SQL Server Challenge</a><span class="category-list-count">30</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2022-C-SyncAndAsync/">2022 C# SyncAndAsync</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2025-Typescript/">2025 Typescript</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/Big-Data/">Big Data</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/LeetCode/">LeetCode</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/SystemStructure/">SystemStructure</a><span class="category-list-count">1</span></li></ul></li></ul>
     </div>
   </div>
 
@@ -861,7 +845,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/08/">August 2025</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/05/">May 2023</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/03/">March 2023</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/02/">February 2023</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/01/">January 2023</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/12/">December 2022</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/09/">September 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/07/">July 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/06/">June 2022</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/05/">May 2022</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/04/">April 2022</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/03/">March 2022</a><span class="archive-list-count">17</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/02/">February 2022</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/01/">January 2022</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">December 2021</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">October 2021</a><span class="archive-list-count">24</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">September 2021</a><span class="archive-list-count">46</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">August 2021</a><span class="archive-list-count">12</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/08/">August 2025</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/05/">May 2023</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/03/">March 2023</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/02/">February 2023</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/01/">January 2023</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/12/">December 2022</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/09/">September 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/07/">July 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/06/">June 2022</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/05/">May 2022</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/04/">April 2022</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/03/">March 2022</a><span class="archive-list-count">17</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/02/">February 2022</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/01/">January 2022</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">December 2021</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">October 2021</a><span class="archive-list-count">24</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">September 2021</a><span class="archive-list-count">46</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">August 2021</a><span class="archive-list-count">12</span></li></ul>
     </div>
   </div>
 
