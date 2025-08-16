@@ -77,6 +77,73 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-Task運行處理-Run、Start、RunSynchronously-C-執行緒同步異步編程記" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2022/03/20/Task%E9%81%8B%E8%A1%8C%E8%99%95%E7%90%86-Run%E3%80%81Start%E3%80%81RunSynchronously-C-%E5%9F%B7%E8%A1%8C%E7%B7%92%E5%90%8C%E6%AD%A5%E7%95%B0%E6%AD%A5%E7%B7%A8%E7%A8%8B%E8%A8%98/" class="article-date">
+  <time class="dt-published" datetime="2022-03-20T08:27:53.000Z" itemprop="datePublished">2022-03-20</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Code/">Code</a>►<a class="article-category-link" href="/categories/Code/C/">C#</a>►<a class="article-category-link" href="/categories/Topic/">Topic</a>►<a class="article-category-link" href="/categories/Topic/2022-C-SyncAndAsync/">2022 C# SyncAndAsync</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2022/03/20/Task%E9%81%8B%E8%A1%8C%E8%99%95%E7%90%86-Run%E3%80%81Start%E3%80%81RunSynchronously-C-%E5%9F%B7%E8%A1%8C%E7%B7%92%E5%90%8C%E6%AD%A5%E7%95%B0%E6%AD%A5%E7%B7%A8%E7%A8%8B%E8%A8%98/">[Day6]Task運行處理(Run、Start、RunSynchronously)</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>在上回 <a href="#">Post not found: Task等待處理-Wait、WaitAll、WaitAny、WaitAsync、WhenAll、WhenAny-C-SyncAndAsync [Day5]Task等待處理(Wait、WaitAll、WaitAny、WaitAsync、WhenAll、WhenAny) - C# SyncAndAsync</a> ，我們使用了Task來測試等待的效果，而這回主要探討的是執行運行。</p>
+<ul>
+<li>Task.Run:將指定在 ThreadPool 執行工作排入佇列，並傳回該工作的工作或 Task<TResult> 控制代碼。</li>
+<li>Task.Start:啟動 Task，並排定它在目前的 TaskScheduler 執行。</li>
+<li>Task.RunSynchronously:在目前的 Task 上同步執行 TaskScheduler。</li>
+</ul>
+<h3 id="讓一個Task運行的兩種做法"><a href="#讓一個Task運行的兩種做法" class="headerlink" title="讓一個Task運行的兩種做法"></a>讓一個Task運行的兩種做法</h3><p>其實Task.Run、Task.Start都是能達到一樣的結果，只是寫法一個是分兩段，一個是一氣呵成。</p>
+<p>1.第一種用new Task搭配Task.Start，必須寫兩段。好處是可以先建立了，再決定哪時啟用。</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">Main</span>(<span class="params"><span class="built_in">string</span>[] args</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    Task task = <span class="keyword">new</span> Task(() =&gt; Console.WriteLine(<span class="string">&quot;task&quot;</span>));</span><br><span class="line">    task.Start();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>2.第二種用Run，一氣呵成。執行當下就直接運行。</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">Main</span>(<span class="params"><span class="built_in">string</span>[] args</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    Task Task = Task.Run(() =&gt;</span><br><span class="line">            &#123;</span><br><span class="line">                Console.WriteLine(<span class="string">&quot;task&quot;</span>);</span><br><span class="line">            &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>因此以上兩種用法Task.Run、Task.Start的差別已經清楚了。<br>再來則是RunSynchronously用法。</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> System;</span><br><span class="line"><span class="keyword">using</span> System.Threading;</span><br><span class="line"><span class="keyword">using</span> System.Threading.Tasks;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">Example</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">Main</span>(<span class="params"></span>)</span></span><br><span class="line">    &#123;</span><br><span class="line">        Console.WriteLine(<span class="string">&quot;Application executing on thread &#123;0&#125;&quot;</span>,</span><br><span class="line">                          Thread.CurrentThread.ManagedThreadId);</span><br><span class="line">        <span class="keyword">var</span> asyncTask = Task.Run(() =&gt; &#123;</span><br><span class="line">            Console.WriteLine(<span class="string">&quot;Task &#123;0&#125; (asyncTask) executing on Thread &#123;1&#125;&quot;</span>,</span><br><span class="line">                              Task.CurrentId,</span><br><span class="line">                              Thread.CurrentThread.ManagedThreadId);</span><br><span class="line">            <span class="built_in">long</span> sum = <span class="number">0</span>;</span><br><span class="line">            <span class="keyword">for</span> (<span class="built_in">int</span> ctr = <span class="number">1</span>; ctr &lt;= <span class="number">1000000</span>; ctr++)</span><br><span class="line">                sum += ctr;</span><br><span class="line">            <span class="keyword">return</span> sum;</span><br><span class="line">        &#125;);</span><br><span class="line">        <span class="keyword">var</span> syncTask = <span class="keyword">new</span> Task&lt;<span class="built_in">long</span>&gt;(() =&gt; &#123;</span><br><span class="line">            Console.WriteLine(<span class="string">&quot;Task &#123;0&#125; (syncTask) executing on Thread &#123;1&#125;&quot;</span>,</span><br><span class="line">                               Task.CurrentId,</span><br><span class="line">                               Thread.CurrentThread.ManagedThreadId);</span><br><span class="line">            <span class="built_in">long</span> sum = <span class="number">0</span>;</span><br><span class="line">            <span class="keyword">for</span> (<span class="built_in">int</span> ctr = <span class="number">1</span>; ctr &lt;= <span class="number">1000000</span>; ctr++)</span><br><span class="line">                sum += ctr;</span><br><span class="line">            <span class="keyword">return</span> sum;</span><br><span class="line">        &#125;);</span><br><span class="line">        syncTask.RunSynchronously();</span><br><span class="line">        Console.WriteLine();</span><br><span class="line">        Console.WriteLine(<span class="string">&quot;Task &#123;0&#125; returned &#123;1:N0&#125;&quot;</span>, syncTask.Id, syncTask.Result);</span><br><span class="line">        Console.WriteLine(<span class="string">&quot;Task &#123;0&#125; returned &#123;1:N0&#125;&quot;</span>, asyncTask.Id, asyncTask.Result);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>執行結果:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Application executing on thread 1</span><br><span class="line">Task 2 (syncTask) executing on Thread 1</span><br><span class="line">Task 1 (asyncTask) executing on Thread 4</span><br><span class="line"></span><br><span class="line">Task 2 returned 500,000,500,000</span><br><span class="line">Task 1 returned 500,000,500,000</span><br></pre></td></tr></table></figure>
+<p>官方給的解釋:<br>在這兩種情況下，工作都會執行相同的 lambda 運算式，以顯示工作識別碼和工作執行所在之執行緒的識別碼。此工作會計算介於1到1000000之間的整數總和。 如範例的輸出所示，藉由呼叫方法來執行的工作 RunSynchronously 會在應用程式執行緒上執行，而非同步工作則不是。</p>
+<p>簡單來說就是:RunSynchronously會在主執行序上面跑。而非同步的則會在其他執行序。</p>
+<h3 id="總結"><a href="#總結" class="headerlink" title="總結"></a>總結</h3><p>在這回中可以知道讓Task執行有哪幾種作法。</p>
+<h3 id="參考資料"><a href="#參考資料" class="headerlink" title="參考資料"></a>參考資料</h3><ul>
+<li><a target="_blank" rel="noopener" href="https://docs.microsoft.com/en-us/dotnet/api/system.threading.tasks.task.run?view=net-6.0">https://docs.microsoft.com/en-us/dotnet/api/system.threading.tasks.task.run?view=net-6.0</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.itread01.com/content/1569240242.html">https://www.itread01.com/content/1569240242.html</a></li>
+<li><a target="_blank" rel="noopener" href="https://docs.microsoft.com/zh-tw/dotnet/api/system.threading.tasks.task.runsynchronously?view=net-6.0">https://docs.microsoft.com/zh-tw/dotnet/api/system.threading.tasks.task.runsynchronously?view=net-6.0</a></li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://yuhsiang237.github.io/2022/03/20/Task%E9%81%8B%E8%A1%8C%E8%99%95%E7%90%86-Run%E3%80%81Start%E3%80%81RunSynchronously-C-%E5%9F%B7%E8%A1%8C%E7%B7%92%E5%90%8C%E6%AD%A5%E7%95%B0%E6%AD%A5%E7%B7%A8%E7%A8%8B%E8%A8%98/" data-id="cme6kwo2o0055galj5iweccq4" data-title="[Day6]Task運行處理(Run、Start、RunSynchronously)" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
     <article id="post-Task等待處理-Wait、WaitAll、WaitAny、WaitAsync、WhenAll、WhenAny-C-執行緒同步異步編程記" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
     <a href="/2022/03/20/Task%E7%AD%89%E5%BE%85%E8%99%95%E7%90%86-Wait%E3%80%81WaitAll%E3%80%81WaitAny%E3%80%81WaitAsync%E3%80%81WhenAll%E3%80%81WhenAny-C-%E5%9F%B7%E8%A1%8C%E7%B7%92%E5%90%8C%E6%AD%A5%E7%95%B0%E6%AD%A5%E7%B7%A8%E7%A8%8B%E8%A8%98/" class="article-date">
@@ -696,52 +763,6 @@ Thread是C#中最早的多執行緒模型，後來才推出Task。
 
 
   
-    <article id="post-PostgreSQL-Select解析JSON" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2022/03/11/PostgreSQL-Select%E8%A7%A3%E6%9E%90JSON/" class="article-date">
-  <time class="dt-published" datetime="2022-03-11T05:19:03.000Z" itemprop="datePublished">2022-03-11</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/Database/">Database</a>►<a class="article-category-link" href="/categories/Database/PostgreSQL/">PostgreSQL</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2022/03/11/PostgreSQL-Select%E8%A7%A3%E6%9E%90JSON/">PostgreSQL Select解析JSON</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p>(撰寫中。)</p>
-<h3 id="參考資料"><a href="#參考資料" class="headerlink" title="參考資料"></a>參考資料</h3><ul>
-<li><a target="_blank" rel="noopener" href="https://www.twblogs.net/a/5ee9f9bc29a78f6b0110a168">https://www.twblogs.net/a/5ee9f9bc29a78f6b0110a168</a></li>
-</ul>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://yuhsiang237.github.io/2022/03/11/PostgreSQL-Select%E8%A7%A3%E6%9E%90JSON/" data-id="cme6kwo1u003tgaljdsemc5mj" data-title="PostgreSQL Select解析JSON" class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
 
 
   <nav id="page-nav">
@@ -757,7 +778,7 @@ Thread是C#中最早的多執行緒模型，後來才推出Task。
   <div class="widget-wrap">
     <h3 class="widget-title">Categories</h3>
     <div class="widget">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Code/">Code</a><span class="category-list-count">80</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Code/C/">C#</a><span class="category-list-count">69</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Code/Javascript/">Javascript</a><span class="category-list-count">11</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Code/Refactoring/">Refactoring</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Code/Typescript/">Typescript</a><span class="category-list-count">5</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/">Computer Science</a><span class="category-list-count">5</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/Algorithm/">Algorithm</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/Data-structure/">Data structure</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/Electronic-Circuit/">Electronic Circuit</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Daily-Log/">Daily Log</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/">Database</a><span class="category-list-count">57</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Database/PostgreSQL/">PostgreSQL</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/SQL-Server/">SQL Server</a><span class="category-list-count">47</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/">Framework</a><span class="category-list-count">27</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/AspNetCore-API/">AspNetCore API</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/AspNetCore-MVC/">AspNetCore MVC</a><span class="category-list-count">21</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/">Topic</a><span class="category-list-count">80</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2021-C-AspNetCore-Challenge/">2021 C# AspNetCore Challenge</a><span class="category-list-count">30</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2021-SQL-Server-Challenge/">2021 SQL Server Challenge</a><span class="category-list-count">30</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2022-C-SyncAndAsync/">2022 C# SyncAndAsync</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2025-Typescript/">2025 Typescript</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/Big-Data/">Big Data</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/LeetCode/">LeetCode</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/SystemStructure/">SystemStructure</a><span class="category-list-count">1</span></li></ul></li></ul>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Code/">Code</a><span class="category-list-count">81</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Code/C/">C#</a><span class="category-list-count">69</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Code/Javascript/">Javascript</a><span class="category-list-count">12</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Code/Refactoring/">Refactoring</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Code/Typescript/">Typescript</a><span class="category-list-count">6</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/">Computer Science</a><span class="category-list-count">5</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/Algorithm/">Algorithm</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/Data-structure/">Data structure</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/Electronic-Circuit/">Electronic Circuit</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Daily-Log/">Daily Log</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/">Database</a><span class="category-list-count">57</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Database/PostgreSQL/">PostgreSQL</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/SQL-Server/">SQL Server</a><span class="category-list-count">47</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/">Framework</a><span class="category-list-count">27</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/AspNetCore-API/">AspNetCore API</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/AspNetCore-MVC/">AspNetCore MVC</a><span class="category-list-count">21</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/">Topic</a><span class="category-list-count">81</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2021-C-AspNetCore-Challenge/">2021 C# AspNetCore Challenge</a><span class="category-list-count">30</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2021-SQL-Server-Challenge/">2021 SQL Server Challenge</a><span class="category-list-count">30</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2022-C-SyncAndAsync/">2022 C# SyncAndAsync</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2025-Typescript/">2025 Typescript</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/Big-Data/">Big Data</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/LeetCode/">LeetCode</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/SystemStructure/">SystemStructure</a><span class="category-list-count">1</span></li></ul></li></ul>
     </div>
   </div>
 
@@ -767,7 +788,7 @@ Thread是C#中最早的多執行緒模型，後來才推出Task。
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/08/">August 2025</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/05/">May 2023</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/03/">March 2023</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/02/">February 2023</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/01/">January 2023</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/12/">December 2022</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/09/">September 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/07/">July 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/06/">June 2022</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/05/">May 2022</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/04/">April 2022</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/03/">March 2022</a><span class="archive-list-count">17</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/02/">February 2022</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/01/">January 2022</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">December 2021</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">October 2021</a><span class="archive-list-count">24</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">September 2021</a><span class="archive-list-count">46</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">August 2021</a><span class="archive-list-count">12</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/08/">August 2025</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/05/">May 2023</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/03/">March 2023</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/02/">February 2023</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/01/">January 2023</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/12/">December 2022</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/09/">September 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/07/">July 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/06/">June 2022</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/05/">May 2022</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/04/">April 2022</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/03/">March 2022</a><span class="archive-list-count">17</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/02/">February 2022</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/01/">January 2022</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">December 2021</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">October 2021</a><span class="archive-list-count">24</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">September 2021</a><span class="archive-list-count">46</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">August 2021</a><span class="archive-list-count">12</span></li></ul>
     </div>
   </div>
 

@@ -6,7 +6,7 @@
   <link href="https://yuhsiang237.github.io/atom.xml" rel="self"/>
   
   <link href="https://yuhsiang237.github.io/"/>
-  <updated>2025-08-15T03:40:32.419Z</updated>
+  <updated>2025-08-16T14:11:24.232Z</updated>
   <id>https://yuhsiang237.github.io/</id>
   
   <author>
@@ -15,6 +15,40 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>[Day06] Typescript 排序套件庫Lodash</title>
+    <link href="https://yuhsiang237.github.io/2025/08/16/Typescript-Day06/"/>
+    <id>https://yuhsiang237.github.io/2025/08/16/Typescript-Day06/</id>
+    <published>2025-08-16T13:17:12.000Z</published>
+    <updated>2025-08-16T14:11:24.232Z</updated>
+    
+    <content type="html"><![CDATA[<p>在處理陣列物件時常會遇到需要排序陣列的問題，而用sort 得搭配 reduce，寫法醜、不好閱讀。<br>所以就詢問看看AI有何通用套件在大的專案裡常用。</p><p>目前是Lodash（最常用），閱讀起來也很直觀。</p><p>目前有三種</p><ol><li>Lodash（最常用）</li></ol><p>Lodash安裝</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install lodash</span><br></pre></td></tr></table></figure><p>單屬性排序.ts</p><figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> _ <span class="keyword">from</span> <span class="string">&quot;lodash&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">interface</span> User &#123;</span><br><span class="line">  <span class="attr">id</span>: <span class="built_in">number</span>;</span><br><span class="line">  name: <span class="built_in">string</span>;</span><br><span class="line">  age: <span class="built_in">number</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> users: User[] = [</span><br><span class="line">  &#123; <span class="attr">id</span>: <span class="number">3</span>, <span class="attr">name</span>: <span class="string">&quot;Tom&quot;</span>, <span class="attr">age</span>: <span class="number">28</span> &#125;,</span><br><span class="line">  &#123; <span class="attr">id</span>: <span class="number">1</span>, <span class="attr">name</span>: <span class="string">&quot;Amy&quot;</span>, <span class="attr">age</span>: <span class="number">22</span> &#125;,</span><br><span class="line">  &#123; <span class="attr">id</span>: <span class="number">2</span>, <span class="attr">name</span>: <span class="string">&quot;John&quot;</span>, <span class="attr">age</span>: <span class="number">30</span> &#125;,</span><br><span class="line">];</span><br><span class="line"></span><br><span class="line"><span class="comment">// 單屬性排序</span></span><br><span class="line"><span class="keyword">const</span> byAge = _.orderBy(users, [<span class="string">&quot;age&quot;</span>], [<span class="string">&quot;asc&quot;</span>]);   <span class="comment">// 升冪</span></span><br><span class="line"><span class="keyword">const</span> byName = _.orderBy(users, [<span class="string">&quot;name&quot;</span>], [<span class="string">&quot;desc&quot;</span>]); <span class="comment">// 降冪</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(byAge);</span><br></pre></td></tr></table></figure><p>多屬性排序.ts</p><figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> multiSort = _.orderBy(users, [<span class="string">&quot;age&quot;</span>, <span class="string">&quot;name&quot;</span>], [<span class="string">&quot;asc&quot;</span>, <span class="string">&quot;desc&quot;</span>]);</span><br></pre></td></tr></table></figure><ol start="2"><li>Remeda（型別安全版 Lodash）</li></ol><p>安裝remeda</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install remeda</span><br></pre></td></tr></table></figure><figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; sortBy &#125; <span class="keyword">from</span> <span class="string">&quot;remeda&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> byAge = sortBy(users, <span class="function">(<span class="params">u</span>) =&gt;</span> u.age);</span><br><span class="line"><span class="keyword">const</span> byName = sortBy(users, <span class="function">(<span class="params">u</span>) =&gt;</span> u.name);</span><br></pre></td></tr></table></figure><p>3.內建(ES2023 新增，原生) toSorted</p><p>但是寫法還是有點不好閱讀，多排的時候</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">const byAge = users.toSorted((a, b) =&gt; a.age - b.age);</span><br></pre></td></tr></table></figure>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;p&gt;在處理陣列物件時常會遇到需要排序陣列的問題，而用sort 得搭配 reduce，寫法醜、不好閱讀。&lt;br&gt;所以就詢問看看AI有何通用套件在大的專案裡常用。&lt;/p&gt;
+&lt;p&gt;目前是Lodash（最常用），閱讀起來也很直觀。&lt;/p&gt;
+&lt;p&gt;目前有三種&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;L</summary>
+      
+    
+    
+    
+    <category term="Code" scheme="https://yuhsiang237.github.io/categories/Code/"/>
+    
+    <category term="Topic" scheme="https://yuhsiang237.github.io/categories/Topic/"/>
+    
+    <category term="Javascript" scheme="https://yuhsiang237.github.io/categories/Code/Javascript/"/>
+    
+    <category term="2025 Typescript" scheme="https://yuhsiang237.github.io/categories/Topic/2025-Typescript/"/>
+    
+    <category term="Typescript" scheme="https://yuhsiang237.github.io/categories/Code/Typescript/"/>
+    
+    
+  </entry>
   
   <entry>
     <title>[Day05] Typescript 取得資料後進行的處理</title>
@@ -523,30 +557,6 @@
     <category term="Topic" scheme="https://yuhsiang237.github.io/categories/Topic/"/>
     
     <category term="LeetCode" scheme="https://yuhsiang237.github.io/categories/Topic/LeetCode/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>C# create the non-reference object (Deep Clone)</title>
-    <link href="https://yuhsiang237.github.io/2022/06/08/C-create-the-non-reference-object-Deep-Clone/"/>
-    <id>https://yuhsiang237.github.io/2022/06/08/C-create-the-non-reference-object-Deep-Clone/</id>
-    <published>2022-06-08T02:22:05.000Z</published>
-    <updated>2025-08-11T03:49:08.456Z</updated>
-    
-    <content type="html"><![CDATA[<p>In my work, I usually have a problem about how to create a non-reference object in C#. So today I want to solve it with a simple way that use the serialization and deserialization of JSON.</p><h3 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h3><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> System;</span><br><span class="line"><span class="keyword">using</span> System.Text.Json;</span><br><span class="line"></span><br><span class="line"><span class="keyword">namespace</span> <span class="title">NonReferenceObj</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">internal</span> <span class="keyword">class</span> <span class="title">Program</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> Order</span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">class</span> <span class="title">Order</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">public</span> <span class="built_in">int</span> Seq &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line">            <span class="keyword">public</span> <span class="built_in">string</span> No &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line">            <span class="keyword">public</span> <span class="built_in">decimal</span> Amount &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> Util</span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">class</span> <span class="title">Util</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">            <span class="comment"><span class="doctag">///</span> Deep Clone</span></span><br><span class="line">            <span class="comment"><span class="doctag">///</span> Copy a non-reference object</span></span><br><span class="line">            <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">            <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;typeparam name=&quot;T&quot;&gt;</span>T<span class="doctag">&lt;/typeparam&gt;</span></span></span><br><span class="line">            <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;obj&quot;&gt;</span>obj<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">            <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;returns&gt;</span><span class="doctag">&lt;/returns&gt;</span></span></span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> T <span class="title">DeepClone</span>&lt;<span class="title">T</span>&gt;(<span class="params">T obj</span>)</span></span><br><span class="line">            =&gt; JsonSerializer.Deserialize&lt;T&gt;(JsonSerializer.Serialize(obj));</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">Main</span>(<span class="params"></span>)</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">var</span> order = <span class="keyword">new</span> Order</span><br><span class="line">            &#123;</span><br><span class="line">                Seq = <span class="number">1</span>,</span><br><span class="line">                No = <span class="string">&quot;20220608&quot;</span>,</span><br><span class="line">                Amount = <span class="number">100</span>,</span><br><span class="line">            &#125;;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">var</span> copy = Util.DeepClone(order);</span><br><span class="line"></span><br><span class="line">            <span class="comment">// Check the reference of object </span></span><br><span class="line">            Console.WriteLine(<span class="string">$&quot;Check the reference of object: <span class="subst">&#123;<span class="built_in">object</span>.ReferenceEquals(order, copy)&#125;</span>&quot;</span>);</span><br><span class="line">            <span class="comment">// Check the equal of value  </span></span><br><span class="line">            Console.WriteLine(<span class="string">$&quot;Check the equal of value: <span class="subst">&#123;order.No == copy.No &amp;&amp; order.Seq == copy.Seq &amp;&amp; order.Amount == copy.Amount&#125;</span>&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>Finally, we got the output below:</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Check the reference of object: False</span><br><span class="line">Check the equal of value: True</span><br></pre></td></tr></table></figure>]]></content>
-    
-    
-      
-      
-    <summary type="html">&lt;p&gt;In my work, I usually have a problem about how to create a non-reference object in C#. So today I want to solve it with a simple way that</summary>
-      
-    
-    
-    
-    <category term="Code" scheme="https://yuhsiang237.github.io/categories/Code/"/>
-    
-    <category term="C#" scheme="https://yuhsiang237.github.io/categories/Code/C/"/>
     
     
   </entry>
