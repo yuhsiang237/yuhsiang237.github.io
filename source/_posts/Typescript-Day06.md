@@ -1,6 +1,6 @@
 ---
-title: '[Day04] Typescript 排序套件庫Lodash'
-date: 2025-08-14 21:17:12
+title: '[Day06] Typescript 排序套件庫Lodash'
+date: 2025-08-16 21:17:12
 categories:
   - [Topic,2025 Typescript]
   - [Code,Javascript]
