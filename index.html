@@ -104,6 +104,7 @@
     <div class="e-content article-entry" itemprop="articleBody">
       
         <p>這回想藉此來探討實際應用時何時該用interface?<br>在過往實務應用時會遇到若每個處理的物件都建interface那一個頁面就動輒1~5個以上。<br>而算上巢狀物件，就更多了，所以這回利用AI建議來探討一下。</p>
+<p>最後，則會以我最近寫個小專案「露營日」作為範例，讓AI幫我判讀哪些其實可以省、哪些必要。</p>
 <h3 id="Q1-詢問我在寫typescript專案，感覺一個頁面每個物件都建立interface太多了，到底哪些才要哪些用any"><a href="#Q1-詢問我在寫typescript專案，感覺一個頁面每個物件都建立interface太多了，到底哪些才要哪些用any" class="headerlink" title="Q1:詢問我在寫typescript專案，感覺一個頁面每個物件都建立interface太多了，到底哪些才要哪些用any?"></a>Q1:詢問我在寫typescript專案，感覺一個頁面每個物件都建立interface太多了，到底哪些才要哪些用any?</h3><h4 id="解答"><a href="#解答" class="headerlink" title="解答:"></a>解答:</h4><p>這個問題超多人在 TypeScript 專案會遇到 👍<br>你現在的困擾其實就是 <strong>型別要不要「嚴格」定義</strong> vs <strong>偷懶用 <code>any</code></strong> 的取捨。</p>
 <p>我幫你拆成幾個層次來看：</p>
 <hr>
