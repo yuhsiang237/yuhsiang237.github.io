@@ -77,6 +77,60 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-電商資料庫設計參考" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2021/09/19/%E9%9B%BB%E5%95%86%E8%B3%87%E6%96%99%E5%BA%AB%E8%A8%AD%E8%A8%88%E5%8F%83%E8%80%83/" class="article-date">
+  <time class="dt-published" datetime="2021-09-18T18:53:39.000Z" itemprop="datePublished">2021-09-19</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Database/">Database</a>►<a class="article-category-link" href="/categories/Database/SQL-Server/">SQL Server</a>►<a class="article-category-link" href="/categories/Topic/">Topic</a>►<a class="article-category-link" href="/categories/Topic/2021-SQL-Server-Challenge/">2021 SQL Server Challenge</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2021/09/19/%E9%9B%BB%E5%95%86%E8%B3%87%E6%96%99%E5%BA%AB%E8%A8%AD%E8%A8%88%E5%8F%83%E8%80%83/">[Day30] 電商資料庫設計參考 - SQL Server資料庫入門</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>最後的兩回中研究別人怎麼設計資料庫。<br>這回主要探討電商，因為沒有現成的範例，所以只好去找一個大略可以講的範例。</p>
+<h3 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h3><p>因為電商，所以最主要是販售物品為主，會有庫存、商品、結帳，讓顧客如何順利地購買產品、保留過往資料以供糾紛調查是最重要的。<br>以下是我找到的電商模擬資料表:</p>
+<img src="/2021/09/19/%E9%9B%BB%E5%95%86%E8%B3%87%E6%96%99%E5%BA%AB%E8%A8%AD%E8%A8%88%E5%8F%83%E8%80%83/ecommerce-platform-data.png" class="">
+
+<h3 id="從資料表上分析"><a href="#從資料表上分析" class="headerlink" title="從資料表上分析"></a>從資料表上分析</h3><p>先從user來說，首先要建立的就是顧客資料。<br>於是有了user、user_address、user_payment三張表。<br>而關係到能否正常運送、付款，所以把關鍵功能拿出來開表也是很正常的。<br>為了避免欄位過多，把不相干的項目拉出去就是資料庫正規化。<br>不斷比較各個欄位與該列表的主鍵關係，把表拆出，即2NF、3NF。</p>
+<p>再來是product，產品。<br>因此有了product_category、product_inventory、discount三張表。<br>產品的分類、庫存、折扣，而其中庫存最重要，因為它關係到能否正常賣出東西。<br>雖然我不知道為什麼不直接把product_inventory的外來鍵設定成product的主鍵，這樣能更直覺的去Mapping。總之，多開這一張庫存表可以知道販售的情況、庫存異動情況。在價格變動上，想追蹤也是可以這麼做的。<br>而discount表，則是拉出來，獨立處理這商品套用的折扣，有個active，可以啟用、關閉。我覺得這張折扣表上可以加一個修正價錢，等於有一段時間打折能直接套用這折扣價，照原本設計是用百分比去折扣。<br>我覺得這商品是最難的規劃，會有多種不同價格，怎麼記錄他異動等等。</p>
+<p>再來是購物車shopping_session、cart_item。<br>因為我們可能會換電腦操作，所以不能放在Cookie，會需要購物車幫我們紀錄要買哪些資料。<br>在這cart_item裡面就是不斷添加產品product，可能有N個產品，之後這N個產品都算在同一個shopping_session上。<br>這段我自己覺得只要cart_item就好，就是購物車裡放哪些東西，因為只是用來暫存用的。</p>
+<p>結帳完成訂單order_details、order_items、payment_details。<br>在最後流程就是使用者要能夠結帳、產生訂單。<br>把cart_item的資料都拿出來，放到order_items，之後點下結帳時，用程式的”交易”的寫法，去檢查能正常扣除庫存，就建立這筆訂單。<br>此外，訂單建立就是付款了，只要照著付款流程付完款，在更新payment_details即可。<br>而order_details則是記錄這筆訂單總金額、備註等等。<br>如果被刪除了，是否要自動把庫存加回去就看個人需求，總之能做到。<br>如果怕有糾紛問題就是多存一份沒關聯的字串資料。把當時結帳的商品名稱、款項都寫明，已備不時之需使用。</p>
+<p>此外，商品那些都做成軟刪除，因為未來可能會需要關聯，所以能看到有deleted_at欄位。<br>deleted_at、modified_at、created_at在資料庫的表建議都建立，以供人工好追蹤。<br>然後，發現好像大多數資料表設計如type類型都設定成varchar，應該在拉出去一層關聯會比較好，往後類型被改會比較容易更新，只取代一個跟取代N個的差別。</p>
+<h3 id="從型別上分析"><a href="#從型別上分析" class="headerlink" title="從型別上分析"></a>從型別上分析</h3><p>時間它是用timestamp，但如果SQL server用datetime2會更好。<br>商品的價格上price用decimal，跟我前面幾回探討過的型別有關，就是選沒有誤差精確數值。<br>在id上是int，但其實也可以用bigint如wordpress就是用bigint。<br>文字用varchar。</p>
+<h3 id="總結"><a href="#總結" class="headerlink" title="總結"></a>總結</h3><p>從這個資料庫來看，已能滿足大多的需求，我覺得關鍵在這系統主要想幹嘛，在把那部份特別補強設計架構，就八九不離時了。<br>主要的功能表能設計的穩固，後面要擴建就能容易些。<br>此外，我覺得還能再加上個折價券表，可以套用在最後的結帳上。</p>
+<p><strong>參考資料</strong><br><a target="_blank" rel="noopener" href="https://resources.fabric.inc/blog/answers/ecommerce-database-design-example?fbclid=IwAR388b0qI1maAfEDWguD9y4pOEywv3TG2gJIEq4jDW2jNQsZWdYfdTSVr-I">https://resources.fabric.inc/blog/answers/ecommerce-database-design-example?fbclid=IwAR388b0qI1maAfEDWguD9y4pOEywv3TG2gJIEq4jDW2jNQsZWdYfdTSVr-I</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://yuhsiang237.github.io/2021/09/19/%E9%9B%BB%E5%95%86%E8%B3%87%E6%96%99%E5%BA%AB%E8%A8%AD%E8%A8%88%E5%8F%83%E8%80%83/" data-id="cme6kwo7f00ougalj1gej7sro" data-title="[Day30] 電商資料庫設計參考 - SQL Server資料庫入門" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
     <article id="post-如何讓自己的想法變正面" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
     <a href="/2021/09/19/%E5%A6%82%E4%BD%95%E8%AE%93%E8%87%AA%E5%B7%B1%E7%9A%84%E6%83%B3%E6%B3%95%E8%AE%8A%E6%AD%A3%E9%9D%A2/" class="article-date">
@@ -719,89 +773,6 @@
 
 
   
-    <article id="post-sql-server-資料庫備份" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2021/09/17/sql-server-%E8%B3%87%E6%96%99%E5%BA%AB%E5%82%99%E4%BB%BD/" class="article-date">
-  <time class="dt-published" datetime="2021-09-17T01:43:48.000Z" itemprop="datePublished">2021-09-17</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/Database/">Database</a>►<a class="article-category-link" href="/categories/Database/SQL-Server/">SQL Server</a>►<a class="article-category-link" href="/categories/Topic/">Topic</a>►<a class="article-category-link" href="/categories/Topic/2021-SQL-Server-Challenge/">2021 SQL Server Challenge</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2021/09/17/sql-server-%E8%B3%87%E6%96%99%E5%BA%AB%E5%82%99%E4%BB%BD/">[Day22] SQL server 資料庫備份與還原，使用bak - SQL Server資料庫入門</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p>在這回主要介紹資料庫的備份方法。<br>避免哪天真的遇到不可測的失誤、資料庫毀損、硬碟壞掉。<br>在這篇中先介紹SQL server .bak檔案的備份與還原</p>
-<h3 id="完整備份"><a href="#完整備份" class="headerlink" title="完整備份"></a>完整備份</h3><p>1.對資料表右鍵選到Back Up</p>
-<img src="/2021/09/17/sql-server-%E8%B3%87%E6%96%99%E5%BA%AB%E5%82%99%E4%BB%BD/1.png" class="">
-<p>2.Backup Type 選擇Full表示完整備份</p>
-<img src="/2021/09/17/sql-server-%E8%B3%87%E6%96%99%E5%BA%AB%E5%82%99%E4%BB%BD/2.png" class="">
-<p>3.備份成功會跳出訊息</p>
-<img src="/2021/09/17/sql-server-%E8%B3%87%E6%96%99%E5%BA%AB%E5%82%99%E4%BB%BD/3.png" class="">
-<p>4.可至資料夾找到完整備份的.bak<br>注意:.bak可能沒辦法向下兼容舊版資料庫，如果要向下兼容要用另一種SQL備份的方法。</p>
-<img src="/2021/09/17/sql-server-%E8%B3%87%E6%96%99%E5%BA%AB%E5%82%99%E4%BB%BD/4.png" class="">
-
-
-<h3 id="完整備份還原"><a href="#完整備份還原" class="headerlink" title="完整備份還原"></a>完整備份還原</h3><p>1.先把資料庫設定成離線狀態，Tasks&gt;Take Offline。</p>
-<img src="/2021/09/17/sql-server-%E8%B3%87%E6%96%99%E5%BA%AB%E5%82%99%E4%BB%BD/r1.png" class="">
-<p>2.勾選Drop All Active Connection，之後按下OK，讓資料庫進入離線模式。</p>
-<img src="/2021/09/17/sql-server-%E8%B3%87%E6%96%99%E5%BA%AB%E5%82%99%E4%BB%BD/r2.png" class="">
-<p>3.之後對資料庫按右鍵Tasks&gt;Restore&gt;Datebase。</p>
-<img src="/2021/09/17/sql-server-%E8%B3%87%E6%96%99%E5%BA%AB%E5%82%99%E4%BB%BD/r3.png" class="">
-<p>4.接下來選擇Device，從本地檔案去還原。</p>
-<img src="/2021/09/17/sql-server-%E8%B3%87%E6%96%99%E5%BA%AB%E5%82%99%E4%BB%BD/r4.png" class="">
-<p>5.在跳出的框框選擇Add</p>
-<img src="/2021/09/17/sql-server-%E8%B3%87%E6%96%99%E5%BA%AB%E5%82%99%E4%BB%BD/r5.png" class="">
-<p>6.選擇剛備份出來的.bak</p>
-<img src="/2021/09/17/sql-server-%E8%B3%87%E6%96%99%E5%BA%AB%E5%82%99%E4%BB%BD/r6.png" class="">
-<p>7.返回原本視窗後按下OK</p>
-<img src="/2021/09/17/sql-server-%E8%B3%87%E6%96%99%E5%BA%AB%E5%82%99%E4%BB%BD/r7.png" class="">
-<p>8.然後點OK，開始進行還原</p>
-<img src="/2021/09/17/sql-server-%E8%B3%87%E6%96%99%E5%BA%AB%E5%82%99%E4%BB%BD/r8.png" class="">
-<p>9.跳出了還原成功</p>
-<img src="/2021/09/17/sql-server-%E8%B3%87%E6%96%99%E5%BA%AB%E5%82%99%E4%BB%BD/r9.png" class="">
-<p>10.檢查可以發現資料表都回來了，裡面的資料也是</p>
-<img src="/2021/09/17/sql-server-%E8%B3%87%E6%96%99%E5%BA%AB%E5%82%99%E4%BB%BD/r10.png" class="">
-
-
-<h3 id="還原失敗可能情況"><a href="#還原失敗可能情況" class="headerlink" title="還原失敗可能情況"></a>還原失敗可能情況</h3><p>1.沒有Offline資料庫，就會造成無法匯入。<br>錯誤訊息</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">TITLE: Microsoft SQL Server Management Studio</span><br><span class="line">------------------------------</span><br><span class="line"></span><br><span class="line">Restore of database &#x27;Orders&#x27; failed. (Microsoft.SqlServer.Management.RelationalEngineTasks)</span><br><span class="line"></span><br><span class="line">------------------------------</span><br><span class="line">ADDITIONAL INFORMATION:</span><br><span class="line"></span><br><span class="line">System.Data.SqlClient.SqlError: Exclusive access could not be obtained because the database is in use. (Microsoft.SqlServer.SmoExtended)</span><br><span class="line"></span><br><span class="line">For help, click: https://go.microsoft.com/fwlink?ProdName=Microsoft+SQL+Server&amp;ProdVer=16.100.46437.65+(SMO-master-A)&amp;LinkId=20476</span><br><span class="line"></span><br><span class="line">------------------------------</span><br><span class="line">BUTTONS:</span><br><span class="line"></span><br><span class="line">OK</span><br><span class="line">------------------------------</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<p>圖:</p>
-<img src="/2021/09/17/sql-server-%E8%B3%87%E6%96%99%E5%BA%AB%E5%82%99%E4%BB%BD/error.png" class="">
-
-
-<p>Ans:只要在還原前先把資料庫設定成離線狀態，Tasks&gt;Take Offline即可。</p>
-<h3 id="結論"><a href="#結論" class="headerlink" title="結論"></a>結論</h3><p>有還原檔案比沒有好，記得備份，以備不時之需。<br>下篇預計是用SQL方式去產可向下兼容的備份檔案。</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://yuhsiang237.github.io/2021/09/17/sql-server-%E8%B3%87%E6%96%99%E5%BA%AB%E5%82%99%E4%BB%BD/" data-id="cme6kwo3d006ggaljc1hrfbvd" data-title="[Day22] SQL server 資料庫備份與還原，使用bak - SQL Server資料庫入門" class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
 
 
   <nav id="page-nav">
@@ -817,7 +788,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Categories</h3>
     <div class="widget">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Code/">Code</a><span class="category-list-count">81</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Code/C/">C#</a><span class="category-list-count">69</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Code/Javascript/">Javascript</a><span class="category-list-count">12</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Code/Refactoring/">Refactoring</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Code/Typescript/">Typescript</a><span class="category-list-count">6</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/">Computer Science</a><span class="category-list-count">5</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/Algorithm/">Algorithm</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/Data-structure/">Data structure</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/Electronic-Circuit/">Electronic Circuit</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Daily-Log/">Daily Log</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/">Database</a><span class="category-list-count">57</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Database/PostgreSQL/">PostgreSQL</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/SQL-Server/">SQL Server</a><span class="category-list-count">47</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/">Framework</a><span class="category-list-count">27</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/AspNetCore-API/">AspNetCore API</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/AspNetCore-MVC/">AspNetCore MVC</a><span class="category-list-count">21</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/">Topic</a><span class="category-list-count">81</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2021-C-AspNetCore-Challenge/">2021 C# AspNetCore Challenge</a><span class="category-list-count">30</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2021-SQL-Server-Challenge/">2021 SQL Server Challenge</a><span class="category-list-count">30</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2022-C-SyncAndAsync/">2022 C# SyncAndAsync</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2025-Typescript/">2025 Typescript</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/Big-Data/">Big Data</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/LeetCode/">LeetCode</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/SystemStructure/">SystemStructure</a><span class="category-list-count">1</span></li></ul></li></ul>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Code/">Code</a><span class="category-list-count">82</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Code/C/">C#</a><span class="category-list-count">69</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Code/Javascript/">Javascript</a><span class="category-list-count">13</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Code/Refactoring/">Refactoring</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Code/Typescript/">Typescript</a><span class="category-list-count">7</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/">Computer Science</a><span class="category-list-count">5</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/Algorithm/">Algorithm</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/Data-structure/">Data structure</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/Electronic-Circuit/">Electronic Circuit</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Daily-Log/">Daily Log</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/">Database</a><span class="category-list-count">57</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Database/PostgreSQL/">PostgreSQL</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/SQL-Server/">SQL Server</a><span class="category-list-count">47</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/">Framework</a><span class="category-list-count">27</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/AspNetCore-API/">AspNetCore API</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/AspNetCore-MVC/">AspNetCore MVC</a><span class="category-list-count">21</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/">Topic</a><span class="category-list-count">82</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2021-C-AspNetCore-Challenge/">2021 C# AspNetCore Challenge</a><span class="category-list-count">30</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2021-SQL-Server-Challenge/">2021 SQL Server Challenge</a><span class="category-list-count">30</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2022-C-SyncAndAsync/">2022 C# SyncAndAsync</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2025-Typescript/">2025 Typescript</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/Big-Data/">Big Data</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/LeetCode/">LeetCode</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/SystemStructure/">SystemStructure</a><span class="category-list-count">1</span></li></ul></li></ul>
     </div>
   </div>
 
@@ -827,7 +798,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/08/">August 2025</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/05/">May 2023</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/03/">March 2023</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/02/">February 2023</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/01/">January 2023</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/12/">December 2022</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/09/">September 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/07/">July 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/06/">June 2022</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/05/">May 2022</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/04/">April 2022</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/03/">March 2022</a><span class="archive-list-count">17</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/02/">February 2022</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/01/">January 2022</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">December 2021</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">October 2021</a><span class="archive-list-count">24</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">September 2021</a><span class="archive-list-count">46</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">August 2021</a><span class="archive-list-count">12</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/08/">August 2025</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/05/">May 2023</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/03/">March 2023</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/02/">February 2023</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/01/">January 2023</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/12/">December 2022</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/09/">September 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/07/">July 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/06/">June 2022</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/05/">May 2022</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/04/">April 2022</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/03/">March 2022</a><span class="archive-list-count">17</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/02/">February 2022</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/01/">January 2022</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">December 2021</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">October 2021</a><span class="archive-list-count">24</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">September 2021</a><span class="archive-list-count">46</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">August 2021</a><span class="archive-list-count">12</span></li></ul>
     </div>
   </div>
 

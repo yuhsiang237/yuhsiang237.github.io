@@ -77,6 +77,89 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-sql-server-資料庫備份" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2021/09/17/sql-server-%E8%B3%87%E6%96%99%E5%BA%AB%E5%82%99%E4%BB%BD/" class="article-date">
+  <time class="dt-published" datetime="2021-09-17T01:43:48.000Z" itemprop="datePublished">2021-09-17</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Database/">Database</a>►<a class="article-category-link" href="/categories/Database/SQL-Server/">SQL Server</a>►<a class="article-category-link" href="/categories/Topic/">Topic</a>►<a class="article-category-link" href="/categories/Topic/2021-SQL-Server-Challenge/">2021 SQL Server Challenge</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2021/09/17/sql-server-%E8%B3%87%E6%96%99%E5%BA%AB%E5%82%99%E4%BB%BD/">[Day22] SQL server 資料庫備份與還原，使用bak - SQL Server資料庫入門</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>在這回主要介紹資料庫的備份方法。<br>避免哪天真的遇到不可測的失誤、資料庫毀損、硬碟壞掉。<br>在這篇中先介紹SQL server .bak檔案的備份與還原</p>
+<h3 id="完整備份"><a href="#完整備份" class="headerlink" title="完整備份"></a>完整備份</h3><p>1.對資料表右鍵選到Back Up</p>
+<img src="/2021/09/17/sql-server-%E8%B3%87%E6%96%99%E5%BA%AB%E5%82%99%E4%BB%BD/1.png" class="">
+<p>2.Backup Type 選擇Full表示完整備份</p>
+<img src="/2021/09/17/sql-server-%E8%B3%87%E6%96%99%E5%BA%AB%E5%82%99%E4%BB%BD/2.png" class="">
+<p>3.備份成功會跳出訊息</p>
+<img src="/2021/09/17/sql-server-%E8%B3%87%E6%96%99%E5%BA%AB%E5%82%99%E4%BB%BD/3.png" class="">
+<p>4.可至資料夾找到完整備份的.bak<br>注意:.bak可能沒辦法向下兼容舊版資料庫，如果要向下兼容要用另一種SQL備份的方法。</p>
+<img src="/2021/09/17/sql-server-%E8%B3%87%E6%96%99%E5%BA%AB%E5%82%99%E4%BB%BD/4.png" class="">
+
+
+<h3 id="完整備份還原"><a href="#完整備份還原" class="headerlink" title="完整備份還原"></a>完整備份還原</h3><p>1.先把資料庫設定成離線狀態，Tasks&gt;Take Offline。</p>
+<img src="/2021/09/17/sql-server-%E8%B3%87%E6%96%99%E5%BA%AB%E5%82%99%E4%BB%BD/r1.png" class="">
+<p>2.勾選Drop All Active Connection，之後按下OK，讓資料庫進入離線模式。</p>
+<img src="/2021/09/17/sql-server-%E8%B3%87%E6%96%99%E5%BA%AB%E5%82%99%E4%BB%BD/r2.png" class="">
+<p>3.之後對資料庫按右鍵Tasks&gt;Restore&gt;Datebase。</p>
+<img src="/2021/09/17/sql-server-%E8%B3%87%E6%96%99%E5%BA%AB%E5%82%99%E4%BB%BD/r3.png" class="">
+<p>4.接下來選擇Device，從本地檔案去還原。</p>
+<img src="/2021/09/17/sql-server-%E8%B3%87%E6%96%99%E5%BA%AB%E5%82%99%E4%BB%BD/r4.png" class="">
+<p>5.在跳出的框框選擇Add</p>
+<img src="/2021/09/17/sql-server-%E8%B3%87%E6%96%99%E5%BA%AB%E5%82%99%E4%BB%BD/r5.png" class="">
+<p>6.選擇剛備份出來的.bak</p>
+<img src="/2021/09/17/sql-server-%E8%B3%87%E6%96%99%E5%BA%AB%E5%82%99%E4%BB%BD/r6.png" class="">
+<p>7.返回原本視窗後按下OK</p>
+<img src="/2021/09/17/sql-server-%E8%B3%87%E6%96%99%E5%BA%AB%E5%82%99%E4%BB%BD/r7.png" class="">
+<p>8.然後點OK，開始進行還原</p>
+<img src="/2021/09/17/sql-server-%E8%B3%87%E6%96%99%E5%BA%AB%E5%82%99%E4%BB%BD/r8.png" class="">
+<p>9.跳出了還原成功</p>
+<img src="/2021/09/17/sql-server-%E8%B3%87%E6%96%99%E5%BA%AB%E5%82%99%E4%BB%BD/r9.png" class="">
+<p>10.檢查可以發現資料表都回來了，裡面的資料也是</p>
+<img src="/2021/09/17/sql-server-%E8%B3%87%E6%96%99%E5%BA%AB%E5%82%99%E4%BB%BD/r10.png" class="">
+
+
+<h3 id="還原失敗可能情況"><a href="#還原失敗可能情況" class="headerlink" title="還原失敗可能情況"></a>還原失敗可能情況</h3><p>1.沒有Offline資料庫，就會造成無法匯入。<br>錯誤訊息</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">TITLE: Microsoft SQL Server Management Studio</span><br><span class="line">------------------------------</span><br><span class="line"></span><br><span class="line">Restore of database &#x27;Orders&#x27; failed. (Microsoft.SqlServer.Management.RelationalEngineTasks)</span><br><span class="line"></span><br><span class="line">------------------------------</span><br><span class="line">ADDITIONAL INFORMATION:</span><br><span class="line"></span><br><span class="line">System.Data.SqlClient.SqlError: Exclusive access could not be obtained because the database is in use. (Microsoft.SqlServer.SmoExtended)</span><br><span class="line"></span><br><span class="line">For help, click: https://go.microsoft.com/fwlink?ProdName=Microsoft+SQL+Server&amp;ProdVer=16.100.46437.65+(SMO-master-A)&amp;LinkId=20476</span><br><span class="line"></span><br><span class="line">------------------------------</span><br><span class="line">BUTTONS:</span><br><span class="line"></span><br><span class="line">OK</span><br><span class="line">------------------------------</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>圖:</p>
+<img src="/2021/09/17/sql-server-%E8%B3%87%E6%96%99%E5%BA%AB%E5%82%99%E4%BB%BD/error.png" class="">
+
+
+<p>Ans:只要在還原前先把資料庫設定成離線狀態，Tasks&gt;Take Offline即可。</p>
+<h3 id="結論"><a href="#結論" class="headerlink" title="結論"></a>結論</h3><p>有還原檔案比沒有好，記得備份，以備不時之需。<br>下篇預計是用SQL方式去產可向下兼容的備份檔案。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://yuhsiang237.github.io/2021/09/17/sql-server-%E8%B3%87%E6%96%99%E5%BA%AB%E5%82%99%E4%BB%BD/" data-id="cme6kwo3d006ggaljc1hrfbvd" data-title="[Day22] SQL server 資料庫備份與還原，使用bak - SQL Server資料庫入門" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
     <article id="post-sql-server-delete-資料刪除" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
     <a href="/2021/09/17/sql-server-delete-%E8%B3%87%E6%96%99%E5%88%AA%E9%99%A4/" class="article-date">
@@ -732,73 +815,6 @@
 
 
   
-    <article id="post-sql-server-group-by-分組" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2021/09/13/sql-server-group-by-%E5%88%86%E7%B5%84/" class="article-date">
-  <time class="dt-published" datetime="2021-09-12T20:31:26.000Z" itemprop="datePublished">2021-09-13</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/Database/">Database</a>►<a class="article-category-link" href="/categories/Database/SQL-Server/">SQL Server</a>►<a class="article-category-link" href="/categories/Topic/">Topic</a>►<a class="article-category-link" href="/categories/Topic/2021-SQL-Server-Challenge/">2021 SQL Server Challenge</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2021/09/13/sql-server-group-by-%E5%88%86%E7%B5%84/">[Day13] SQL server Group By 資料分組與聚合函數COUNT(), MAX(), MIN(), SUM(), AVG() - SQL Server資料庫入門</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p>在這回中，將要探討SQL server中的Group By用法，並搭配聚合函數使用。<br>資料在資料表中都是一列一列的，而分組則是把這些列的某些特徵欄位視為分組依據，並且將他們合為一組，並使用聚合函數就能夠做出簡易的統計。</p>
-<h3 id="測試資料"><a href="#測試資料" class="headerlink" title="測試資料"></a>測試資料</h3><p>還是一樣，先放上資料表:</p>
-<p><strong>customers 顧客</strong></p>
-<img src="/2021/09/13/sql-server-group-by-%E5%88%86%E7%B5%84/%E9%A1%A7%E5%AE%A2.png" class="">
-<p><strong>products 產品</strong></p>
-<img src="/2021/09/13/sql-server-group-by-%E5%88%86%E7%B5%84/%E7%94%A2%E5%93%81.png" class="">
-<p><strong>orders 出貨單</strong></p>
-<img src="/2021/09/13/sql-server-group-by-%E5%88%86%E7%B5%84/%E8%A8%82%E5%96%AE.png" class="">
-<p><strong>order_details 出貨單明細</strong></p>
-<img src="/2021/09/13/sql-server-group-by-%E5%88%86%E7%B5%84/%E6%98%8E%E7%B4%B0.png" class="">
-
-
-<h3 id="GROUP-BY"><a href="#GROUP-BY" class="headerlink" title="GROUP BY"></a>GROUP BY</h3><p>把相同值列分組成匯總列。<br>Group By常常與COUNT(), MAX(), MIN(), SUM(), AVG()這些總計有關的語法一起用。</p>
-<p><strong>聚合函數</strong><br>COUNT(column_name):取得欄位資料筆數。(ps.如果想統計整列不管有沒有空值問題可以下 COUNT(*) )<br>MAX(column_name):取得欄位最大值。<br>MIN(column_name):取得欄位最小值。<br>SUM(column_name):取得欄位加總。<br>AVG(column_name):取得欄位平均值。</p>
-<p>語法:</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">SELECT column_name(s)</span><br><span class="line">FROM table_name</span><br><span class="line">WHERE condition</span><br><span class="line">GROUP BY column_name(s)</span><br><span class="line">ORDER BY column_name(s); </span><br></pre></td></tr></table></figure>
-
-<p>實作:統計訂單明細的資料內容。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Select order_number,sum(price*amount) as 訂單總額 </span><br><span class="line">,avg(price) as 平均商品單價,min(price) as 最低商品單價</span><br><span class="line">,max(price) 最高商品單價,sum(amount) as 總貨量</span><br><span class="line">,count(order_number) as 細項數量 </span><br><span class="line">from order_details group by order_details.order_number</span><br></pre></td></tr></table></figure>
-<p>結果:<br>以order_number訂單編號為分組要件，把order_details表中所有重複的order_number都獨立識別成一個群組。<br>再以這個群組去統計資料。<br>如下圖，因為資料庫中order_details只有2筆資料，所以把這2筆的order_number嘗試分組，發現都只有A002這個訂單編號，於是就只分成了一組A002的資料，而這組A002資料底下則有2筆資料，可供統計聚合函數COUNT(), MAX(), MIN(), SUM(), AVG()使用。</p>
-<img src="/2021/09/13/sql-server-group-by-%E5%88%86%E7%B5%84/ex1.png" class="">
-
-
-
-<p><strong>參考資料</strong><br><a target="_blank" rel="noopener" href="https://www.w3schools.com/sql/sql_groupby.asp">https://www.w3schools.com/sql/sql_groupby.asp</a><br><a target="_blank" rel="noopener" href="https://ithelp.ithome.com.tw/articles/10218537">https://ithelp.ithome.com.tw/articles/10218537</a><br><a target="_blank" rel="noopener" href="https://ithelp.ithome.com.tw/articles/10218055">https://ithelp.ithome.com.tw/articles/10218055</a></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://yuhsiang237.github.io/2021/09/13/sql-server-group-by-%E5%88%86%E7%B5%84/" data-id="cme6kwo32005ygalj6mocah5d" data-title="[Day13] SQL server Group By 資料分組與聚合函數COUNT(), MAX(), MIN(), SUM(), AVG() - SQL Server資料庫入門" class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
 
 
   <nav id="page-nav">
@@ -814,7 +830,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Categories</h3>
     <div class="widget">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Code/">Code</a><span class="category-list-count">81</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Code/C/">C#</a><span class="category-list-count">69</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Code/Javascript/">Javascript</a><span class="category-list-count">12</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Code/Refactoring/">Refactoring</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Code/Typescript/">Typescript</a><span class="category-list-count">6</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/">Computer Science</a><span class="category-list-count">5</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/Algorithm/">Algorithm</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/Data-structure/">Data structure</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/Electronic-Circuit/">Electronic Circuit</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Daily-Log/">Daily Log</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/">Database</a><span class="category-list-count">57</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Database/PostgreSQL/">PostgreSQL</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/SQL-Server/">SQL Server</a><span class="category-list-count">47</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/">Framework</a><span class="category-list-count">27</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/AspNetCore-API/">AspNetCore API</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/AspNetCore-MVC/">AspNetCore MVC</a><span class="category-list-count">21</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/">Topic</a><span class="category-list-count">81</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2021-C-AspNetCore-Challenge/">2021 C# AspNetCore Challenge</a><span class="category-list-count">30</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2021-SQL-Server-Challenge/">2021 SQL Server Challenge</a><span class="category-list-count">30</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2022-C-SyncAndAsync/">2022 C# SyncAndAsync</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2025-Typescript/">2025 Typescript</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/Big-Data/">Big Data</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/LeetCode/">LeetCode</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/SystemStructure/">SystemStructure</a><span class="category-list-count">1</span></li></ul></li></ul>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Code/">Code</a><span class="category-list-count">82</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Code/C/">C#</a><span class="category-list-count">69</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Code/Javascript/">Javascript</a><span class="category-list-count">13</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Code/Refactoring/">Refactoring</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Code/Typescript/">Typescript</a><span class="category-list-count">7</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/">Computer Science</a><span class="category-list-count">5</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/Algorithm/">Algorithm</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/Data-structure/">Data structure</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/Electronic-Circuit/">Electronic Circuit</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Daily-Log/">Daily Log</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/">Database</a><span class="category-list-count">57</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Database/PostgreSQL/">PostgreSQL</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/SQL-Server/">SQL Server</a><span class="category-list-count">47</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/">Framework</a><span class="category-list-count">27</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/AspNetCore-API/">AspNetCore API</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/AspNetCore-MVC/">AspNetCore MVC</a><span class="category-list-count">21</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/">Topic</a><span class="category-list-count">82</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2021-C-AspNetCore-Challenge/">2021 C# AspNetCore Challenge</a><span class="category-list-count">30</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2021-SQL-Server-Challenge/">2021 SQL Server Challenge</a><span class="category-list-count">30</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2022-C-SyncAndAsync/">2022 C# SyncAndAsync</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2025-Typescript/">2025 Typescript</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/Big-Data/">Big Data</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/LeetCode/">LeetCode</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/SystemStructure/">SystemStructure</a><span class="category-list-count">1</span></li></ul></li></ul>
     </div>
   </div>
 
@@ -824,7 +840,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/08/">August 2025</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/05/">May 2023</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/03/">March 2023</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/02/">February 2023</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/01/">January 2023</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/12/">December 2022</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/09/">September 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/07/">July 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/06/">June 2022</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/05/">May 2022</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/04/">April 2022</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/03/">March 2022</a><span class="archive-list-count">17</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/02/">February 2022</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/01/">January 2022</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">December 2021</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">October 2021</a><span class="archive-list-count">24</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">September 2021</a><span class="archive-list-count">46</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">August 2021</a><span class="archive-list-count">12</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/08/">August 2025</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/05/">May 2023</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/03/">March 2023</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/02/">February 2023</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/01/">January 2023</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/12/">December 2022</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/09/">September 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/07/">July 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/06/">June 2022</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/05/">May 2022</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/04/">April 2022</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/03/">March 2022</a><span class="archive-list-count">17</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/02/">February 2022</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/01/">January 2022</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">December 2021</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">October 2021</a><span class="archive-list-count">24</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">September 2021</a><span class="archive-list-count">46</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">August 2021</a><span class="archive-list-count">12</span></li></ul>
     </div>
   </div>
 

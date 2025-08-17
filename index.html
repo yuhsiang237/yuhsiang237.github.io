@@ -77,6 +77,258 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-Typescript-Day07" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2025/08/17/Typescript-Day07/" class="article-date">
+  <time class="dt-published" datetime="2025-08-17T13:17:12.000Z" itemprop="datePublished">2025-08-17</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Code/">Code</a>►<a class="article-category-link" href="/categories/Code/Javascript/">Javascript</a>►<a class="article-category-link" href="/categories/Code/Typescript/">Typescript</a>►<a class="article-category-link" href="/categories/Topic/">Topic</a>►<a class="article-category-link" href="/categories/Topic/2025-Typescript/">2025 Typescript</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2025/08/17/Typescript-Day07/">[Day07] Typescript什麼時候用interface</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>這回想藉此來探討實際應用時何時該用interface?<br>在過往實務應用時會遇到若每個處理的物件都建interface那一個頁面就動輒1~5個以上。<br>而算上巢狀物件，就更多了，所以這回利用AI建議來探討一下。</p>
+<h3 id="Q1-詢問我在寫typescript專案，感覺一個頁面每個物件都建立interface太多了，到底哪些才要哪些用any"><a href="#Q1-詢問我在寫typescript專案，感覺一個頁面每個物件都建立interface太多了，到底哪些才要哪些用any" class="headerlink" title="Q1:詢問我在寫typescript專案，感覺一個頁面每個物件都建立interface太多了，到底哪些才要哪些用any?"></a>Q1:詢問我在寫typescript專案，感覺一個頁面每個物件都建立interface太多了，到底哪些才要哪些用any?</h3><h4 id="解答"><a href="#解答" class="headerlink" title="解答:"></a>解答:</h4><p>這個問題超多人在 TypeScript 專案會遇到 👍<br>你現在的困擾其實就是 <strong>型別要不要「嚴格」定義</strong> vs <strong>偷懶用 <code>any</code></strong> 的取捨。</p>
+<p>我幫你拆成幾個層次來看：</p>
+<hr>
+<h3 id="🚫-不建議直接用-any-的地方"><a href="#🚫-不建議直接用-any-的地方" class="headerlink" title="🚫 不建議直接用 any 的地方"></a>🚫 不建議直接用 <code>any</code> 的地方</h3><ol>
+<li><p><strong>API 回傳的資料</strong></p>
+<ul>
+<li>API 是最常變動的地方，如果用 <code>any</code>，資料格式一變你就會踩雷。</li>
+<li>建立 interface/type 可以立刻知道少了欄位或欄位型態錯誤。<br>✅ 這裡建議要有 interface。</li>
+</ul>
+</li>
+<li><p><strong>跨檔案、多人協作的資料結構</strong></p>
+<ul>
+<li>例如 User、Product、Order 這種「全專案通用」的物件。</li>
+<li>沒型別大家就會各自定義，結果最後爆掉。<br>✅ 要建立 interface 或 type，通常會集中放在 <code>types/</code> 資料夾。</li>
+</ul>
+</li>
+<li><p><strong>複雜邏輯需要推導型別</strong></p>
+<ul>
+<li>假設一個 function 處理一堆欄位，如果沒型別你會不知道 function 需要什麼資料。<br>✅ 建議用 interface 來限制 input/output。</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h3 id="🟡-可以「偷懶」不用-interface-的地方"><a href="#🟡-可以「偷懶」不用-interface-的地方" class="headerlink" title="🟡 可以「偷懶」不用 interface 的地方"></a>🟡 可以「偷懶」不用 interface 的地方</h3><ol>
+<li><p><strong>一次性的小物件</strong></p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> options = &#123; <span class="attr">theme</span>: <span class="string">&#x27;dark&#x27;</span>, <span class="attr">showSidebar</span>: <span class="literal">true</span> &#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>這種本地小物件，TS 自己會推斷型別，不一定要手動寫 interface。</li>
+</ul>
+</li>
+<li><p><strong>快速原型 / Demo</strong></p>
+<ul>
+<li>你只是在測試功能，或這頁很快會被刪掉，不需要寫到超嚴格。</li>
+<li>可以用 <code>any</code> 或 <code>unknown</code>，之後再慢慢補齊。</li>
+</ul>
+</li>
+<li><p><strong>第三方套件輸出的資料很雜</strong></p>
+<ul>
+<li>有些套件沒提供型別，資料又一堆巢狀，硬定義超麻煩。</li>
+<li>可以先用 <code>any</code>，等真的需要用到再逐步補型別。</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h3 id="🎯-實務上常見做法"><a href="#🎯-實務上常見做法" class="headerlink" title="🎯 實務上常見做法"></a>🎯 實務上常見做法</h3><ul>
+<li><strong>Domain Models</strong>（使用者、商品、訂單）：一定寫 interface/type。</li>
+<li><strong>API Response</strong>：通常用 <code>type ApiResponse&lt;T&gt; = &#123; data: T; error?: string &#125;</code> 這種 pattern。</li>
+<li><strong>小型狀態 / component props</strong>：TS 自己會推斷就不用寫。</li>
+<li><strong>還不確定結構的資料</strong>：先用 <code>any</code> 或 <code>unknown</code>，等穩定後再補 interface。</li>
+</ul>
+<hr>
+<p>👉 簡單原則就是：</p>
+<ul>
+<li><strong>跨頁面/多人共用 → 要 interface</strong></li>
+<li><strong>一次性/很簡單 → 交給 TS 推斷就好</strong></li>
+<li><strong>實在太麻煩 → 先用 any/unknown，之後再補</strong></li>
+</ul>
+<h3 id="Q2-那像是angular-或vue3或react這種-在html上顯示的資料該訂嗎"><a href="#Q2-那像是angular-或vue3或react這種-在html上顯示的資料該訂嗎" class="headerlink" title="Q2.那像是angular 或vue3或react這種 在html上顯示的資料該訂嗎?"></a>Q2.那像是angular 或vue3或react這種 在html上顯示的資料該訂嗎?</h3><p>這個其實就是 <strong>前端框架 (Angular / Vue3 / React)</strong> 在 <strong>模板 (HTML/JSX)</strong> 顯示資料時，要不要訂型別？</p>
+<hr>
+<h2 id="📌-分情境來看"><a href="#📌-分情境來看" class="headerlink" title="📌 分情境來看"></a>📌 分情境來看</h2><h3 id="1-API-資料要渲染到畫面上"><a href="#1-API-資料要渲染到畫面上" class="headerlink" title="1. API 資料要渲染到畫面上"></a>1. <strong>API 資料要渲染到畫面上</strong></h3><figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 假設從 API 拿到 user</span></span><br><span class="line"><span class="keyword">interface</span> User &#123;</span><br><span class="line">  <span class="attr">id</span>: <span class="built_in">number</span></span><br><span class="line">  <span class="attr">name</span>: <span class="built_in">string</span></span><br><span class="line">  email?: <span class="built_in">string</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="attr">users</span>: User[] = [] <span class="comment">// Angular</span></span><br><span class="line"><span class="keyword">const</span> users = ref&lt;User[]&gt;([]) <span class="comment">// Vue3</span></span><br><span class="line"><span class="keyword">const</span> [users, setUsers] = useState&lt;User[]&gt;([]) <span class="comment">// React</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>要型別</strong> ✅<br>因為這是 **外部資料來源 (API)**，一旦 API 改了，畫面上就可能噴錯。<br>有 interface → TS 在你 <code>&#123;&#123; user.name &#125;&#125;</code> 或 <code>user.name</code> 時會自動提示、也能避免 typo。</li>
+</ul>
+<hr>
+<h3 id="2-本地暫存的小資料-UI-狀態"><a href="#2-本地暫存的小資料-UI-狀態" class="headerlink" title="2. 本地暫存的小資料 / UI 狀態"></a>2. <strong>本地暫存的小資料 / UI 狀態</strong></h3><figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">isLoading = <span class="literal">true</span></span><br><span class="line">selectedTab = <span class="string">&#x27;home&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>不用特別寫 interface</strong> ❌<br>這種 TS 會自動推斷，寫 interface 反而太重。<br>(除非是 <strong>大型複雜狀態</strong>，才會包一個 <code>interface UiState</code>)</li>
+</ul>
+<hr>
+<h3 id="3-表單資料"><a href="#3-表單資料" class="headerlink" title="3. 表單資料"></a>3. <strong>表單資料</strong></h3><figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">interface</span> CampForm &#123;</span><br><span class="line">  <span class="attr">date</span>: <span class="built_in">string</span></span><br><span class="line">  <span class="attr">people</span>: <span class="built_in">number</span></span><br><span class="line">  note?: <span class="built_in">string</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">campForm = <span class="built_in">this</span>.fb.group&lt;CampForm&gt;(&#123;</span><br><span class="line">  <span class="attr">date</span>: [<span class="string">&#x27;&#x27;</span>],</span><br><span class="line">  <span class="attr">people</span>: [<span class="number">0</span>],</span><br><span class="line">  <span class="attr">note</span>: [<span class="string">&#x27;&#x27;</span>],</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>要型別</strong> ✅<br>因為表單資料要送 API / 驗證，沒有型別很容易傳錯。</li>
+</ul>
+<hr>
+<h3 id="4-Component-Props"><a href="#4-Component-Props" class="headerlink" title="4. Component Props"></a>4. <strong>Component Props</strong></h3><figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Vue3</span></span><br><span class="line">defineProps&lt;&#123; <span class="attr">title</span>: <span class="built_in">string</span>; count?: <span class="built_in">number</span> &#125;&gt;()</span><br><span class="line"></span><br><span class="line"><span class="comment">// React</span></span><br><span class="line"><span class="keyword">type</span> ButtonProps = &#123;</span><br><span class="line">  <span class="attr">label</span>: <span class="built_in">string</span></span><br><span class="line">  onClick?: <span class="function">() =&gt;</span> <span class="built_in">void</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>要型別</strong> ✅<br>因為 props 是 <strong>元件的 API</strong>，型別就是保護你和使用者不傳錯。</li>
+</ul>
+<hr>
+<h2 id="🎯-實務上的建議"><a href="#🎯-實務上的建議" class="headerlink" title="🎯 實務上的建議"></a>🎯 實務上的建議</h2><ul>
+<li><strong>API / Props / 表單</strong> → <strong>一定要 interface/type</strong></li>
+<li><strong>畫面上的小資料 (狀態、flag)</strong> → <strong>交給 TS 自動推斷就好</strong></li>
+<li><strong>如果型別很麻煩但資料要顯示</strong> → 先 <code>any</code> → 之後慢慢抽 interface</li>
+</ul>
+<hr>
+<p>👉 一句話原則：<br><strong>「會跨元件或送 API 的資料 → 訂型別」<br>「只在本地 UI 用的小資料 → TS 自己推斷就好」</strong></p>
+<h3 id="Q3-我讓AI幫我判斷了我這還沒整理的Angular程式碼，哪些該省哪些該加。"><a href="#Q3-我讓AI幫我判斷了我這還沒整理的Angular程式碼，哪些該省哪些該加。" class="headerlink" title="Q3.我讓AI幫我判斷了我這還沒整理的Angular程式碼，哪些該省哪些該加。"></a>Q3.我讓AI幫我判斷了我這還沒整理的Angular程式碼，哪些該省哪些該加。</h3><p>.ts程式碼<br><a target="_blank" rel="noopener" href="https://github.com/yuhsiang237/CampDay/blob/80af24eb86eb064a22ac7acf649b3b104600f46f/src/app/result/result.ts">https://github.com/yuhsiang237/CampDay/blob/80af24eb86eb064a22ac7acf649b3b104600f46f/src/app/result/result.ts</a></p>
+<p>我幫你把這份 <strong>Angular v20 程式碼</strong>掃描過一遍，從「哪些要 interface」「哪些可以偷懶」的角度整理 👍</p>
+<hr>
+<h2 id="✅-建議一定要有-interface-type"><a href="#✅-建議一定要有-interface-type" class="headerlink" title="✅ 建議一定要有 interface/type"></a>✅ 建議一定要有 <strong>interface/type</strong></h2><p>這些是「跨頁面 or API 資料」，型別能大幅降低錯誤：</p>
+<ul>
+<li><p><strong>CampSite</strong></p>
+<ul>
+<li>你已經寫好，對應 CSV → 當然要保留。</li>
+</ul>
+</li>
+<li><p><strong>CampSearch</strong></p>
+<ul>
+<li>來自表單、要跟 API 溝通 → 一定要型別。</li>
+</ul>
+</li>
+<li><p><strong>CampDistData</strong></p>
+<ul>
+<li>你已經用來做 groupBy 的結果，畫面會顯示 district / data → 保留。</li>
+</ul>
+</li>
+<li><p><strong>WeatherAPI</strong></p>
+<ul>
+<li>你有 <code>cityApiMap: WeatherAPI = weatherAPI as WeatherAPI;</code> → 建議保留。</li>
+</ul>
+</li>
+</ul>
+<p>👉 這些 interface 應該集中放在 <code>interfaces/</code> 資料夾，做「共用 domain 型別」。</p>
+<hr>
+<h2 id="🟡-建議可以再補充型別（目前用-any-的地方）"><a href="#🟡-建議可以再補充型別（目前用-any-的地方）" class="headerlink" title="🟡 建議可以再補充型別（目前用 any 的地方）"></a>🟡 建議可以再補充型別（目前用 <code>any</code> 的地方）</h2><p>現在很多 <code>any</code>，會讓你失去 TS 提示：</p>
+<ul>
+<li><p><code>formData: any;</code></p>
+<ul>
+<li>建議 → 用 <code>Partial&lt;CampSearch&gt;</code> 或 <code>Record&lt;string, string&gt;</code></li>
+</ul>
+</li>
+<li><p><code>weather: any;</code></p>
+<ul>
+<li>建議 → 抽成 <code>interface WeatherResponse</code>，至少定義 <code>records.Locations[0].Location</code> 結構，不然 HTML 綁定會沒提示。</li>
+</ul>
+</li>
+<li><p><code>locationWeather: any[] = [];</code></p>
+<ul>
+<li>建議 → 改成 <code>WeatherLocation[]</code>（要不要定義完整，看你需求，可以先定義部分欄位）。</li>
+</ul>
+</li>
+<li><p><code>normalizeWeatherSlots(raw: any): any</code></p>
+<ul>
+<li>建議 → 回傳型別 <code>Record&lt;string, (WeatherSlot|null)[]&gt;</code>，<br>至少定義 <code>WeatherSlot &#123; timeRange: string; label: string; maxTemp?: number; minTemp?: number; weather?: string &#125;</code>。</li>
+</ul>
+</li>
+<li><p><code>getFirstDaySlots(districtName: string): any[]</code></p>
+<ul>
+<li>建議 → 改成 <code>WeatherSlot[]</code>。</li>
+</ul>
+</li>
+<li><p><code>getWeatherByDistrictGrouped(districtName: string): &#123; [date: string]: any[] &#125;</code></p>
+<ul>
+<li>建議 → <code>&#123; [date: string]: WeatherSlot[] &#125;</code>。</li>
+</ul>
+</li>
+<li><p><code>getWeatherByLocationAny(location: string)</code></p>
+<ul>
+<li>這個你用 <code>any</code> 還 ok，因為是「整包丟給 chart/table」的 raw data，未來若只取部分再訂也行。</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2 id="❌-可以省略-interface（讓-TS-自動推斷就好）"><a href="#❌-可以省略-interface（讓-TS-自動推斷就好）" class="headerlink" title="❌ 可以省略 interface（讓 TS 自動推斷就好）"></a>❌ 可以省略 interface（讓 TS 自動推斷就好）</h2><ul>
+<li><code>isLoading: boolean = true;</code></li>
+<li><code>campSites: CampSite[] = [];</code>（這個其實 TS 會推斷出來，寫 <code>: CampSite[]</code> 算是多餘的，但保留也沒問題）</li>
+<li><code>campSiteSearchResults: CampSite[] = [];</code> 同上</li>
+<li><code>campDistData: CampDistData[] = [];</code> 同上</li>
+</ul>
+<p>這些小狀態，TS 自己會推斷，寫不寫型別都行。</p>
+<hr>
+<h2 id="🎯-總結-給你一個規則表"><a href="#🎯-總結-給你一個規則表" class="headerlink" title="🎯 總結 (給你一個規則表)"></a>🎯 總結 (給你一個規則表)</h2><table>
+<thead>
+<tr>
+<th>類型</th>
+<th>要不要 interface/type</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>API Response</strong></td>
+<td>要，至少定義會顯示在畫面的欄位</td>
+</tr>
+<tr>
+<td><strong>CSV 轉換後的資料 (CampSite)</strong></td>
+<td>要</td>
+</tr>
+<tr>
+<td><strong>表單資料 (CampSearch)</strong></td>
+<td>要</td>
+</tr>
+<tr>
+<td><strong>跨頁共用的資料 (CampDistData, WeatherAPI)</strong></td>
+<td>要</td>
+</tr>
+<tr>
+<td><strong>畫面 UI 狀態 (isLoading, flag, 小字串)</strong></td>
+<td>不用，交給 TS 推斷</td>
+</tr>
+<tr>
+<td><strong>一次性 function local 物件</strong></td>
+<td>不用</td>
+</tr>
+<tr>
+<td><strong>暫時不清楚的資料</strong></td>
+<td>可以先 <code>any</code>，後面再抽型別</td>
+</tr>
+</tbody></table>
+<hr>
+<p>👉 如果你要「快速先跑」，我會建議：</p>
+<ul>
+<li><code>weather</code>、<code>locationWeather</code> → 先留 <code>any</code></li>
+<li>其他 API / 表單 / CampSite → 全部要 interface</li>
+<li>專案穩定後再慢慢把 <code>weather</code> 抽型別出來</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://yuhsiang237.github.io/2025/08/17/Typescript-Day07/" data-id="cmefx4bsw0000xpljhy5jhh3o" data-title="[Day07] Typescript什麼時候用interface" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
     <article id="post-Typescript-Day06" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
     <a href="/2025/08/16/Typescript-Day06/" class="article-date">
@@ -913,52 +1165,6 @@
 
 
   
-    <article id="post-C-Distinct-object" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2023/02/14/C-Distinct-object/" class="article-date">
-  <time class="dt-published" datetime="2023-02-14T08:13:37.000Z" itemprop="datePublished">2023-02-14</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/Code/">Code</a>►<a class="article-category-link" href="/categories/Code/C/">C#</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2023/02/14/C-Distinct-object/">C# Distinct objects</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p>In the case, I want to remove the duplicate objects of the list.<br>I use the object key, <code>UserId</code> and <code>Type</code>, to distinguish them in the list.<br>After I distinct the objects, the count of the list becomes 2.<br>The numbers of the list are 2023021403 and 2023021401.</p>
-<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> System;</span><br><span class="line"><span class="keyword">using</span> System.Collections.Generic;</span><br><span class="line"><span class="keyword">using</span> System.Linq;</span><br><span class="line"></span><br><span class="line"><span class="keyword">namespace</span> <span class="title">App</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">internal</span> <span class="keyword">class</span> <span class="title">Program</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">private</span> <span class="keyword">class</span> <span class="title">OrderModel</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">public</span> <span class="built_in">int</span> UserId &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line">            <span class="keyword">public</span> <span class="built_in">int</span> Type &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line">            <span class="keyword">public</span> <span class="built_in">string</span> Number &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">Main</span>(<span class="params"><span class="built_in">string</span>[] args</span>)</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">var</span> orders = <span class="keyword">new</span> List&lt;OrderModel&gt;</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">new</span> OrderModel</span><br><span class="line">                &#123;</span><br><span class="line">                    UserId = <span class="number">1</span>,</span><br><span class="line">                    Type = <span class="number">1</span>,</span><br><span class="line">                    Number = <span class="string">&quot;2023021401&quot;</span></span><br><span class="line">                &#125;,</span><br><span class="line">                <span class="keyword">new</span> OrderModel</span><br><span class="line">                &#123;</span><br><span class="line">                    UserId = <span class="number">1</span>,</span><br><span class="line">                    Type = <span class="number">1</span>,</span><br><span class="line">                    Number = <span class="string">&quot;2023021402&quot;</span></span><br><span class="line">                &#125;</span><br><span class="line">                ,</span><br><span class="line">                <span class="keyword">new</span> OrderModel</span><br><span class="line">                &#123;</span><br><span class="line">                    UserId = <span class="number">1</span>,</span><br><span class="line">                    Type = <span class="number">2</span>,</span><br><span class="line">                    Number = <span class="string">&quot;2023021403&quot;</span></span><br><span class="line">                &#125;</span><br><span class="line">            &#125;;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">var</span> distinctList = orders</span><br><span class="line">                               .GroupBy(x =&gt; <span class="keyword">new</span> &#123; x.Type, x.UserId &#125;)</span><br><span class="line">                               .Select(x =&gt; x.FirstOrDefault())</span><br><span class="line">                               .ToList();</span><br><span class="line"></span><br><span class="line">            <span class="keyword">foreach</span> (<span class="keyword">var</span> o <span class="keyword">in</span> distinctList)</span><br><span class="line">            &#123;</span><br><span class="line">                Console.WriteLine(<span class="string">$&quot;Number:<span class="subst">&#123;o.Number&#125;</span>&quot;</span>);</span><br><span class="line">                Console.WriteLine(<span class="string">$&quot;UserId:<span class="subst">&#123;o.UserId&#125;</span>&quot;</span>);</span><br><span class="line">                Console.WriteLine(<span class="string">$&quot;Type:<span class="subst">&#123;o.Type&#125;</span>&quot;</span>);</span><br><span class="line">                Console.WriteLine(<span class="string">&quot;===&quot;</span>);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>Output:</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">Number:2023021401</span><br><span class="line">UserId:1</span><br><span class="line">Type:1</span><br><span class="line">===</span><br><span class="line">Number:2023021403</span><br><span class="line">UserId:1</span><br><span class="line">Type:2</span><br><span class="line">===</span><br></pre></td></tr></table></figure>
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://yuhsiang237.github.io/2023/02/14/C-Distinct-object/" data-id="cme6kwnzz000cgalj6on3fgov" data-title="C# Distinct objects" class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
 
 
   <nav id="page-nav">
@@ -974,7 +1180,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Categories</h3>
     <div class="widget">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Code/">Code</a><span class="category-list-count">81</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Code/C/">C#</a><span class="category-list-count">69</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Code/Javascript/">Javascript</a><span class="category-list-count">12</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Code/Refactoring/">Refactoring</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Code/Typescript/">Typescript</a><span class="category-list-count">6</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/">Computer Science</a><span class="category-list-count">5</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/Algorithm/">Algorithm</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/Data-structure/">Data structure</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/Electronic-Circuit/">Electronic Circuit</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Daily-Log/">Daily Log</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/">Database</a><span class="category-list-count">57</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Database/PostgreSQL/">PostgreSQL</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/SQL-Server/">SQL Server</a><span class="category-list-count">47</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/">Framework</a><span class="category-list-count">27</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/AspNetCore-API/">AspNetCore API</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/AspNetCore-MVC/">AspNetCore MVC</a><span class="category-list-count">21</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/">Topic</a><span class="category-list-count">81</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2021-C-AspNetCore-Challenge/">2021 C# AspNetCore Challenge</a><span class="category-list-count">30</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2021-SQL-Server-Challenge/">2021 SQL Server Challenge</a><span class="category-list-count">30</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2022-C-SyncAndAsync/">2022 C# SyncAndAsync</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2025-Typescript/">2025 Typescript</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/Big-Data/">Big Data</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/LeetCode/">LeetCode</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/SystemStructure/">SystemStructure</a><span class="category-list-count">1</span></li></ul></li></ul>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Code/">Code</a><span class="category-list-count">82</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Code/C/">C#</a><span class="category-list-count">69</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Code/Javascript/">Javascript</a><span class="category-list-count">13</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Code/Refactoring/">Refactoring</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Code/Typescript/">Typescript</a><span class="category-list-count">7</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/">Computer Science</a><span class="category-list-count">5</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/Algorithm/">Algorithm</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/Data-structure/">Data structure</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/Electronic-Circuit/">Electronic Circuit</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Daily-Log/">Daily Log</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/">Database</a><span class="category-list-count">57</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Database/PostgreSQL/">PostgreSQL</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/SQL-Server/">SQL Server</a><span class="category-list-count">47</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/">Framework</a><span class="category-list-count">27</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/AspNetCore-API/">AspNetCore API</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/AspNetCore-MVC/">AspNetCore MVC</a><span class="category-list-count">21</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/">Topic</a><span class="category-list-count">82</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2021-C-AspNetCore-Challenge/">2021 C# AspNetCore Challenge</a><span class="category-list-count">30</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2021-SQL-Server-Challenge/">2021 SQL Server Challenge</a><span class="category-list-count">30</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2022-C-SyncAndAsync/">2022 C# SyncAndAsync</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2025-Typescript/">2025 Typescript</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/Big-Data/">Big Data</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/LeetCode/">LeetCode</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/SystemStructure/">SystemStructure</a><span class="category-list-count">1</span></li></ul></li></ul>
     </div>
   </div>
 
@@ -984,7 +1190,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/08/">August 2025</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/05/">May 2023</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/03/">March 2023</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/02/">February 2023</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/01/">January 2023</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/12/">December 2022</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/09/">September 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/07/">July 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/06/">June 2022</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/05/">May 2022</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/04/">April 2022</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/03/">March 2022</a><span class="archive-list-count">17</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/02/">February 2022</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/01/">January 2022</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">December 2021</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">October 2021</a><span class="archive-list-count">24</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">September 2021</a><span class="archive-list-count">46</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">August 2021</a><span class="archive-list-count">12</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/08/">August 2025</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/05/">May 2023</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/03/">March 2023</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/02/">February 2023</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/01/">January 2023</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/12/">December 2022</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/09/">September 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/07/">July 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/06/">June 2022</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/05/">May 2022</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/04/">April 2022</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/03/">March 2022</a><span class="archive-list-count">17</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/02/">February 2022</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/01/">January 2022</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">December 2021</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">October 2021</a><span class="archive-list-count">24</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">September 2021</a><span class="archive-list-count">46</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">August 2021</a><span class="archive-list-count">12</span></li></ul>
     </div>
   </div>
 

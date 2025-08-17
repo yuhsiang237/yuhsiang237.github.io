@@ -77,6 +77,98 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-SQL-Server資料庫版控設定" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2022/05/04/SQL-Server%E8%B3%87%E6%96%99%E5%BA%AB%E7%89%88%E6%8E%A7%E8%A8%AD%E5%AE%9A/" class="article-date">
+  <time class="dt-published" datetime="2022-05-04T05:11:48.000Z" itemprop="datePublished">2022-05-04</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Database/">Database</a>►<a class="article-category-link" href="/categories/Database/SQL-Server/">SQL Server</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2022/05/04/SQL-Server%E8%B3%87%E6%96%99%E5%BA%AB%E7%89%88%E6%8E%A7%E8%A8%AD%E5%AE%9A/">SQL Server資料庫版控設定</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>在寫程式時我們都會有版本控制，以避免重大失誤無法回版，而在程式上作法很簡單就是使用git。<br>但資料庫要怎版控呢?如果遇到有人直接把資料庫欄位異動了，卻沒通知其他人，程式就會變得難以除錯，所以在這回要介紹如何在資料庫加入版本控制功能。<br>在這篇範例會以SQL Server搭配Visual Studio去達成版控。</p>
+<p>主要以微軟官方提供的:SQL Server Data Tools 來實作。</p>
+<h3 id="實作"><a href="#實作" class="headerlink" title="實作"></a>實作</h3><p>1.因為要模擬真實情景，先以Visual Studio建立任一個沒版控的專案，在此先以ASP NET CORE MVC為範例。</p>
+<img src="/2022/05/04/SQL-Server%E8%B3%87%E6%96%99%E5%BA%AB%E7%89%88%E6%8E%A7%E8%A8%AD%E5%AE%9A/1.png" class="">
+
+<p>2.對解決方案點右鍵，為這專案用的資料庫加入”資料庫版控專案”</p>
+<img src="/2022/05/04/SQL-Server%E8%B3%87%E6%96%99%E5%BA%AB%E7%89%88%E6%8E%A7%E8%A8%AD%E5%AE%9A/2.png" class="">
+<p>3.選擇 SQL Server 資料庫專案，如果找不到這個專案記得去這裡裝:<a target="_blank" rel="noopener" href="https://docs.microsoft.com/zh-tw/sql/ssdt/download-sql-server-data-tools-ssdt?view=sql-server-ver15">https://docs.microsoft.com/zh-tw/sql/ssdt/download-sql-server-data-tools-ssdt?view=sql-server-ver15</a><br>就可以出現這範例專案了。</p>
+<img src="/2022/05/04/SQL-Server%E8%B3%87%E6%96%99%E5%BA%AB%E7%89%88%E6%8E%A7%E8%A8%AD%E5%AE%9A/3.png" class="">
+<p>4.我取名叫MyDatabase</p>
+<img src="/2022/05/04/SQL-Server%E8%B3%87%E6%96%99%E5%BA%AB%E7%89%88%E6%8E%A7%E8%A8%AD%E5%AE%9A/4.png" class="">
+<p>5.這時就有一個MyDatabase的資料庫管理專案放進來了</p>
+<img src="/2022/05/04/SQL-Server%E8%B3%87%E6%96%99%E5%BA%AB%E7%89%88%E6%8E%A7%E8%A8%AD%E5%AE%9A/5.png" class="">
+<p>6.再來我們現有的資料庫叫做TodoDB，預計把這DB加入版控</p>
+<img src="/2022/05/04/SQL-Server%E8%B3%87%E6%96%99%E5%BA%AB%E7%89%88%E6%8E%A7%E8%A8%AD%E5%AE%9A/6.png" class="">
+<p>7.選擇匯入&gt;資料庫</p>
+<img src="/2022/05/04/SQL-Server%E8%B3%87%E6%96%99%E5%BA%AB%E7%89%88%E6%8E%A7%E8%A8%AD%E5%AE%9A/7.png" class="">
+<p>8.再來就連DB選擇指定資料庫</p>
+<img src="/2022/05/04/SQL-Server%E8%B3%87%E6%96%99%E5%BA%AB%E7%89%88%E6%8E%A7%E8%A8%AD%E5%AE%9A/8.png" class="">
+<p>9.在此我就選擇資料庫連線、選擇指定資料庫</p>
+<img src="/2022/05/04/SQL-Server%E8%B3%87%E6%96%99%E5%BA%AB%E7%89%88%E6%8E%A7%E8%A8%AD%E5%AE%9A/9.png" class="">
+<p>10.再來點選啟動</p>
+<img src="/2022/05/04/SQL-Server%E8%B3%87%E6%96%99%E5%BA%AB%E7%89%88%E6%8E%A7%E8%A8%AD%E5%AE%9A/10.png" class="">
+<p>11.這樣就匯入完成</p>
+<img src="/2022/05/04/SQL-Server%E8%B3%87%E6%96%99%E5%BA%AB%E7%89%88%E6%8E%A7%E8%A8%AD%E5%AE%9A/11.png" class="">
+<p>12.如此一來就可以版控了也可以設計資料庫</p>
+<img src="/2022/05/04/SQL-Server%E8%B3%87%E6%96%99%E5%BA%AB%E7%89%88%E6%8E%A7%E8%A8%AD%E5%AE%9A/12.png" class="">
+<p>完成!</p>
+<h3 id="模擬資料庫欄位變更"><a href="#模擬資料庫欄位變更" class="headerlink" title="模擬資料庫欄位變更"></a>模擬資料庫欄位變更</h3><p>1.再來我們模擬資料表變更，新增了一個Email欄位</p>
+<img src="/2022/05/04/SQL-Server%E8%B3%87%E6%96%99%E5%BA%AB%E7%89%88%E6%8E%A7%E8%A8%AD%E5%AE%9A/13.png" class="">
+<p>2.對資料庫專案右鍵點”結構描述比較”</p>
+<img src="/2022/05/04/SQL-Server%E8%B3%87%E6%96%99%E5%BA%AB%E7%89%88%E6%8E%A7%E8%A8%AD%E5%AE%9A/14.png" class="">
+<p>3.之後會跳出這視窗，右邊選擇你遠端的資料庫</p>
+<img src="/2022/05/04/SQL-Server%E8%B3%87%E6%96%99%E5%BA%AB%E7%89%88%E6%8E%A7%E8%A8%AD%E5%AE%9A/15.png" class="">
+<p>4.在這我就選遠端的TodoDB</p>
+<img src="/2022/05/04/SQL-Server%E8%B3%87%E6%96%99%E5%BA%AB%E7%89%88%E6%8E%A7%E8%A8%AD%E5%AE%9A/16.png" class="">
+<p>5.選好後點擊”比較”</p>
+<img src="/2022/05/04/SQL-Server%E8%B3%87%E6%96%99%E5%BA%AB%E7%89%88%E6%8E%A7%E8%A8%AD%E5%AE%9A/17.png" class="">
+<p>6.點完後點擊更新，底下會顯示更新狀態，顯示已經順利完成</p>
+<img src="/2022/05/04/SQL-Server%E8%B3%87%E6%96%99%E5%BA%AB%E7%89%88%E6%8E%A7%E8%A8%AD%E5%AE%9A/21.png" class="">
+<p>7.這時去SQL Server看就成功被更新了</p>
+<img src="/2022/05/04/SQL-Server%E8%B3%87%E6%96%99%E5%BA%AB%E7%89%88%E6%8E%A7%E8%A8%AD%E5%AE%9A/22.png" class="">
+
+<p>下面是我做的完整專案:<br><a target="_blank" rel="noopener" href="https://github.com/yuhsiang237/SQL-Server-Version-Control">https://github.com/yuhsiang237/SQL-Server-Version-Control</a></p>
+<h3 id="參考資料"><a href="#參考資料" class="headerlink" title="參考資料"></a>參考資料</h3><ul>
+<li><a target="_blank" rel="noopener" href="https://blog.yowko.com/sql-server-version-control/">https://blog.yowko.com/sql-server-version-control/</a></li>
+<li><a target="_blank" rel="noopener" href="https://visualstudio.microsoft.com/zh-hant/vs/features/ssdt/">https://visualstudio.microsoft.com/zh-hant/vs/features/ssdt/</a></li>
+<li><a target="_blank" rel="noopener" href="https://docs.microsoft.com/zh-tw/sql/ssdt/sql-server-data-tools?view=sql-server-ver15">https://docs.microsoft.com/zh-tw/sql/ssdt/sql-server-data-tools?view=sql-server-ver15</a></li>
+<li><a target="_blank" rel="noopener" href="https://docs.microsoft.com/en-us/previous-versions/sql/sql-server-data-tools/hh864423(v=vs.103)">https://docs.microsoft.com/en-us/previous-versions/sql/sql-server-data-tools/hh864423(v=vs.103)</a></li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://yuhsiang237.github.io/2022/05/04/SQL-Server%E8%B3%87%E6%96%99%E5%BA%AB%E7%89%88%E6%8E%A7%E8%A8%AD%E5%AE%9A/" data-id="cme6kwo2e004sgaljf852auoa" data-title="SQL Server資料庫版控設定" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
     <article id="post-2022上半年改變了什麼" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
     <a href="/2022/05/01/2022%E4%B8%8A%E5%8D%8A%E5%B9%B4%E6%94%B9%E8%AE%8A%E4%BA%86%E4%BB%80%E9%BA%BC/" class="article-date">
@@ -548,57 +640,6 @@
 
 
   
-    <article id="post-C-Tuple實名、匿名用法" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2022/04/06/C-Tuple%E5%AF%A6%E5%90%8D%E3%80%81%E5%8C%BF%E5%90%8D%E7%94%A8%E6%B3%95/" class="article-date">
-  <time class="dt-published" datetime="2022-04-06T02:25:27.000Z" itemprop="datePublished">2022-04-06</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/Code/">Code</a>►<a class="article-category-link" href="/categories/Code/C/">C#</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2022/04/06/C-Tuple%E5%AF%A6%E5%90%8D%E3%80%81%E5%8C%BF%E5%90%8D%E7%94%A8%E6%B3%95/">C# Tuple實名、匿名用法</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p>最近在寫資料時需要回傳多筆數，但在資料單純、沒特別的邏輯的情況下不想再建立一個Model回傳，這時就可以使用Tuple返回元組類型。</p>
-<p>以下為匿名、實名的兩種Tuple寫法。</p>
-<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> System;</span><br><span class="line"></span><br><span class="line"><span class="keyword">namespace</span> <span class="title">TupleSample</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">internal</span> <span class="keyword">class</span> <span class="title">Program</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">Main</span>(<span class="params"><span class="built_in">string</span>[] args</span>)</span></span><br><span class="line">        &#123;</span><br><span class="line">            Console.WriteLine(String.Concat(GetUser1().Id, GetUser1().Name));</span><br><span class="line">            Console.WriteLine(String.Concat(GetUser2().Item1, GetUser2().Item2));</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">static</span> (<span class="built_in">int</span> Id, <span class="built_in">string</span> Name) GetUser1()</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">return</span> (<span class="number">5</span>, <span class="string">&quot;王小明&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">static</span> Tuple&lt;<span class="built_in">int</span>, <span class="built_in">string</span>&gt; <span class="title">GetUser2</span>(<span class="params"></span>)</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">return</span> Tuple.Create(<span class="number">5</span>, <span class="string">&quot;王小明&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p><strong>output</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">5王小明</span><br><span class="line">5王小明</span><br></pre></td></tr></table></figure>
-
-<h3 id="總結"><a href="#總結" class="headerlink" title="總結"></a>總結</h3><p>當返回值較為單純時可以使用，如2~3個返回值。</p>
-<h3 id="參考資料"><a href="#參考資料" class="headerlink" title="參考資料"></a>參考資料</h3><p><a target="_blank" rel="noopener" href="https://docs.microsoft.com/zh-tw/dotnet/csharp/language-reference/builtin-types/value-tuples">https://docs.microsoft.com/zh-tw/dotnet/csharp/language-reference/builtin-types/value-tuples</a></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://yuhsiang237.github.io/2022/04/06/C-Tuple%E5%AF%A6%E5%90%8D%E3%80%81%E5%8C%BF%E5%90%8D%E7%94%A8%E6%B3%95/" data-id="cme6kwo12002dgaljeqsu77da" data-title="C# Tuple實名、匿名用法" class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
 
 
   <nav id="page-nav">
@@ -614,7 +655,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Categories</h3>
     <div class="widget">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Code/">Code</a><span class="category-list-count">81</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Code/C/">C#</a><span class="category-list-count">69</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Code/Javascript/">Javascript</a><span class="category-list-count">12</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Code/Refactoring/">Refactoring</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Code/Typescript/">Typescript</a><span class="category-list-count">6</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/">Computer Science</a><span class="category-list-count">5</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/Algorithm/">Algorithm</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/Data-structure/">Data structure</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/Electronic-Circuit/">Electronic Circuit</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Daily-Log/">Daily Log</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/">Database</a><span class="category-list-count">57</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Database/PostgreSQL/">PostgreSQL</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/SQL-Server/">SQL Server</a><span class="category-list-count">47</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/">Framework</a><span class="category-list-count">27</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/AspNetCore-API/">AspNetCore API</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/AspNetCore-MVC/">AspNetCore MVC</a><span class="category-list-count">21</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/">Topic</a><span class="category-list-count">81</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2021-C-AspNetCore-Challenge/">2021 C# AspNetCore Challenge</a><span class="category-list-count">30</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2021-SQL-Server-Challenge/">2021 SQL Server Challenge</a><span class="category-list-count">30</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2022-C-SyncAndAsync/">2022 C# SyncAndAsync</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2025-Typescript/">2025 Typescript</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/Big-Data/">Big Data</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/LeetCode/">LeetCode</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/SystemStructure/">SystemStructure</a><span class="category-list-count">1</span></li></ul></li></ul>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Code/">Code</a><span class="category-list-count">82</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Code/C/">C#</a><span class="category-list-count">69</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Code/Javascript/">Javascript</a><span class="category-list-count">13</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Code/Refactoring/">Refactoring</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Code/Typescript/">Typescript</a><span class="category-list-count">7</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/">Computer Science</a><span class="category-list-count">5</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/Algorithm/">Algorithm</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/Data-structure/">Data structure</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Computer-Science/Electronic-Circuit/">Electronic Circuit</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Daily-Log/">Daily Log</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/">Database</a><span class="category-list-count">57</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Database/PostgreSQL/">PostgreSQL</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/SQL-Server/">SQL Server</a><span class="category-list-count">47</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/">Framework</a><span class="category-list-count">27</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/AspNetCore-API/">AspNetCore API</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Framework/AspNetCore-MVC/">AspNetCore MVC</a><span class="category-list-count">21</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/">Topic</a><span class="category-list-count">82</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2021-C-AspNetCore-Challenge/">2021 C# AspNetCore Challenge</a><span class="category-list-count">30</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2021-SQL-Server-Challenge/">2021 SQL Server Challenge</a><span class="category-list-count">30</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2022-C-SyncAndAsync/">2022 C# SyncAndAsync</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/2025-Typescript/">2025 Typescript</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/Big-Data/">Big Data</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/LeetCode/">LeetCode</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Topic/SystemStructure/">SystemStructure</a><span class="category-list-count">1</span></li></ul></li></ul>
     </div>
   </div>
 
@@ -624,7 +665,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/08/">August 2025</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/05/">May 2023</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/03/">March 2023</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/02/">February 2023</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/01/">January 2023</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/12/">December 2022</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/09/">September 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/07/">July 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/06/">June 2022</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/05/">May 2022</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/04/">April 2022</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/03/">March 2022</a><span class="archive-list-count">17</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/02/">February 2022</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/01/">January 2022</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">December 2021</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">October 2021</a><span class="archive-list-count">24</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">September 2021</a><span class="archive-list-count">46</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">August 2021</a><span class="archive-list-count">12</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/08/">August 2025</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/05/">May 2023</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/03/">March 2023</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/02/">February 2023</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/01/">January 2023</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/12/">December 2022</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/09/">September 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/07/">July 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/06/">June 2022</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/05/">May 2022</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/04/">April 2022</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/03/">March 2022</a><span class="archive-list-count">17</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/02/">February 2022</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/01/">January 2022</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">December 2021</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">October 2021</a><span class="archive-list-count">24</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">September 2021</a><span class="archive-list-count">46</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">August 2021</a><span class="archive-list-count">12</span></li></ul>
     </div>
   </div>
 
